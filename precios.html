@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Precios y tarifas · Kids & Kafé · Barcelona</title>
+<meta name="description" content="Tarifas de Kids & Kafé Barcelona: juego por horas y bonos (Play), Club Familia, Drop-off con monitor, extraescolares de inglés y Baby Explorers (0-3 años).">
+<link rel="icon" type="image/png" href="img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+/* ===== Tarifas (página Precios) ===== */
+.tarifas-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:26px;margin-top:44px}
+.tcard{background:#fff;border-radius:26px;box-shadow:0 22px 46px -24px rgba(95,120,150,.34);border:1px solid rgba(0,0,0,.04);overflow:hidden;display:flex;flex-direction:column}
+.tcard .thead{padding:17px 24px;text-align:center;color:#fff;font-family:'Fraunces',serif;font-weight:700;font-size:19px;letter-spacing:.6px;text-transform:uppercase;line-height:1.15}
+.tcard .thead small{display:block;font-family:'Inter',sans-serif;font-weight:600;font-size:12.5px;letter-spacing:.4px;opacity:.95;text-transform:none;margin-top:3px}
+.tcard.c-club .thead{background:linear-gradient(135deg,#EFC08A,#E3A862)}
+.tcard.c-play .thead{background:linear-gradient(135deg,#9CC6EA,#7FB0DB)}
+.tcard.c-drop .thead{background:linear-gradient(135deg,#F6AEB6,#EE8E9C)}
+.tcard.c-extra .thead{background:linear-gradient(135deg,#BCA9E0,#A98FD0)}
+.tcard.c-baby .thead{background:linear-gradient(135deg,#A6BE86,#8FA968)}
+.tbody{padding:6px 0}
+.trow{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:13px 24px;border-bottom:1px solid rgba(0,0,0,.055)}
+.trow:last-child{border-bottom:0}
+.trow .tname{font-weight:600;color:#3c4a3a;font-size:15.5px}
+.trow .tname small{display:block;font-weight:500;color:#8a9385;font-size:13px;margin-top:1px}
+.trow .tprice{font-family:'Fraunces',serif;font-weight:700;color:#5f7a3a;font-size:20px;white-space:nowrap}
+.trow .tprice small{font-family:'Inter',sans-serif;font-weight:600;font-size:12px;color:#8a9385}
+.tfeatures{list-style:none;margin:0;padding:14px 24px 18px;display:flex;flex-direction:column;gap:8px}
+.tfeatures li{position:relative;padding-left:24px;color:#5a6553;font-size:14.5px;line-height:1.4}
+.tfeatures li::before{content:'✓';position:absolute;left:0;top:0;color:#8FA968;font-weight:800}
+.tdesc{padding:16px 24px 4px;color:#5a6553;font-size:15px;line-height:1.6}
+.tcard.span2{grid-column:1 / -1}
+.tcard.span2 .tbody{display:grid;grid-template-columns:repeat(3,1fr)}
+.tcard.span2 .trow{border-bottom:0;border-right:1px solid rgba(0,0,0,.06);flex-direction:column;align-items:center;text-align:center;gap:5px;padding:18px 16px}
+.tcard.span2 .trow:last-child{border-right:0}
+.tarifas-note{margin-top:30px;text-align:center;color:#7a8472;font-size:14.5px;line-height:1.6}
+.tarifas-note b{color:#5f7a3a}
+@media(max-width:760px){
+  .tarifas-grid{grid-template-columns:1fr;gap:22px}
+  .tcard.span2 .tbody{grid-template-columns:1fr}
+  .tcard.span2 .trow{flex-direction:row;align-items:baseline;text-align:left;border-right:0;border-bottom:1px solid rgba(0,0,0,.055);padding:13px 24px}
+  .tcard.span2 .trow:last-child{border-bottom:0}
+}
+</style>
+</head>
+<body>
+<div id="prog"></div>
+<header id="hdr"><nav>
+  <a href="index.html" class="brand"><img src="img/logo.png" alt="Kids & Kafé"><b>Kids&nbsp;&amp;&nbsp;Kafé</b></a>
+  <div class="navlinks" id="nav">
+    <a href="index.html">Inicio</a>
+    <a href="nosotros.html">Nosotros</a>
+    <a href="zonas.html">Zonas de juego</a>
+    <a href="actividades.html">Actividades</a>
+    <a href="precios.html" class="active">Precios</a>
+    <a href="cumpleanos.html">Cumpleaños</a>
+    <a href="baby-explorer.html">Baby Explorer</a>
+    <a href="contacto.html">Contacto</a>
+    <a href="contacto.html#app" class="nav-cta">Reserva en la app</a>
+  </div>
+  <button class="burger" onclick="document.getElementById('nav').classList.toggle('open')">☰</button>
+</nav></header>
+
+<section class="phero">
+  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+  <div class="wrap">
+    <div class="eyebrow c" data-rv>Precios y tarifas</div>
+    <h1 data-rv data-delay="1">Nuestro <em>servicio</em></h1>
+    <p data-rv data-delay="2">Todo claro y sin sorpresas: juego por horas, bonos, Club Familia, Drop-off con monitor, extraescolares y Baby Explorers.</p>
+    <div class="crumb" data-rv data-delay="3"><a href="index.html">Inicio</a> · Precios</div>
+  </div>
+</section>
+
+<section style="padding-top:30px">
+  <div class="wrap">
+    <div class="tarifas-grid">
+
+      <!-- CLUB FAMILIA -->
+      <div class="tcard c-club" data-rv="s">
+        <div class="thead">Club Familia <small>Kids &amp; Kafé</small></div>
+        <div class="tbody">
+          <div class="trow"><span class="tname">Plan mensual</span><span class="tprice">120€</span></div>
+          <div class="trow"><span class="tname">Plan anual</span><span class="tprice">980€</span></div>
+        </div>
+        <ul class="tfeatures">
+          <li>Acceso libre de 10 a 20h</li>
+          <li>Prioridad en reservas</li>
+          <li>10% de descuento en servicios</li>
+        </ul>
+      </div>
+
+      <!-- PLAY -->
+      <div class="tcard c-play" data-rv="s" data-delay="1">
+        <div class="thead">Play <small>Juego libre</small></div>
+        <div class="tbody">
+          <div class="trow"><span class="tname">Primera hora</span><span class="tprice">10€</span></div>
+          <div class="trow"><span class="tname">Segunda hora</span><span class="tprice">7€</span></div>
+          <div class="trow"><span class="tname">Hora de hermanos</span><span class="tprice">8€</span></div>
+          <div class="trow"><span class="tname">Bono 10 horas de juego</span><span class="tprice">85€</span></div>
+          <div class="trow"><span class="tname">Bono 10 horas monoparental</span><span class="tprice">75€</span></div>
+        </div>
+      </div>
+
+      <!-- DROP-OFF -->
+      <div class="tcard c-drop" data-rv="s" data-delay="2">
+        <div class="thead">Drop-off <small>Peques con monitor</small></div>
+        <div class="tbody">
+          <div class="trow"><span class="tname">1 hora</span><span class="tprice">15€</span></div>
+          <div class="trow"><span class="tname">Bono 4 horas</span><span class="tprice">55€</span></div>
+          <div class="trow"><span class="tname">Bono 7 horas</span><span class="tprice">95€</span></div>
+          <div class="trow"><span class="tname">Bono 10 horas</span><span class="tprice">140€</span></div>
+        </div>
+        <ul class="tfeatures">
+          <li>Segundo hermano: 50% de descuento</li>
+        </ul>
+      </div>
+
+      <!-- EXTRAESCOLARES -->
+      <div class="tcard c-extra" data-rv="s" data-delay="3">
+        <div class="thead">Extraescolares <small>2 a 6 años</small></div>
+        <div class="tbody">
+          <div class="trow"><span class="tname">English &amp; Play <small>Lunes · 17:00–18:00</small></span><span class="tprice">49€<small> /mes</small></span></div>
+          <div class="trow"><span class="tname">English &amp; Art <small>Martes · 17:00–18:00</small></span><span class="tprice">49€<small> /mes</small></span></div>
+        </div>
+        <ul class="tfeatures">
+          <li>Cuota mensual por actividad</li>
+        </ul>
+      </div>
+
+      <!-- BABY EXPLORERS -->
+      <div class="tcard c-baby span2" data-rv="s">
+        <div class="thead">Baby Explorers® <small>0 a 3 años</small></div>
+        <div class="tdesc">Programa de exploración y estimulación temprana diseñado para acompañar el desarrollo del niño. Todas las mañanas de 10 a 14h con monitora especializada, siempre atenta de los peques, y un montón de actividades diferentes.</div>
+        <div class="tbody">
+          <div class="trow"><span class="tname">Plan mensual</span><span class="tprice">140€</span></div>
+          <div class="trow"><span class="tname">Bono 5 sesiones</span><span class="tprice">85€</span></div>
+          <div class="trow"><span class="tname">Bono 10 sesiones</span><span class="tprice">130€</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <p class="tarifas-note" data-rv><b>El bono incluye 2 adultos.</b> Entrada de adultos sin bono: 3€. · Precios sujetos a posibles cambios; consúltanos cualquier duda.</p>
+  </div>
+</section>
+
+<!-- CTA RESERVA -->
+<section style="padding-top:0">
+  <div class="wrap"><div class="news big" data-rv="s">
+    <span class="news-badge">🎈 ¿Te apuntas?</span>
+    <h2>Reserva tu plaza en Kids &amp; Kafé</h2>
+    <p>Escríbenos por WhatsApp y te ayudamos a elegir el bono o plan que mejor encaja con tu familia.</p>
+    <div class="news-cta">
+      <a href="https://wa.me/34637319226?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20precios%20y%20bonos" target="_blank" rel="noopener" class="btn btn-wa lg">💬 Pregúntanos por WhatsApp</a>
+      <a href="contacto.html#app" class="btn btn-pink lg">📅 Reservar en la app</a>
+    </div>
+  </div></div>
+</section>
+
+<footer><div class="wrap">
+  <div class="foot-grid">
+    <div class="foot-brand" data-rv><img src="img/logo.png" alt="Kids & Kafé"><p>Centro infantil y espacio de juego pedagógico en Barcelona.</p></div>
+    <div data-rv data-delay="1"><h4>Contacto</h4>
+      <a href="https://www.google.com/maps/search/Carrer+de+Nicaragua+117+08029+Barcelona" target="_blank" rel="noopener">📍 Carrer de Nicaragua, 117 · 08029 Barcelona</a>
+      <span class="foot-contact-extra" style="color:rgba(255,255,255,.55);font-size:13px">🕒 Abiertos los 12 meses · horario flexible</span>
+      <a href="https://wa.me/34637319226" target="_blank" rel="noopener">📲 WhatsApp: +34 637 319 226</a>
+      <a href="tel:+34936736177">☎️ 936 736 177</a>
+      <a href="mailto:kidsandkafe@gmail.com">✉️ kidsandkafe@gmail.com</a>
+      <a href="https://instagram.com/kidsandkafe" target="_blank" rel="noopener">📷 Instagram</a>
+    </div>
+    <div data-rv data-delay="2"><h4>Páginas</h4>
+      <a href="index.html">Inicio</a><a href="nosotros.html">Nosotros</a><a href="zonas.html">Zonas de juego</a><a href="precios.html">Precios</a><a href="baby-explorer.html">Baby Explorer</a><a href="talleres.html">Talleres</a>
+    </div>
+  </div>
+  <div class="foot-bottom">© 2026 Kids & Kafé · RAAMROSE INVERSIÓN, SL · Todos los derechos reservados</div>
+</div></footer>
+<a href="https://wa.me/34637319226" class="wa-float" target="_blank" rel="noopener" aria-label="WhatsApp">💬</a>
+<div id="lightbox"><img src="" alt=""></div>
+<script src="js/main.js"></script>
+</body>
+</html>
