@@ -250,12 +250,20 @@ footer{background:var(--ink);color:#fff;padding:72px 0 32px;position:relative}
   .hero-board,.hero-board::before,.hero-board .hb-pin,.hero-board .hb-go,.hero-board .hb-kicker,.hero-board .hb-emo,.hero-board .hb-emo::after,.hero-shine{animation:none}
 }
 
-@media(max-width:900px){
+/* NAV: con 8 enlaces + botón "Reserva", la barra completa solo cabe holgada
+   por encima de ~1150px. Por debajo se colapsa al menú hamburguesa para que
+   nunca se amontone ni se salga de la pantalla. (El layout de contenido
+   sigue cambiando a 900px más abajo.) */
+@media(max-width:1180px){
   .navlinks{position:fixed;top:0;right:-100%;height:100vh;width:78%;max-width:330px;background:var(--cream);flex-direction:column;padding:90px 28px;gap:6px;box-shadow:-14px 0 50px rgba(0,0,0,.16);transition:right .35s ease;align-items:stretch}
   .navlinks.open{right:0}
   .navlinks a:not(.nav-cta){padding:14px 16px;font-size:16px;border-radius:14px}
+  .navlinks a:not(.nav-cta)::after{display:none}
+  .navlinks a:not(.nav-cta):hover,.navlinks a.active{background:var(--pink-soft)!important;border-radius:14px}
   .nav-cta{margin:10px 0 0;text-align:center}
   .burger{display:block;z-index:110}
+}
+@media(max-width:900px){
   .hero-grid,.feature,.foot-grid,.catering{grid-template-columns:1fr}
   /* FIX móvil: el hero era display:flex y no dejaba encoger el contenido al ancho
      de la pantalla → .wrap se quedaba en ~608px y cortaba texto/botones por la derecha.
@@ -412,27 +420,20 @@ header.scrolled nav{margin-top:6px;background:linear-gradient(180deg,rgba(255,25
 
 /* enlaces: subrayado dorado→rosa animado (sin recuadro) */
 .navlinks{gap:2px}
-.navlinks a:not(.nav-cta){position:relative;background:none!important;opacity:.92;color:var(--ink);font-weight:600;padding:10px 16px}
-.navlinks a:not(.nav-cta)::after{content:'';position:absolute;left:16px;right:16px;bottom:6px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--rose-text),var(--gold));transform:scaleX(0);transform-origin:left;transition:transform .32s cubic-bezier(.16,1,.3,1)}
+.navlinks a:not(.nav-cta){position:relative;background:none!important;opacity:.92;color:var(--ink);font-weight:600;padding:10px 10px;white-space:nowrap}
+.navlinks a:not(.nav-cta)::after{content:'';position:absolute;left:10px;right:10px;bottom:6px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--rose-text),var(--gold));transform:scaleX(0);transform-origin:left;transition:transform .32s cubic-bezier(.16,1,.3,1)}
 .navlinks a:not(.nav-cta):hover{color:var(--rose-text)}
 .navlinks a:not(.nav-cta):hover::after,.navlinks a.active::after{transform:scaleX(1)}
 .navlinks a.active{color:var(--rose-text);font-weight:700}
 
 /* CTA reservar más elegante */
-.nav-cta{margin-left:12px;padding:12px 24px;border-radius:40px;letter-spacing:.2px;
+.nav-cta{margin-left:12px;padding:12px 24px;border-radius:40px;letter-spacing:.2px;white-space:nowrap;
   background:linear-gradient(135deg,#A3C27E,#84A557 60%,#F2864A);
   box-shadow:0 12px 26px -10px rgba(105,142,68,.65),inset 0 1px 0 rgba(255,255,255,.45);
   position:relative;overflow:hidden}
 .nav-cta::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,.3);transform:translateX(-130%) skewX(-20deg);transition:transform .6s}
 .nav-cta:hover::after{transform:translateX(130%) skewX(-20deg)}
 .nav-cta:hover{transform:translateY(-2px);box-shadow:0 16px 30px -10px rgba(105,142,68,.75)}
-
-/* en móvil: el subrayado molesta → volver a estilo limpio */
-@media(max-width:900px){
-  .navlinks a:not(.nav-cta){padding:14px 16px}
-  .navlinks a:not(.nav-cta)::after{display:none}
-  .navlinks a:not(.nav-cta):hover,.navlinks a.active{background:var(--pink-soft)!important;border-radius:14px}
-}
 
 /* ═══ FIX FINAL: frases en cursiva SÓLIDAS y legibles (sin degradado ni sombra hueca) ═══ */
 .hero-txt h1,.phero h1,h2.title{text-shadow:none}
