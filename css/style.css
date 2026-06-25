@@ -257,6 +257,13 @@ footer{background:var(--ink);color:#fff;padding:72px 0 32px;position:relative}
   .nav-cta{margin:10px 0 0;text-align:center}
   .burger{display:block;z-index:110}
   .hero-grid,.feature,.foot-grid,.catering{grid-template-columns:1fr}
+  /* FIX móvil: el hero era display:flex y no dejaba encoger el contenido al ancho
+     de la pantalla → .wrap se quedaba en ~608px y cortaba texto/botones por la derecha.
+     En bloque, todo vuelve a caber y ajustarse al ancho real del móvil. */
+  .hero{display:block}
+  .wrap{width:100%;min-width:0}
+  .hero-grid{min-width:0}
+  .hero-txt,.hero-visual,.balloon-stage{min-width:0;max-width:100%}
   .feature.rev .feat-img{order:0}
   .hero-visual{margin-top:20px}
   .hero-visual .main{height:380px}
