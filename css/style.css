@@ -754,3 +754,40 @@ h2.title{letter-spacing:-.4px;text-wrap:balance}
 .phero h1{letter-spacing:-.8px;text-wrap:balance}
 .hero-txt h1{letter-spacing:-1px;text-wrap:balance}
 .lead{text-wrap:pretty}
+
+/* ============================================================
+   ✦ TOQUE CIELO (2026-07-02) — el hero interior (.phero) hereda
+   el cielo azul→crema + nubes del Home. Aprobado por Barbara.
+   Bloque aditivo al final = gana la cascada, 100% reversible
+   (basta borrar de aquí hasta el final del archivo).
+   ============================================================ */
+.phero{
+  background:
+    url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='62' viewBox='0 0 120 62'><g fill='%23ffffff'><ellipse cx='42' cy='40' rx='31' ry='18'/><ellipse cx='76' cy='38' rx='27' ry='21'/><circle cx='58' cy='25' r='19'/><rect x='19' y='36' width='84' height='18' rx='9'/></g></svg>") 7% 30px / 112px auto no-repeat,
+    url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='62' viewBox='0 0 120 62'><g fill='%23ffffff'><ellipse cx='42' cy='40' rx='31' ry='18'/><ellipse cx='76' cy='38' rx='27' ry='21'/><circle cx='58' cy='25' r='19'/><rect x='19' y='36' width='84' height='18' rx='9'/></g></svg>") 95% 22px / 84px auto no-repeat,
+    radial-gradient(300px 300px at 84% -12%, #FFF3CE 0%, rgba(255,224,150,.5) 34%, transparent 66%),
+    linear-gradient(180deg,#BFE1FF 0%,#D3EAFF 30%,#E6F3FF 56%,#F4FAFF 80%,#FFFBF8 100%) !important;
+}
+/* Borde inferior con nubes esponjosas */
+.phero::before{content:'';position:absolute;left:0;right:0;bottom:-1px;height:66px;z-index:1;
+  background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='66' viewBox='0 0 260 66'><path d='M0,46 a34,34 0 0 1 65,0 a30,30 0 0 1 65,0 a34,34 0 0 1 65,0 a30,30 0 0 1 65,0 L260,66 L0,66 Z' fill='%23FFFBF8'/></svg>") repeat-x bottom;
+  background-size:260px 66px}
+/* Los blobs difuminados pasan a ser nubes de primer plano */
+.phero .blob{
+  background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='62' viewBox='0 0 120 62'><g fill='%23ffffff'><ellipse cx='42' cy='40' rx='31' ry='18'/><ellipse cx='76' cy='38' rx='27' ry='21'/><circle cx='58' cy='25' r='19'/><rect x='19' y='36' width='84' height='18' rx='9'/></g></svg>") no-repeat center/contain !important;
+  filter:drop-shadow(0 18px 22px rgba(115,150,190,.32)) !important;
+  border-radius:0 !important;opacity:.98 !important;
+  animation:cloudDrift 9s ease-in-out infinite !important}
+.phero .blob.b1{width:224px;height:112px;left:4%;top:42%;right:auto}
+.phero .blob.b2{width:168px;height:84px;right:6%;top:52%;left:auto;animation-duration:11.5s !important}
+@keyframes cloudDrift{0%,100%{transform:translateY(0)}50%{transform:translateY(-13px)}}
+/* Colores de texto sobre el cielo */
+.phero .eyebrow.c,.phero .eyebrow{color:#2F8F63}
+.phero h1{color:#243746;text-shadow:0 1px 0 rgba(255,255,255,.6)}
+.phero h1 em{
+  background:linear-gradient(100deg,#5E8240,#E0952B)!important;
+  -webkit-background-clip:text!important;background-clip:text!important;
+  -webkit-text-fill-color:transparent!important;color:transparent!important;font-style:normal!important}
+.phero p{color:#4F6274}
+.phero .crumb{color:#8493A4}
+.phero .crumb a{color:#2F8F63}
