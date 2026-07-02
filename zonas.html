@@ -12,6 +12,9 @@
 <style>
   /* Iconos dibujados a mano (scoped, no toca la clase global .zona/.mz) */
   .ill-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:24px;margin-top:34px}
+  .ill-grid.ill-5{grid-template-columns:repeat(5,minmax(0,1fr));gap:18px}
+  .ill-grid.ill-5 .ill{padding:26px 16px 24px}
+  @media(max-width:1000px){.ill-grid.ill-5{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}}
   .ill{--acc:#F0699A;--acc2:#FFD1DC;position:relative;background:radial-gradient(120% 90% at 50% 0%,color-mix(in srgb,var(--acc2) 55%,transparent),transparent 60%),linear-gradient(180deg,#fff,#FFFDFB);border-radius:26px;padding:30px 24px 28px;text-align:center;border:1px solid rgba(255,255,255,.85);box-shadow:0 20px 44px -26px rgba(90,60,45,.45);overflow:hidden;transition:transform .4s cubic-bezier(.16,1,.3,1),box-shadow .4s}
   .ill:hover{transform:translateY(-10px);box-shadow:0 34px 56px -26px rgba(90,60,45,.5)}
   .ill .art{width:96px;height:96px;margin:2px auto 16px;display:block;filter:drop-shadow(0 10px 16px rgba(90,60,45,.18));transition:transform .45s}
@@ -194,7 +197,7 @@
   <div class="wrap center" style="max-width:760px">
     <p class="lead" data-rv style="margin-bottom:6px">Un pequeño oasis donde los adultos pueden respirar y los niños siguen disfrutando. Combinamos comodidad y estilo: ambiente acogedor, mobiliario confortable, luz natural y Wi-Fi.</p>
   </div>
-  <div class="wrap"><div class="ill-grid">
+  <div class="wrap"><div class="ill-grid ill-5">
     <div class="ill" style="--acc:#C88A4E;--acc2:#EFD9C2" data-rv="s" data-delay="1">
       <span class="kicker">Pausa</span>
       <svg class="art" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -261,7 +264,7 @@
 <section id="kidsdrop">
   <div class="wrap">
     <div class="feature">
-      <div class="feat-img" data-rv="r"><img src="img/kidsdrop.jpg" alt="Kids Drop"><div class="badge">🧑‍🏫 Monitores expertos</div></div>
+      <div class="feat-img" data-rv="r"><img src="img/team.jpg" alt="Deja a tu peque en buenas manos — equipo Kids & Kafé"><div class="badge">Monitores expertos</div></div>
       <div class="feat-txt">
         <div class="eyebrow" data-rv data-delay="1">Kids Drop</div>
         <h3 data-rv data-delay="1">Déjalos jugar, en buenas manos</h3>
