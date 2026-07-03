@@ -250,17 +250,20 @@ footer{background:var(--ink);color:#fff;padding:72px 0 32px;position:relative}
   .hero-board,.hero-board::before,.hero-board .hb-pin,.hero-board .hb-go,.hero-board .hb-kicker,.hero-board .hb-emo,.hero-board .hb-emo::after,.hero-shine{animation:none}
 }
 
-/* NAV: con 8 enlaces + botón "Reserva", la barra completa solo cabe holgada
-   por encima de ~1150px. Por debajo se colapsa al menú hamburguesa para que
-   nunca se amontone ni se salga de la pantalla. (El layout de contenido
-   sigue cambiando a 900px más abajo.) */
-@media(max-width:1180px){
+/* NAV: con 9 enlaces + selector de idioma ES·CA·EN + botón "Reserva", la barra
+   completa solo cabe holgada por encima de ~1240px. Por debajo se colapsa al
+   menú hamburguesa para que nunca se amontone ni se salga de la pantalla.
+   (El layout de contenido sigue cambiando a 900px más abajo.) */
+@media(max-width:1240px){
   .navlinks{position:fixed;top:0;right:-100%;height:100vh;width:78%;max-width:330px;background:var(--cream);flex-direction:column;padding:90px 28px;gap:6px;box-shadow:-14px 0 50px rgba(0,0,0,.16);transition:right .35s ease;align-items:stretch}
   .navlinks.open{right:0}
   .navlinks a:not(.nav-cta){padding:14px 16px;font-size:16px;border-radius:14px}
   .navlinks a:not(.nav-cta)::after{display:none}
   .navlinks a:not(.nav-cta):hover,.navlinks a.active{background:var(--pink-soft)!important;border-radius:14px}
   .nav-cta{margin:10px 0 0;text-align:center}
+  /* selector de idioma dentro del panel: fila centrada, botones grandes, con separador */
+  .langsw{margin:16px 0 4px;padding:14px 0 0;border-left:none;border-top:1px solid var(--pink-soft);justify-content:center;gap:8px}
+  .langsw a,.langsw b{font-size:15px;padding:11px 20px;border-radius:12px}
   .burger{display:block;z-index:110}
 }
 @media(max-width:900px){
@@ -797,3 +800,9 @@ h2.title{letter-spacing:-.4px;text-wrap:balance}
 .phero p{color:#4F6274}
 .phero .crumb{color:#8493A4}
 .phero .crumb a{color:#2F8F63}
+
+/* ── Selector de idioma (ES · CA · EN) ── */
+.langsw{display:inline-flex;gap:2px;align-items:center;margin-left:8px;padding-left:8px;border-left:1px solid rgba(0,0,0,.1)}
+.langsw a,.langsw b{font:800 11px/1 'Inter',system-ui,sans-serif;letter-spacing:.3px;padding:5px 6px;border-radius:7px;text-decoration:none;color:var(--muted);transition:background .2s,color .2s}
+.langsw a:hover{background:var(--pink-bg);color:var(--sage-dark)}
+.langsw b{background:var(--pink);color:#fff}
