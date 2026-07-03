@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kids Drop Barcelona · leave your kids and enjoy the city · Kids &amp; Kafé | Drop-off childcare</title>
+<meta name="description" content="Visiting Barcelona or just need a break? Leave your kids playing and safe — no booking, drop in any time. More fun and reliable than a babysitter: they're actually playing! Kids Drop, 10am–8pm in Les Corts. Drop-off childcare in Barcelona.">
+<meta name="keywords" content="kids drop barcelona, drop off childcare barcelona, hourly childcare barcelona, babysitting by the hour barcelona, childcare for tourists barcelona, leave kids barcelona, indoor play childcare, drop-in childcare barcelona, kids club barcelona, hotel childcare barcelona">
+<meta property="og:title" content="Kids Drop Barcelona · leave your kids and enjoy the city · Kids & Kafé">
+<meta property="og:description" content="Leave your kids playing and safe, drop in any time with no booking. More fun than a babysitter. Open 10am–8pm in Les Corts, Barcelona.">
+<meta property="og:type" content="website">
+<link rel="alternate" hreflang="es" href="https://kidsandkafe.es/kids-drop">
+<link rel="alternate" hreflang="en" href="https://kidsandkafe.es/en/kids-drop">
+<link rel="alternate" hreflang="ca" href="https://kidsandkafe.es/ca/kids-drop">
+<link rel="alternate" hreflang="x-default" href="https://kidsandkafe.es/kids-drop">
+<link rel="icon" type="image/png" href="../img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  /* Kids Drop — estilos scoped, no tocan clases globales */
+  .kd-lang{display:inline-flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:18px;font-size:12.5px;font-weight:700;letter-spacing:.3px}
+  .kd-lang span{background:rgba(255,255,255,.7);border:1px solid rgba(90,60,45,.12);border-radius:999px;padding:6px 14px;color:var(--muted)}
+  .kd-lang b{color:var(--acc,#EC6F9C)}
+
+  @keyframes kdFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+  @keyframes kdPop{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-5px) rotate(2deg)}}
+
+  .kd-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:24px;margin-top:44px}
+  .kd-card{--acc:#EC6F9C;--acc2:#FFD6E4;position:relative;background:linear-gradient(180deg,#fff,#FFFDFB);border-radius:24px;padding:32px 24px 28px;text-align:center;border:1px solid rgba(90,60,45,.08);box-shadow:0 18px 38px -24px rgba(70,50,40,.35);transition:transform .4s cubic-bezier(.16,1,.3,1),box-shadow .4s}
+  .kd-card:hover{transform:translateY(-8px);box-shadow:0 28px 48px -24px rgba(70,50,40,.42)}
+  .kd-card .ico{font-size:38px;line-height:1;margin:2px auto 18px;display:flex;width:78px;height:78px;align-items:center;justify-content:center;border-radius:22px;background:linear-gradient(155deg,var(--acc),color-mix(in srgb,var(--acc) 86%,#000 10%));box-shadow:0 12px 22px -10px color-mix(in srgb,var(--acc) 60%,transparent);animation:kdFloat 4.4s ease-in-out infinite}
+  .kd-card:nth-child(even) .ico{animation-duration:5s}
+  .kd-card h3{font-family:'Inter',system-ui,sans-serif;font-size:19px;font-weight:800;letter-spacing:-.3px;margin:0 0 9px;color:var(--ink)}
+  .kd-card p{font-size:14px;font-weight:500;color:#6F635C;margin:0;line-height:1.55}
+
+  .kd-why{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;margin-top:40px}
+  .kd-why .row{--acc:#EC6F9C;--acc2:#FFD6E4;display:flex;gap:16px;align-items:flex-start;background:linear-gradient(180deg,#fff,#FFFDFB);border-radius:20px;padding:22px 22px;border:1px solid rgba(90,60,45,.08);box-shadow:0 18px 38px -24px rgba(70,50,40,.32);transition:transform .4s cubic-bezier(.16,1,.3,1),box-shadow .4s}
+  .kd-why .row:hover{transform:translateY(-6px);box-shadow:0 28px 48px -24px rgba(70,50,40,.4)}
+  .kd-why .row .big{font-size:24px;line-height:1;display:flex;width:54px;height:54px;flex:0 0 54px;align-items:center;justify-content:center;border-radius:16px;background:linear-gradient(155deg,var(--acc),color-mix(in srgb,var(--acc) 86%,#000 10%));box-shadow:0 10px 18px -9px color-mix(in srgb,var(--acc) 58%,transparent)}
+  .kd-why .row h4{margin:0 0 5px;font-family:'Inter',system-ui,sans-serif;font-weight:800;letter-spacing:-.3px;font-size:16.5px;color:var(--ink)}
+  .kd-why .row p{margin:0;font-size:14px;font-weight:500;color:#6F635C;line-height:1.5}
+
+  .kd-how{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;margin-top:38px;counter-reset:step}
+  .kd-step{position:relative;background:#fff;border-radius:20px;padding:26px 22px 22px;border:1px solid rgba(90,60,45,.08);box-shadow:0 16px 36px -24px rgba(90,60,45,.4)}
+  .kd-step::before{counter-increment:step;content:counter(step);position:absolute;top:-14px;left:22px;width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#F7A8C4,#EC6F9C);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 16px -6px rgba(236,111,156,.6)}
+  .kd-step h4{margin:8px 0 6px;font-family:'Fraunces',serif;font-weight:600;font-size:17px;color:var(--ink)}
+  .kd-step p{margin:0;font-size:13.5px;color:var(--muted);line-height:1.5}
+
+  .kd-hours{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#D4F0DC,#BFE7CC);color:#2E6B45;font-weight:800;border-radius:999px;padding:10px 20px;font-size:15px;margin-top:6px}
+</style>
+</head>
+<body>
+<div id="prog"></div>
+<header id="hdr"><nav>
+  <a href="index.html" class="brand"><img src="../img/logo.png" alt="Kids & Kafé"><b>Kids&nbsp;&amp;&nbsp;Kafé</b></a>
+  <div class="navlinks" id="nav">
+    <a href="index.html">Home</a>
+    <a href="../nosotros.html">About</a>
+    <a href="../zonas.html">Play zones</a>
+    <a href="kids-drop.html" class="active">Kids Drop</a>
+    <a href="../actividades.html">Activities</a>
+    <a href="../precios.html">Prices</a>
+    <a href="../cumpleanos.html">Birthdays</a>
+    <a href="../franquicia.html">Franchise</a>
+    <span class="langsw"><a href="../kids-drop.html">ES</a><a href="../ca/kids-drop.html">CA</a><b>EN</b></span>
+    <a href="../contacto.html#app" class="nav-cta">Book in the app</a>
+  </div>
+  <button class="burger" onclick="document.getElementById('nav').classList.toggle('open')">☰</button>
+</nav></header>
+
+<!-- HERO -->
+<section class="phero">
+  <div class="blob b1"></div><div class="blob b2"></div>
+  <div class="wrap">
+    <div class="eyebrow c" data-rv>Kids Drop · Barcelona · 10am–8pm</div>
+    <h1 data-rv data-delay="1">A little time for you,<br><em>lots of fun for them</em></h1>
+    <p data-rv data-delay="2">Leave your kids with us for a while and enjoy Barcelona with peace of mind. Drop in any time, no booking, no waiting. While you do your thing, <b>they're busy playing</b> in a safe space with our team looking after them.</p>
+  </div>
+</section>
+
+<!-- PARA QUIÉN -->
+<section style="padding-top:44px">
+  <div class="wrap center">
+    <div class="eyebrow c" data-rv style="justify-content:center">Who is it for?</div>
+    <h2 class="title" data-rv data-delay="1">Perfect whenever you need a moment to yourself</h2>
+    <p data-rv data-delay="2" style="max-width:620px;margin:10px auto 0;color:var(--muted)">Visiting the city or living in the neighbourhood: whenever you need your hands free for a while, your kids stay and play with us.</p>
+    <div class="kd-grid">
+      <div class="kd-card" style="--acc:#EC6F9C;--acc2:#FFD6E4" data-rv="s" data-delay="1">
+        <span class="ico">🏨</span>
+        <h3>Tourists &amp; hotels</h3>
+        <p>On holiday in Barcelona? Leave the little ones playing and enjoy the city, a museum or a relaxed meal.</p>
+      </div>
+      <div class="kd-card" style="--acc:#3FB985;--acc2:#D4F0DC" data-rv="s" data-delay="2">
+        <span class="ico">🛍️</span>
+        <h3>Shopping &amp; errands</h3>
+        <p>Head to the mall or run your errands without the rush. You do your thing, they play safely.</p>
+      </div>
+      <div class="kd-card" style="--acc:#EA9B2E;--acc2:#FCE7B8" data-rv="s" data-delay="3">
+        <span class="ico">☕</span>
+        <h3>A little breather</h3>
+        <p>Sometimes you just need a quiet coffee or an hour to yourself. Here it is, guilt-free: they're having a great time.</p>
+      </div>
+      <div class="kd-card" style="--acc:#9A73E0;--acc2:#E6DAF8" data-rv="s" data-delay="4">
+        <span class="ico">🍽️</span>
+        <h3>Meals available</h3>
+        <p>If it's mealtime, they can eat or have a snack here. You switch off and they're well looked after.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POR QUÉ MEJOR QUE UN CANGURO -->
+<section style="background:var(--pink-bg)">
+  <div class="wrap">
+    <div class="center">
+      <div class="eyebrow c" data-rv style="justify-content:center">The difference</div>
+      <h2 class="title" data-rv data-delay="1">Easier, more fun and more reliable than a babysitter</h2>
+    </div>
+    <div class="kd-why">
+      <div class="row" style="--acc:#EA9B2E;--acc2:#FCE7B8" data-rv="s" data-delay="1"><div class="big">⚡</div><div><h4>Right away, no waiting</h4><p>No hunting for a babysitter, messaging back and forth and waiting for them to arrive. You come and that's it — drop them off when you need to.</p></div></div>
+      <div class="row" style="--acc:#EC6F9C;--acc2:#FFD6E4" data-rv="s" data-delay="2"><div class="big">🎈</div><div><h4>They have a blast</h4><p>It's not sitting at home. Here there's play, space and other kids. For them it's an outing, not "being left with someone".</p></div></div>
+      <div class="row" style="--acc:#3FB985;--acc2:#D4F0DC" data-rv="s" data-delay="3"><div class="big">🛡️</div><div><h4>Safe space, team you can trust</h4><p>A centre designed for children, with our team always present. You know exactly where and with whom your kids are.</p></div></div>
+      <div class="row" style="--acc:#9A73E0;--acc2:#E6DAF8" data-rv="s" data-delay="4"><div class="big">💶</div><div><h4>Simple, no strings attached</h4><p>No contracts, no juggling schedules, no dropping anyone home. You pay for the time they stay and that's it.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CÓMO FUNCIONA -->
+<section id="como-funciona">
+  <div class="wrap center">
+    <div class="eyebrow c" data-rv style="justify-content:center">How it works</div>
+    <h2 class="title" data-rv data-delay="1">It's this simple</h2>
+    <span class="kd-hours" data-rv data-delay="1">🕙 Available every day from 10am to 8pm</span>
+    <div class="kd-how">
+      <div class="kd-step" data-rv="s" data-delay="1"><h4>Come whenever you like</h4><p>Drop by Nicaragua 117 (Les Corts), or message us ahead on WhatsApp if you prefer.</p></div>
+      <div class="kd-step" data-rv="s" data-delay="2"><h4>Leave them playing</h4><p>They stay in the space, with our team and other kids. You head off with peace of mind.</p></div>
+      <div class="kd-step" data-rv="s" data-delay="3"><h4>Enjoy your time</h4><p>Shopping, a meal, a museum or a coffee. The time is yours.</p></div>
+      <div class="kd-step" data-rv="s" data-delay="4"><h4>Pick them up happy</h4><p>Come back whenever you like within opening hours. You pay for the time and you're done.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section style="padding-top:0">
+  <div class="wrap"><div class="ctastrip" data-rv="s">
+    <div class="eyebrow c" style="justify-content:center">Need it today?</div>
+    <h3>Message us and we'll tell you availability</h3>
+    <p>Tell us when and how many kids, and we'll get everything ready. In English, Español or Català.</p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+      <a href="https://wa.me/34637319226?text=Hi%2C%20I%27d%20like%20to%20leave%20my%20kids%20for%20a%20while%20(Kids%20Drop)" class="btn btn-sage" target="_blank" rel="noopener">💬 WhatsApp</a>
+      <a href="../contacto.html#app" class="btn btn-ghost">Book in the app</a>
+    </div>
+  </div></div>
+</section>
+
+<footer><div class="wrap">
+  <div class="foot-grid">
+    <div class="foot-brand" data-rv><img src="../img/logo.png" alt="Kids & Kafé"><p>Children's centre and educational play space in Barcelona.</p></div>
+    <div data-rv data-delay="1"><h4>Contact</h4>
+      <a href="https://www.google.com/maps/search/Carrer+de+Nicaragua+117+08029+Barcelona" target="_blank" rel="noopener">📍 Carrer de Nicaragua, 117 · 08029 Barcelona</a>
+      <span class="foot-contact-extra" style="color:rgba(255,255,255,.55);font-size:13px">🕒 Kids Drop 10am–8pm · every day</span>
+      <a href="https://wa.me/34637319226" target="_blank" rel="noopener">📲 WhatsApp: +34 637 319 226</a>
+      <a href="mailto:kidsandkafe@gmail.com">✉️ kidsandkafe@gmail.com</a>
+      <a href="https://instagram.com/kidsandkafe" target="_blank" rel="noopener">📷 Instagram</a>
+    </div>
+    <div data-rv data-delay="2"><h4>Pages</h4>
+      <a href="index.html">Home</a><a href="../nosotros.html">About</a><a href="../zonas.html">Play zones</a><a href="kids-drop.html">Kids Drop</a><a href="../cumpleanos.html">Birthdays</a><a href="../talleres.html">Workshops</a>
+    </div>
+  </div>
+  <div class="foot-bottom">© 2026 Kids & Kafé · Kids & Kafé Inversión, SL · All rights reserved · Designed by Rashid Shahpazir Masoudi</div>
+</div></footer>
+<a href="https://wa.me/34637319226" class="wa-float" target="_blank" rel="noopener" aria-label="WhatsApp">💬</a>
+<script src="../js/main.js"></script>
+</body>
+</html>
