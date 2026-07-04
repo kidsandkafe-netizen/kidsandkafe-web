@@ -63,7 +63,7 @@
   .kdp-cloud{min-height:560px}
   .kdp-cloud .balloon-body{width:540px;height:360px;filter:drop-shadow(0 34px 60px rgba(120,140,170,.34))}
   .kdp-hand{width:196px;margin-bottom:46px}
-  @media(max-width:860px){.kdp-cloud{min-height:400px}.kdp-cloud .balloon-body{width:340px;height:230px}.kdp-hand{width:140px;margin-bottom:32px}}
+  @media(max-width:860px){.kdp-cloud{min-height:320px}.kdp-cloud .balloon-body{width:300px;height:200px}.kdp-hand{width:128px;margin-bottom:26px}}
   .kdp-chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.75);border:1px solid rgba(90,60,45,.12);
     border-radius:999px;padding:8px 15px;font-size:13px;font-weight:700;color:#5E6F4B;box-shadow:0 8px 18px -12px rgba(80,60,40,.4)}
   .kdp-chip b{color:#2F8F63}
@@ -141,7 +141,8 @@
 
   @media(max-width:860px){
     .kdp-hero-grid{grid-template-columns:1fr;gap:10px}
-    .kdp-hero-txt{text-align:center}
+    .kdp-hero-grid .kdp-cloud{order:1}
+    .kdp-hero-grid .kdp-hero-txt{order:2;text-align:center}
     .kdp-hero-txt .eyebrow{justify-content:center}
     .kdp-chips,.kdp-cta{justify-content:center}
   }
@@ -212,27 +213,27 @@
   <div class="wrap center">
     <div class="eyebrow c" data-rv style="justify-content:center">Who is it for?</div>
     <h2 class="title" data-rv data-delay="1">For anyone who needs <em>a little free time</em></h2>
-    <p data-rv data-delay="2" style="max-width:640px;margin:10px auto 0;color:var(--muted)">Mums and dads going solo, working, travelling with the kids or visiting Barcelona. Whenever you need your hands free for a while, they stay and play with us.</p>
+    <p data-rv data-delay="2" style="max-width:640px;margin:10px auto 0;color:var(--muted)">Visiting Barcelona or living in the neighbourhood? Tourists staying at a hotel, mums and dads going solo, working or travelling with the kids. Whenever you need your hands free for a while, they stay and play with us.</p>
     <div class="kdp-grid">
-      <div class="kdp-card" style="--a1:#EC6F9C;--a2:#C94F7C;--halo:#FFD9E6" data-rv="s" data-delay="1">
+      <div class="kdp-card" style="--a1:#9A73E0;--a2:#6E45B8;--halo:#E6DAF8" data-rv="s" data-delay="1">
+        <span class="kdp-illo"><img src="../img/illo/kd-hotel.png" alt=""></span>
+        <h3>Tourists &amp; hotels</h3>
+        <p>Staying at a hotel in Barcelona? Instead of a babysitter cooped up in the room, the little ones <b>come to play</b> with other kids. You enjoy the city; they get a centre made for them. Ask for Kids Drop at your hotel.</p>
+      </div>
+      <div class="kdp-card" style="--a1:#EC6F9C;--a2:#C94F7C;--halo:#FFD9E6" data-rv="s" data-delay="2">
         <span class="kdp-illo"><img src="../img/illo/kd-coffee.png" alt=""></span>
         <h3>A breather for you</h3>
         <p>Single parent? No babysitter today? Sometimes you just need an hour to yourself, guilt-free. They have a great time while you catch your breath.</p>
       </div>
-      <div class="kdp-card" style="--a1:#3FB985;--a2:#1F8E5F;--halo:#D4F0DC" data-rv="s" data-delay="2">
+      <div class="kdp-card" style="--a1:#3FB985;--a2:#1F8E5F;--halo:#D4F0DC" data-rv="s" data-delay="3">
         <span class="kdp-illo"><img src="../img/illo/kd-shop.png" alt=""></span>
         <h3>Shopping &amp; outlets</h3>
         <p>A day of shopping, the mall or an outlet out of town. You browse in peace, they play safely.</p>
       </div>
-      <div class="kdp-card" style="--a1:#EA9B2E;--a2:#C97E12;--halo:#FCE7B8" data-rv="s" data-delay="3">
+      <div class="kdp-card" style="--a1:#EA9B2E;--a2:#C97E12;--halo:#FCE7B8" data-rv="s" data-delay="4">
         <span class="kdp-illo"><img src="../img/illo/kd-work.png" alt=""></span>
         <h3>Work &amp; travel</h3>
         <p>A meeting, an errand or a work trip with the kids? Leave them with us for a while and get on with things, worry-free.</p>
-      </div>
-      <div class="kdp-card" style="--a1:#9A73E0;--a2:#6E45B8;--halo:#E6DAF8" data-rv="s" data-delay="4">
-        <span class="kdp-illo"><img src="../img/illo/kd-hotel.png" alt=""></span>
-        <h3>Tourists &amp; hotels</h3>
-        <p>Staying at a hotel in Barcelona? Instead of a babysitter cooped up in the room, the little ones <b>come to play</b> with other kids. You enjoy the city; they get a centre made for them. Ask for Kids Drop at your hotel.</p>
       </div>
     </div>
   </div>
