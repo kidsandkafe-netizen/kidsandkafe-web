@@ -32,27 +32,27 @@
   </url>
   <url>
     <loc>https://www.kidsandkafe.es/precios</loc>
-    <lastmod>2026-07-03</lastmod>
+    <lastmod>2026-07-04</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.kidsandkafe.es/baby-explorer</loc>
-    <lastmod>2026-07-03</lastmod>
+    <lastmod>2026-07-04</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.kidsandkafe.es/nosotros</loc>
-    <lastmod>2026-07-03</lastmod>
+    <lastmod>2026-07-04</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.kidsandkafe.es/contacto</loc>
-    <lastmod>2026-07-03</lastmod>
+    <lastmod>2026-07-04</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.kidsandkafe.es/franquicia</loc>
-    <lastmod>2026-07-03</lastmod>
+    <lastmod>2026-07-04</lastmod>
     <priority>0.5</priority>
   </url>
   <url>
@@ -114,5 +114,55 @@
     <loc>https://www.kidsandkafe.es/ca/actividades</loc>
     <lastmod>2026-07-04</lastmod>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.kidsandkafe.es/en/precios</loc>
+    <lastmod>2026-07-04</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.kidsandkafe.es/ca/precios</loc>
+    <lastmod>2026-07-04</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.kidsandkafe.es/en/baby-explorer</loc>
+    <lastmod>2026-07-04</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.kidsandkafe.es/ca/baby-explorer</loc>
+    <lastmod>2026-07-04</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.kidsandkafe.es/en/nosotros</loc>
+    <lastmod>2026-07-04</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.kidsandkafe.es/ca/nosotros</loc>
+    <lastmod>2026-07-04</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.kidsandkafe.es/en/contacto</loc>
+    <lastmod>2026-07-04</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.kidsandkafe.es/ca/contacto</loc>
+    <lastmod>2026-07-04</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.kidsandkafe.es/en/franquicia</loc>
+    <lastmod>2026-07-04</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.kidsandkafe.es/ca/franquicia</loc>
+    <lastmod>2026-07-04</lastmod>
+    <priority>0.5</priority>
   </url>
 </urlset>
