@@ -31,6 +31,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.kidsandkafe.es/casal</loc>
+    <lastmod>2026-07-04</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.kidsandkafe.es/precios</loc>
     <lastmod>2026-07-04</lastmod>
     <priority>0.8</priority>
@@ -112,6 +117,16 @@
   </url>
   <url>
     <loc>https://www.kidsandkafe.es/ca/actividades</loc>
+    <lastmod>2026-07-04</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.kidsandkafe.es/en/casal</loc>
+    <lastmod>2026-07-04</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.kidsandkafe.es/ca/casal</loc>
     <lastmod>2026-07-04</lastmod>
     <priority>0.8</priority>
   </url>
