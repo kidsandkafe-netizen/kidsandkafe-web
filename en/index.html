@@ -309,7 +309,14 @@
 .hero .bb-arrow{width:42px;height:42px;font-size:20px}
 .hero .bb-dots{margin-top:16px}
 
-@media(max-width:900px){ .hero .cf-card{width:min(360px,92%);margin-left:calc(min(360px,92%) / -2)} }
+@media(max-width:900px){
+  .hero .cf-card{width:min(360px,92%);margin-left:calc(min(360px,92%) / -2)}
+  /* móvil: la nube (marca) va ANTES del tablón — H1 → nube → tablón → botones */
+  .hero .hero-grid{gap:14px}
+  .hero .hero-visual{order:-1;margin-top:4px;margin-bottom:2px}
+  .hero .hero-txt{order:0}
+  .hero .balloon-stage{transform:scale(1)}
+}
 @media(max-width:600px){ .hero .cf-track{height:470px} }
 </style>
 </head>
