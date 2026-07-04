@@ -46,7 +46,7 @@ section{padding:clamp(64px,9vw,116px) 0;position:relative}
 
 /* NAV */
 header{position:fixed;top:0;left:0;right:0;z-index:100;transition:all .4s ease}
-nav{display:flex;align-items:center;justify-content:space-between;max-width:1180px;margin:14px auto;padding:10px 22px;background:rgba(255,251,248,.72);-webkit-backdrop-filter:blur(16px) saturate(1.4);backdrop-filter:blur(16px) saturate(1.4);border:1px solid rgba(194,210,156,.4);border-radius:50px;box-shadow:0 10px 34px -16px rgba(90,60,45,.3);transition:all .4s ease}
+nav{display:flex;align-items:center;justify-content:space-between;max-width:1220px;margin:14px auto;padding:10px 22px;background:rgba(255,251,248,.72);-webkit-backdrop-filter:blur(16px) saturate(1.4);backdrop-filter:blur(16px) saturate(1.4);border:1px solid rgba(194,210,156,.4);border-radius:50px;box-shadow:0 10px 34px -16px rgba(90,60,45,.3);transition:all .4s ease}
 header.scrolled nav{margin-top:8px;box-shadow:0 16px 40px -14px rgba(90,60,45,.42);background:rgba(255,251,248,.92)}
 .brand{display:flex;align-items:center;gap:11px}
 .brand img{height:42px;width:auto;transition:transform .4s}
@@ -423,8 +423,8 @@ header.scrolled nav{margin-top:6px;background:linear-gradient(180deg,rgba(255,25
 
 /* enlaces: subrayado dorado→rosa animado (sin recuadro) */
 .navlinks{gap:2px}
-.navlinks a:not(.nav-cta){position:relative;background:none!important;opacity:.92;color:var(--ink);font-weight:600;font-size:13.5px;padding:9px 7px;white-space:nowrap}
-.navlinks a:not(.nav-cta)::after{content:'';position:absolute;left:7px;right:7px;bottom:5px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--rose-text),var(--gold));transform:scaleX(0);transform-origin:left;transition:transform .32s cubic-bezier(.16,1,.3,1)}
+.navlinks a:not(.nav-cta){position:relative;background:none!important;opacity:.92;color:var(--ink);font-weight:600;font-size:13.5px;padding:9px 5px;white-space:nowrap}
+.navlinks a:not(.nav-cta)::after{content:'';position:absolute;left:5px;right:5px;bottom:5px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--rose-text),var(--gold));transform:scaleX(0);transform-origin:left;transition:transform .32s cubic-bezier(.16,1,.3,1)}
 .navlinks a:not(.nav-cta):hover{color:var(--rose-text)}
 .navlinks a:not(.nav-cta):hover::after,.navlinks a.active::after{transform:scaleX(1)}
 .navlinks a.active{color:var(--rose-text);font-weight:700}
@@ -801,8 +801,8 @@ h2.title{letter-spacing:-.4px;text-wrap:balance}
 .phero .crumb{color:#8493A4}
 .phero .crumb a{color:#2F8F63}
 
-/* ── Selector de idioma (ES · CA · EN) ── */
-.langsw{display:inline-flex;gap:2px;align-items:center;margin-left:8px;padding-left:8px;border-left:1px solid rgba(0,0,0,.1)}
-.langsw a,.langsw b{font:800 11px/1 'Inter',system-ui,sans-serif;letter-spacing:.3px;padding:5px 6px;border-radius:7px;text-decoration:none;color:var(--muted);transition:background .2s,color .2s}
+/* ── Selector de idioma (ES · CA · EN) ── va a la esquina derecha, tras el botón */
+.langsw{display:inline-flex;gap:1px;align-items:center;order:1;margin-left:10px;padding-left:0;border-left:none}
+.langsw a,.langsw b{font:800 10.5px/1 'Inter',system-ui,sans-serif;letter-spacing:.2px;padding:4px 5px;border-radius:6px;text-decoration:none;color:var(--muted);transition:background .2s,color .2s}
 .langsw a:hover{background:var(--pink-bg);color:var(--sage-dark)}
 .langsw b{background:var(--pink);color:#fff}
