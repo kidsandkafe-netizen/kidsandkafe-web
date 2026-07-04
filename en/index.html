@@ -316,6 +316,8 @@
   .hero .hero-visual{order:-1;margin-top:4px;margin-bottom:2px}
   .hero .hero-txt{order:0}
   .hero .balloon-stage{transform:scale(1)}
+  /* móvil: halo verde simétrico y centrado (no vacío a la izquierda) */
+  .hero .hero-visual::before{inset:-10px -18px 16px -18px}
 }
 @media(max-width:600px){ .hero .cf-track{height:470px} }
 </style>
