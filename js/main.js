@@ -135,3 +135,112 @@ function suscribirBoletin(e){e.preventDefault();var em=document.getElementById('
   });
   hero.addEventListener('mouseleave',function(){ balloon.style.transition='transform .6s ease'; balloon.style.transform=''; });
 })();
+
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║  COOKIES + LEGAL  —  banner de consentimiento + enlaces pie    ║
+   ║  · Bloquea el mapa de Google hasta que el usuario acepta.      ║
+   ║  · Aislado en su propio try/catch: si algo fallara, el resto   ║
+   ║    de la web sigue funcionando igual.                          ║
+   ║  · Sin innerHTML: todo se construye con métodos DOM seguros.   ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+(function(){
+  try {
+    var KEY='kk_cookie_consent';
+    // idioma según carpeta (/ca/ /en/); prefijo para enlazar a las páginas legales (solo existen en la raíz)
+    var p=location.pathname;
+    var lang = /\/en\//.test(p) ? 'en' : (/\/ca\//.test(p) ? 'ca' : 'es');
+    var pre  = (lang==='es') ? '' : '../';
+    var T = {
+      es:{ txt:'Usamos cookies técnicas necesarias y, solo si aceptas, contenido de Google Maps.', more:'Política de cookies', ok:'Aceptar', no:'Solo necesarias', legal:['Aviso legal','Privacidad','Cookies'], mapTxt:'Para ver el mapa, acepta las cookies de Google Maps.', mapBtn:'Ver el mapa', mapLink:'Abrir en Google Maps' },
+      ca:{ txt:'Fem servir galetes tècniques necessàries i, només si acceptes, contingut de Google Maps.', more:'Política de galetes', ok:'Acceptar', no:'Només necessàries', legal:['Avís legal','Privadesa','Galetes'], mapTxt:'Per veure el mapa, accepta les galetes de Google Maps.', mapBtn:'Veure el mapa', mapLink:'Obrir a Google Maps' },
+      en:{ txt:'We use necessary technical cookies and, only if you accept, Google Maps content.', more:'Cookie policy', ok:'Accept', no:'Only necessary', legal:['Legal notice','Privacy','Cookies'], mapTxt:'To see the map, accept Google Maps cookies.', mapBtn:'Show map', mapLink:'Open in Google Maps' }
+    };
+    var t = T[lang];
+    var LINKS = [pre+'aviso-legal.html', pre+'privacidad.html', pre+'cookies.html'];
+
+    function getConsent(){ try{ return localStorage.getItem(KEY); }catch(e){ return null; } }
+    function setConsent(v){ try{ localStorage.setItem(KEY,v); }catch(e){} }
+    // helper DOM seguro: crea elemento con estilo y TEXTO (nunca HTML)
+    function mk(tag,css,txt){ var e=document.createElement(tag); if(css)e.style.cssText=css; if(txt!=null)e.textContent=txt; return e; }
+
+    // ── estilos (inyectados, sin tocar style.css) ──
+    var st=document.createElement('style');
+    st.textContent =
+      '#kk-cookie{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:9999;max-width:640px;width:calc(100% - 24px);background:#fff;border-radius:18px;box-shadow:0 18px 50px -14px rgba(90,60,45,.45);padding:16px 18px;font-family:Inter,system-ui,sans-serif;display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;border:1px solid #E1ECCD}'+
+      '#kk-cookie p{margin:0;flex:1 1 260px;font-size:13.5px;line-height:1.5;color:#3f3a34}'+
+      '#kk-cookie a.kk-more{color:#5E8240;font-weight:700;text-decoration:underline}'+
+      '#kk-cookie .kk-btns{display:flex;gap:8px;flex:0 0 auto}'+
+      '#kk-cookie button{border:none;border-radius:12px;padding:10px 16px;font-weight:700;font-size:13.5px;cursor:pointer;font-family:inherit}'+
+      '#kk-cookie .kk-no{background:#F2F7E8;color:#5A463C}'+
+      '#kk-cookie .kk-ok{background:#6B8268;color:#fff}'+
+      '.kk-mapblock{background:#F2F7E8;border:1px dashed #C2D29C;border-radius:18px;padding:26px 20px;text-align:center;color:#5A463C;font-family:Inter,sans-serif}'+
+      '.kk-mapblock p{margin:0 0 12px;font-size:14px}'+
+      '.kk-mapblock .kk-map-ok{background:#6B8268;color:#fff;border:none;border-radius:12px;padding:11px 18px;font-weight:700;cursor:pointer;font-family:inherit;font-size:14px}'+
+      '.kk-mapblock a{display:inline-block;margin-top:10px;color:#5E8240;font-weight:700;text-decoration:underline;font-size:13px}';
+    document.head.appendChild(st);
+
+    // ── 1) enlaces legales en el pie (todas las páginas) ──
+    (function(){
+      var foot=document.querySelector('footer');
+      if(!foot || foot.querySelector('.kk-legal-links')) return;
+      var bar=mk('div','text-align:center;padding:14px 16px 4px;font-size:13px;font-family:Inter,sans-serif;display:flex;gap:16px;justify-content:center;flex-wrap:wrap');
+      bar.className='kk-legal-links';
+      t.legal.forEach(function(lbl,i){
+        var a=mk('a','color:rgba(255,255,255,.75);text-decoration:none;font-weight:600',lbl);
+        a.href=LINKS[i]; bar.appendChild(a);
+      });
+      (foot.querySelector('.wrap')||foot).appendChild(bar);
+    })();
+
+    // ── 2) bloqueo del mapa hasta aceptar ──
+    function loadMaps(){
+      document.querySelectorAll('iframe[data-src]').forEach(function(f){
+        f.src=f.getAttribute('data-src'); f.removeAttribute('data-src');
+      });
+      document.querySelectorAll('.kk-mapblock').forEach(function(b){
+        var url=b.getAttribute('data-map');
+        var f=mk('iframe','border:0;display:block'); f.title='Kids & Kafé map';
+        f.width='100%'; f.height='420'; f.loading='lazy';
+        f.setAttribute('referrerpolicy','no-referrer-when-downgrade'); f.src=url;
+        b.parentNode.replaceChild(f,b);
+      });
+    }
+    function blockMaps(){
+      document.querySelectorAll('iframe[data-src]').forEach(function(f){
+        var url=f.getAttribute('data-src');
+        var d=mk('div'); d.className='kk-mapblock'; d.setAttribute('data-map',url);
+        var btn=mk('button','',t.mapBtn); btn.className='kk-map-ok'; btn.type='button';
+        var a=mk('a',null,t.mapLink+' ↗'); a.href=url.replace('&output=embed',''); a.target='_blank'; a.rel='noopener';
+        d.appendChild(mk('p',null,'🗺️ '+t.mapTxt));
+        d.appendChild(btn); d.appendChild(document.createElement('br')); d.appendChild(a);
+        btn.addEventListener('click',function(){ setConsent('all'); loadMaps(); });
+        f.parentNode.replaceChild(d,f);
+      });
+    }
+
+    // ── 3) banner ──
+    function showBanner(){
+      if(document.getElementById('kk-cookie')) return;
+      var box=mk('div'); box.id='kk-cookie';
+      var pEl=mk('p',null,'🍪 '+t.txt+' ');
+      var more=mk('a',null,t.more); more.className='kk-more'; more.href=LINKS[2];
+      pEl.appendChild(more); pEl.appendChild(document.createTextNode('.'));
+      var btns=mk('div'); btns.className='kk-btns';
+      var no=mk('button',null,t.no); no.className='kk-no'; no.type='button';
+      var ok=mk('button',null,t.ok); ok.className='kk-ok'; ok.type='button';
+      btns.appendChild(no); btns.appendChild(ok);
+      box.appendChild(pEl); box.appendChild(btns);
+      document.body.appendChild(box);
+      ok.addEventListener('click',function(){ setConsent('all'); box.remove(); loadMaps(); });
+      no.addEventListener('click',function(){ setConsent('necessary'); box.remove(); });
+    }
+
+    // ── arranque ──
+    var c=getConsent();
+    if(c==='all'){ loadMaps(); }
+    else { blockMaps(); if(c!=='necessary') showBanner(); }
+
+    // API pública para el botón "cambiar preferencias" en cookies.html
+    window.KKCookies={ reset:function(){ try{localStorage.removeItem(KEY);}catch(e){} location.reload(); } };
+  } catch(err){ /* si algo falla, la web sigue igual */ }
+})();
