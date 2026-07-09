@@ -1,0 +1,2 @@
+# Fuerza URL limpia: /precios.html -> /precios (301, transfiere fuerza SEO)
+/*.html /:splat 301
