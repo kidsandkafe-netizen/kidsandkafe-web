@@ -207,6 +207,9 @@
 /* ===== H1 CREATIVO — banda superior centrada ===== */
 .hero{padding-top:132px;padding-bottom:38px;align-items:flex-start}
 .hero-head{position:relative;z-index:4;max-width:900px;margin:0 auto 40px;padding:0 2px;text-align:center}
+/* profundidad SIN caja: halo de luz suave detrás del texto (no ocupa espacio) */
+.hero-head .h1-hero{text-shadow:0 1px 22px rgba(255,255,255,.75), 0 2px 4px rgba(60,84,140,.10)}
+.hero-head .h1-sub{text-shadow:0 1px 16px rgba(255,255,255,.85)}
 .hero-head .h1-hero{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(30px,3.7vw,49px);
   line-height:1.02;letter-spacing:-1.8px;color:var(--ink);margin:2px auto 10px;max-width:760px}
 .hero-head .h1-hero em{font-style:normal;font-weight:700;
@@ -226,7 +229,7 @@
 .hero .hero-cta .btn-pink:hover{transform:translateY(-2px);box-shadow:0 26px 46px -12px rgba(94,130,64,.85),0 6px 16px -6px rgba(94,130,64,.65),inset 0 1px 0 rgba(255,255,255,.45)}
 .hero .hero-cta .btn-pink:hover::after{left:130%}
 .hero .hero-cta .btn-ghost{padding:13px 22px;border-radius:40px;font-weight:700;font-size:13.5px;
-  border:1.5px solid rgba(110,148,64,.32);color:#5E7A3A;background:rgba(255,255,255,.72);backdrop-filter:blur(4px);
+  border:1.5px solid rgba(255,255,255,.6);color:#5E7A3A;background:rgba(255,255,255,.5);-webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);
   box-shadow:0 10px 22px -14px rgba(94,130,64,.45);transition:transform .28s cubic-bezier(.2,.85,.25,1),box-shadow .28s,border-color .28s,background .28s}
 .hero .hero-cta .btn-ghost:hover{transform:translateY(-2px);border-color:rgba(110,148,64,.55);background:rgba(255,255,255,.9);box-shadow:0 16px 28px -14px rgba(94,130,64,.55)}
 .hero .hero-visual{margin-top:0}
@@ -249,15 +252,17 @@
   width:min(452px,94%);margin-left:calc(min(452px,94%) / -2);min-height:388px;
   padding:28px 34px 24px;border-radius:38px;
   --a1:#A0BC79;--a2:#6C8D48;--halo:#E9F1D9;
+  /* 🫧 cristal esmerilado: el cielo se desenfoca por detrás de la tarjeta */
+  -webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);
   background:
-     radial-gradient(60% 44% at 90% 4%, color-mix(in srgb,var(--a1) 26%,transparent) 0%, transparent 62%),
-     radial-gradient(52% 40% at 6% 98%, color-mix(in srgb,var(--a2) 16%,transparent) 0%, transparent 60%),
-     radial-gradient(135% 100% at 50% -18%, #ffffff 0%, rgba(255,255,255,0) 62%),
-     linear-gradient(163deg,#FFFDF9 0%, #FFFCF6 42%, var(--halo) 150%);
+     radial-gradient(60% 44% at 90% 4%, color-mix(in srgb,var(--a1) 24%,transparent) 0%, transparent 62%),
+     radial-gradient(52% 40% at 6% 98%, color-mix(in srgb,var(--a2) 15%,transparent) 0%, transparent 60%),
+     radial-gradient(135% 100% at 50% -18%, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0) 62%),
+     linear-gradient(163deg, rgba(255,253,249,0.62) 0%, rgba(255,252,246,0.5) 42%, color-mix(in srgb,var(--halo) 60%,rgba(255,255,255,0.5)) 150%);
   box-shadow:
-     0 54px 104px -42px rgba(52,60,42,.5),
-     0 18px 44px -26px color-mix(in srgb,var(--a2) 42%,transparent),
-     inset 0 1px 0 rgba(255,255,255,.95),
+     0 54px 104px -42px rgba(46,60,96,.5),
+     0 18px 44px -26px color-mix(in srgb,var(--a2) 38%,transparent),
+     inset 0 1px 0 rgba(255,255,255,.9),
      inset 0 0 0 1px rgba(255,255,255,.55);
 }
 .hero .cf-card::before{
@@ -325,6 +330,11 @@
   .hero .hero-visual::before{inset:-10px -18px 16px -18px}
 }
 @media(max-width:600px){ .hero .cf-track{height:470px} }
+#heroSky{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+.hero-grain{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.hero-vignette{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(130% 100% at 50% 38%,transparent 55%,rgba(120,90,55,.10) 100%)}
 </style>
 </head>
 <body>
@@ -374,6 +384,9 @@
 <!-- HERO -->
 <section class="hero" id="inicio">
   <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+    <canvas id="heroSky" aria-hidden="true"></canvas>
+    <div class="hero-grain" aria-hidden="true"></div>
+    <div class="hero-vignette" aria-hidden="true"></div>
   <div class="wrap">
     <div class="hero-head" data-rv>
       <h1 class="h1-hero">Aniversaris inoblidables. Joc sense fi. <em>Els originals des del 2018.</em></h1>
@@ -758,6 +771,149 @@
       requestAnimationFrame(loop);
     })();
   },900);
+})();
+</script>
+<script>
+/* ☁️✨ CIELO VIVO "OTRA LIGA" del hero.
+   Nubes que DERIVAN como un cielo real (horizontal, 5 capas de profundidad con
+   parallax), sobre una AURORA de color de marca que respira lenta por detrás.
+   Extras premium: parallax al hacer scroll + parallax suave con el ratón +
+   perspectiva atmosférica (las lejanas con bruma fría, las cercanas nítidas).
+   Aditivo y reversible: solo pinta el canvas #heroSky del fondo. */
+(function(){
+  var canvas=document.getElementById('heroSky'); if(!canvas) return;
+  var ctx=canvas.getContext('2d'); var section=canvas.parentElement;
+  var SCALE=0.55, W=0, H=0;
+  function resize(){
+    W=section.clientWidth; H=section.clientHeight;
+    canvas.width=Math.max(1,Math.round(W*SCALE));
+    canvas.height=Math.max(1,Math.round(H*SCALE));
+    canvas.style.width=W+'px'; canvas.style.height=H+'px';
+  }
+  resize(); window.addEventListener('resize',resize);
+
+  var mobile = window.innerWidth < 700;
+  var PUFFS=[
+    {dx:-0.66,dy:0.12,r:0.44},{dx:-0.30,dy:-0.06,r:0.62},{dx:0.02,dy:-0.16,r:0.70},
+    {dx:0.34,dy:-0.04,r:0.56},{dx:0.66,dy:0.12,r:0.46},{dx:0.00,dy:0.20,r:0.78}
+  ];
+  // 5 capas: de lejana (pequeña, lenta, con bruma) a cercana (grande, nítida, rápida).
+  // El CIELO azul domina; las nubes son puffs sueltos con huecos de azul entre medias.
+  var LAYERS=[
+    {count:mobile?1:2, sMin:0.20,sMax:0.30, vMin:5, vMax:9,  alpha:0.36, haze:1.00},
+    {count:mobile?1:2, sMin:0.28,sMax:0.42, vMin:9, vMax:15, alpha:0.52, haze:0.72},
+    {count:mobile?1:2, sMin:0.44,sMax:0.60, vMin:15,vMax:23, alpha:0.70, haze:0.42},
+    {count:1,          sMin:0.60,sMax:0.80, vMin:23,vMax:34, alpha:0.86, haze:0.18},
+    {count:1,          sMin:0.80,sMax:1.02, vMin:34,vMax:48, alpha:1.00, haze:0.00}
+  ];
+  var HAZE=[212,226,238];         // color de bruma fría (perspectiva atmosférica)
+  var tint=[150,120,95];          // sombra cálida bajo cada nube
+  function rnd(a,b){return a+Math.random()*(b-a);}
+  function mix(a,b,t){return Math.round(a+(b-a)*t);}
+  var clouds=[];
+  LAYERS.forEach(function(L,li){
+    // color de la nube según profundidad: lejana = blanco brumoso, cercana = blanco puro
+    var cr=mix(HAZE[0],255,1-L.haze), cg=mix(HAZE[1],255,1-L.haze), cb=mix(HAZE[2],255,1-L.haze);
+    for(var i=0;i<L.count;i++){
+      clouds.push({layer:li, scale:rnd(L.sMin,L.sMax), speed:rnd(L.vMin,L.vMax), alpha:L.alpha,
+        col:[cr,cg,cb], y:rnd(0.10,0.98), x:rnd(-0.25,1.25), drift:rnd(0,6.283), seeded:false});
+    }
+  });
+  clouds.sort(function(a,b){return a.layer-b.layer;});
+
+  // 🌈 Aurora de marca (verde salvia, oro, rosa, menta) — masas de color muy suaves
+  var AUR=[
+    {c:[168,201,127], x:0.20,y:0.32, ax:0.16,ay:0.12, sx:0.045,sy:0.035, r:0.72, ph:0.0},
+    {c:[231,196,106], x:0.72,y:0.52, ax:0.18,ay:0.13, sx:0.040,sy:0.048, r:0.78, ph:2.1},
+    {c:[244,184,192], x:0.50,y:0.80, ax:0.15,ay:0.10, sx:0.052,sy:0.032, r:0.66, ph:4.0},
+    {c:[176,214,208], x:0.86,y:0.22, ax:0.13,ay:0.11, sx:0.048,sy:0.042, r:0.60, ph:1.2}
+  ];
+
+  var tr=tint[0],tg=tint[1],tb=tint[2], last=performance.now();
+  // parallax de ratón (suave, con inercia)
+  var mvx=0,mvy=0, tvx=0,tvy=0;
+  section.addEventListener('mousemove',function(e){
+    var r=section.getBoundingClientRect();
+    tvx=Math.max(-1,Math.min(1,(e.clientX-r.left)/r.width-0.5))*2;
+    tvy=Math.max(-1,Math.min(1,(e.clientY-r.top)/r.height-0.5))*2;
+  });
+  section.addEventListener('mouseleave',function(){ tvx=0; tvy=0; });
+
+  function drawCloud(cx,cy,U,a,col){
+    // sombra/base gris-azulada bajo la nube = volumen y contraste contra el cielo
+    var sh=ctx.createRadialGradient(cx,cy+U*0.44,0,cx,cy+U*0.44,U*1.7);
+    sh.addColorStop(0,'rgba('+tr+','+tg+','+tb+','+(0.20*a).toFixed(3)+')');
+    sh.addColorStop(0.5,'rgba('+tr+','+tg+','+tb+','+(0.08*a).toFixed(3)+')');
+    sh.addColorStop(1,'rgba('+tr+','+tg+','+tb+',0)');
+    ctx.fillStyle=sh; ctx.beginPath(); ctx.arc(cx,cy+U*0.44,U*1.7,0,6.2832); ctx.fill();
+    var cc=col[0]+','+col[1]+','+col[2];
+    for(var i=0;i<PUFFS.length;i++){
+      var p=PUFFS[i];
+      var px=cx+p.dx*U*1.7, py=cy+p.dy*U*1.7, pr=p.r*U*1.5;
+      var g=ctx.createRadialGradient(px,py,0,px,py,pr);
+      g.addColorStop(0,'rgba('+cc+','+(1.0*a).toFixed(3)+')');
+      g.addColorStop(0.5,'rgba('+cc+','+(0.92*a).toFixed(3)+')');
+      g.addColorStop(0.82,'rgba('+cc+','+(0.42*a).toFixed(3)+')');
+      g.addColorStop(1,'rgba('+cc+',0)');
+      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(px,py,pr,0,6.2832); ctx.fill();
+    }
+  }
+
+  function draw(now){
+    var w=canvas.width,h=canvas.height;
+    if(w===0||h===0){requestAnimationFrame(draw);return;}
+    var dt=Math.min(0.05,(now-last)/1000); last=now;
+    var tt=now/1000;
+    mvx+=(tvx-mvx)*0.05; mvy+=(tvy-mvy)*0.05;
+    // scroll parallax: cuánto se ha desplazado el hero respecto a la ventana
+    var scrollPx=-section.getBoundingClientRect().top;
+    ctx.clearRect(0,0,w,h);
+
+    // 0) CIELO de fondo (paleta .cloudsky del sitio): azul arriba -> crema abajo.
+    //    Esto da CONTRASTE para que las nubes blancas resalten (si no, se pierden).
+    var sky=ctx.createLinearGradient(0,0,0,h);
+    sky.addColorStop(0,   '#5AA9EF');   // azul cielo saturado arriba
+    sky.addColorStop(0.40,'#82BFF3');   // azul medio (se mantiene azul hasta bien abajo)
+    sky.addColorStop(0.70,'#AAD5F9');   // azul claro
+    sky.addColorStop(0.88,'#D8ECFC');   // azul muy claro
+    sky.addColorStop(0.96,'#F2ECE6');   // crema breve al final
+    sky.addColorStop(1,   '#FFFBF8');   // crema del sitio (funde con la sección de abajo)
+    ctx.fillStyle=sky; ctx.fillRect(0,0,w,h);
+
+    // 1) AURORA por detrás (color que respira)
+    ctx.globalCompositeOperation='source-over';
+    var maxR=Math.max(w,h);
+    for(var k=0;k<AUR.length;k++){
+      var o=AUR[k];
+      var acx=(o.x+Math.sin(tt*o.sx*6.283+o.ph)*o.ax)*w;
+      var acy=(o.y+Math.cos(tt*o.sy*6.283+o.ph)*o.ay)*h;
+      var rad=o.r*maxR*0.62;
+      var ag=ctx.createRadialGradient(acx,acy,0,acx,acy,rad);
+      var ac=o.c[0]+','+o.c[1]+','+o.c[2];
+      ag.addColorStop(0,'rgba('+ac+',0.15)');
+      ag.addColorStop(0.5,'rgba('+ac+',0.055)');
+      ag.addColorStop(1,'rgba('+ac+',0)');
+      ctx.fillStyle=ag; ctx.beginPath(); ctx.arc(acx,acy,rad,0,6.2832); ctx.fill();
+    }
+
+    // 2) NUBES que derivan como cielo (horizontal), con parallax de scroll + ratón
+    for(var i=0;i<clouds.length;i++){
+      var c=clouds[i];
+      var U=c.scale*w*0.32, halfW=U*2.6;
+      if(!c.seeded){c.px=c.x*w;c.seeded=true;}
+      c.px+=c.speed*dt;                         // deriva horizontal continua
+      if(c.px-halfW>w) c.px=-halfW;             // reaparece por la izquierda
+      var depth=(c.layer+1);
+      var par=scrollPx*(0.06+c.layer*0.055)*SCALE;      // capas cercanas se mueven más
+      var mpx=mvx*(4+depth*7)*SCALE, mpy=mvy*(3+depth*5)*SCALE;
+      var cx=c.px+mpx;
+      var cy=c.y*h - par + mpy + Math.sin(tt*0.15+c.drift)*U*0.012; // vertical casi nula
+      drawCloud(cx,cy,U,c.alpha,c.col);
+    }
+    requestAnimationFrame(draw);
+  }
+  draw(performance.now());   // primer pintado síncrono (evita frame en blanco)
+  requestAnimationFrame(draw);
 })();
 </script>
 </body>
