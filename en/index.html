@@ -316,6 +316,10 @@
 .hero .cf-card.t-teal {--a1:#79BDB4;--a2:#4C8B82;--halo:#DEF0ED}
 
 .hero .cf-prev{left:-6px}.hero .cf-next{right:-6px}
+/* Flechas ‹ › del tablón ocultas: se mezclaban con las nubes y recargaban el hero.
+   El carrusel sigue funcionando con los puntos y el swipe. (Ocultas, no borradas,
+   para no romper el JS que les añade listeners.) */
+.hero .cf-prev,.hero .cf-next{display:none}
 .hero .bb-arrow{width:42px;height:42px;font-size:20px}
 .hero .bb-dots{margin-top:16px}
 
