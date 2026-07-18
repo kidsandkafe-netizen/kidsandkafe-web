@@ -1,2 +1,5 @@
+# Fuerza dominio canónico: sin-www -> www (301, evita contenido duplicado)
+https://kidsandkafe.es/* https://www.kidsandkafe.es/:splat 301
+
 # Fuerza URL limpia: /precios.html -> /precios (301, transfiere fuerza SEO)
 /*.html /:splat 301
