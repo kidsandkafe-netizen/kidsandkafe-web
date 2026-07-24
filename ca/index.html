@@ -136,7 +136,7 @@
 
 /* 2 · COVERFLOW 3D DE OFERTAS */
 .boardwrap{padding:60px 0 76px;position:relative;background:linear-gradient(160deg,#FBFEFC 0%,#F7FBEF 50%,#ECF3DA 100%);overflow:hidden}
-.cf-stage{position:relative;max-width:1180px;margin:34px auto 0;perspective:1900px}
+.cf-stage{position:relative;max-width:1180px;margin:34px auto 0;perspective:1900px;touch-action:pan-y}
 .cf-track{position:relative;height:438px;transform-style:preserve-3d;transition:transform .4s ease-out;will-change:transform}
 .cf-card{position:absolute;top:0;left:50%;width:min(560px,88vw);margin-left:calc(min(560px,88vw) / -2);min-height:392px;
   border-radius:44px;padding:36px clamp(24px,4vw,46px) 28px;isolation:isolate;
@@ -262,18 +262,19 @@
   width:min(452px,94%);margin-left:calc(min(452px,94%) / -2);min-height:388px;
   padding:28px 34px 24px;border-radius:38px;
   --a1:#A0BC79;--a2:#6C8D48;--halo:#E9F1D9;
-  /* 🫧 cristal esmerilado: el cielo se desenfoca por detrás de la tarjeta */
-  -webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);
+  /* 💎 cristal transparente de verdad: se ve el cielo pastel por detrás */
+  -webkit-backdrop-filter:blur(28px) saturate(1.9) brightness(1.06);backdrop-filter:blur(28px) saturate(1.9) brightness(1.06);
   background:
-     radial-gradient(60% 44% at 90% 4%, color-mix(in srgb,var(--a1) 24%,transparent) 0%, transparent 62%),
-     radial-gradient(52% 40% at 6% 98%, color-mix(in srgb,var(--a2) 15%,transparent) 0%, transparent 60%),
-     radial-gradient(135% 100% at 50% -18%, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0) 62%),
-     linear-gradient(163deg, rgba(255,253,249,0.62) 0%, rgba(255,252,246,0.5) 42%, color-mix(in srgb,var(--halo) 60%,rgba(255,255,255,0.5)) 150%);
+     radial-gradient(60% 44% at 90% 4%, color-mix(in srgb,var(--a1) 18%,transparent) 0%, transparent 62%),
+     radial-gradient(52% 40% at 6% 98%, color-mix(in srgb,var(--a2) 12%,transparent) 0%, transparent 60%),
+     radial-gradient(135% 100% at 50% -18%, rgba(255,255,255,0.42) 0%, rgba(255,255,255,0) 60%),
+     linear-gradient(163deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.05) 46%, rgba(255,255,255,0.12) 150%);
   box-shadow:
      0 54px 104px -42px rgba(46,60,96,.5),
-     0 18px 44px -26px color-mix(in srgb,var(--a2) 38%,transparent),
-     inset 0 1px 0 rgba(255,255,255,.9),
-     inset 0 0 0 1px rgba(255,255,255,.55);
+     0 18px 44px -26px color-mix(in srgb,var(--a2) 34%,transparent),
+     inset 0 1.5px 1px rgba(255,255,255,1),
+     inset 0 -14px 30px -18px rgba(255,255,255,.7),
+     inset 0 0 0 1.3px rgba(255,255,255,.7);
 }
 .hero .cf-card::before{
   content:'';position:absolute;inset:0;border-radius:38px;padding:1.4px;
@@ -287,17 +288,18 @@
 .hero .cf-card .bb-pin{font-size:24px;top:16px;right:22px}
 .hero .cf-card .bb-ek{font-size:11.5px;padding:7px 15px;letter-spacing:1.2px;
   background:linear-gradient(135deg,var(--a1),var(--a2));box-shadow:0 10px 22px -8px color-mix(in srgb,var(--a2) 70%,transparent)}
-.hero .cf-card .bb-title{font-size:28px;font-weight:800;letter-spacing:-.6px;margin:12px 0 4px;line-height:1.05}
-.hero .cf-card .bb-title em{background:linear-gradient(100deg,var(--a1),var(--a2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.hero .cf-card .bb-row{gap:16px;margin:12px 0}
-.hero .cf-card .bb-emo{width:106px;height:106px;flex:0 0 106px;border-radius:50%;position:relative;font-size:0;
+.hero .cf-card .bb-title{font-size:27px;font-weight:800;letter-spacing:-.6px;margin:8px 0 4px;line-height:1.05;
+  text-shadow:0 1px 0 rgba(255,255,255,.9),0 3px 14px rgba(255,255,255,.55)}
+.hero .cf-card .bb-title em{background:none;-webkit-text-fill-color:currentColor;color:color-mix(in srgb,var(--a2) 82%,#000);text-shadow:0 1px 0 rgba(255,255,255,.95),0 2px 10px rgba(255,255,255,.7)}
+.hero .cf-card .bb-row{gap:14px;margin:10px 0}
+.hero .cf-card .bb-emo{width:84px;height:84px;flex:0 0 84px;border-radius:50%;position:relative;font-size:0;
   display:flex;align-items:center;justify-content:center;
   background:radial-gradient(circle at 50% 42%,
      color-mix(in srgb,var(--a1) 34%,#ffffff) 0%,
      color-mix(in srgb,var(--halo) 88%,#ffffff) 55%,
      rgba(255,255,255,0) 78%);
   animation:cfBob 3s ease-in-out infinite}
-.hero .cf-card .bb-emo img{width:90px;height:90px;object-fit:contain;
+.hero .cf-card .bb-emo img{width:70px;height:70px;object-fit:contain;
   filter:drop-shadow(0 12px 16px color-mix(in srgb,var(--a2) 42%,transparent))}
 .hero .cf-card .bb-confetti{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;border-radius:38px}
 .hero .cf-card .bb-confetti i{position:absolute;width:9px;height:9px;border-radius:50%;
@@ -310,12 +312,30 @@
      0 24px 56px -26px color-mix(in srgb,var(--a2) 55%,transparent),
      inset 0 1px 0 rgba(255,255,255,.95),
      inset 0 0 0 1px rgba(255,255,255,.55)}
-.hero .cf-card .bb-desc{font-size:14.8px;line-height:1.5;color:#5d5b52;font-weight:500}
-.hero .cf-card .bb-desc .hl{color:var(--a2);font-weight:800}
-.hero .cf-card .bb-price{font-size:15px;color:var(--a2);margin-top:14px;font-weight:800}
-.hero .cf-card .bb-go{font-size:16px;padding:15px 22px;margin-top:18px;border-radius:34px;
+.hero .cf-card .bb-desc{font-size:14px;line-height:1.45;color:#4a4940;font-weight:600;text-shadow:0 1px 0 rgba(255,255,255,.8)}
+.hero .cf-card .bb-desc .hl{color:color-mix(in srgb,var(--a2) 85%,#000);font-weight:800}
+.hero .cf-card .bb-price{font-size:15px;color:color-mix(in srgb,var(--a2) 88%,#000);margin-top:10px;font-weight:800;text-shadow:0 1px 0 rgba(255,255,255,.8)}
+.hero .cf-card .bb-go{font-size:15.5px;padding:14px 18px;margin-top:0;border-radius:30px;
   background:linear-gradient(135deg,var(--a1),var(--a2));background-size:200% 100%;
-  box-shadow:0 18px 34px -12px color-mix(in srgb,var(--a2) 75%,transparent),inset 0 1px 0 rgba(255,255,255,.45)}
+  box-shadow:0 16px 30px -12px color-mix(in srgb,var(--a2) 75%,transparent),inset 0 1px 0 rgba(255,255,255,.45)}
+
+/* 🔴 urgencia · 🏷️ qué incluye · ⭐ confianza · botones app+WhatsApp */
+.hero .cf-card .bb-flag{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:900;letter-spacing:.4px;
+  text-transform:uppercase;color:#fff;background:linear-gradient(135deg,#E8654F,#C23B2B);padding:6px 11px;border-radius:20px;
+  box-shadow:0 10px 20px -8px rgba(194,59,43,.5);margin-bottom:8px}
+.hero .cf-card .bb-chips{display:flex;flex-wrap:wrap;gap:6px;margin:9px 0 2px}
+.hero .cf-card .bb-chip{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:800;color:#41503a;
+  background:rgba(255,255,255,.55);padding:4px 9px;border-radius:13px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.85)}
+.hero .cf-card .bb-trust{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:#4d5b41;margin-top:9px;
+  text-shadow:0 1px 0 rgba(255,255,255,.8)}
+.hero .cf-card .bb-trust .st{color:#E8A83C;letter-spacing:1px;font-size:13px}
+.hero .cf-card .bb-cta{display:flex;gap:8px;margin-top:13px;align-items:stretch;
+  opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .45s ease,transform .45s ease}
+.hero .cf-card.is-center .bb-cta{opacity:1;transform:none;pointer-events:auto}
+.hero .cf-card .bb-cta .bb-go{flex:1}
+.hero .cf-card .bb-wa{flex:0 0 auto;display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;
+  color:#0F7A40;font-weight:800;font-size:14.5px;padding:0 17px;border-radius:30px;background:rgba(37,211,102,.18);
+  box-shadow:inset 0 0 0 1.5px rgba(37,211,102,.5)}
 
 /* 6 temas de color (uno por tarjeta) — deriva del logo KK, tonos apagados premium */
 .hero .cf-card.t-sun  {--a1:#E4B25C;--a2:#C0862E;--halo:#F6ECD4}
@@ -618,13 +638,14 @@
   // Tablón premium: 6 tarjetas, cada una su color + ilustración 3D (Microsoft Fluent, local en img/illo/).
   // El *asterisco* resalta la palabra (título en degradado, descripción en color del tema).
   var OFERTAS=[
-    {theme:'t-teal', img:'casal.png',    ek:'Casal d\'estiu', title:'Casal d\'*estiu*', desc:'Dies complets i *grups reduïts*, amb mil aventures fins al setembre.', price:'5% dte. a l\'app', link:'casal'},
-    {theme:'t-sky',  img:'kidsdrop.png', ek:'Kids Drop',      title:'Tu *lliure*, ells segurs', desc:'Els deixes amb *monitores expertes* i surts tranquil·la: feina, una cita o veure Barcelona.', price:'Cangur sense reserva · a l\'instant', link:'kids-drop'},
-    {theme:'t-sun',  img:'bono.png',     ek:'Bo hores',       title:'Bo *11 hores*', desc:'11 h de joc i *2 adults gratis* a cada visita. Sense caducitat.', price:'85€ · 7,7€/h (estalvies 25€)', link:'precios'},
-    {theme:'t-coral',img:'talleres.png', ek:'Tallers',        title:'Tallers al *juliol*', desc:'Hawaiana Party, El Fons del Mar i Mini Chef — *places limitades*.', price:'25€ · reserva prèvia', link:'talleres'},
-    {theme:'t-lav',  img:'cumples.png',  ek:'Aniversaris',    title:'Festes *inoblidables*', desc:'*Ho muntem tot* — decoració, animació i pastís. Tu només gaudeixes.', price:'Reserva la teva data', link:'cumpleanos'},
-    {theme:'t-mint', img:'baby.png',     ek:'Baby Explorer',  title:'Baby *Explorer*', desc:'*Estimulació primerenca* cada matí amb monitora especialitzada. 0-3 anys.', price:'Des de 85€', link:'baby-explorer'}
+    {theme:'t-teal', img:'casal.png',    ek:'Casal d\'estiu', title:'Casal d\'*estiu*', desc:'En *anglès* i *des d\'1 any*, amb mil aventures fins al setembre.', price:'Places d\'agost · 5% a l\'app', link:'casal', cta:'Reservar plaça', flag:'☀️ Últimes places d\'agost', chips:['👶 Des d\'1 any','🇬🇧 En anglès','🍽️ Menjar','🚌 Excursió'], wa:'Hola! Vull info del casal d\'estiu'},
+    {theme:'t-sky',  img:'kidsdrop.png', ek:'Kids Drop',      title:'Tu *lliure*, ells segurs', desc:'Els deixes amb *monitores expertes* i surts tranquil·la: feina, una cita o veure Barcelona.', price:'Cangur sense reserva · a l\'instant', link:'kids-drop', cta:'Veure horaris', chips:['⏱️ Per hores','🙌 Sense reserva','👧 2n germà −50%'], wa:'Hola! Vull info de Kids Drop'},
+    {theme:'t-sun',  img:'bono.png',     ek:'Bo hores',       title:'Bo *11 hores*', desc:'11 h de joc i *2 adults gratis* a cada visita. Sense caducitat.', price:'85€ · 7,7€/h (estalvies 25€)', link:'precios', cta:'Aconseguir el bo', chips:['⏳ Sense caducitat','👨‍👩‍👧 2 adults gratis'], wa:'Hola! Vull info del bo d\'11 hores'},
+    {theme:'t-coral',img:'talleres.png', ek:'Tallers',        title:'Tallers al *juliol*', desc:'Hawaiana Party, El Fons del Mar i Mini Chef — *places limitades*.', price:'25€ · reserva prèvia', link:'talleres', cta:'Veure tallers', chips:['🗓️ Cada setmana','🎨 Art i ciència'], wa:'Hola! Vull reservar plaça en un taller'},
+    {theme:'t-lav',  img:'cumples.png',  ek:'Aniversaris',    title:'Festes *inoblidables*', desc:'*Ho muntem tot* — decoració, animació i pastís. Tu només gaudeixes.', price:'Reserva la teva data', link:'cumpleanos', cta:'Reservar data', chips:['🎈 Ho muntem tot','🎂 Pastís i animació'], wa:'Hola! Vull reservar un aniversari'},
+    {theme:'t-mint', img:'baby.png',     ek:'Baby Explorer',  title:'Baby *Explorer*', desc:'*Estimulació primerenca* cada matí amb monitora especialitzada. 0-3 anys.', price:'Des de 85€', link:'baby-explorer', cta:'Veure Baby Explorer', chips:['🐣 0-3 anys','🧠 Estimulació'], wa:'Hola! Vull info de Baby Explorer'}
   ];
+  var WA_NUM='34637319226';
   var stage=document.getElementById('cfStage'), dotsBox=document.getElementById('bbDots');
   var n=OFERTAS.length, cur=0, timer=null;
   var ILLO_BASE='../img/illo/';
@@ -656,19 +677,32 @@
     return d;
   }
 
+  // fila de "què inclou" (chips)
+  function chipsEl(list){
+    var box=div('bb-chips');
+    (list||[]).forEach(function(t){ box.appendChild(span('bb-chip',t)); });
+    return box;
+  }
   var cards=OFERTAS.map(function(o,i){
     var c=document.createElement('article'); c.className='cf-card '+o.theme; c.dataset.i=i;
     c.appendChild(confetti());
     c.appendChild(span('bb-pin','📌'));
+    if(o.flag) c.appendChild(span('bb-flag',o.flag));
     c.appendChild(span('bb-ek',o.ek));
     c.appendChild(titleEl(o.title));
     var row=div('bb-row'); row.appendChild(illoBadge(o.img)); row.appendChild(descEl(o.desc)); c.appendChild(row);
+    if(o.chips&&o.chips.length) c.appendChild(chipsEl(o.chips));
     var price=div('bb-price'); price.textContent=o.price; c.appendChild(price);
-    var go=document.createElement('button'); go.className='bb-go'; go.textContent='Veure oferta →'; c.appendChild(go);
+    // ⭐ confiança (ressenyes reals)
+    var trust=div('bb-trust'); trust.appendChild(span('st','★★★★☆')); trust.appendChild(document.createTextNode('4,2 · +470 famílies')); c.appendChild(trust);
+    // botons: principal → descarregar app · WhatsApp → xat amb tu
+    var cta=div('bb-cta');
+    var go=document.createElement('a'); go.className='bb-go'; go.href='#app'; go.textContent=(o.cta||'Veure oferta')+' →'; cta.appendChild(go);
+    var wa=document.createElement('a'); wa.className='bb-wa'; wa.href='https://wa.me/'+WA_NUM+'?text='+encodeURIComponent(o.wa||('Hola! Vull info de '+o.ek));
+    wa.target='_blank'; wa.rel='noopener'; wa.textContent='💬'; wa.setAttribute('aria-label','WhatsApp'); cta.appendChild(wa);
+    c.appendChild(cta);
     c.addEventListener('click',function(e){
-      if(c.classList.contains('is-center')){
-        if(e.target.closest('.bb-go')) openModal(i);
-      } else { slideTo(i); rearm(); }
+      if(!c.classList.contains('is-center')){ slideTo(i); rearm(); }
     });
     track.appendChild(c);
     return c;
@@ -742,16 +776,21 @@
   function rearm(){ clearInterval(timer); }
 
   // 👆 Mover con dedo o ratón (arrastrar/swipe)
-  var sx=null, dragging=false;
-  stage.addEventListener('pointerdown',function(e){ sx=e.clientX; dragging=true; });
-  stage.addEventListener('pointerup',function(e){
+  var sx=null, dragging=false, pid=null;
+  stage.addEventListener('pointerdown',function(e){
+    sx=e.clientX; dragging=true; pid=e.pointerId; clearInterval(timer);
+    // En táctil capturamos el puntero: el pointerup llega SIEMPRE aunque el dedo salga de la tarjeta
+    if(e.pointerType==='touch'){ try{ stage.setPointerCapture(pid); }catch(_){} }
+  });
+  function endSwipe(e){
     if(sx===null) return;
     var dx=e.clientX-sx;
-    if(Math.abs(dx)>40){ slideTo(cur+(dx<0?1:-1)); }
-    sx=null; dragging=false;
-  });
-  stage.addEventListener('pointercancel',function(){ sx=null; dragging=false; });
-  stage.addEventListener('pointerleave',function(){ sx=null; dragging=false; });
+    if(Math.abs(dx)>28){ slideTo(cur+(dx<0?1:-1)); }
+    try{ if(pid!=null) stage.releasePointerCapture(pid); }catch(_){}
+    sx=null; dragging=false; pid=null; rearm();
+  }
+  stage.addEventListener('pointerup',endSwipe);
+  stage.addEventListener('pointercancel',function(){ sx=null; dragging=false; pid=null; });
 
   layout();
 })();
