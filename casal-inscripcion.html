@@ -13,6 +13,9 @@
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:'Inter',system-ui,sans-serif;background:linear-gradient(180deg,#FCE7C8,#F6D9AE);color:#4A3A22;padding:24px 14px 70px;-webkit-font-smoothing:antialiased}
   .wrap{max-width:460px;margin:0 auto}
+  .langbar{display:flex;gap:6px;justify-content:center;margin-bottom:14px}
+  .langbtn{border:1.5px solid #EAD7B8;background:#fff;color:#8A5A22;border-radius:10px;padding:6px 15px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit}
+  .langbtn.on{background:#FF9A3D;border-color:#FF9A3D;color:#fff}
   .hero{background:linear-gradient(160deg,#FFB84D,#FF9A3D);border-radius:22px;padding:26px 22px;color:#fff;text-align:center;box-shadow:0 16px 34px -18px rgba(200,120,30,0.7);margin-bottom:16px;position:relative;overflow:hidden}
   .hero .sun{position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:rgba(255,255,255,0.18);border-radius:50%}
   .hero h1{font-family:'Fraunces',serif;font-size:26px;font-weight:600;line-height:1.1;position:relative}
@@ -39,6 +42,7 @@
   .send{width:100%;background:linear-gradient(135deg,#FF9A3D,#F97316);color:#fff;border:none;border-radius:14px;padding:16px;font-size:16px;font-weight:900;cursor:pointer;box-shadow:0 12px 26px -14px rgba(200,110,20,0.8);margin-top:6px}
   .send:disabled{opacity:.6;cursor:default}
   .foot{text-align:center;font-size:11px;color:#8A6A3A;margin-top:14px;line-height:1.5}
+  .foot b{color:#8A5A22}
   .err{color:#C0392B;font-size:12px;font-weight:700;text-align:center;margin-top:10px;display:none}
   .wa-btn{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;border:none;border-radius:14px;padding:14px 22px;font-size:15px;font-weight:900;text-decoration:none;margin-top:6px}
   #ok{display:none;text-align:center;background:#fff;border-radius:18px;padding:30px 22px;box-shadow:0 10px 26px -18px rgba(150,100,40,0.5)}
@@ -50,26 +54,33 @@
 <body>
 <div class="wrap">
 
+  <div class="langbar">
+    <button class="langbtn" data-l="es" onclick="setLang('es')">ES</button>
+    <button class="langbtn" data-l="ca" onclick="setLang('ca')">CA</button>
+    <button class="langbtn" data-l="en" onclick="setLang('en')">EN</button>
+  </div>
+
   <div class="hero">
     <div class="sun"></div>
     <h1>☀️ English Summer Camp 2026</h1>
-    <p>Inscripción · Kids &amp; Kafé</p>
+    <p data-i18n="hero_sub">Inscripción · Kids &amp; Kafé</p>
   </div>
 
   <!-- FORMULARIO -->
   <div id="form-zone">
 
   <div class="card">
-    <div class="sec">💶 Precios y condiciones</div>
+    <div class="sec" data-i18n="sec_precios">💶 Precios y condiciones</div>
     <table class="price-table">
-      <tr><th>Días/sem</th><th>9:00–13:00</th><th>9:00–16:00</th></tr>
-      <tr><td>1 día</td><td>50€</td><td>70€</td></tr>
-      <tr><td>2 días</td><td>83€</td><td>105€</td></tr>
-      <tr><td>3 días</td><td>110€</td><td>160€</td></tr>
-      <tr><td>4 días</td><td>145€</td><td>190€</td></tr>
-      <tr><td>5 días</td><td>185€</td><td>220€</td></tr>
+      <tr><th data-i18n="th_dias">Días/sem</th><th>9:00–13:00</th><th>9:00–16:00</th></tr>
+      <tr><td data-i18n="d1">1 día</td><td>50€</td><td>70€</td></tr>
+      <tr><td data-i18n="d2">2 días</td><td>83€</td><td>105€</td></tr>
+      <tr><td data-i18n="d3">3 días</td><td>110€</td><td>160€</td></tr>
+      <tr><td data-i18n="d4">4 días</td><td>145€</td><td>190€</td></tr>
+      <tr><td data-i18n="d5">5 días</td><td>185€</td><td>220€</td></tr>
     </table>
-    <div class="info">
+    <!-- bloque con formato: 3 variantes estáticas, se muestra la del idioma -->
+    <div class="info lang-block" data-lang="es">
       • Horario tarde <b>14:00–18:00 → 110€/semana</b><br>
       • <b>Acogida</b> 10€/h (mañana desde 8:00 u 8:30)<br>
       • <b>Comedor</b> diario 10,50€ · niños 9:00–16:00 comida + merienda incluidas<br>
@@ -78,105 +89,136 @@
       • Día no asistido no se acumula ni se reembolsa · pago completo 1 semana antes por transferencia o se pierde la plaza<br>
       • <b>Reserva 50€</b> · Transferencia <b>ES93 2100 3683 5322 0012 8922</b> · KIDS AND KAFE INVERSIÓN S.L.
     </div>
+    <div class="info lang-block" data-lang="ca" style="display:none">
+      • Horari de tarda <b>14:00–18:00 → 110€/setmana</b><br>
+      • <b>Acollida</b> 10€/h (matí des de les 8:00 o 8:30)<br>
+      • <b>Menjador</b> diari 10,50€ · nens 9:00–16:00 dinar + berenar inclosos<br>
+      • <b>Agost:</b> +10% de suplement<br>
+      • 10% dte client amb bo (des de la 2a setmana) · 10% dte germans · 15% dte des de la 4a setmana consecutiva amb pagament anticipat de 5 setmanes<br>
+      • Dia no assistit no s'acumula ni es reemborsa · pagament complet 1 setmana abans per transferència o es perd la plaça<br>
+      • <b>Reserva 50€</b> · Transferència <b>ES93 2100 3683 5322 0012 8922</b> · KIDS AND KAFE INVERSIÓN S.L.
+    </div>
+    <div class="info lang-block" data-lang="en" style="display:none">
+      • Afternoon schedule <b>14:00–18:00 → €110/week</b><br>
+      • <b>Early drop-off</b> €10/h (morning from 8:00 or 8:30)<br>
+      • <b>Lunch</b> daily €10.50 · children 9:00–16:00 lunch + snack included<br>
+      • <b>August:</b> +10% surcharge<br>
+      • 10% off with voucher (from 2nd week) · 10% sibling discount · 15% off from the 4th consecutive week with advance payment of 5 weeks<br>
+      • Missed days are not carried over or refunded · full payment 1 week in advance by transfer or the place is lost<br>
+      • <b>€50 deposit</b> · Transfer <b>ES93 2100 3683 5322 0012 8922</b> · KIDS AND KAFE INVERSIÓN S.L.
+    </div>
   </div>
 
   <div class="card">
-    <div class="sec">👦 Datos del peque</div>
-    <label>Nombre y apellidos del peque <span class="req">*</span></label>
-    <input id="f-nino" type="text" placeholder="Ej. Sofía García López">
-    <label>Fecha de nacimiento</label>
+    <div class="sec" data-i18n="sec_peque">👦 Datos del peque</div>
+    <label><span data-i18n="lbl_nino">Nombre y apellidos del peque</span> <span class="req">*</span></label>
+    <input id="f-nino" type="text" data-i18n-ph="ph_nino" placeholder="Ej. Sofía García López">
+    <label><span data-i18n="lbl_nac">Fecha de nacimiento</span> <span class="req">*</span></label>
     <input id="f-nac" type="date">
+    <div class="info" data-i18n="nota_edad" style="margin-top:8px">ℹ️ El casal es para peques de hasta 7 años.</div>
   </div>
 
   <div class="card">
-    <div class="sec">👨‍👩‍👧 Datos de contacto</div>
-    <label>Nombre y apellido de la madre / teléfono <span class="req">*</span></label>
-    <input id="f-madre" type="text" placeholder="Ej. Ana García · 637 000 000">
-    <label>Nombre y apellido del padre / teléfono</label>
-    <input id="f-padre" type="text" placeholder="Ej. Juan López · 637 000 000">
-    <label>Correo electrónico <span class="req">*</span></label>
-    <input id="f-email" type="email" placeholder="tucorreo@email.com">
+    <div class="sec" data-i18n="sec_contacto">👨‍👩‍👧 Datos de contacto</div>
+    <label><span data-i18n="lbl_madre">Nombre y apellido de la madre / teléfono</span> <span class="req">*</span></label>
+    <input id="f-madre" type="text" data-i18n-ph="ph_madre" placeholder="Ej. Ana García · 637 000 000">
+    <label data-i18n="lbl_padre">Nombre y apellido del padre / teléfono</label>
+    <input id="f-padre" type="text" data-i18n-ph="ph_padre" placeholder="Ej. Juan López · 637 000 000">
+    <label><span data-i18n="lbl_email">Correo electrónico</span> <span class="req">*</span></label>
+    <input id="f-email" type="email" data-i18n-ph="ph_email" placeholder="tucorreo@email.com">
   </div>
 
   <div class="card">
-    <div class="sec">📅 Semanas de asistencia</div>
-    <label>Marca las semanas que apunta al peque</label>
+    <div class="sec" data-i18n="sec_semanas">📅 Semanas de asistencia</div>
+    <label data-i18n="lbl_semanas">Marca las semanas que apunta al peque</label>
     <div class="chips" id="f-semanas">
-      <div class="chip" data-val="Semana 1 (22-26 jun)" onclick="tog(this)">Semana 1<small>22–26 jun</small></div>
-      <div class="chip" data-val="Semana 2 (29 jun-3 jul)" onclick="tog(this)">Semana 2<small>29 jun–3 jul</small></div>
-      <div class="chip" data-val="Semana 3 (6-10 jul)" onclick="tog(this)">Semana 3<small>6–10 jul</small></div>
-      <div class="chip" data-val="Semana 4 (13-17 jul)" onclick="tog(this)">Semana 4<small>13–17 jul</small></div>
-      <div class="chip" data-val="Semana 5 (20-24 jul)" onclick="tog(this)">Semana 5<small>20–24 jul</small></div>
-      <div class="chip" data-val="Semana 6 (27-31 jul)" onclick="tog(this)">Semana 6<small>27–31 jul</small></div>
-      <div class="chip" data-val="Semana 7 (3-7 ago)" onclick="tog(this)">Semana 7<small>3–7 ago</small></div>
-      <div class="chip" data-val="Semana 8 (10-14 ago)" onclick="tog(this)">Semana 8<small>10–14 ago</small></div>
-      <div class="chip" data-val="Semana 9 (17-21 ago)" onclick="tog(this)">Semana 9<small>17–21 ago</small></div>
-      <div class="chip" data-val="Semana 10 (24-28 ago)" onclick="tog(this)">Semana 10<small>24–28 ago</small></div>
-      <div class="chip" data-val="Semana 11 (31 ago-4 sep)" onclick="tog(this)">Semana 11<small>31 ago–4 sep</small></div>
+      <div class="chip" data-val="Semana 1 (22-26 jun)" onclick="tog(this)"><span data-i18n="w1">Semana 1</span><small data-i18n="w1d">22–26 jun</small></div>
+      <div class="chip" data-val="Semana 2 (29 jun-3 jul)" onclick="tog(this)"><span data-i18n="w2">Semana 2</span><small data-i18n="w2d">29 jun–3 jul</small></div>
+      <div class="chip" data-val="Semana 3 (6-10 jul)" onclick="tog(this)"><span data-i18n="w3">Semana 3</span><small data-i18n="w3d">6–10 jul</small></div>
+      <div class="chip" data-val="Semana 4 (13-17 jul)" onclick="tog(this)"><span data-i18n="w4">Semana 4</span><small data-i18n="w4d">13–17 jul</small></div>
+      <div class="chip" data-val="Semana 5 (20-24 jul)" onclick="tog(this)"><span data-i18n="w5">Semana 5</span><small data-i18n="w5d">20–24 jul</small></div>
+      <div class="chip" data-val="Semana 6 (27-31 jul)" onclick="tog(this)"><span data-i18n="w6">Semana 6</span><small data-i18n="w6d">27–31 jul</small></div>
+      <div class="chip" data-val="Semana 7 (3-7 ago)" onclick="tog(this)"><span data-i18n="w7">Semana 7</span><small data-i18n="w7d">3–7 ago</small></div>
+      <div class="chip" data-val="Semana 8 (10-14 ago)" onclick="tog(this)"><span data-i18n="w8">Semana 8</span><small data-i18n="w8d">10–14 ago</small></div>
+      <div class="chip" data-val="Semana 9 (17-21 ago)" onclick="tog(this)"><span data-i18n="w9">Semana 9</span><small data-i18n="w9d">17–21 ago</small></div>
+      <div class="chip" data-val="Semana 10 (24-28 ago)" onclick="tog(this)"><span data-i18n="w10">Semana 10</span><small data-i18n="w10d">24–28 ago</small></div>
+      <div class="chip" data-val="Semana 11 (31 ago-4 sep)" onclick="tog(this)"><span data-i18n="w11">Semana 11</span><small data-i18n="w11d">31 ago–4 sep</small></div>
     </div>
   </div>
 
   <div class="card">
-    <div class="sec">🕐 Horario de asistencia</div>
-    <label>Elige el horario <span class="req">*</span></label>
+    <div class="sec" data-i18n="sec_horario">🕐 Horario de asistencia</div>
+    <label><span data-i18n="lbl_horario">Elige el horario</span> <span class="req">*</span></label>
     <div class="chips" id="f-horario">
-      <div class="chip on" data-val="Mañana 9:00-13:00" onclick="pick(this)">Mañana<small>9:00–13:00</small></div>
-      <div class="chip" data-val="Con comedor 9:00-16:00" onclick="pick(this)">Con comedor<small>9:00–16:00</small></div>
-      <div class="chip" data-val="Tarde 14:00-18:00" onclick="pick(this)">Tarde<small>14:00–18:00 · 110€/sem</small></div>
+      <div class="chip on" data-val="Mañana 9:00-13:00" onclick="pick(this)"><span data-i18n="h_manana">Mañana</span><small>9:00–13:00</small></div>
+      <div class="chip" data-val="Con comedor 9:00-16:00" onclick="pick(this)"><span data-i18n="h_comedor">Con comedor</span><small>9:00–16:00</small></div>
+      <div class="chip" data-val="Tarde 14:00-18:00" onclick="pick(this)"><span data-i18n="h_tarde">Tarde</span><small data-i18n="h_tarde_s">14:00–18:00 · 110€/sem</small></div>
     </div>
-    <label style="margin-top:14px">¿Acogida de mañana? (desde 8:00 · 10€/h)</label>
+    <label style="margin-top:14px" data-i18n="lbl_acogida">¿Acogida de mañana? (desde 8:00 · 10€/h)</label>
     <div class="yn" id="f-acogida">
-      <div class="chip" data-val="si" onclick="pick(this)">Sí</div>
-      <div class="chip on" data-val="no" onclick="pick(this)">No</div>
+      <div class="chip" data-val="si" onclick="pick(this)" data-i18n="yes">Sí</div>
+      <div class="chip on" data-val="no" onclick="pick(this)" data-i18n="no">No</div>
     </div>
   </div>
 
   <div class="card">
-    <div class="sec">🩺 Salud del peque</div>
-    <label>¿El niño/a tiene alguna alergia? Si es SÍ, indica ¿a qué?</label>
-    <input id="f-alergias" type="text" placeholder="Ej. frutos secos, lactosa… (o escribe 'ninguna')">
-    <label style="margin-top:14px">Solo para los más peques — marca lo que corresponda</label>
+    <div class="sec" data-i18n="sec_salud">🩺 Salud del peque</div>
+    <label data-i18n="lbl_alergias">¿El niño/a tiene alguna alergia? Si es SÍ, indica ¿a qué?</label>
+    <input id="f-alergias" type="text" data-i18n-ph="ph_alergias" placeholder="Ej. frutos secos, lactosa… (o escribe 'ninguna')">
+    <label style="margin-top:14px" data-i18n="lbl_flags">Solo para los más peques — marca lo que corresponda</label>
     <div class="chips" id="f-flags">
-      <div class="chip" data-val="Necesita ayuda para comer" onclick="tog(this)">Necesita ayuda para comer</div>
-      <div class="chip" data-val="Usa biberón" onclick="tog(this)">Usa biberón</div>
-      <div class="chip" data-val="Utiliza pañal" onclick="tog(this)">Utiliza pañal</div>
-      <div class="chip" data-val="Utiliza chupete" onclick="tog(this)">Utiliza chupete</div>
-      <div class="chip" data-val="Toma la siesta" onclick="tog(this)">Toma la siesta</div>
+      <div class="chip" data-val="Necesita ayuda para comer" onclick="tog(this)" data-i18n="fl_comer">Necesita ayuda para comer</div>
+      <div class="chip" data-val="Usa biberón" onclick="tog(this)" data-i18n="fl_biberon">Usa biberón</div>
+      <div class="chip" data-val="Utiliza pañal" onclick="tog(this)" data-i18n="fl_panal">Utiliza pañal</div>
+      <div class="chip" data-val="Utiliza chupete" onclick="tog(this)" data-i18n="fl_chupete">Utiliza chupete</div>
+      <div class="chip" data-val="Toma la siesta" onclick="tog(this)" data-i18n="fl_siesta">Toma la siesta</div>
     </div>
   </div>
 
   <div class="card">
-    <div class="sec">✅ Autorización</div>
-    <label>¿Autorizas fotografías del niño/a para uso exclusivo del centro?</label>
+    <div class="sec" data-i18n="sec_autoriz">✅ Autorización</div>
+    <label data-i18n="lbl_fotos">¿Autorizas fotografías del niño/a para uso exclusivo del centro?</label>
     <div class="yn" id="f-fotos">
-      <div class="chip on" data-val="si" onclick="pick(this)">Sí</div>
-      <div class="chip" data-val="no" onclick="pick(this)">No</div>
+      <div class="chip on" data-val="si" onclick="pick(this)" data-i18n="yes">Sí</div>
+      <div class="chip" data-val="no" onclick="pick(this)" data-i18n="no">No</div>
     </div>
   </div>
 
   <div class="card">
-    <div class="sec">💳 Reserva y pago</div>
-    <div class="info">
+    <div class="sec" data-i18n="sec_pago">💳 Reserva y pago</div>
+    <div class="info lang-block" data-lang="es">
       La plaza se reserva con <b>50€</b> por transferencia a<br>
       <b>ES93 2100 3683 5322 0012 8922</b> · KIDS AND KAFE INVERSIÓN S.L.<br><br>
       Cuando envíes este formulario, te aparecerá un botón para <b>mandarnos el comprobante por WhatsApp</b>. 📲
     </div>
+    <div class="info lang-block" data-lang="ca" style="display:none">
+      La plaça es reserva amb <b>50€</b> per transferència a<br>
+      <b>ES93 2100 3683 5322 0012 8922</b> · KIDS AND KAFE INVERSIÓN S.L.<br><br>
+      Quan enviïs aquest formulari, t'apareixerà un botó per <b>enviar-nos el comprovant per WhatsApp</b>. 📲
+    </div>
+    <div class="info lang-block" data-lang="en" style="display:none">
+      The place is booked with a <b>€50</b> transfer to<br>
+      <b>ES93 2100 3683 5322 0012 8922</b> · KIDS AND KAFE INVERSIÓN S.L.<br><br>
+      When you submit this form, a button will appear to <b>send us the receipt via WhatsApp</b>. 📲
+    </div>
   </div>
 
-  <button class="send" id="btn-send" onclick="enviar()">☀️ Enviar inscripción</button>
+  <button class="send" id="btn-send" onclick="enviar()" data-i18n="btn_send">☀️ Enviar inscripción</button>
   <div class="err" id="err"></div>
-  <div class="foot">Recuerda: <b>un formulario por cada niño/a.</b><br>Te confirmamos la plaza por WhatsApp. 💛</div>
+  <div class="foot lang-block" data-lang="es">Recuerda: <b>un formulario por cada niño/a.</b><br>Te confirmamos la plaza por WhatsApp. 💛</div>
+  <div class="foot lang-block" data-lang="ca" style="display:none">Recorda: <b>un formulari per cada nen/a.</b><br>Et confirmem la plaça per WhatsApp. 💛</div>
+  <div class="foot lang-block" data-lang="en" style="display:none">Remember: <b>one form per child.</b><br>We'll confirm the place via WhatsApp. 💛</div>
 
   </div><!-- /form-zone -->
 
   <!-- PANTALLA DE ÉXITO -->
   <div id="ok">
     <div class="big">🎉</div>
-    <h2>¡Inscripción recibida!</h2>
-    <p>Gracias, hemos recibido los datos de <b id="ok-nino"></b>.</p>
-    <p>Ahora, el último paso: mándanos el <b>comprobante de la reserva (50€)</b> por WhatsApp y te confirmamos la plaza.</p>
-    <a class="wa-btn" id="ok-wa" href="#" target="_blank" rel="noopener">📲 Enviar comprobante por WhatsApp</a>
-    <p style="margin-top:16px;font-size:11px;color:#A98C5E;">Puedes cerrar esta página cuando termines.</p>
+    <h2 data-i18n="ok_h2">¡Inscripción recibida!</h2>
+    <p><span data-i18n="ok_p1">Gracias, hemos recibido los datos de</span> <b id="ok-nino"></b>.</p>
+    <p data-i18n="ok_p2">Ahora, el último paso: mándanos el comprobante de la reserva (50€) por WhatsApp y te confirmamos la plaza.</p>
+    <a class="wa-btn" id="ok-wa" href="#" target="_blank" rel="noopener" data-i18n="ok_wa">📲 Enviar comprobante por WhatsApp</a>
+    <p style="margin-top:16px;font-size:11px;color:#A98C5E;" data-i18n="ok_close">Puedes cerrar esta página cuando termines.</p>
   </div>
 
 </div>
@@ -188,6 +230,124 @@
   var WA_NUM = "34637319226";
   var sb = null;
   try { sb = supabase.createClient(SB_URL, SB_KEY); } catch(e){ console.warn(e); }
+
+  // ── Diccionario de traducciones (solo texto plano → textContent, sin innerHTML) ──
+  var D = {
+    es: {
+      hero_sub:"Inscripción · Kids & Kafé",
+      sec_precios:"💶 Precios y condiciones", sec_peque:"👦 Datos del peque", sec_contacto:"👨‍👩‍👧 Datos de contacto",
+      sec_semanas:"📅 Semanas de asistencia", sec_horario:"🕐 Horario de asistencia", sec_salud:"🩺 Salud del peque",
+      sec_autoriz:"✅ Autorización", sec_pago:"💳 Reserva y pago",
+      th_dias:"Días/sem", d1:"1 día", d2:"2 días", d3:"3 días", d4:"4 días", d5:"5 días",
+      lbl_nino:"Nombre y apellidos del peque", lbl_nac:"Fecha de nacimiento",
+      lbl_madre:"Nombre y apellido de la madre / teléfono", lbl_padre:"Nombre y apellido del padre / teléfono", lbl_email:"Correo electrónico",
+      lbl_semanas:"Marca las semanas que apunta al peque",
+      w1:"Semana 1", w2:"Semana 2", w3:"Semana 3", w4:"Semana 4", w5:"Semana 5", w6:"Semana 6", w7:"Semana 7", w8:"Semana 8", w9:"Semana 9", w10:"Semana 10", w11:"Semana 11",
+      w1d:"22–26 jun", w2d:"29 jun–3 jul", w3d:"6–10 jul", w4d:"13–17 jul", w5d:"20–24 jul", w6d:"27–31 jul", w7d:"3–7 ago", w8d:"10–14 ago", w9d:"17–21 ago", w10d:"24–28 ago", w11d:"31 ago–4 sep",
+      lbl_horario:"Elige el horario", h_manana:"Mañana", h_comedor:"Con comedor", h_tarde:"Tarde", h_tarde_s:"14:00–18:00 · 110€/sem",
+      lbl_acogida:"¿Acogida de mañana? (desde 8:00 · 10€/h)", yes:"Sí", no:"No",
+      lbl_alergias:"¿El niño/a tiene alguna alergia? Si es SÍ, indica ¿a qué?", lbl_flags:"Solo para los más peques — marca lo que corresponda",
+      fl_comer:"Necesita ayuda para comer", fl_biberon:"Usa biberón", fl_panal:"Utiliza pañal", fl_chupete:"Utiliza chupete", fl_siesta:"Toma la siesta",
+      lbl_fotos:"¿Autorizas fotografías del niño/a para uso exclusivo del centro?",
+      btn_send:"☀️ Enviar inscripción",
+      ok_h2:"¡Inscripción recibida!", ok_p1:"Gracias, hemos recibido los datos de",
+      ok_p2:"Ahora, el último paso: mándanos el comprobante de la reserva (50€) por WhatsApp y te confirmamos la plaza.",
+      ok_wa:"📲 Enviar comprobante por WhatsApp", ok_close:"Puedes cerrar esta página cuando termines.",
+      ph_nino:"Ej. Sofía García López", ph_madre:"Ej. Ana García · 637 000 000", ph_padre:"Ej. Juan López · 637 000 000", ph_email:"tucorreo@email.com", ph_alergias:"Ej. frutos secos, lactosa… (o escribe 'ninguna')",
+      nota_edad:"ℹ️ El casal es para peques de hasta 7 años.",
+      err_nino:"Escribe el nombre y apellidos del peque.", err_madre:"Escribe el nombre y teléfono de la madre / tutor.", err_email:"Escribe un correo electrónico válido.", err_semana:"Marca al menos una semana.",
+      err_nac:"Indica la fecha de nacimiento del peque.", err_edad:"Lo sentimos, el casal es para peques de hasta 7 años. Escríbenos por WhatsApp si tienes dudas.",
+      err_send:"No se pudo enviar. Revisa tu conexión e inténtalo de nuevo, o escríbenos por WhatsApp.", sending:"Enviando…",
+      wa_msg:"¡Hola! Acabo de inscribir a {n} en el English Summer Camp 2026 ({h} · {s}). Os mando el comprobante de la reserva de 50€. 📎"
+    },
+    ca: {
+      hero_sub:"Inscripció · Kids & Kafé",
+      sec_precios:"💶 Preus i condicions", sec_peque:"👦 Dades del nen/a", sec_contacto:"👨‍👩‍👧 Dades de contacte",
+      sec_semanas:"📅 Setmanes d'assistència", sec_horario:"🕐 Horari d'assistència", sec_salud:"🩺 Salut del nen/a",
+      sec_autoriz:"✅ Autorització", sec_pago:"💳 Reserva i pagament",
+      th_dias:"Dies/set", d1:"1 dia", d2:"2 dies", d3:"3 dies", d4:"4 dies", d5:"5 dies",
+      lbl_nino:"Nom i cognoms del nen/a", lbl_nac:"Data de naixement",
+      lbl_madre:"Nom i cognom de la mare / telèfon", lbl_padre:"Nom i cognom del pare / telèfon", lbl_email:"Correu electrònic",
+      lbl_semanas:"Marca les setmanes que apuntes el nen/a",
+      w1:"Setmana 1", w2:"Setmana 2", w3:"Setmana 3", w4:"Setmana 4", w5:"Setmana 5", w6:"Setmana 6", w7:"Setmana 7", w8:"Setmana 8", w9:"Setmana 9", w10:"Setmana 10", w11:"Setmana 11",
+      w1d:"22–26 juny", w2d:"29 juny–3 jul", w3d:"6–10 jul", w4d:"13–17 jul", w5d:"20–24 jul", w6d:"27–31 jul", w7d:"3–7 ag", w8d:"10–14 ag", w9d:"17–21 ag", w10d:"24–28 ag", w11d:"31 ag–4 set",
+      lbl_horario:"Tria l'horari", h_manana:"Matí", h_comedor:"Amb menjador", h_tarde:"Tarda", h_tarde_s:"14:00–18:00 · 110€/set",
+      lbl_acogida:"Acollida de matí? (des de les 8:00 · 10€/h)", yes:"Sí", no:"No",
+      lbl_alergias:"El nen/a té alguna al·lèrgia? Si és que SÍ, indica a què", lbl_flags:"Només per als més petits — marca el que calgui",
+      fl_comer:"Necessita ajuda per menjar", fl_biberon:"Fa servir biberó", fl_panal:"Fa servir bolquer", fl_chupete:"Fa servir xumet", fl_siesta:"Fa la migdiada",
+      lbl_fotos:"Autoritzes fotografies del nen/a per a ús exclusiu del centre?",
+      btn_send:"☀️ Enviar inscripció",
+      ok_h2:"Inscripció rebuda!", ok_p1:"Gràcies, hem rebut les dades de",
+      ok_p2:"Ara, l'últim pas: envia'ns el comprovant de la reserva (50€) per WhatsApp i et confirmem la plaça.",
+      ok_wa:"📲 Enviar comprovant per WhatsApp", ok_close:"Pots tancar aquesta pàgina quan acabis.",
+      ph_nino:"Ex. Sofia García López", ph_madre:"Ex. Anna García · 637 000 000", ph_padre:"Ex. Joan López · 637 000 000", ph_email:"elteucorreu@email.com", ph_alergias:"Ex. fruits secs, lactosa… (o escriu 'cap')",
+      nota_edad:"ℹ️ El casal és per a nens/es fins a 7 anys.",
+      err_nino:"Escriu el nom i cognoms del nen/a.", err_madre:"Escriu el nom i telèfon de la mare / tutor.", err_email:"Escriu un correu electrònic vàlid.", err_semana:"Marca almenys una setmana.",
+      err_nac:"Indica la data de naixement del nen/a.", err_edad:"Ho sentim, el casal és per a nens/es fins a 7 anys. Escriu-nos per WhatsApp si tens dubtes.",
+      err_send:"No s'ha pogut enviar. Revisa la connexió i torna-ho a provar, o escriu-nos per WhatsApp.", sending:"Enviant…",
+      wa_msg:"Hola! Acabo d'inscriure {n} a l'English Summer Camp 2026 ({h} · {s}). Us envio el comprovant de la reserva de 50€. 📎"
+    },
+    en: {
+      hero_sub:"Registration · Kids & Kafé",
+      sec_precios:"💶 Prices & conditions", sec_peque:"👦 Child's details", sec_contacto:"👨‍👩‍👧 Contact details",
+      sec_semanas:"📅 Weeks attending", sec_horario:"🕐 Daily schedule", sec_salud:"🩺 Child's health",
+      sec_autoriz:"✅ Authorisation", sec_pago:"💳 Booking & payment",
+      th_dias:"Days/wk", d1:"1 day", d2:"2 days", d3:"3 days", d4:"4 days", d5:"5 days",
+      lbl_nino:"Child's full name", lbl_nac:"Date of birth",
+      lbl_madre:"Mother's name / phone", lbl_padre:"Father's name / phone", lbl_email:"Email",
+      lbl_semanas:"Select the weeks you're signing up for",
+      w1:"Week 1", w2:"Week 2", w3:"Week 3", w4:"Week 4", w5:"Week 5", w6:"Week 6", w7:"Week 7", w8:"Week 8", w9:"Week 9", w10:"Week 10", w11:"Week 11",
+      w1d:"22–26 Jun", w2d:"29 Jun–3 Jul", w3d:"6–10 Jul", w4d:"13–17 Jul", w5d:"20–24 Jul", w6d:"27–31 Jul", w7d:"3–7 Aug", w8d:"10–14 Aug", w9d:"17–21 Aug", w10d:"24–28 Aug", w11d:"31 Aug–4 Sep",
+      lbl_horario:"Choose the schedule", h_manana:"Morning", h_comedor:"With lunch", h_tarde:"Afternoon", h_tarde_s:"14:00–18:00 · €110/wk",
+      lbl_acogida:"Early drop-off? (from 8:00 · €10/h)", yes:"Yes", no:"No",
+      lbl_alergias:"Does the child have any allergies? If yes, specify", lbl_flags:"For the little ones only — tick what applies",
+      fl_comer:"Needs help eating", fl_biberon:"Uses a bottle", fl_panal:"Wears nappies", fl_chupete:"Uses a dummy", fl_siesta:"Takes a nap",
+      lbl_fotos:"Do you allow photos of the child for the centre's use only?",
+      btn_send:"☀️ Send registration",
+      ok_h2:"Registration received!", ok_p1:"Thanks, we've received the details for",
+      ok_p2:"Now the last step: send us the €50 booking receipt via WhatsApp and we'll confirm the place.",
+      ok_wa:"📲 Send receipt via WhatsApp", ok_close:"You can close this page when you're done.",
+      ph_nino:"e.g. Sofía García López", ph_madre:"e.g. Ana García · 637 000 000", ph_padre:"e.g. Juan López · 637 000 000", ph_email:"youremail@email.com", ph_alergias:"e.g. nuts, lactose… (or write 'none')",
+      nota_edad:"ℹ️ The camp is for children up to 7 years old.",
+      err_nino:"Please enter the child's full name.", err_madre:"Please enter the mother/guardian's name and phone.", err_email:"Please enter a valid email.", err_semana:"Select at least one week.",
+      err_nac:"Please enter the child's date of birth.", err_edad:"Sorry, the camp is for children up to 7 years old. Message us on WhatsApp if you have questions.",
+      err_send:"Couldn't send. Check your connection and try again, or message us on WhatsApp.", sending:"Sending…",
+      wa_msg:"Hi! I've just registered {n} for the English Summer Camp 2026 ({h} · {s}). I'm sending the €50 booking receipt. 📎"
+    }
+  };
+
+  var LANG = 'es';
+  function setLang(l){
+    if(!D[l]) l = 'es';
+    LANG = l;
+    document.documentElement.lang = l;
+    // textos planos
+    document.querySelectorAll('[data-i18n]').forEach(function(e){
+      var k = e.getAttribute('data-i18n');
+      if(D[l][k] != null) e.textContent = D[l][k];
+    });
+    // placeholders
+    document.querySelectorAll('[data-i18n-ph]').forEach(function(e){
+      var k = e.getAttribute('data-i18n-ph');
+      if(D[l][k] != null) e.setAttribute('placeholder', D[l][k]);
+    });
+    // bloques con formato (prices / pago / foot): mostrar solo el del idioma
+    document.querySelectorAll('.lang-block').forEach(function(e){
+      e.style.display = (e.getAttribute('data-lang') === l) ? '' : 'none';
+    });
+    // botones idioma
+    document.querySelectorAll('.langbtn').forEach(function(b){
+      b.classList.toggle('on', b.getAttribute('data-l') === l);
+    });
+  }
+  // idioma inicial: 1º ?lang= de la URL, si no detecta el navegador, por defecto ES
+  (function(){
+    var q = '';
+    try { q = (new URLSearchParams(location.search).get('lang') || '').toLowerCase(); } catch(e){}
+    if(q === 'es' || q === 'ca' || q === 'en'){ setLang(q); return; }
+    var nav = (navigator.language || 'es').slice(0,2).toLowerCase();
+    setLang(nav === 'ca' ? 'ca' : (nav === 'en' ? 'en' : 'es'));
+  })();
 
   // multi-selección (semanas, flags)
   function tog(el){ el.classList.toggle('on'); }
@@ -209,15 +369,28 @@
     e.textContent = m; e.style.display = 'block';
   }
 
+  // edad (en años cumplidos) que tendrá el peque en una fecha de referencia
+  function edadEn(fechaISO, refISO){
+    var b = new Date(fechaISO), r = new Date(refISO);
+    var a = r.getFullYear() - b.getFullYear();
+    var m = r.getMonth() - b.getMonth();
+    if(m < 0 || (m === 0 && r.getDate() < b.getDate())) a--;
+    return a;
+  }
+
   async function enviar(){
+    var t = D[LANG];
     var err = document.getElementById('err'); err.style.display='none';
     var nino  = document.getElementById('f-nino').value.trim();
     var madre = document.getElementById('f-madre').value.trim();
     var email = document.getElementById('f-email').value.trim();
-    if(!nino)  return showErr('Escribe el nombre y apellidos del peque.');
-    if(!madre) return showErr('Escribe el nombre y teléfono de la madre / tutor.');
-    if(!email || email.indexOf('@')<0) return showErr('Escribe un correo electrónico válido.');
-    if(!getMulti('f-semanas').length)  return showErr('Marca al menos una semana.');
+    var nac = document.getElementById('f-nac').value;
+    if(!nino)  return showErr(t.err_nino);
+    if(!madre) return showErr(t.err_madre);
+    if(!email || email.indexOf('@')<0) return showErr(t.err_email);
+    if(!nac)   return showErr(t.err_nac);
+    if(edadEn(nac, '2026-06-22') > 7) return showErr(t.err_edad);
+    if(!getMulti('f-semanas').length)  return showErr(t.err_semana);
 
     var fila = {
       nino_nombre:    nino,
@@ -235,15 +408,14 @@
     };
 
     var btn = document.getElementById('btn-send');
-    btn.disabled = true; btn.textContent = 'Enviando…';
+    btn.disabled = true; btn.textContent = t.sending;
     try {
       if(!sb) throw new Error('sin conexión');
       var res = await sb.from('casal_inscripciones').insert(fila);
       if(res.error) throw res.error;
-      // Éxito → mostrar pantalla + botón WhatsApp
+      // Éxito → mostrar pantalla + botón WhatsApp (mensaje en el idioma activo)
       var semanas = fila.semanas.join(', ');
-      var msg = '¡Hola! Acabo de inscribir a ' + nino + ' en el English Summer Camp 2026 ('
-        + fila.horario + ' · ' + semanas + '). Os mando el comprobante de la reserva de 50€. 📎';
+      var msg = t.wa_msg.replace('{n}', nino).replace('{h}', fila.horario).replace('{s}', semanas);
       document.getElementById('ok-nino').textContent = nino;
       document.getElementById('ok-wa').href = 'https://wa.me/' + WA_NUM + '?text=' + encodeURIComponent(msg);
       document.getElementById('form-zone').style.display = 'none';
@@ -251,8 +423,8 @@
       window.scrollTo(0,0);
     } catch(e){
       console.warn(e);
-      btn.disabled = false; btn.textContent = '☀️ Enviar inscripción';
-      showErr('No se pudo enviar. Revisa tu conexión e inténtalo de nuevo, o escríbenos por WhatsApp.');
+      btn.disabled = false; btn.textContent = t.btn_send;
+      showErr(t.err_send);
     }
   }
 </script>
