@@ -401,13 +401,12 @@
       b.classList.toggle('on', b.getAttribute('data-l') === l);
     });
   }
-  // idioma inicial: 1º ?lang= de la URL, si no detecta el navegador, por defecto ES
+  // idioma inicial: 1º ?lang= de la URL, si no SIEMPRE español (el usuario cambia con los botones ES·CA·EN)
   (function(){
     var q = '';
     try { q = (new URLSearchParams(location.search).get('lang') || '').toLowerCase(); } catch(e){}
-    if(q === 'es' || q === 'ca' || q === 'en'){ setLang(q); return; }
-    var nav = (navigator.language || 'es').slice(0,2).toLowerCase();
-    setLang(nav === 'ca' ? 'ca' : (nav === 'en' ? 'en' : 'es'));
+    if(q === 'ca' || q === 'en'){ setLang(q); return; }
+    setLang('es');
   })();
 
   // multi-selección (semanas, flags)
