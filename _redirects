@@ -1,5 +1,14 @@
 # Fuerza dominio canónico: sin-www -> www (301, evita contenido duplicado)
 https://kidsandkafe.es/* https://www.kidsandkafe.es/:splat 301
 
+# /index y /index.html van DIRECTOS a la raíz (evita salto de más; Google lo resuelve antes)
+# ⚠️ Estas reglas van ANTES de la genérica *.html, si no /index.html caería en ella y saltaría a /index
+/index          / 301
+/index.html     / 301
+/en/index       /en/ 301
+/en/index.html  /en/ 301
+/ca/index       /ca/ 301
+/ca/index.html  /ca/ 301
+
 # Fuerza URL limpia: /precios.html -> /precios (301, transfiere fuerza SEO)
 /*.html /:splat 301
