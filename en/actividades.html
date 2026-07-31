@@ -108,19 +108,19 @@
       <article class="nv-card" data-rv="s" data-delay="1">
         <div class="nv-head" style="background:linear-gradient(140deg,#FBE3CC 0%,#F3D4EC 52%,#D5EEF6 100%)">
           <span class="nv-blob b1"></span><span class="nv-blob b2"></span><span class="nv-dots"></span>
-          <span class="nv-date">☀️ July</span>
+          <span class="nv-date">☀️ August</span>
           <span class="nv-badge"><span class="spark">✨</span> New</span>
           <div class="nv-stage">
-            <div style="position:relative"><div class="nv-med">🌺</div><span class="nv-sat s-a">⚽</span><span class="nv-sat s-b">🧜‍♀️</span></div>
-            <span class="nv-title" style="color:#8a5a2b">July workshops</span>
+            <div style="position:relative"><div class="nv-med">👑</div><span class="nv-sat s-a">🕷️</span><span class="nv-sat s-b">🫧</span></div>
+            <span class="nv-title" style="color:#8a5a2b">August workshops</span>
             <span class="nv-underline"></span>
           </div>
         </div>
         <div class="nv-body">
           <span class="nv-tag hot">Themed workshops</span>
           <h4>Every Saturday, a new world</h4>
-          <p>Hawaiian Party, Ariel &amp; Under the Sea, Mini World Cup 2026 and Mini Chef with Mickey. <b>€25 · booking required.</b></p>
-          <a href="talleres#julio" class="nv-link">See programme <span class="arw">→</span></a>
+          <p>Breakfast with a Princess, Light Sensory, summer hat making, Baby Sensory and Spiderman visits! <b>10:00–12:00 · booking required.</b></p>
+          <a href="#agosto" class="nv-link">See programme <span class="arw">→</span></a>
         </div>
       </article>
 
@@ -217,65 +217,238 @@
   </div>
 </section>
 
-<!-- TALLERES DE JULIO (mini programa) -->
-<section id="talleres-julio">
+<!-- ☀️ ACTIVIDADES DE AGOSTO -->
+<section id="agosto" style="padding-top:14px">
   <div class="wrap">
-    <div class="center"><div class="eyebrow c" data-rv>☀️ July workshops</div><h2 class="title" data-rv data-delay="1">Themed workshops at Kids &amp; Kafé</h2><p class="lead" data-rv data-delay="2">Every Saturday, a different workshop for the little ones. Crafts, music, cooking and lots of fun. <b>€25 per workshop · booking required.</b></p></div>
+    <div class="center"><div class="eyebrow c" data-rv>☀️ August 2026</div><h2 class="title" data-rv data-delay="1"><em>August</em> activities</h2><p class="lead" data-rv data-delay="2">Every Saturday in August, a different experience for the little ones. <b>10:00 – 12:00 · booking required.</b></p></div>
 
     <style>
-      .tj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:22px;margin-top:26px}
-      .tj-card{position:relative;background:#fff;border-radius:22px;padding:26px 18px 22px;text-align:center;box-shadow:0 16px 40px -20px rgba(0,0,0,.28);overflow:hidden;transition:transform .35s cubic-bezier(.2,.7,.3,1),box-shadow .35s}
-      .tj-card::before{content:"";position:absolute;top:0;left:0;right:0;height:6px;background:var(--acc)}
-      .tj-card:hover{transform:translateY(-7px);box-shadow:0 26px 54px -22px rgba(0,0,0,.34)}
-      .tj-med{position:relative;width:78px;height:78px;margin:6px auto 14px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:38px;background:var(--soft);box-shadow:inset 0 0 0 5px #fff,0 8px 18px -6px var(--acc);animation:tjfloat 3.6s ease-in-out infinite}
-      .tj-med::after{content:"";position:absolute;top:13px;left:18px;width:22px;height:12px;border-radius:50%;background:rgba(255,255,255,.55);transform:rotate(-18deg)}
-      .tj-card:nth-child(2) .tj-med{animation-delay:.5s}
-      .tj-card:nth-child(3) .tj-med{animation-delay:1s}
-      .tj-card:nth-child(4) .tj-med{animation-delay:1.5s}
-      .tj-day{font-size:12.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--accd)}
-      .tj-name{font-family:'Nunito',serif;font-size:19px;color:var(--ink);margin:5px 0 8px;line-height:1.25}
-      .tj-time{display:inline-block;font-size:13px;font-weight:600;color:#555;background:var(--soft);padding:4px 12px;border-radius:999px}
-      @keyframes tjfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-      @media (prefers-reduced-motion:reduce){.tj-med{animation:none}}
+      .ag-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(228px,1fr));gap:22px;margin-top:26px}
+      .ag-card{position:relative;background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 16px 40px -20px rgba(90,60,45,.28);transition:transform .35s cubic-bezier(.2,.7,.3,1),box-shadow .35s}
+      .ag-card::before{content:"";position:absolute;top:0;left:0;right:0;height:6px;background:var(--acc);z-index:3}
+      .ag-card:hover{transform:translateY(-7px);box-shadow:0 26px 54px -22px rgba(90,60,45,.36)}
+      .ag-scene{position:relative;height:174px;overflow:hidden;background:linear-gradient(160deg,#fff 0%,var(--soft) 100%)}
+      .ag-scene svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+      .ag-body{padding:16px 18px 22px;text-align:center}
+      .ag-day{font-size:12.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--accd)}
+      .ag-name{font-family:'Nunito',serif;font-size:19px;font-weight:800;color:var(--ink);margin:5px 0 10px;line-height:1.22}
+      .ag-time{display:inline-block;font-size:13px;font-weight:600;color:#555;background:var(--soft);padding:4px 12px;border-radius:999px}
+      .ag-age{display:inline-block;margin-top:9px;font-size:12.5px;font-weight:800;color:var(--accd);background:#fff;border:1.5px dashed var(--acc);padding:4px 12px;border-radius:999px}
       .tj-cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:30px}
       .tj-cta a{display:inline-flex;align-items:center;gap:7px;padding:13px 24px;border-radius:999px;font-weight:700;font-size:15px;text-decoration:none;transition:transform .25s,box-shadow .25s}
       .tj-cta a:hover{transform:translateY(-2px)}
       .tj-wa{background:#25D366;color:#fff;box-shadow:0 10px 24px -10px rgba(37,211,102,.8)}
       .tj-app{background:var(--ink);color:#fff;box-shadow:0 10px 24px -12px rgba(0,0,0,.5)}
-      .tj-all{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
     </style>
 
-    <div class="tj-grid">
-      <div class="tj-card" data-rv="s" data-delay="1" style="--acc:#E8934E;--accd:#B25E1E;--soft:#FBE3CC">
-        <div class="tj-med">🌺</div>
-        <div class="tj-day">Saturday 11 July</div>
-        <h3 class="tj-name">Hawaiian Party</h3>
-        <div class="tj-time">🕐 10:00 – 12:00</div>
+    <div class="ag-grid">
+
+      <!-- Princesa -->
+      <div class="ag-card" data-rv="s" data-delay="1" style="--acc:#C26FB0;--accd:#93407E;--soft:#F7E3F1">
+        <div class="ag-scene">
+          <svg viewBox="0 0 920 400" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <g fill="#E7A93C" opacity=".7">
+              <path d="M110 92 l6 14 14 6 -14 6 -6 14 -6-14 -14-6 14-6z"/>
+              <path d="M812 96 l5 11 11 5 -11 5 -5 11 -5-11 -11-5 11-5z"/>
+              <path d="M778 252 l4 9 9 4 -9 4 -4 9 -4-9 -9-4 9-4z"/>
+              <path d="M148 280 l4 9 9 4 -9 4 -4 9 -4-9 -9-4 9-4z"/>
+            </g>
+            <path d="M0 360 Q460 300 920 360 L920 400 L0 400Z" fill="#F2D9EC"/>
+            <rect x="322" y="210" width="72" height="150" rx="6" fill="#EAC5E2"/>
+            <polygon points="316,210 400,210 358,158" fill="#C26FB0"/>
+            <rect x="526" y="210" width="72" height="150" rx="6" fill="#EAC5E2"/>
+            <polygon points="520,210 604,210 562,158" fill="#C26FB0"/>
+            <rect x="394" y="238" width="132" height="122" rx="6" fill="#F3D6EC"/>
+            <polygon points="388,238 532,238 460,176" fill="#C26FB0"/>
+            <path d="M432 360 v-52 a26 26 0 0 1 52 0 v52z" fill="#B368A0"/>
+            <circle cx="358" cy="256" r="10" fill="#fff"/>
+            <circle cx="562" cy="256" r="10" fill="#fff"/>
+            <g stroke="#93407E" stroke-width="4">
+              <line x1="358" y1="158" x2="358" y2="128"/>
+              <line x1="562" y1="158" x2="562" y2="128"/>
+              <line x1="460" y1="176" x2="460" y2="128"/>
+            </g>
+            <path d="M358 130 l22 7 -22 7z" fill="#E7A93C"/>
+            <path d="M562 130 l22 7 -22 7z" fill="#E7A93C"/>
+            <path d="M460 130 l22 7 -22 7z" fill="#E7A93C"/>
+            <g transform="translate(385,44)">
+              <path d="M0 58 L14 14 L48 42 L48 6 L102 6 L102 42 L136 14 L150 58 Z" fill="#F0C24B" stroke="#E7A93C" stroke-width="3"/>
+              <rect x="-4" y="58" width="158" height="20" rx="8" fill="#E7A93C"/>
+              <circle cx="14" cy="14" r="7" fill="#C26FB0"/>
+              <circle cx="75" cy="6" r="7" fill="#C26FB0"/>
+              <circle cx="136" cy="14" r="7" fill="#C26FB0"/>
+              <circle cx="40" cy="68" r="5" fill="#fff"/><circle cx="75" cy="68" r="5" fill="#fff"/><circle cx="110" cy="68" r="5" fill="#fff"/>
+            </g>
+          </svg>
+        </div>
+        <div class="ag-body">
+          <div class="ag-day">Saturday 8 August</div>
+          <h3 class="ag-name">Breakfast with a Princess</h3>
+          <div class="ag-time">🕙 10:00 – 12:00</div><br>
+          <div class="ag-age">👧 1 to 8 years</div>
+        </div>
       </div>
-      <div class="tj-card" data-rv="s" data-delay="2" style="--acc:#4FA9C7;--accd:#2E7690;--soft:#D5EEF6">
-        <div class="tj-med">🧜‍♀️</div>
-        <div class="tj-day">Saturday 18 July</div>
-        <h3 class="tj-name">Ariel & Under the Sea</h3>
-        <div class="tj-time">🕐 10:00 – 12:00</div>
+
+      <!-- Light Sensory -->
+      <div class="ag-card" data-rv="s" data-delay="2" style="--acc:#4FA9C7;--accd:#2E7690;--soft:#DCF0F7">
+        <div class="ag-scene">
+          <svg viewBox="0 0 920 400" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <g fill="none" stroke-width="20" stroke-linecap="round">
+              <path d="M210 350 A250 250 0 0 1 710 350" stroke="#E85C6A"/>
+              <path d="M248 350 A212 212 0 0 1 672 350" stroke="#E7A93C"/>
+              <path d="M286 350 A174 174 0 0 1 634 350" stroke="#7CA84A"/>
+              <path d="M324 350 A136 136 0 0 1 596 350" stroke="#4FA9C7"/>
+              <path d="M362 350 A98 98 0 0 1 558 350" stroke="#8E7BC4"/>
+            </g>
+            <ellipse cx="210" cy="350" rx="54" ry="30" fill="#fff"/>
+            <ellipse cx="710" cy="350" rx="54" ry="30" fill="#fff"/>
+            <circle cx="112" cy="140" r="36" fill="#F6C1CE"/><circle cx="112" cy="140" r="18" fill="#fff" opacity=".85"/>
+            <circle cx="812" cy="128" r="30" fill="#BFE3F0"/><circle cx="812" cy="128" r="15" fill="#fff" opacity=".85"/>
+            <circle cx="830" cy="256" r="22" fill="#F5E1A6"/><circle cx="830" cy="256" r="11" fill="#fff" opacity=".85"/>
+            <g fill="#E7A93C">
+              <path d="M92 258 l5 12 12 5 -12 5 -5 12 -5-12 -12-5 12-5z"/>
+              <path d="M470 62 l6 14 14 6 -14 6 -6 14 -6-14 -14-6 14-6z"/>
+              <path d="M760 322 l4 10 10 4 -10 4 -4 10 -4-10 -10-4 10-4z"/>
+            </g>
+          </svg>
+        </div>
+        <div class="ag-body">
+          <div class="ag-day">Saturday 9 August</div>
+          <h3 class="ag-name">Light Sensory</h3>
+          <div class="ag-time">🕙 10:00 – 12:00</div><br>
+          <div class="ag-age">👶 6 months to 3 years</div>
+        </div>
       </div>
-      <div class="tj-card" data-rv="s" data-delay="3" style="--acc:#7CA84A;--accd:#5A7D2E;--soft:#DDEFC0">
-        <div class="tj-med">⚽</div>
-        <div class="tj-day">Saturday 25 July</div>
-        <h3 class="tj-name">Mini World Cup 2026</h3>
-        <div class="tj-time">🕐 10:00 – 12:00</div>
+
+      <!-- Sombrero de verano -->
+      <div class="ag-card" data-rv="s" data-delay="3" style="--acc:#E7A93C;--accd:#B27A18;--soft:#FCEBBE">
+        <div class="ag-scene">
+          <svg viewBox="0 0 920 400" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <g transform="translate(460,124)">
+              <g stroke="#EFC24E" stroke-width="8" stroke-linecap="round">
+                <line x1="0" y1="-98" x2="0" y2="-126"/>
+                <line x1="68" y1="-70" x2="88" y2="-90"/>
+                <line x1="98" y1="0" x2="126" y2="0"/>
+                <line x1="-68" y1="-70" x2="-88" y2="-90"/>
+                <line x1="-98" y1="0" x2="-126" y2="0"/>
+                <line x1="48" y1="-86" x2="62" y2="-110"/>
+                <line x1="-48" y1="-86" x2="-62" y2="-110"/>
+              </g>
+              <circle r="72" fill="#F5CE5B"/>
+              <circle r="72" fill="none" stroke="#EFC24E" stroke-width="4"/>
+            </g>
+            <g fill="#7CA84A" opacity=".9">
+              <path d="M28 400 Q60 292 158 274 Q78 316 92 400Z"/>
+              <path d="M892 400 Q860 292 762 274 Q842 316 828 400Z"/>
+            </g>
+            <g transform="translate(460,266)">
+              <ellipse cx="0" cy="54" rx="192" ry="52" fill="#E3B267"/>
+              <ellipse cx="0" cy="46" rx="192" ry="48" fill="#F0CE8E"/>
+              <path d="M-98 46 Q-98 -58 0 -58 Q98 -58 98 46 Z" fill="#E9C078"/>
+              <rect x="-100" y="16" width="200" height="30" rx="10" fill="#C26FB0"/>
+              <path d="M92 32 q28 4 32 26 q-32 -4 -46 -14z" fill="#A85694"/>
+            </g>
+          </svg>
+        </div>
+        <div class="ag-body">
+          <div class="ag-day">Saturday 22 August</div>
+          <h3 class="ag-name">Make your summer hat</h3>
+          <div class="ag-time">🕙 10:00 – 12:00</div><br>
+          <div class="ag-age">👧 1 to 8 years</div>
+        </div>
       </div>
-      <div class="tj-card" data-rv="s" data-delay="4" style="--acc:#C26FB0;--accd:#93407E;--soft:#F3D4EC">
-        <div class="tj-med">🧑‍🍳</div>
-        <div class="tj-day">Saturday 1 August</div>
-        <h3 class="tj-name">Mini Chef with Mickey</h3>
-        <div class="tj-time">🕐 10:00 – 12:00</div>
+
+      <!-- Baby Sensory -->
+      <div class="ag-card" data-rv="s" data-delay="4" style="--acc:#7CA84A;--accd:#5A7D2E;--soft:#E4F1CE">
+        <div class="ag-scene">
+          <svg viewBox="0 0 920 400" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="252" cy="212" r="92" fill="#E4F1CE" stroke="#C9E3A0" stroke-width="3"/>
+            <circle cx="226" cy="184" r="24" fill="#fff" opacity=".7"/>
+            <circle cx="452" cy="148" r="58" fill="#DCF0F7" stroke="#B9E0EE" stroke-width="3"/>
+            <circle cx="436" cy="130" r="16" fill="#fff" opacity=".7"/>
+            <circle cx="638" cy="238" r="74" fill="#F7E3F1" stroke="#EAC4DE" stroke-width="3"/>
+            <circle cx="614" cy="214" r="20" fill="#fff" opacity=".7"/>
+            <circle cx="372" cy="308" r="34" fill="#FCEBBE" stroke="#EFD68C" stroke-width="3"/>
+            <circle cx="540" cy="330" r="26" fill="#E4F1CE" stroke="#C9E3A0" stroke-width="3"/>
+            <circle cx="792" cy="146" r="20" fill="#DCF0F7" stroke="#B9E0EE" stroke-width="3"/>
+            <g transform="translate(724,300) rotate(-16)">
+              <rect x="-10" y="-6" width="20" height="86" rx="10" fill="#7CA84A"/>
+              <circle cx="0" cy="76" r="15" fill="#E7A93C"/>
+              <circle cx="0" cy="-30" r="48" fill="#F5B8D0" stroke="#E48FB5" stroke-width="4"/>
+              <circle cx="0" cy="-30" r="18" fill="#fff"/>
+              <circle cx="-18" cy="-46" r="7" fill="#fff" opacity=".85"/>
+            </g>
+            <g fill="#E7A93C" opacity=".8">
+              <path d="M118 322 l4 9 9 4 -9 4 -4 9 -4-9 -9-4 9-4z"/>
+            </g>
+          </svg>
+        </div>
+        <div class="ag-body">
+          <div class="ag-day">Saturday 23 August</div>
+          <h3 class="ag-name">Baby Sensory</h3>
+          <div class="ag-time">🕙 10:00 – 12:00</div><br>
+          <div class="ag-age">👶 6 months to 1 year</div>
+        </div>
       </div>
+
+      <!-- Spiderman -->
+      <div class="ag-card" data-rv="s" data-delay="1" style="--acc:#D8483F;--accd:#A5322B;--soft:#F7DAD5">
+        <div class="ag-scene">
+          <svg viewBox="0 0 920 400" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <g stroke="#CBB9AE" stroke-width="2.6" fill="none" opacity=".85">
+              <line x1="0" y1="18" x2="250" y2="18"/>
+              <line x1="0" y1="18" x2="18" y2="270"/>
+              <line x1="0" y1="18" x2="196" y2="120"/>
+              <line x1="0" y1="18" x2="108" y2="212"/>
+              <path d="M64 18 Q60 66 18 74"/>
+              <path d="M128 18 Q116 124 18 148"/>
+              <path d="M192 18 Q170 188 18 214"/>
+            </g>
+            <line x1="812" y1="6" x2="812" y2="92" stroke="#2b2320" stroke-width="3"/>
+            <g transform="translate(812,116)">
+              <g stroke="#2b2320" stroke-width="4" stroke-linecap="round" fill="none">
+                <path d="M-20 -8 q-16 -6 -24 -18"/><path d="M-22 2 q-18 0 -28 -2"/><path d="M-20 12 q-16 8 -22 22"/>
+                <path d="M20 -8 q16 -6 24 -18"/><path d="M22 2 q18 0 28 -2"/><path d="M20 12 q16 8 22 22"/>
+              </g>
+              <ellipse rx="24" ry="21" fill="#2b2320"/>
+              <circle cx="-8" cy="-6" r="5" fill="#fff"/><circle cx="8" cy="-6" r="5" fill="#fff"/>
+              <circle cx="-8" cy="-5" r="2.2" fill="#111"/><circle cx="8" cy="-5" r="2.2" fill="#111"/>
+            </g>
+            <g transform="translate(456,206)">
+              <path d="M0 -142 C82 -142 136 -86 136 -16 C136 64 76 132 0 154 C-76 132 -136 64 -136 -16 C-136 -86 -82 -142 0 -142Z" fill="#D8483F"/>
+              <ellipse cx="-42" cy="-98" rx="48" ry="26" fill="#fff" opacity=".13"/>
+              <g stroke="#9a2a23" stroke-width="2.4" fill="none" opacity=".7">
+                <line x1="0" y1="0" x2="0" y2="-140"/>
+                <line x1="0" y1="0" x2="0" y2="152"/>
+                <line x1="0" y1="0" x2="130" y2="-16"/>
+                <line x1="0" y1="0" x2="-130" y2="-16"/>
+                <line x1="0" y1="0" x2="92" y2="-98"/>
+                <line x1="0" y1="0" x2="-92" y2="-98"/>
+                <line x1="0" y1="0" x2="98" y2="86"/>
+                <line x1="0" y1="0" x2="-98" y2="86"/>
+                <path d="M0 -48 L42 -22 L42 28 L0 52 L-42 28 L-42 -22Z"/>
+                <path d="M0 -92 L80 -44 L80 54 L0 100 L-80 54 L-80 -44Z"/>
+              </g>
+              <path d="M-20 -46 C-60 -70 -100 -60 -114 -24 C-98 8 -52 8 -30 -8 C-20 -18 -18 -34 -20 -46Z" fill="#fff" stroke="#141414" stroke-width="5" stroke-linejoin="round"/>
+              <path d="M20 -46 C60 -70 100 -60 114 -24 C98 8 52 8 30 -8 C20 -18 18 -34 20 -46Z" fill="#fff" stroke="#141414" stroke-width="5" stroke-linejoin="round"/>
+              <path d="M-96 -36 C-82 -48 -62 -46 -54 -34 C-68 -28 -86 -28 -96 -36Z" fill="#D7E7EC" opacity=".95"/>
+              <path d="M96 -36 C82 -48 62 -46 54 -34 C68 -28 86 -28 96 -36Z" fill="#D7E7EC" opacity=".95"/>
+            </g>
+          </svg>
+        </div>
+        <div class="ag-body">
+          <div class="ag-day">Saturday 29 August</div>
+          <h3 class="ag-name">Spiderman visits!</h3>
+          <div class="ag-time">🕙 10:00 – 12:00</div><br>
+          <div class="ag-age">👧 1 to 8 years</div>
+        </div>
+      </div>
+
     </div>
 
     <div class="tj-cta" data-rv>
-      <a class="tj-wa" href="https://wa.me/34637319226?text=Hi!%20I%20want%20to%20book%20a%20place%20in%20a%20July%20workshop" target="_blank" rel="noopener">Book on WhatsApp 💬</a>
+      <a class="tj-wa" href="https://wa.me/34637319226?text=Hi!%20I%27d%20like%20to%20book%20a%20spot%20for%20an%20August%20activity" target="_blank" rel="noopener">Book via WhatsApp 💬</a>
       <a class="tj-app" href="contacto#app">Book in the app 📱</a>
-      <a class="tj-all" href="talleres#julio">See full programme →</a>
     </div>
   </div>
 </section>
