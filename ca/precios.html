@@ -61,10 +61,35 @@
     "geoRadius": 5000
   },
   "knowsLanguage": ["es", "en", "ca"],
+  "openingHoursSpecification": [
+    {"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"10:00","closes":"20:00"},
+    {"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday","Sunday"],"opens":"10:00","closes":"14:00"},
+    {"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday","Sunday"],"opens":"16:00","closes":"20:00"}
+  ],
   "sameAs": [
     "https://instagram.com/kidsandkafe",
     "https://wa.me/34637319226"
-  ]
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Preus, bons i Kids Drop · Kids & Kafé",
+    "itemListElement": [
+      {"@type":"Offer","name":"Joc lliure · primera hora","price":"10","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Joc lliure · segona hora","price":"7","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Joc lliure · hora de germans","price":"8","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Bo 10 hores de joc","price":"85","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Bo 10 hores de joc (monoparental)","price":"75","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Kids Drop · 1 hora","price":"15","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Kids Drop · bo 4 hores","price":"55","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Kids Drop · bo 7 hores","price":"95","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Kids Drop · bo 10 hores","price":"140","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Baby Explorer (0-3) · pla mensual","price":"120","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Baby Explorer (0-3) · pla anual","price":"980","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Taller English & Play (mensual)","price":"49","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Taller English & Art (mensual)","price":"49","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Entrada adult sense bo","price":"3","priceCurrency":"EUR"}
+    ]
+  }
 }
 </script>
 <style>
