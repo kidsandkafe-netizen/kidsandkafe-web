@@ -61,10 +61,35 @@
     "geoRadius": 5000
   },
   "knowsLanguage": ["es", "en", "ca"],
+  "openingHoursSpecification": [
+    {"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"10:00","closes":"20:00"},
+    {"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday","Sunday"],"opens":"10:00","closes":"14:00"},
+    {"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday","Sunday"],"opens":"16:00","closes":"20:00"}
+  ],
   "sameAs": [
     "https://instagram.com/kidsandkafe",
     "https://wa.me/34637319226"
-  ]
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Precios, bonos y Kids Drop · Kids & Kafé",
+    "itemListElement": [
+      {"@type":"Offer","name":"Juego libre · primera hora","price":"10","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Juego libre · segunda hora","price":"7","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Juego libre · hora de hermanos","price":"8","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Bono 10 horas de juego","price":"85","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Bono 10 horas de juego (monoparental)","price":"75","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Kids Drop · 1 hora","price":"15","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Kids Drop · bono 4 horas","price":"55","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Kids Drop · bono 7 horas","price":"95","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Kids Drop · bono 10 horas","price":"140","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Baby Explorer (0-3) · plan mensual","price":"120","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Baby Explorer (0-3) · plan anual","price":"980","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Taller English & Play (mensual)","price":"49","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Taller English & Art (mensual)","price":"49","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Entrada adulto sin bono","price":"3","priceCurrency":"EUR"}
+    ]
+  }
 }
 </script>
 <style>
