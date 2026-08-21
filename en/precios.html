@@ -61,10 +61,35 @@
     "geoRadius": 5000
   },
   "knowsLanguage": ["es", "en", "ca"],
+  "openingHoursSpecification": [
+    {"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"10:00","closes":"20:00"},
+    {"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday","Sunday"],"opens":"10:00","closes":"14:00"},
+    {"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday","Sunday"],"opens":"16:00","closes":"20:00"}
+  ],
   "sameAs": [
     "https://instagram.com/kidsandkafe",
     "https://wa.me/34637319226"
-  ]
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Prices, passes & Kids Drop · Kids & Kafé",
+    "itemListElement": [
+      {"@type":"Offer","name":"Open play · first hour","price":"10","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Open play · second hour","price":"7","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Open play · sibling hour","price":"8","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"10-hour play pass","price":"85","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"10-hour play pass (single-parent)","price":"75","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Kids Drop · 1 hour","price":"15","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Kids Drop · 4-hour pass","price":"55","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Kids Drop · 7-hour pass","price":"95","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Kids Drop · 10-hour pass","price":"140","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Baby Explorer (0-3) · monthly plan","price":"120","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Baby Explorer (0-3) · annual plan","price":"980","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"English & Play workshop (monthly)","price":"49","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"English & Art workshop (monthly)","price":"49","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Adult entry without pass","price":"3","priceCurrency":"EUR"}
+    ]
+  }
 }
 </script>
 <style>
