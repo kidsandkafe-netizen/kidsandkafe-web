@@ -472,7 +472,7 @@
             <span class="cloud-puff cp5"></span>
             <img src="../img/logo.png" class="balloon-logo" alt="Kids & Kafé">
           </div>
-          <a class="balloon-tag" href="contacto#app"><span class="balloon-tag-emo">☀️</span><span class="balloon-tag-txt">Summer Camp</span></a>
+          <a class="balloon-tag" href="actividades"><span class="balloon-tag-emo">🎨</span><span class="balloon-tag-txt">Extraescolars</span></a>
         </div>
         <div class="mini-balloon mb1"></div>
         <div class="mini-balloon mb2"></div>
@@ -508,21 +508,21 @@
 <section id="programa">
   <svg class="wave wave-top" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true"><path d="M0,55 C240,100 480,5 720,40 C960,75 1200,20 1440,50 L1440,0 L0,0 Z" fill="#FFFBF8"/></svg>
   <div class="wrap">
-    <div class="center"><div class="eyebrow c" data-rv>El nostre programa</div><h2 class="title" data-rv data-delay="1">Això és el que <em>tenim per a tu</em></h2><p class="lead" data-rv data-delay="2">Cada setmana un taller nou, casals a les vacances i activitats fixes per a tota la família.</p></div>
+    <div class="center"><div class="eyebrow c" data-rv>El nostre programa</div><h2 class="title" data-rv data-delay="1">Això és el que <em>tenim per a tu</em></h2><p class="lead" data-rv data-delay="2">Extraescolars en anglès, tallers i activitats fixes per a tota la família.</p></div>
     <div class="prog-feat">
-      <a href="actividades" class="pf-big" data-rv="s">
-        <div class="pf-img"><img src="../img/g4.jpg" alt="Taller de la setmana"><span class="pf-badge">Places limitades</span></div>
+      <a href="../extraescolar-inscripcion.html?lang=ca" class="pf-big" data-rv="s">
+        <div class="pf-img"><img src="../img/g4.jpg" alt="Extraescolars en anglès"><span class="pf-badge">Inscripcions obertes</span></div>
         <div class="b">
-          <span class="pf-tag">🎨 Taller de la setmana</span>
-          <h3>Cada setmana, un taller nou</h3>
-          <p>Mini Chef, slime fluorescent, art, sensorial i moltes sorpreses més. Apunta el teu petit abans que s'ompli!</p>
-          <span class="btn btn-pink" style="align-self:flex-start;margin-top:4px">Apunta't al taller →</span>
+          <span class="pf-tag">🎨 Extraescolars en anglès</span>
+          <h3>English &amp; Play i English &amp; Art</h3>
+          <p>Dilluns i dimarts de 17:00 a 18:00, des de P3. Aprenen anglès jugant i creant. 49€/mes per activitat.</p>
+          <span class="btn btn-pink" style="align-self:flex-start;margin-top:4px">Inscriure'm →</span>
         </div>
       </a>
       <div class="pf-row2">
-        <a href="actividades" class="pf-mini" data-rv="r" data-delay="1">
-          <div class="pf-img"><img src="../img/g1.jpg" alt="Casals"></div>
-          <div class="b"><h4>☀️ Casals</h4><p>Summer, Christmas i Setmana Santa Camp.</p><span class="btn btn-pink" style="margin-top:6px;padding:9px 16px;font-size:13px">Reservar →</span></div>
+        <a href="baby-explorer" class="pf-mini" data-rv="r" data-delay="1">
+          <div class="pf-img"><img src="../img/g1.jpg" alt="Baby Explorer"></div>
+          <div class="b"><h4>🐣 Baby Explorer</h4><p>Estimulació primerenca 0-3 anys.</p><span class="btn btn-pink" style="margin-top:6px;padding:9px 16px;font-size:13px">Veure més →</span></div>
         </a>
         <a href="actividades" class="pf-mini" data-rv="l" data-delay="1">
           <div class="pf-img"><img src="../img/playzone.jpg" alt="Activitats fixes"></div>
@@ -654,10 +654,10 @@
   // Tablón premium: 6 tarjetas, cada una su color + ilustración 3D (Microsoft Fluent, local en img/illo/).
   // El *asterisco* resalta la palabra (título en degradado, descripción en color del tema).
   var OFERTAS=[
-    {theme:'t-teal', img:'casal.png',    ek:'Casal d\'estiu', title:'Casal d\'*estiu*', desc:'En *anglès* i *des d\'1 any*, amb mil aventures fins al setembre.', price:'Places d\'agost · 5% a l\'app', link:'casal', cta:'Reservar plaça', flag:'☀️ Últimes places d\'agost', chips:['👶 Des d\'1 any','🇬🇧 En anglès','🍽️ Menjar','🚌 Excursió'], wa:'Hola! Vull info del casal d\'estiu'},
+    {theme:'t-mint', img:'baby.png',     ek:'Extraescolars', title:'Extraescolars en *anglès*', desc:'*English & Play* (dilluns) i *English & Art* (dimarts), de 17 a 18h. Des de P3.', price:'49€/mes · inscripcions obertes', link:'extraescolar-inscripcion.html?lang=ca', cta:'Inscriure\'m', flag:'🎨 Inscripcions obertes', chips:['🇬🇧 En anglès','🎨 Joc i art','🗓️ Tot el curs'], wa:'Hola! Vull info de les extraescolars en anglès'},
     {theme:'t-sky',  img:'kidsdrop.png', ek:'Kids Drop',      title:'Tu *lliure*, ells segurs', desc:'Els deixes amb *monitores expertes* i surts tranquil·la: feina, una cita o veure Barcelona.', price:'Cangur sense reserva · a l\'instant', link:'kids-drop', cta:'Veure horaris', chips:['⏱️ Per hores','🙌 Sense reserva','👧 2n germà −50%'], wa:'Hola! Vull info de Kids Drop'},
     {theme:'t-sun',  img:'bono.png',     ek:'Bo hores',       title:'Bo *11 hores*', desc:'11 h de joc i *2 adults gratis* a cada visita. Sense caducitat.', price:'85€ · 7,7€/h (estalvies 25€)', link:'precios', cta:'Aconseguir el bo', chips:['⏳ Sense caducitat','👨‍👩‍👧 2 adults gratis'], wa:'Hola! Vull info del bo d\'11 hores'},
-    {theme:'t-coral',img:'talleres.png', ek:'Tallers',        title:'Tallers al *juliol*', desc:'Hawaiana Party, El Fons del Mar i Mini Chef — *places limitades*.', price:'25€ · reserva prèvia', link:'talleres', cta:'Veure tallers', chips:['🗓️ Cada setmana','🎨 Art i ciència'], wa:'Hola! Vull reservar plaça en un taller'},
+    {theme:'t-coral',img:'talleres.png', ek:'Tallers',        title:'Tallers *molt aviat*', desc:'Estem preparant el *nou programa de tallers*. Molt aviat!', price:'Pròximament', link:'talleres', cta:'Veure més', chips:['✨ Nova temporada','🎨 Art i ciència'], wa:'Hola! Vull info dels pròxims tallers'},
     {theme:'t-lav',  img:'cumples.png',  ek:'Aniversaris',    title:'Festes *inoblidables*', desc:'*Ho muntem tot* — decoració, animació i pastís. Tu només gaudeixes.', price:'Reserva la teva data', link:'cumpleanos', cta:'Reservar data', chips:['🎈 Ho muntem tot','🎂 Pastís i animació'], wa:'Hola! Vull reservar un aniversari'},
     {theme:'t-mint', img:'baby.png',     ek:'Baby Explorer',  title:'Baby *Explorer*', desc:'*Estimulació primerenca* cada matí amb monitora especialitzada. 0-3 anys.', price:'Des de 85€', link:'baby-explorer', cta:'Veure Baby Explorer', chips:['🐣 0-3 anys','🧠 Estimulació'], wa:'Hola! Vull info de Baby Explorer'}
   ];
