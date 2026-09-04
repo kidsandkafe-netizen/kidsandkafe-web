@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inscripción · Extraescolares Curso 2026-2027 · Kids &amp; Kafé</title>
+<meta name="description" content="Formulario de inscripción a las actividades extraescolares (English &amp; Play / English &amp; Art) de Kids & Kafé (Barcelona).">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Nunito',system-ui,sans-serif;background:linear-gradient(180deg,#E6F0FB,#D3E4F5);color:#26384A;padding:24px 14px 70px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:460px;margin:0 auto}
+  .langbar{display:flex;gap:6px;justify-content:center;margin-bottom:14px}
+  .langbtn{border:1.5px solid #C3D8EE;background:#fff;color:#2E6FB0;border-radius:10px;padding:6px 15px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit}
+  .langbtn.on{background:#4A90D9;border-color:#4A90D9;color:#fff}
+  .hero{background:linear-gradient(160deg,#5FA8E8,#4A90D9);border-radius:22px;padding:26px 22px;color:#fff;text-align:center;box-shadow:0 16px 34px -18px rgba(30,90,160,0.7);margin-bottom:16px;position:relative;overflow:hidden}
+  .hero .sun{position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:rgba(255,255,255,0.18);border-radius:50%}
+  .hero h1{font-family:'Nunito',serif;font-size:25px;font-weight:600;line-height:1.15;position:relative}
+  .hero p{font-size:12.5px;margin-top:8px;opacity:.95;position:relative}
+  .card{background:#fff;border-radius:18px;padding:18px 18px 20px;margin-bottom:14px;box-shadow:0 10px 26px -18px rgba(40,90,150,0.5)}
+  .sec{font-family:'Nunito',serif;font-size:16px;font-weight:600;color:#2E6FB0;display:flex;align-items:center;gap:8px;margin-bottom:14px}
+  label{display:block;font-size:12px;font-weight:800;color:#3A5A76;margin:12px 0 5px}
+  label:first-of-type{margin-top:0}
+  input,select,textarea{width:100%;border:1.5px solid #C3D8EE;border-radius:11px;padding:11px 12px;font-size:14px;font-family:inherit;color:#26384A;background:#FBFDFF;outline:none}
+  input:focus,select:focus,textarea:focus{border-color:#4A90D9;background:#fff}
+  .req{color:#E0662A}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+  .chip{border:1.5px solid #C3D8EE;background:#FBFDFF;border-radius:12px;padding:11px 12px;font-size:13px;font-weight:700;color:#33506B;cursor:pointer;flex:1 1 auto;text-align:center;min-width:130px;user-select:none}
+  .chip.on{border-color:#4A90D9;background:#EAF3FC;color:#2E6FB0}
+  .chip small{display:block;font-weight:600;font-size:10.5px;color:#7D97AE;margin-top:2px}
+  .yn{display:flex;gap:8px}
+  .yn .chip{min-width:0}
+  .info{background:#EFF6FE;border:1px solid #CFE2F4;border-radius:12px;padding:12px 13px;font-size:11.5px;color:#3A5A76;line-height:1.6;margin-top:6px}
+  .info b{color:#2E6FB0}
+  .price-hero{text-align:center;background:linear-gradient(135deg,#EAF3FC,#DBEBFA);border:1.5px solid #C3D8EE;border-radius:14px;padding:16px;margin-top:4px}
+  .price-hero .big{font-size:34px;font-weight:900;color:#2E6FB0;line-height:1}
+  .price-hero .small{font-size:12px;font-weight:700;color:#3A5A76;margin-top:4px}
+  .send{width:100%;background:linear-gradient(135deg,#4A90D9,#2E6FB0);color:#fff;border:none;border-radius:14px;padding:16px;font-size:16px;font-weight:900;cursor:pointer;box-shadow:0 12px 26px -14px rgba(30,90,160,0.8);margin-top:6px}
+  .send:disabled{opacity:.6;cursor:default}
+  .foot{text-align:center;font-size:11px;color:#5A7893;margin-top:14px;line-height:1.5}
+  .foot b{color:#2E6FB0}
+  .err{color:#C0392B;font-size:12px;font-weight:700;text-align:center;margin-top:10px;display:none}
+  .wa-btn{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;border:none;border-radius:14px;padding:14px 22px;font-size:15px;font-weight:900;text-decoration:none;margin-top:6px}
+  .accept{display:flex;align-items:flex-start;gap:10px;margin-top:6px;cursor:pointer}
+  .accept .box{flex:0 0 22px;width:22px;height:22px;border:2px solid #C3D8EE;border-radius:7px;background:#FBFDFF;display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;font-weight:900}
+  .accept.on .box{background:#4A90D9;border-color:#4A90D9}
+  .accept span{font-size:12.5px;font-weight:700;color:#33506B;line-height:1.4}
+  #ok{display:none;text-align:center;background:#fff;border-radius:18px;padding:30px 22px;box-shadow:0 10px 26px -18px rgba(40,90,150,0.5)}
+  #ok .big{font-size:44px}
+  #ok h2{font-family:'Nunito',serif;color:#2E6FB0;font-size:22px;margin:8px 0}
+  #ok p{font-size:13px;color:#3A5A76;line-height:1.6;margin-bottom:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="langbar">
+    <button class="langbtn" data-l="es" onclick="setLang('es')">ES</button>
+    <button class="langbtn" data-l="ca" onclick="setLang('ca')">CA</button>
+    <button class="langbtn" data-l="en" onclick="setLang('en')">EN</button>
+  </div>
+
+  <div class="hero">
+    <div class="sun"></div>
+    <h1>🎨 Extraescolares 2026-2027</h1>
+    <p data-i18n="hero_sub">Inscripción · Kids &amp; Kafé</p>
+  </div>
+
+  <!-- FORMULARIO -->
+  <div id="form-zone">
+
+  <div class="card">
+    <div class="sec" data-i18n="sec_precios">💶 Precio y actividades</div>
+    <div class="price-hero">
+      <div class="big">49€</div>
+      <div class="small" data-i18n="price_mes">al mes</div>
+    </div>
+    <div class="info lang-block" data-lang="es">
+      <b>🎨 English &amp; Play</b> · Lunes 17:00–18:00 h<br>
+      <b>🖌️ English &amp; Art</b> · Martes 17:00–18:00 h<br><br>
+      Actividades en inglés, en grupo reducido y ambiente de confianza. Puedes apuntar al peque a <b>una actividad o a las dos</b>.
+    </div>
+    <div class="info lang-block" data-lang="ca" style="display:none">
+      <b>🎨 English &amp; Play</b> · Dilluns 17:00–18:00 h<br>
+      <b>🖌️ English &amp; Art</b> · Dimarts 17:00–18:00 h<br><br>
+      Activitats en anglès, en grup reduït i ambient de confiança. Pots apuntar el nen/a a <b>una activitat o a les dues</b>.
+    </div>
+    <div class="info lang-block" data-lang="en" style="display:none">
+      <b>🎨 English &amp; Play</b> · Monday 17:00–18:00<br>
+      <b>🖌️ English &amp; Art</b> · Tuesday 17:00–18:00<br><br>
+      Activities in English, in small groups and a warm environment. You can sign your child up for <b>one activity or both</b>.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sec" data-i18n="sec_peque">👦 Datos del niño/a</div>
+    <label><span data-i18n="lbl_nino">Nombre y apellidos del peque</span> <span class="req">*</span></label>
+    <input id="f-nino" type="text" data-i18n-ph="ph_nino" placeholder="Ej. Sofía García López">
+    <label><span data-i18n="lbl_nac">Fecha de nacimiento</span> <span class="req">*</span></label>
+    <input id="f-nac" type="date">
+    <label data-i18n="lbl_curso">Curso / Edad</label>
+    <input id="f-curso" type="text" data-i18n-ph="ph_curso" placeholder="Ej. P4 · 4 años">
+    <label data-i18n="lbl_colegio">Nombre del colegio o guardería</label>
+    <input id="f-colegio" type="text" data-i18n-ph="ph_colegio" placeholder="Ej. Escola Les Corts">
+  </div>
+
+  <div class="card">
+    <div class="sec" data-i18n="sec_contacto">👨‍👩‍👧 Datos del padre, madre o tutor/a</div>
+    <label><span data-i18n="lbl_madre">Nombre y apellidos</span> <span class="req">*</span></label>
+    <input id="f-madre" type="text" data-i18n-ph="ph_madre" placeholder="Ej. Ana García López">
+    <label><span data-i18n="lbl_tel">Teléfono</span> <span class="req">*</span></label>
+    <input id="f-tel" type="tel" data-i18n-ph="ph_tel" placeholder="Ej. 637 000 000">
+    <label><span data-i18n="lbl_email">Email</span> <span class="req">*</span></label>
+    <input id="f-email" type="email" data-i18n-ph="ph_email" placeholder="tucorreo@email.com">
+  </div>
+
+  <div class="card">
+    <div class="sec" data-i18n="sec_actividad">🎨 Actividad a la que se inscribe</div>
+    <label data-i18n="lbl_actividad">Elige una opción</label>
+    <div class="chips" id="f-actividad">
+      <div class="chip" data-val="English & Play (Lunes 17:00-18:00)" onclick="pick(this)"><span data-i18n="act_play">English &amp; Play</span><small data-i18n="act_play_s">Lunes · 17:00–18:00</small></div>
+      <div class="chip" data-val="English & Art (Martes 17:00-18:00)" onclick="pick(this)"><span data-i18n="act_art">English &amp; Art</span><small data-i18n="act_art_s">Martes · 17:00–18:00</small></div>
+      <div class="chip" data-val="Ambas actividades" onclick="pick(this)"><span data-i18n="act_ambas">Ambas actividades</span><small data-i18n="act_ambas_s">Lunes y Martes</small></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sec" data-i18n="sec_acceso">🕐 Acceso y horarios</div>
+    <div class="info lang-block" data-lang="es">
+      Los peques pueden acceder al centro <b>30 min antes</b> del inicio de la actividad y quedarse hasta <b>30 min después</b> de finalizar la clase.<br><br>
+      • <b>Lunes:</b> acceso desde las 16:30 h y salida hasta las 18:30 h.<br>
+      • <b>Martes:</b> acceso desde las 16:30 h y salida hasta las 18:30 h.
+    </div>
+    <div class="info lang-block" data-lang="ca" style="display:none">
+      Els nens/es poden accedir al centre <b>30 min abans</b> de l'inici de l'activitat i quedar-s'hi fins a <b>30 min després</b> de finalitzar la classe.<br><br>
+      • <b>Dilluns:</b> accés des de les 16:30 h i sortida fins a les 18:30 h.<br>
+      • <b>Dimarts:</b> accés des de les 16:30 h i sortida fins a les 18:30 h.
+    </div>
+    <div class="info lang-block" data-lang="en" style="display:none">
+      Children can enter the centre <b>30 min before</b> the activity starts and stay up to <b>30 min after</b> the class ends.<br><br>
+      • <b>Monday:</b> access from 16:30 and pick-up until 18:30.<br>
+      • <b>Tuesday:</b> access from 16:30 and pick-up until 18:30.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sec" data-i18n="sec_pago">💳 Domiciliación bancaria</div>
+    <div class="info lang-block" data-lang="es" style="margin-bottom:10px">
+      La cuota de <b>49€/mes</b> se cobra por <b>domiciliación bancaria</b> (recibo mensual). Indícanos el IBAN de la cuenta desde la que giramos el recibo.
+    </div>
+    <div class="info lang-block" data-lang="ca" style="display:none;margin-bottom:10px">
+      La quota de <b>49€/mes</b> es cobra per <b>domiciliació bancària</b> (rebut mensual). Indica'ns l'IBAN del compte des del qual girem el rebut.
+    </div>
+    <div class="info lang-block" data-lang="en" style="display:none;margin-bottom:10px">
+      The <b>€49/month</b> fee is charged by <b>direct debit</b> (monthly). Please give us the IBAN of the account we'll charge.
+    </div>
+    <label><span data-i18n="lbl_iban">IBAN</span> <span class="req">*</span></label>
+    <input id="f-iban" type="text" inputmode="latin" autocomplete="off" data-i18n-ph="ph_iban" placeholder="ES00 0000 0000 0000 0000 0000">
+    <label data-i18n="lbl_titular">Titular de la cuenta (si es distinto del tutor)</label>
+    <input id="f-titular" type="text" data-i18n-ph="ph_titular" placeholder="Ej. Ana García López">
+  </div>
+
+  <div class="card">
+    <div class="sec" data-i18n="sec_autoriz">✅ Autorización</div>
+    <div class="accept" id="f-acepta" onclick="togAccept(this)">
+      <div class="box">✓</div>
+      <span data-i18n="lbl_acepta">Confirmo que los datos son correctos y deseo inscribir a mi hijo/a en la actividad seleccionada. Autorizo a Kids &amp; Kafé a girar el recibo mensual de 49€ en la cuenta indicada y acepto las condiciones de la actividad.</span>
+    </div>
+  </div>
+
+  <button class="send" id="btn-send" onclick="enviar()" data-i18n="btn_send">🎨 Enviar inscripción</button>
+  <div class="err" id="err"></div>
+  <div class="foot lang-block" data-lang="es">Recuerda: <b>un formulario por cada niño/a.</b><br>Te confirmamos la plaza por WhatsApp. 💙</div>
+  <div class="foot lang-block" data-lang="ca" style="display:none">Recorda: <b>un formulari per cada nen/a.</b><br>Et confirmem la plaça per WhatsApp. 💙</div>
+  <div class="foot lang-block" data-lang="en" style="display:none">Remember: <b>one form per child.</b><br>We'll confirm the place via WhatsApp. 💙</div>
+
+  </div><!-- /form-zone -->
+
+  <!-- PANTALLA DE ÉXITO -->
+  <div id="ok">
+    <div class="big">🎉</div>
+    <h2 data-i18n="ok_h2">¡Inscripción recibida!</h2>
+    <p><span data-i18n="ok_p1">Gracias, hemos recibido los datos de</span> <b id="ok-nino"></b>.</p>
+    <p data-i18n="ok_p2">Te confirmaremos la plaza por WhatsApp. Si quieres, escríbenos ya para cualquier duda. 💙</p>
+    <a class="wa-btn" id="ok-wa" href="#" target="_blank" rel="noopener" data-i18n="ok_wa">📲 Escríbenos por WhatsApp</a>
+    <p style="margin-top:16px;font-size:11px;color:#7D97AE;" data-i18n="ok_close">Puedes cerrar esta página cuando termines.</p>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  var SB_URL = "https://ovztunykbpvsilauxjhe.supabase.co";
+  var SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im92enR1bnlrYnB2c2lsYXV4amhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMDY2MDMsImV4cCI6MjA5Mjc4MjYwM30.wRGp44Vxf9wqkK7x9p-okePmC9rsTRQo6XKnaMZJ2iE";
+  var WA_NUM = "34637319226";
+  var sb = null;
+  try { sb = supabase.createClient(SB_URL, SB_KEY); } catch(e){ console.warn(e); }
+
+  // ── Diccionario de traducciones (solo texto plano → textContent, sin innerHTML) ──
+  var D = {
+    es: {
+      hero_sub:"Inscripción · Kids & Kafé",
+      sec_precios:"💶 Precio y actividades", sec_peque:"👦 Datos del niño/a", sec_contacto:"👨‍👩‍👧 Datos del padre, madre o tutor/a",
+      sec_actividad:"🎨 Actividad a la que se inscribe", sec_acceso:"🕐 Acceso y horarios", sec_pago:"💳 Domiciliación bancaria", sec_autoriz:"✅ Autorización",
+      price_mes:"al mes",
+      lbl_nino:"Nombre y apellidos del peque", lbl_nac:"Fecha de nacimiento", lbl_curso:"Curso / Edad", lbl_colegio:"Nombre del colegio o guardería",
+      lbl_madre:"Nombre y apellidos", lbl_tel:"Teléfono", lbl_email:"Email",
+      lbl_actividad:"Elige una opción", act_play:"English & Play", act_play_s:"Lunes · 17:00–18:00", act_art:"English & Art", act_art_s:"Martes · 17:00–18:00", act_ambas:"Ambas actividades", act_ambas_s:"Lunes y Martes",
+      lbl_iban:"IBAN", lbl_titular:"Titular de la cuenta (si es distinto del tutor)",
+      lbl_acepta:"Confirmo que los datos son correctos y deseo inscribir a mi hijo/a en la actividad seleccionada. Autorizo a Kids & Kafé a girar el recibo mensual de 49€ en la cuenta indicada y acepto las condiciones de la actividad.",
+      btn_send:"🎨 Enviar inscripción",
+      ok_h2:"¡Inscripción recibida!", ok_p1:"Gracias, hemos recibido los datos de",
+      ok_p2:"Te confirmaremos la plaza por WhatsApp. Si quieres, escríbenos ya para cualquier duda. 💙",
+      ok_wa:"📲 Escríbenos por WhatsApp", ok_close:"Puedes cerrar esta página cuando termines.",
+      ph_nino:"Ej. Sofía García López", ph_curso:"Ej. P4 · 4 años", ph_colegio:"Ej. Escola Les Corts", ph_madre:"Ej. Ana García López", ph_tel:"Ej. 637 000 000", ph_email:"tucorreo@email.com",
+      ph_iban:"ES00 0000 0000 0000 0000 0000", ph_titular:"Ej. Ana García López",
+      err_nino:"Escribe el nombre y apellidos del peque.", err_nac:"Indica la fecha de nacimiento del peque.",
+      err_madre:"Escribe el nombre del padre, madre o tutor/a.", err_tel:"Escribe un teléfono de contacto.", err_email:"Escribe un correo electrónico válido.",
+      err_iban:"Escribe un IBAN válido (ej. ES + 22 dígitos).",
+      err_actividad:"Elige a qué actividad quieres inscribir al peque.", err_acepta:"Marca la casilla de autorización para continuar.",
+      err_send:"No se pudo enviar. Revisa tu conexión e inténtalo de nuevo, o escríbenos por WhatsApp.", sending:"Enviando…",
+      wa_msg:"¡Hola! Acabo de inscribir a {n} en las extraescolares 2026-2027 ({a}). ¿Me confirmáis la plaza? 💙"
+    },
+    ca: {
+      hero_sub:"Inscripció · Kids & Kafé",
+      sec_precios:"💶 Preu i activitats", sec_peque:"👦 Dades del nen/a", sec_contacto:"👨‍👩‍👧 Dades del pare, mare o tutor/a",
+      sec_actividad:"🎨 Activitat a la qual s'inscriu", sec_acceso:"🕐 Accés i horaris", sec_pago:"💳 Domiciliació bancària", sec_autoriz:"✅ Autorització",
+      price_mes:"al mes",
+      lbl_nino:"Nom i cognoms del nen/a", lbl_nac:"Data de naixement", lbl_curso:"Curs / Edat", lbl_colegio:"Nom de l'escola o llar d'infants",
+      lbl_madre:"Nom i cognoms", lbl_tel:"Telèfon", lbl_email:"Email",
+      lbl_actividad:"Tria una opció", act_play:"English & Play", act_play_s:"Dilluns · 17:00–18:00", act_art:"English & Art", act_art_s:"Dimarts · 17:00–18:00", act_ambas:"Les dues activitats", act_ambas_s:"Dilluns i Dimarts",
+      lbl_iban:"IBAN", lbl_titular:"Titular del compte (si és diferent del tutor)",
+      lbl_acepta:"Confirmo que les dades són correctes i vull inscriure el meu fill/a a l'activitat seleccionada. Autoritzo Kids & Kafé a girar el rebut mensual de 49€ al compte indicat i accepto les condicions de l'activitat.",
+      btn_send:"🎨 Enviar inscripció",
+      ok_h2:"Inscripció rebuda!", ok_p1:"Gràcies, hem rebut les dades de",
+      ok_p2:"Et confirmarem la plaça per WhatsApp. Si vols, escriu-nos ja per a qualsevol dubte. 💙",
+      ok_wa:"📲 Escriu-nos per WhatsApp", ok_close:"Pots tancar aquesta pàgina quan acabis.",
+      ph_nino:"Ex. Sofia García López", ph_curso:"Ex. P4 · 4 anys", ph_colegio:"Ex. Escola Les Corts", ph_madre:"Ex. Anna García López", ph_tel:"Ex. 637 000 000", ph_email:"elteucorreu@email.com",
+      ph_iban:"ES00 0000 0000 0000 0000 0000", ph_titular:"Ex. Anna García López",
+      err_nino:"Escriu el nom i cognoms del nen/a.", err_nac:"Indica la data de naixement del nen/a.",
+      err_madre:"Escriu el nom del pare, mare o tutor/a.", err_tel:"Escriu un telèfon de contacte.", err_email:"Escriu un correu electrònic vàlid.",
+      err_iban:"Escriu un IBAN vàlid (ex. ES + 22 dígits).",
+      err_actividad:"Tria a quina activitat vols inscriure el nen/a.", err_acepta:"Marca la casella d'autorització per continuar.",
+      err_send:"No s'ha pogut enviar. Revisa la connexió i torna-ho a provar, o escriu-nos per WhatsApp.", sending:"Enviant…",
+      wa_msg:"Hola! Acabo d'inscriure {n} a les extraescolars 2026-2027 ({a}). Em confirmeu la plaça? 💙"
+    },
+    en: {
+      hero_sub:"Registration · Kids & Kafé",
+      sec_precios:"💶 Price & activities", sec_peque:"👦 Child's details", sec_contacto:"👨‍👩‍👧 Parent / guardian details",
+      sec_actividad:"🎨 Activity to sign up for", sec_acceso:"🕐 Access & hours", sec_pago:"💳 Direct debit", sec_autoriz:"✅ Authorisation",
+      price_mes:"per month",
+      lbl_nino:"Child's full name", lbl_nac:"Date of birth", lbl_curso:"Year / Age", lbl_colegio:"School or nursery name",
+      lbl_madre:"Full name", lbl_tel:"Phone", lbl_email:"Email",
+      lbl_actividad:"Choose one option", act_play:"English & Play", act_play_s:"Monday · 17:00–18:00", act_art:"English & Art", act_art_s:"Tuesday · 17:00–18:00", act_ambas:"Both activities", act_ambas_s:"Monday & Tuesday",
+      lbl_iban:"IBAN", lbl_titular:"Account holder (if different from the guardian)",
+      lbl_acepta:"I confirm the details are correct and wish to enrol my child in the selected activity. I authorise Kids & Kafé to charge the €49 monthly fee to the account provided and I accept the activity's conditions.",
+      btn_send:"🎨 Send registration",
+      ok_h2:"Registration received!", ok_p1:"Thanks, we've received the details for",
+      ok_p2:"We'll confirm the place via WhatsApp. Feel free to message us with any questions. 💙",
+      ok_wa:"📲 Message us on WhatsApp", ok_close:"You can close this page when you're done.",
+      ph_nino:"e.g. Sofía García López", ph_curso:"e.g. P4 · 4 years", ph_colegio:"e.g. Escola Les Corts", ph_madre:"e.g. Ana García López", ph_tel:"e.g. 637 000 000", ph_email:"youremail@email.com",
+      ph_iban:"ES00 0000 0000 0000 0000 0000", ph_titular:"e.g. Ana García López",
+      err_nino:"Please enter the child's full name.", err_nac:"Please enter the child's date of birth.",
+      err_madre:"Please enter the parent/guardian's name.", err_tel:"Please enter a contact phone.", err_email:"Please enter a valid email.",
+      err_iban:"Please enter a valid IBAN (e.g. ES + 22 digits).",
+      err_actividad:"Please choose which activity to sign up for.", err_acepta:"Please tick the authorisation box to continue.",
+      err_send:"Couldn't send. Check your connection and try again, or message us on WhatsApp.", sending:"Sending…",
+      wa_msg:"Hi! I've just registered {n} for the 2026-2027 after-school activities ({a}). Could you confirm the place? 💙"
+    }
+  };
+
+  var LANG = 'es';
+  function setLang(l){
+    if(!D[l]) l = 'es';
+    LANG = l;
+    document.documentElement.lang = l;
+    document.querySelectorAll('[data-i18n]').forEach(function(e){
+      var k = e.getAttribute('data-i18n');
+      if(D[l][k] != null) e.textContent = D[l][k];
+    });
+    document.querySelectorAll('[data-i18n-ph]').forEach(function(e){
+      var k = e.getAttribute('data-i18n-ph');
+      if(D[l][k] != null) e.setAttribute('placeholder', D[l][k]);
+    });
+    document.querySelectorAll('.lang-block').forEach(function(e){
+      e.style.display = (e.getAttribute('data-lang') === l) ? '' : 'none';
+    });
+    document.querySelectorAll('.langbtn').forEach(function(b){
+      b.classList.toggle('on', b.getAttribute('data-l') === l);
+    });
+  }
+  (function(){
+    var q = '';
+    try { q = (new URLSearchParams(location.search).get('lang') || '').toLowerCase(); } catch(e){}
+    if(q === 'ca' || q === 'en'){ setLang(q); return; }
+    setLang('es');
+  })();
+
+  // selección única (actividad)
+  function pick(el){
+    var box = el.parentElement;
+    Array.from(box.children).forEach(function(c){ c.classList.remove('on'); });
+    el.classList.add('on');
+  }
+  // casilla autorización
+  function togAccept(el){ el.classList.toggle('on'); }
+  function getPick(id){
+    var el = document.querySelector('#'+id+' .chip.on');
+    return el ? el.getAttribute('data-val') : '';
+  }
+  function showErr(m){
+    var e = document.getElementById('err');
+    e.textContent = m; e.style.display = 'block';
+  }
+
+  // IBAN: normaliza (sin espacios, mayúsculas) y valida el formato básico (2 letras + 2 díg + resto).
+  function normIban(v){ return (v||'').replace(/\s+/g,'').toUpperCase(); }
+  function ibanValido(v){ return /^[A-Z]{2}\d{2}[A-Z0-9]{11,30}$/.test(normIban(v)); }
+
+  async function enviar(){
+    var t = D[LANG];
+    var err = document.getElementById('err'); err.style.display='none';
+    var nino  = document.getElementById('f-nino').value.trim();
+    var nac   = document.getElementById('f-nac').value;
+    var madre = document.getElementById('f-madre').value.trim();
+    var tel   = document.getElementById('f-tel').value.trim();
+    var email = document.getElementById('f-email').value.trim();
+    var iban  = normIban(document.getElementById('f-iban').value);
+    var actividad = getPick('f-actividad');
+    var acepta = document.getElementById('f-acepta').classList.contains('on');
+    if(!nino)  return showErr(t.err_nino);
+    if(!nac)   return showErr(t.err_nac);
+    if(!madre) return showErr(t.err_madre);
+    if(!tel)   return showErr(t.err_tel);
+    if(!email || email.indexOf('@')<0) return showErr(t.err_email);
+    if(!actividad) return showErr(t.err_actividad);
+    if(!ibanValido(iban)) return showErr(t.err_iban);
+    if(!acepta) return showErr(t.err_acepta);
+
+    // "Ambas actividades" → guardamos las dos en el array
+    var acts = (actividad === 'Ambas actividades')
+      ? ['English & Play (Lunes 17:00-18:00)', 'English & Art (Martes 17:00-18:00)']
+      : [actividad];
+
+    var fila = {
+      nino_nombre:    nino,
+      nino_fecha_nac: nac || null,
+      curso:          document.getElementById('f-curso').value.trim() || null,
+      colegio:        document.getElementById('f-colegio').value.trim() || null,
+      tutor_nombre:   madre,
+      telefono:       tel,
+      email:          email,
+      iban:           iban,
+      titular:        document.getElementById('f-titular').value.trim() || null,
+      actividades:    acts,
+      acepta_condiciones: true,
+      estado:         'pendiente'
+    };
+
+    var btn = document.getElementById('btn-send');
+    btn.disabled = true; btn.textContent = t.sending;
+    try {
+      if(!sb) throw new Error('sin conexión');
+      var res = await sb.from('extraescolar_inscripciones').insert(fila);
+      if(res.error) throw res.error;
+      var msg = t.wa_msg.replace('{n}', nino).replace('{a}', acts.join(', '));
+      document.getElementById('ok-nino').textContent = nino;
+      document.getElementById('ok-wa').href = 'https://wa.me/' + WA_NUM + '?text=' + encodeURIComponent(msg);
+      document.getElementById('form-zone').style.display = 'none';
+      document.getElementById('ok').style.display = 'block';
+      window.scrollTo(0,0);
+    } catch(e){
+      console.warn(e);
+      btn.disabled = false; btn.textContent = t.btn_send;
+      showErr(t.err_send);
+    }
+  }
+</script>
+</body>
+</html>
