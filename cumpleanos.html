@@ -77,10 +77,34 @@
     },
     {
       "@type": "Question",
-      "name": "¿Se devuelve la señal si cancelo?",
+      "name": "¿Con cuánta antelación hay que reservar un cumpleaños?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "La paga y señal no se devuelve en caso de cancelación por tu parte."
+        "text": "Como mínimo un mes antes. Los fines de semana son las fechas más pedidas: cuando hay un cumpleaños reservado el centro se cierra al público, así que cada sábado y domingo solo hay sitio para una celebración."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué temáticas de cumpleaños hacéis?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Hacemos todas las temáticas: superhéroes, princesas, unicornios, dinosaurios, sirenas, astronautas, coches, fútbol y cualquier personaje que le guste al niño. Si la familia pide una temática que no hemos hecho nunca, la inventamos y la montamos igual."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo ver la sala antes de reservar?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí. Puedes venir a conocer el espacio en horario de apertura, en Carrer de Nicaragua 117, barrio de Les Corts de Barcelona. Conviene avisar por WhatsApp al +34 637 319 226 para comprobar que no haya una fiesta privada en ese momento."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuánto es la señal para reservar un cumpleaños y se devuelve si cancelo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Para bloquear la fecha se deja una paga y señal de 100€, que se descuenta del precio final de la fiesta. En caso de cancelación por parte del cliente, la señal no se devuelve."
       }
     }
   ]
@@ -96,9 +120,17 @@
   "provider": { "@type": "LocalBusiness", "@id": "https://www.kidsandkafe.es/#business", "name": "Kids & Kafé" },
   "areaServed": { "@type": "City", "name": "Barcelona" },
   "audience": { "@type": "PeopleAudience", "suggestedMinAge": 0, "suggestedMaxAge": 8 },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.2",
+    "reviewCount": "491"
+  },
   "offers": {
-    "@type": "Offer",
+    "@type": "AggregateOffer",
     "priceCurrency": "EUR",
+    "lowPrice": "450",
+    "highPrice": "890",
+    "offerCount": "3",
     "availability": "https://schema.org/InStock",
     "url": "https://www.kidsandkafe.es/cumpleanos"
   }
@@ -133,7 +165,7 @@
     <h1 data-rv data-delay="1">Cumpleaños infantiles en Barcelona con <em>decoración temática</em></h1>
     <p data-rv data-delay="2">Decoración temática, globos, monitores, mini discoteca y una sala de cumpleaños de 300 m² solo para vosotros. ¿Prefieres celebrar en casa? También llevamos la fiesta a domicilio por Barcelona y pueblos de alrededor. Tú celebras, nosotros nos encargamos de todo.</p>
     <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:26px" data-rv data-delay="3">
-      <a href="https://wa.me/34637319226?text=Hola%2C%20quiero%20reservar%20un%20cumplea%C3%B1os%20en%20Kids%20%26%20Kaf%C3%A9" target="_blank" rel="noopener" class="btn btn-pink">🎉 Reserva tu fecha</a>
+      <a href="https://wa.me/34637319226?text=Hola%2C%20quiero%20reservar%20un%20cumplea%C3%B1os%20en%20Kids%20%26%20Kaf%C3%A9%20%F0%9F%8E%82%0A%0AFecha%3A%20%0AEdad%20del%20peque%3A%20%0AN%C2%BA%20de%20ni%C3%B1os%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-pink">🎉 Reserva tu fecha</a>
       <a href="#paquetes" class="btn btn-ghost">Ver paquetes y precios</a>
     </div>
     <div class="crumb" data-rv data-delay="4"><a href="/">Inicio</a> · Cumpleaños</div>
@@ -181,6 +213,18 @@
   </div>
 </section>
 
+<!-- TEMÁTICAS -->
+<section style="padding-top:0">
+  <div class="wrap"><div class="news" data-rv="s">
+    <span class="news-badge">🦄 Cualquier temática</span>
+    <h2>La temática que se te ocurra. Y si no existe, la inventamos</h2>
+    <p>Superhéroes, princesas, unicornios, dinosaurios, sirenas, astronautas, coches, fútbol, tu dibujo favorito… Y si tu peque quiere algo que no hemos hecho nunca, se lo montamos igual. Nos lo pedís las madres y los niños, y lo inventamos: <strong>aquí lo imposible se hace posible</strong>.</p>
+    <div class="news-cta">
+      <a href="https://wa.me/34637319226?text=Hola%2C%20quiero%20un%20cumplea%C3%B1os%20con%20una%20tem%C3%A1tica%20especial%20%F0%9F%8E%82%0A%0AFecha%3A%20%0AEdad%20del%20peque%3A%20%0AN%C2%BA%20de%20ni%C3%B1os%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-wa lg">💬 Cuéntanos la temática de tu peque</a>
+    </div>
+  </div></div>
+</section>
+
 <!-- PAQUETES -->
 <section id="paquetes" class="party-sec">
   <div class="wrap">
@@ -189,21 +233,35 @@
       <div class="pcard" data-rv="s" data-delay="1">
         <h4>Party 1</h4><div class="price">450€</div>
         <ul><li>Alquiler media sala</li><li>Decoración básica temática</li><li>Juegos grupales y mini discoteca</li><li>Máximo 20 personas</li><li>A partir de 20: +7€/persona</li></ul>
-        <a href="https://wa.me/34637319226?text=Hola%2C%20quiero%20reservar%20el%20Party%201" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Reservar Party 1</a>
+        <a href="https://wa.me/34637319226?text=Hola%2C%20quiero%20reservar%20el%20Party%201%20%F0%9F%8E%82%0A%0AFecha%3A%20%0AEdad%20del%20peque%3A%20%0AN%C2%BA%20de%20ni%C3%B1os%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Reservar Party 1</a>
       </div>
       <div class="pcard feat" data-rv="s" data-delay="2">
         <span class="ribbon">Más popular</span>
         <h4>Party 2</h4><div class="price">650€</div>
         <ul><li>Alquiler sala completa</li><li>Decoración básica temática</li><li>Juegos grupales y mini discoteca</li><li>Aforo 80 personas</li><li>+15 niños: monitor extra (40€)</li></ul>
-        <a href="https://wa.me/34637319226?text=Hola%2C%20quiero%20reservar%20el%20Party%202" target="_blank" rel="noopener" class="btn btn-pink" style="margin-top:18px;width:100%;justify-content:center">Reservar Party 2</a>
+        <a href="https://wa.me/34637319226?text=Hola%2C%20quiero%20reservar%20el%20Party%202%20%F0%9F%8E%82%0A%0AFecha%3A%20%0AEdad%20del%20peque%3A%20%0AN%C2%BA%20de%20ni%C3%B1os%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-pink" style="margin-top:18px;width:100%;justify-content:center">Reservar Party 2</a>
       </div>
       <div class="pcard" data-rv="s" data-delay="3">
         <h4>Party 3</h4><div class="price">890€</div>
         <ul><li>Sala completa + decoración completa con globos</li><li>Pastel temático (12-15 porciones)</li><li>Personaje disfrazado, taller o pintacaras (1h)</li><li>Aforo 80 personas</li><li>Muñecón adicional +100€/h · monitor extra +40€</li></ul>
-        <a href="https://wa.me/34637319226?text=Hola%2C%20quiero%20reservar%20el%20Party%203" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Reservar Party 3</a>
+        <a href="https://wa.me/34637319226?text=Hola%2C%20quiero%20reservar%20el%20Party%203%20%F0%9F%8E%82%0A%0AFecha%3A%20%0AEdad%20del%20peque%3A%20%0AN%C2%BA%20de%20ni%C3%B1os%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Reservar Party 3</a>
       </div>
     </div>
   </div>
+</section>
+
+<!-- CONFIANZA -->
+<section style="padding-top:0">
+  <div class="wrap"><div class="trust" data-rv="s">
+    <div class="stars">⭐⭐⭐⭐⭐</div>
+    <h3>4,2 sobre 5 · 491 reseñas en Google</h3>
+    <p>Cientos de familias de Barcelona ya han celebrado aquí el cumple de su peque. Organizamos fiestas desde 2018. Míralo por ti misma antes de decidir.</p>
+    <div class="tlogos">
+      <span>🎂 Celebrando desde 2018</span>
+      <a href="https://www.google.com/maps/search/Kids+and+Kafe+Barcelona" target="_blank" rel="noopener" class="btn btn-ghost">Ver reseñas en Google</a>
+      <a href="https://instagram.com/kidsandkafe" target="_blank" rel="noopener" class="btn btn-pink">Ver fiestas en Instagram</a>
+    </div>
+  </div></div>
 </section>
 
 <!-- OTRAS OPCIONES -->
@@ -214,14 +272,17 @@
       <div class="pcard" data-rv="s" data-delay="1">
         <h4>Family Lounge</h4><div class="price">25€<span> /niño</span></div>
         <ul><li>2 horas de celebración</li><li>Menú infantil o taller</li><li>Sala de juego incluida</li><li>Aforo 12 adultos</li><li>Entrada adulto 3€ · catering 12€/adulto</li></ul>
+        <a href="https://wa.me/34637319226?text=Hola%2C%20me%20interesa%20celebrar%20en%20el%20Family%20Lounge%20%F0%9F%8E%82%0A%0AFecha%3A%20%0AEdad%20del%20peque%3A%20%0AN%C2%BA%20de%20ni%C3%B1os%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Consultar Family Lounge</a>
       </div>
       <div class="pcard" data-rv="s" data-delay="2">
         <h4>Sala completa · 3h</h4><div class="price">350-550€</div>
         <ul><li>1 monitor incluido</li><li>200 m² de rincones temáticos</li><li>100 m² de baile y psicomotricidad</li><li>Mobiliario para eventos</li><li>L-J 350€ · V-D y festivos 550€</li></ul>
+        <a href="https://wa.me/34637319226?text=Hola%2C%20quiero%20alquilar%20la%20sala%20completa%20%F0%9F%8E%82%0A%0AFecha%3A%20%0AEdad%20del%20peque%3A%20%0AN%C2%BA%20de%20ni%C3%B1os%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Consultar sala completa</a>
       </div>
       <div class="pcard" data-rv="s" data-delay="3">
         <h4>Media sala · 3h</h4><div class="price">230-310€</div>
         <ul><li>1 monitor incluido</li><li>Aforo hasta 20 personas (+7€ extra)</li><li>Rincones temáticos + sala de baile</li><li>Mobiliario para eventos</li><li>L-J 230€ · V-D y festivos 310€</li></ul>
+        <a href="https://wa.me/34637319226?text=Hola%2C%20quiero%20alquilar%20media%20sala%20%F0%9F%8E%82%0A%0AFecha%3A%20%0AEdad%20del%20peque%3A%20%0AN%C2%BA%20de%20ni%C3%B1os%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Consultar media sala</a>
       </div>
     </div>
   </div>
@@ -235,7 +296,7 @@
       <div class="cbox" data-rv="r"><h5>🍔 Pack catering niños</h5><div class="pp">10€ / niño</div><p>Bocadillo de jamón dulce y queso, nuggets, bandeja de fruta, gofre con miel o chocolate, donuts o bikini de Nutella, palomitas y patatas. Jarras de zumo, cacaolat y agua.</p></div>
       <div class="cbox" data-rv="l"><h5>🥪 Pack catering adultos</h5><div class="pp">12€ / persona</div><p>Sándwich de salmón y pollo, mini bocadillo, bandeja de mini dulces, croquetas, quiche, aceitunas. Jarra de agua y 1 refresco por persona.</p></div>
     </div>
-    <div class="note" data-rv><b>Importante:</b> la reserva del área de cumpleaños es por 2 horas y es obligatorio pedir el pastel al centro. En opción media sala el aforo es de 20 personas (+7€/persona extra). La paga y señal no se devuelve en caso de cancelación. Limpieza: 30€. Los precios de los paquetes de catering y fiesta se consultan por correo.</div>
+    <div class="note" data-rv><b>Importante:</b> la reserva del área de cumpleaños es por 2 horas y es obligatorio pedir el pastel al centro. En opción media sala el aforo es de 20 personas (+7€/persona extra). Limpieza: 30€. <b>Para bloquear tu fecha se deja una paga y señal de 100€</b>, que se descuenta del precio final de la fiesta; en caso de cancelación por tu parte no se devuelve.</div>
   </div>
 </section>
 
@@ -269,10 +330,13 @@
       <details data-rv><summary>¿Se pueden añadir talleres o actividades al cumpleaños?</summary><p>Sí. Es un servicio opcional: diseñamos un taller o actividad a medida para tu peque según sus gustos.</p></details>
       <details data-rv><summary>¿Puedo traer mi propio pastel?</summary><p>Es obligatorio pedir el pastel al centro. Podemos preparar pasteles temáticos de 12-15 porciones.</p></details>
       <details data-rv><summary>¿Qué pasa si vienen más invitados?</summary><p>En media sala el aforo es de 20 personas; a partir de ahí, 7€ extra por persona. Con más de 15 niños es obligatorio un monitor extra (40€).</p></details>
-      <details data-rv><summary>¿Se devuelve la señal si cancelo?</summary><p>La paga y señal no se devuelve en caso de cancelación por tu parte.</p></details>
+      <details data-rv><summary>¿Con cuánta antelación hay que reservar?</summary><p>Como mínimo un mes antes. Los fines de semana son las fechas más pedidas y vuelan: cuando hay un cumpleaños reservado, el centro se cierra al público, así que cada sábado y domingo solo hay sitio para una celebración.</p></details>
+      <details data-rv><summary>¿Qué temáticas hacéis?</summary><p>Todas. Superhéroes, princesas, unicornios, dinosaurios, sirenas, astronautas, coches, fútbol… y si tu peque quiere una temática que no hemos hecho nunca, nos la inventamos para él. Hacemos lo imposible posible.</p></details>
+      <details data-rv><summary>¿Puedo ver la sala antes de reservar?</summary><p>Claro. Puedes venir a conocer el espacio en nuestro horario de apertura, en Carrer de Nicaragua 117 (Les Corts). Avísanos por WhatsApp al +34 637 319 226 para asegurarnos de que no haya una fiesta privada ese rato.</p></details>
+      <details data-rv><summary>¿Cuánto es la señal y se devuelve si cancelo?</summary><p>Para bloquear tu fecha se deja una paga y señal de 100€, que se descuenta del precio final de la fiesta. En caso de cancelación por tu parte, la señal no se devuelve.</p></details>
     </div>
     <div class="center" style="margin-top:36px" data-rv>
-      <a href="https://wa.me/34637319226" class="btn btn-pink" target="_blank" rel="noopener">Consulta disponibilidad por WhatsApp</a>
+      <a href="https://wa.me/34637319226?text=Hola%2C%20quiero%20reservar%20un%20cumplea%C3%B1os%20%F0%9F%8E%82%0A%0AFecha%3A%20%0AEdad%20del%20peque%3A%20%0AN%C2%BA%20de%20ni%C3%B1os%20aprox.%3A%20" class="btn btn-pink" target="_blank" rel="noopener">Consulta disponibilidad por WhatsApp</a>
     </div>
   </div>
 </section>
@@ -280,11 +344,11 @@
 <!-- CTA RESERVA -->
 <section style="padding-top:0">
   <div class="wrap"><div class="news big" data-rv="s">
-    <span class="news-badge">🎂 Fechas que vuelan</span>
+    <span class="news-badge">🎂 Un solo cumple por día</span>
     <h2>Reserva el cumpleaños de tu peque</h2>
-    <p>Las mejores fechas se agotan rápido. Escríbenos y te confirmamos disponibilidad al momento.</p>
+    <p>Cuando hay una fiesta reservada cerramos el centro al público: por eso <strong>cada sábado y domingo solo hay sitio para una celebración</strong>. Reserva con al menos un mes de antelación y con 100€ te bloqueamos la fecha. Escríbenos y te confirmamos disponibilidad al momento.</p>
     <div class="news-cta">
-      <a href="https://wa.me/34637319226?text=Hola%2C%20quiero%20reservar%20un%20cumplea%C3%B1os" target="_blank" rel="noopener" class="btn btn-wa lg">💬 Reservar por WhatsApp</a>
+      <a href="https://wa.me/34637319226?text=Hola%2C%20quiero%20reservar%20un%20cumplea%C3%B1os%20%F0%9F%8E%82%0A%0AFecha%3A%20%0AEdad%20del%20peque%3A%20%0AN%C2%BA%20de%20ni%C3%B1os%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-wa lg">💬 Reservar por WhatsApp</a>
       <a href="contacto#app" class="btn btn-pink lg">📅 Reservar en la app</a>
     </div>
   </div></div>
