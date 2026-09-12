@@ -77,10 +77,34 @@
     },
     {
       "@type": "Question",
-      "name": "Is the deposit refunded if I cancel?",
+      "name": "How far in advance should I book a birthday party?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The deposit is non-refundable in case of cancellation on your part."
+        "text": "At least one month in advance. Weekends are the most requested dates: when a birthday is booked we close the centre to the public, so each Saturday and Sunday there is room for one celebration only."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What birthday themes do you do?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We do every theme: superheroes, princesses, unicorns, dinosaurs, mermaids, astronauts, cars, football and any character the child likes. If a family asks for a theme we have never done before, we invent it and build it anyway."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I see the room before booking?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. You can come and see the space during opening hours, at Carrer de Nicaragua 117, in the Les Corts neighbourhood of Barcelona. It is best to let us know on WhatsApp at +34 637 319 226 to check there is no private party at that time."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much is the deposit to book a birthday and is it refunded if I cancel?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "To lock in the date you leave a deposit of 100€, which is deducted from the final price of the party. In case of cancellation by the customer, the deposit is non-refundable."
       }
     }
   ]
@@ -96,9 +120,17 @@
   "provider": { "@type": "LocalBusiness", "@id": "https://www.kidsandkafe.es/#business", "name": "Kids & Kafé" },
   "areaServed": { "@type": "City", "name": "Barcelona" },
   "audience": { "@type": "PeopleAudience", "suggestedMinAge": 0, "suggestedMaxAge": 8 },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.2",
+    "reviewCount": "491"
+  },
   "offers": {
-    "@type": "Offer",
+    "@type": "AggregateOffer",
     "priceCurrency": "EUR",
+    "lowPrice": "450",
+    "highPrice": "890",
+    "offerCount": "3",
     "availability": "https://schema.org/InStock",
     "url": "https://www.kidsandkafe.es/en/cumpleanos"
   }
@@ -133,7 +165,7 @@
     <h1 data-rv data-delay="1">Kids birthday parties in Barcelona with <em>themed decoration</em></h1>
     <p data-rv data-delay="2">Themed decorations, balloons, monitors, a mini disco and a 300 m² party room just for you. Prefer to celebrate at home? We also bring the party to your place across Barcelona and nearby towns. You celebrate, we take care of everything.</p>
     <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:26px" data-rv data-delay="3">
-      <a href="https://wa.me/34637319226?text=Hi%2C%20I%20want%20to%20book%20a%20birthday%20at%20Kids%20%26%20Kaf%C3%A9" target="_blank" rel="noopener" class="btn btn-pink">🎉 Book your date</a>
+      <a href="https://wa.me/34637319226?text=Hi%2C%20I%20want%20to%20book%20a%20birthday%20at%20Kids%20%26%20Kaf%C3%A9%20%F0%9F%8E%82%0A%0ADate%3A%20%0AChild%27s%20age%3A%20%0AApprox.%20no.%20of%20children%3A%20" target="_blank" rel="noopener" class="btn btn-pink">🎉 Book your date</a>
       <a href="#paquetes" class="btn btn-ghost">See packages and prices</a>
     </div>
     <div class="crumb" data-rv data-delay="4"><a href="/">Home</a> · Birthdays</div>
@@ -181,6 +213,18 @@
   </div>
 </section>
 
+<!-- TEMÁTICAS -->
+<section style="padding-top:0">
+  <div class="wrap"><div class="news" data-rv="s">
+    <span class="news-badge">🦄 Any theme you like</span>
+    <h2>Whatever theme you can think of. And if it doesn't exist, we'll invent it</h2>
+    <p>Superheroes, princesses, unicorns, dinosaurs, mermaids, astronauts, cars, football, their favourite cartoon… And if your little one wants something we've never done before, we'll build it anyway. Mums and children ask us for it, and we invent it: <strong>here we make the impossible possible</strong>.</p>
+    <div class="news-cta">
+      <a href="https://wa.me/34637319226?text=Hi%2C%20I%27d%20like%20a%20birthday%20with%20a%20special%20theme%20%F0%9F%8E%82%0A%0ADate%3A%20%0AChild%27s%20age%3A%20%0AApprox.%20no.%20of%20children%3A%20" target="_blank" rel="noopener" class="btn btn-wa lg">💬 Tell us your little one's theme</a>
+    </div>
+  </div></div>
+</section>
+
 <!-- PAQUETES -->
 <section id="paquetes" class="party-sec">
   <div class="wrap">
@@ -189,21 +233,35 @@
       <div class="pcard" data-rv="s" data-delay="1">
         <h4>Party 1</h4><div class="price">€450</div>
         <ul><li>Half-room hire</li><li>Basic themed decoration</li><li>Group games and mini disco</li><li>Up to 20 people</li><li>Over 20: +€7/person</li></ul>
-        <a href="https://wa.me/34637319226?text=Hi%2C%20I%20want%20to%20book%20Party%201" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Book Party 1</a>
+        <a href="https://wa.me/34637319226?text=Hi%2C%20I%20want%20to%20book%20Party%201%20%F0%9F%8E%82%0A%0ADate%3A%20%0AChild%27s%20age%3A%20%0AApprox.%20no.%20of%20children%3A%20" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Book Party 1</a>
       </div>
       <div class="pcard feat" data-rv="s" data-delay="2">
         <span class="ribbon">Most popular</span>
         <h4>Party 2</h4><div class="price">€650</div>
         <ul><li>Full room hire</li><li>Basic themed decoration</li><li>Group games and mini disco</li><li>Capacity 80 people</li><li>+15 kids: extra monitor (€40)</li></ul>
-        <a href="https://wa.me/34637319226?text=Hi%2C%20I%20want%20to%20book%20Party%202" target="_blank" rel="noopener" class="btn btn-pink" style="margin-top:18px;width:100%;justify-content:center">Book Party 2</a>
+        <a href="https://wa.me/34637319226?text=Hi%2C%20I%20want%20to%20book%20Party%202%20%F0%9F%8E%82%0A%0ADate%3A%20%0AChild%27s%20age%3A%20%0AApprox.%20no.%20of%20children%3A%20" target="_blank" rel="noopener" class="btn btn-pink" style="margin-top:18px;width:100%;justify-content:center">Book Party 2</a>
       </div>
       <div class="pcard" data-rv="s" data-delay="3">
         <h4>Party 3</h4><div class="price">€890</div>
         <ul><li>Full room + full decoration with balloons</li><li>Themed cake (12-15 servings)</li><li>Costumed character, workshop or face painting (1h)</li><li>Capacity 80 people</li><li>Extra mascot +€100/h · extra monitor +€40</li></ul>
-        <a href="https://wa.me/34637319226?text=Hi%2C%20I%20want%20to%20book%20Party%203" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Book Party 3</a>
+        <a href="https://wa.me/34637319226?text=Hi%2C%20I%20want%20to%20book%20Party%203%20%F0%9F%8E%82%0A%0ADate%3A%20%0AChild%27s%20age%3A%20%0AApprox.%20no.%20of%20children%3A%20" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Book Party 3</a>
       </div>
     </div>
   </div>
+</section>
+
+<!-- CONFIANZA -->
+<section style="padding-top:0">
+  <div class="wrap"><div class="trust" data-rv="s">
+    <div class="stars">⭐⭐⭐⭐⭐</div>
+    <h3>4.2 out of 5 · 491 Google reviews</h3>
+    <p>Hundreds of Barcelona families have already celebrated their little one's birthday here. We've been throwing parties since 2018. See it for yourself before you decide.</p>
+    <div class="tlogos">
+      <span>🎂 Celebrating since 2018</span>
+      <a href="https://www.google.com/maps/search/Kids+and+Kafe+Barcelona" target="_blank" rel="noopener" class="btn btn-ghost">See Google reviews</a>
+      <a href="https://instagram.com/kidsandkafe" target="_blank" rel="noopener" class="btn btn-pink">See parties on Instagram</a>
+    </div>
+  </div></div>
 </section>
 
 <!-- OTRAS OPCIONES -->
@@ -214,14 +272,17 @@
       <div class="pcard" data-rv="s" data-delay="1">
         <h4>Family Lounge</h4><div class="price">€25<span> /child</span></div>
         <ul><li>2 hours of celebration</li><li>Kids' menu or workshop</li><li>Play room included</li><li>Capacity 12 adults</li><li>Adult entry €3 · catering €12/adult</li></ul>
+        <a href="https://wa.me/34637319226?text=Hi%2C%20I%27m%20interested%20in%20the%20Family%20Lounge%20%F0%9F%8E%82%0A%0ADate%3A%20%0AChild%27s%20age%3A%20%0AApprox.%20no.%20of%20children%3A%20" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Ask about Family Lounge</a>
       </div>
       <div class="pcard" data-rv="s" data-delay="2">
         <h4>Full room · 3h</h4><div class="price">€350-550</div>
         <ul><li>1 monitor included</li><li>200 m² of themed corners</li><li>100 m² of dance and movement</li><li>Furniture for events</li><li>Mon-Thu €350 · Fri-Sun and holidays €550</li></ul>
+        <a href="https://wa.me/34637319226?text=Hi%2C%20I%27d%20like%20to%20rent%20the%20full%20room%20%F0%9F%8E%82%0A%0ADate%3A%20%0AChild%27s%20age%3A%20%0AApprox.%20no.%20of%20children%3A%20" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Ask about the full room</a>
       </div>
       <div class="pcard" data-rv="s" data-delay="3">
         <h4>Half room · 3h</h4><div class="price">€230-310</div>
         <ul><li>1 monitor included</li><li>Capacity up to 20 people (+€7 extra)</li><li>Themed corners + dance room</li><li>Furniture for events</li><li>Mon-Thu €230 · Fri-Sun and holidays €310</li></ul>
+        <a href="https://wa.me/34637319226?text=Hi%2C%20I%27d%20like%20to%20rent%20the%20half%20room%20%F0%9F%8E%82%0A%0ADate%3A%20%0AChild%27s%20age%3A%20%0AApprox.%20no.%20of%20children%3A%20" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Ask about the half room</a>
       </div>
     </div>
   </div>
@@ -235,7 +296,7 @@
       <div class="cbox" data-rv="r"><h5>🍔 Kids catering pack</h5><div class="pp">€10 / child</div><p>Ham and cheese sandwich, nuggets, fruit platter, waffle with honey or chocolate, donuts or Nutella bikini, popcorn and crisps. Jugs of juice, chocolate milk and water.</p></div>
       <div class="cbox" data-rv="l"><h5>🥪 Adults catering pack</h5><div class="pp">€12 / person</div><p>Salmon and chicken sandwich, mini sandwich, mini sweets platter, croquettes, quiche, olives. Jug of water and 1 soft drink per person.</p></div>
     </div>
-    <div class="note" data-rv><b>Important:</b> the birthday area booking is for 2 hours and ordering the cake from the centre is required. In the half-room option the capacity is 20 people (+€7/person extra). The deposit is non-refundable in case of cancellation. Cleaning: €30. Catering and party package prices are provided by email.</div>
+    <div class="note" data-rv><b>Important:</b> the birthday area booking is for 2 hours and ordering the cake from the centre is required. In the half-room option the capacity is 20 people (+€7/person extra). Cleaning: €30. <b>To lock in your date you leave a €100 deposit</b>, which is deducted from the final price of the party; in case of cancellation on your part it is non-refundable.</div>
   </div>
 </section>
 
@@ -269,10 +330,13 @@
       <details data-rv><summary>Can we add workshops or activities to the party?</summary><p>Yes. It's an optional service: we design a bespoke workshop or activity for your little one, tailored to their taste.</p></details>
       <details data-rv><summary>Can I bring my own cake?</summary><p>Ordering the cake from the centre is required. We can prepare themed cakes of 12-15 servings.</p></details>
       <details data-rv><summary>What if more guests come?</summary><p>In the half room the capacity is 20 people; beyond that, €7 extra per person. With more than 15 kids an extra monitor is required (€40).</p></details>
-      <details data-rv><summary>Is the deposit refunded if I cancel?</summary><p>The deposit is non-refundable in case of cancellation on your part.</p></details>
+      <details data-rv><summary>How far in advance should I book?</summary><p>At least one month ahead. Weekends are the most requested dates and they go fast: when a birthday is booked we close the centre to the public, so each Saturday and Sunday there is room for one celebration only.</p></details>
+      <details data-rv><summary>What themes do you do?</summary><p>All of them. Superheroes, princesses, unicorns, dinosaurs, mermaids, astronauts, cars, football… and if your little one wants a theme we've never done before, we'll invent it for them. We make the impossible possible.</p></details>
+      <details data-rv><summary>Can I see the room before booking?</summary><p>Of course. You're welcome to come and see the space during our opening hours, at Carrer de Nicaragua 117 (Les Corts). Let us know on WhatsApp at +34 637 319 226 so we can make sure there isn't a private party on at that time.</p></details>
+      <details data-rv><summary>How much is the deposit and is it refunded if I cancel?</summary><p>To lock in your date you leave a €100 deposit, which is deducted from the final price of the party. In case of cancellation on your part, the deposit is non-refundable.</p></details>
     </div>
     <div class="center" style="margin-top:36px" data-rv>
-      <a href="https://wa.me/34637319226" class="btn btn-pink" target="_blank" rel="noopener">Check availability on WhatsApp</a>
+      <a href="https://wa.me/34637319226?text=Hi%2C%20I%20want%20to%20book%20a%20birthday%20%F0%9F%8E%82%0A%0ADate%3A%20%0AChild%27s%20age%3A%20%0AApprox.%20no.%20of%20children%3A%20" class="btn btn-pink" target="_blank" rel="noopener">Check availability on WhatsApp</a>
     </div>
   </div>
 </section>
@@ -280,11 +344,11 @@
 <!-- CTA RESERVA -->
 <section style="padding-top:0">
   <div class="wrap"><div class="news big" data-rv="s">
-    <span class="news-badge">🎂 Dates fill fast</span>
+    <span class="news-badge">🎂 One party per day</span>
     <h2>Book your little one's birthday</h2>
-    <p>The best dates sell out quickly. Write to us and we'll confirm availability right away.</p>
+    <p>When a party is booked we close the centre to the public: that's why <strong>each Saturday and Sunday has room for one celebration only</strong>. Book at least a month ahead and a €100 deposit locks in your date. Write to us and we'll confirm availability right away.</p>
     <div class="news-cta">
-      <a href="https://wa.me/34637319226?text=Hi%2C%20I%20want%20to%20book%20a%20birthday" target="_blank" rel="noopener" class="btn btn-wa lg">💬 Book on WhatsApp</a>
+      <a href="https://wa.me/34637319226?text=Hi%2C%20I%20want%20to%20book%20a%20birthday%20%F0%9F%8E%82%0A%0ADate%3A%20%0AChild%27s%20age%3A%20%0AApprox.%20no.%20of%20children%3A%20" target="_blank" rel="noopener" class="btn btn-wa lg">💬 Book on WhatsApp</a>
       <a href="contacto#app" class="btn btn-pink lg">📅 Book in the app</a>
     </div>
   </div></div>
