@@ -77,10 +77,34 @@
     },
     {
       "@type": "Question",
-      "name": "Es retorna la senyal si cancel·lo?",
+      "name": "Amb quanta antelació cal reservar?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "La paga i senyal no es retorna en cas de cancel·lació per la teva part."
+        "text": "Com a mínim un mes abans. Els caps de setmana són les dates més demanades: quan hi ha un aniversari reservat, el centre es tanca al públic, així que cada dissabte i diumenge només hi ha lloc per a una celebració."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Quines temàtiques feu?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Totes. Superherois, princeses, unicorns, dinosaures, sirenes, astronautes, cotxes, futbol… i si el teu petit vol una temàtica que no hem fet mai, l'hi inventem. Fem l'impossible possible."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Puc veure la sala abans de reservar?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí. Pots venir a conèixer l'espai en el nostre horari d'obertura, al Carrer de Nicaragua 117 (Les Corts). Avisa'ns per WhatsApp al +34 637 319 226 per assegurar-nos que no hi hagi una festa privada en aquella estona."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Quant és la senyal i es retorna si cancel·lo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Per bloquejar la teva data es deixa una paga i senyal de 100€, que es descompta del preu final de la festa. En cas de cancel·lació per la teva part, la senyal no es retorna."
       }
     }
   ]
@@ -96,9 +120,17 @@
   "provider": { "@type": "LocalBusiness", "@id": "https://www.kidsandkafe.es/#business", "name": "Kids & Kafé" },
   "areaServed": { "@type": "City", "name": "Barcelona" },
   "audience": { "@type": "PeopleAudience", "suggestedMinAge": 0, "suggestedMaxAge": 8 },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.2",
+    "reviewCount": "491"
+  },
   "offers": {
-    "@type": "Offer",
+    "@type": "AggregateOffer",
     "priceCurrency": "EUR",
+    "lowPrice": "450",
+    "highPrice": "890",
+    "offerCount": "3",
     "availability": "https://schema.org/InStock",
     "url": "https://www.kidsandkafe.es/ca/cumpleanos"
   }
@@ -133,7 +165,7 @@
     <h1 data-rv data-delay="1">Aniversaris infantils a Barcelona amb <em>decoració temàtica</em></h1>
     <p data-rv data-delay="2">Decoració temàtica, globus, monitors, mini discoteca i una sala d'aniversaris de 300 m² només per a vosaltres. Preferiu celebrar a casa? També portem la festa a domicili per Barcelona i pobles del voltant. Vosaltres celebreu, nosaltres ens encarreguem de tot.</p>
     <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:26px" data-rv data-delay="3">
-      <a href="https://wa.me/34637319226?text=Hola%2C%20vull%20reservar%20un%20aniversari%20a%20Kids%20%26%20Kaf%C3%A9" target="_blank" rel="noopener" class="btn btn-pink">🎉 Reserva la teva data</a>
+      <a href="https://wa.me/34637319226?text=Hola%2C%20vull%20reservar%20un%20aniversari%20a%20Kids%20%26%20Kaf%C3%A9%20%F0%9F%8E%82%0A%0AData%3A%20%0AEdat%20del%20petit%3A%20%0ANre.%20de%20nens%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-pink">🎉 Reserva la teva data</a>
       <a href="#paquetes" class="btn btn-ghost">Veure paquets i preus</a>
     </div>
     <div class="crumb" data-rv data-delay="4"><a href="/">Inici</a> · Aniversaris</div>
@@ -181,6 +213,18 @@
   </div>
 </section>
 
+<!-- TEMÀTIQUES -->
+<section style="padding-top:0">
+  <div class="wrap"><div class="news" data-rv="s">
+    <span class="news-badge">🦄 Qualsevol temàtica</span>
+    <h2>La temàtica que se t'acudeixi. I si no existeix, ens la inventem</h2>
+    <p>Superherois, princeses, unicorns, dinosaures, sirenes, astronautes, cotxes, futbol, el seu dibuix preferit… I si el teu petit vol alguna cosa que no hem fet mai, l'hi muntem igualment. Ens ho demaneu les mares i els nens, i ens ho inventem: <strong>aquí l'impossible es fa possible</strong>.</p>
+    <div class="news-cta">
+      <a href="https://wa.me/34637319226?text=Hola%2C%20vull%20un%20aniversari%20amb%20una%20tem%C3%A0tica%20especial%20%F0%9F%8E%82%0A%0AData%3A%20%0AEdat%20del%20petit%3A%20%0ANre.%20de%20nens%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-wa lg">💬 Explica'ns la temàtica del teu petit</a>
+    </div>
+  </div></div>
+</section>
+
 <!-- PAQUETES -->
 <section id="paquetes" class="party-sec">
   <div class="wrap">
@@ -189,21 +233,35 @@
       <div class="pcard" data-rv="s" data-delay="1">
         <h4>Party 1</h4><div class="price">450€</div>
         <ul><li>Lloguer mitja sala</li><li>Decoració bàsica temàtica</li><li>Jocs grupals i mini discoteca</li><li>Màxim 20 persones</li><li>A partir de 20: +7€/persona</li></ul>
-        <a href="https://wa.me/34637319226?text=Hola%2C%20vull%20reservar%20el%20Party%201" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Reservar Party 1</a>
+        <a href="https://wa.me/34637319226?text=Hola%2C%20vull%20reservar%20el%20Party%201%20%F0%9F%8E%82%0A%0AData%3A%20%0AEdat%20del%20petit%3A%20%0ANre.%20de%20nens%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Reservar Party 1</a>
       </div>
       <div class="pcard feat" data-rv="s" data-delay="2">
         <span class="ribbon">Més popular</span>
         <h4>Party 2</h4><div class="price">650€</div>
         <ul><li>Lloguer sala completa</li><li>Decoració bàsica temàtica</li><li>Jocs grupals i mini discoteca</li><li>Aforament 80 persones</li><li>+15 nens: monitor extra (40€)</li></ul>
-        <a href="https://wa.me/34637319226?text=Hola%2C%20vull%20reservar%20el%20Party%202" target="_blank" rel="noopener" class="btn btn-pink" style="margin-top:18px;width:100%;justify-content:center">Reservar Party 2</a>
+        <a href="https://wa.me/34637319226?text=Hola%2C%20vull%20reservar%20el%20Party%202%20%F0%9F%8E%82%0A%0AData%3A%20%0AEdat%20del%20petit%3A%20%0ANre.%20de%20nens%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-pink" style="margin-top:18px;width:100%;justify-content:center">Reservar Party 2</a>
       </div>
       <div class="pcard" data-rv="s" data-delay="3">
         <h4>Party 3</h4><div class="price">890€</div>
         <ul><li>Sala completa + decoració completa amb globus</li><li>Pastís temàtic (12-15 porcions)</li><li>Personatge disfressat, taller o pintacares (1h)</li><li>Aforament 80 persones</li><li>Ninot addicional +100€/h · monitor extra +40€</li></ul>
-        <a href="https://wa.me/34637319226?text=Hola%2C%20vull%20reservar%20el%20Party%203" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Reservar Party 3</a>
+        <a href="https://wa.me/34637319226?text=Hola%2C%20vull%20reservar%20el%20Party%203%20%F0%9F%8E%82%0A%0AData%3A%20%0AEdat%20del%20petit%3A%20%0ANre.%20de%20nens%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Reservar Party 3</a>
       </div>
     </div>
   </div>
+</section>
+
+<!-- CONFIANZA -->
+<section style="padding-top:0">
+  <div class="wrap"><div class="trust" data-rv="s">
+    <div class="stars">⭐⭐⭐⭐⭐</div>
+    <h3>4,2 sobre 5 · 491 ressenyes a Google</h3>
+    <p>Centenars de famílies de Barcelona ja han celebrat aquí l'aniversari del seu petit. Organitzem festes des del 2018. Mira-ho tu mateixa abans de decidir.</p>
+    <div class="tlogos">
+      <span>🎂 Celebrant des del 2018</span>
+      <a href="https://www.google.com/maps/search/Kids+and+Kafe+Barcelona" target="_blank" rel="noopener" class="btn btn-ghost">Veure ressenyes a Google</a>
+      <a href="https://instagram.com/kidsandkafe" target="_blank" rel="noopener" class="btn btn-pink">Veure festes a Instagram</a>
+    </div>
+  </div></div>
 </section>
 
 <!-- OTRAS OPCIONES -->
@@ -214,14 +272,17 @@
       <div class="pcard" data-rv="s" data-delay="1">
         <h4>Family Lounge</h4><div class="price">25€<span> /nen</span></div>
         <ul><li>2 hores de celebració</li><li>Menú infantil o taller</li><li>Sala de joc inclosa</li><li>Aforament 12 adults</li><li>Entrada adult 3€ · càtering 12€/adult</li></ul>
+        <a href="https://wa.me/34637319226?text=Hola%2C%20m%27interessa%20celebrar%20al%20Family%20Lounge%20%F0%9F%8E%82%0A%0AData%3A%20%0AEdat%20del%20petit%3A%20%0ANre.%20de%20nens%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Consultar Family Lounge</a>
       </div>
       <div class="pcard" data-rv="s" data-delay="2">
         <h4>Sala completa · 3h</h4><div class="price">350-550€</div>
         <ul><li>1 monitor inclòs</li><li>200 m² de racons temàtics</li><li>100 m² de ball i psicomotricitat</li><li>Mobiliari per a esdeveniments</li><li>Dl-Dj 350€ · Dv-Dg i festius 550€</li></ul>
+        <a href="https://wa.me/34637319226?text=Hola%2C%20vull%20llogar%20la%20sala%20completa%20%F0%9F%8E%82%0A%0AData%3A%20%0AEdat%20del%20petit%3A%20%0ANre.%20de%20nens%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Consultar sala completa</a>
       </div>
       <div class="pcard" data-rv="s" data-delay="3">
         <h4>Mitja sala · 3h</h4><div class="price">230-310€</div>
         <ul><li>1 monitor inclòs</li><li>Aforament fins a 20 persones (+7€ extra)</li><li>Racons temàtics + sala de ball</li><li>Mobiliari per a esdeveniments</li><li>Dl-Dj 230€ · Dv-Dg i festius 310€</li></ul>
+        <a href="https://wa.me/34637319226?text=Hola%2C%20vull%20llogar%20mitja%20sala%20%F0%9F%8E%82%0A%0AData%3A%20%0AEdat%20del%20petit%3A%20%0ANre.%20de%20nens%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Consultar mitja sala</a>
       </div>
     </div>
   </div>
@@ -235,7 +296,7 @@
       <div class="cbox" data-rv="r"><h5>🍔 Pack càtering nens</h5><div class="pp">10€ / nen</div><p>Entrepà de pernil dolç i formatge, nuggets, safata de fruita, gofre amb mel o xocolata, donuts o bikini de Nutella, crispetes i patates. Gerres de suc, cacaolat i aigua.</p></div>
       <div class="cbox" data-rv="l"><h5>🥪 Pack càtering adults</h5><div class="pp">12€ / persona</div><p>Sandvitx de salmó i pollastre, mini entrepà, safata de mini dolços, croquetes, quiche, olives. Gerra d'aigua i 1 refresc per persona.</p></div>
     </div>
-    <div class="note" data-rv><b>Important:</b> la reserva de l'àrea d'aniversari és de 2 hores i és obligatori demanar el pastís al centre. En opció mitja sala l'aforament és de 20 persones (+7€/persona extra). La paga i senyal no es retorna en cas de cancel·lació. Neteja: 30€. Els preus dels paquets de càtering i festa es consulten per correu.</div>
+    <div class="note" data-rv><b>Important:</b> la reserva de l'àrea d'aniversari és de 2 hores i és obligatori demanar el pastís al centre. En opció mitja sala l'aforament és de 20 persones (+7€/persona extra). Neteja: 30€. <b>Per bloquejar la teva data es deixa una paga i senyal de 100€</b>, que es descompta del preu final de la festa; en cas de cancel·lació per la teva part no es retorna.</div>
   </div>
 </section>
 
@@ -269,10 +330,13 @@
       <details data-rv><summary>Es poden afegir tallers o activitats a l'aniversari?</summary><p>Sí. És un servei opcional: dissenyem un taller o activitat a mida per al teu peque segons els seus gustos.</p></details>
       <details data-rv><summary>Puc portar el meu propi pastís?</summary><p>És obligatori demanar el pastís al centre. Podem preparar pastissos temàtics de 12-15 porcions.</p></details>
       <details data-rv><summary>Què passa si venen més convidats?</summary><p>En mitja sala l'aforament és de 20 persones; a partir d'aquí, 7€ extra per persona. Amb més de 15 nens és obligatori un monitor extra (40€).</p></details>
-      <details data-rv><summary>Es retorna la senyal si cancel·lo?</summary><p>La paga i senyal no es retorna en cas de cancel·lació per la teva part.</p></details>
+      <details data-rv><summary>Amb quanta antelació cal reservar?</summary><p>Com a mínim un mes abans. Els caps de setmana són les dates més demanades i volen: quan hi ha un aniversari reservat, el centre es tanca al públic, així que cada dissabte i diumenge només hi ha lloc per a una celebració.</p></details>
+      <details data-rv><summary>Quines temàtiques feu?</summary><p>Totes. Superherois, princeses, unicorns, dinosaures, sirenes, astronautes, cotxes, futbol… i si el teu petit vol una temàtica que no hem fet mai, l'hi inventem. Fem l'impossible possible.</p></details>
+      <details data-rv><summary>Puc veure la sala abans de reservar?</summary><p>És clar. Pots venir a conèixer l'espai en el nostre horari d'obertura, al Carrer de Nicaragua 117 (Les Corts). Avisa'ns per WhatsApp al +34 637 319 226 per assegurar-nos que no hi hagi una festa privada en aquella estona.</p></details>
+      <details data-rv><summary>Quant és la senyal i es retorna si cancel·lo?</summary><p>Per bloquejar la teva data es deixa una paga i senyal de 100€, que es descompta del preu final de la festa. En cas de cancel·lació per la teva part, la senyal no es retorna.</p></details>
     </div>
     <div class="center" style="margin-top:36px" data-rv>
-      <a href="https://wa.me/34637319226" class="btn btn-pink" target="_blank" rel="noopener">Consulta disponibilitat per WhatsApp</a>
+      <a href="https://wa.me/34637319226?text=Hola%2C%20vull%20reservar%20un%20aniversari%20%F0%9F%8E%82%0A%0AData%3A%20%0AEdat%20del%20petit%3A%20%0ANre.%20de%20nens%20aprox.%3A%20" class="btn btn-pink" target="_blank" rel="noopener">Consulta disponibilitat per WhatsApp</a>
     </div>
   </div>
 </section>
@@ -280,11 +344,11 @@
 <!-- CTA RESERVA -->
 <section style="padding-top:0">
   <div class="wrap"><div class="news big" data-rv="s">
-    <span class="news-badge">🎂 Dates que volen</span>
+    <span class="news-badge">🎂 Un sol aniversari al dia</span>
     <h2>Reserva l'aniversari del teu petit</h2>
-    <p>Les millors dates s'esgoten ràpid. Escriu-nos i et confirmem disponibilitat a l'instant.</p>
+    <p>Quan hi ha una festa reservada, el centre es tanca al públic: cada dissabte i diumenge només hi ha lloc per a una celebració. Reserva com a mínim un mes abans i bloqueja la teva data amb 100€ de paga i senyal, que es descompten del preu final.</p>
     <div class="news-cta">
-      <a href="https://wa.me/34637319226?text=Hola%2C%20vull%20reservar%20un%20aniversari" target="_blank" rel="noopener" class="btn btn-wa lg">💬 Reservar per WhatsApp</a>
+      <a href="https://wa.me/34637319226?text=Hola%2C%20vull%20reservar%20un%20aniversari%20%F0%9F%8E%82%0A%0AData%3A%20%0AEdat%20del%20petit%3A%20%0ANre.%20de%20nens%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-wa lg">💬 Reservar per WhatsApp</a>
       <a href="contacto#app" class="btn btn-pink lg">📅 Reservar a l'app</a>
     </div>
   </div></div>
