@@ -1,0 +1,2585 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>MOCKUP · Party Studio · Kids &amp; Kafé</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FFFBF8; --gold:#E7B24C; --ink:#2E2521; --muted:#9A8A80;
+  --sage:#6B8268; --sage-dark:#4E614E; --green:#A0C079;
+  --r:26px; --shadow:0 24px 60px -24px rgba(90,60,45,.5);
+  /* las cambia el JS segun la tematica */
+  --sky1:#FFE9F3; --sky2:#E8D9FF; --far:#F3D9EC; --ground:#E9D5F5; --accent:#C77DC0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',system-ui,sans-serif;background:var(--cream);color:var(--ink);
+     -webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{max-width:980px;margin:0 auto;padding:0 20px}
+
+/* ---------- barra de idioma ----------
+   Va arriba del todo y pegada (sticky) para que se vea tambien despues de
+   bajar: si una madre catalana llega al paso 4 y sigue en castellano, ya
+   no va a subir hasta arriba a buscar el boton.                          */
+.langbar{position:sticky;top:0;z-index:60;display:flex;gap:6px;justify-content:center;
+         padding:8px 12px;background:rgba(255,251,246,.92);backdrop-filter:blur(8px);
+         border-bottom:1px solid rgba(0,0,0,.05)}
+.langbtn{border:1.5px solid #E7DDD1;background:#fff;color:var(--muted);cursor:pointer;
+         border-radius:999px;padding:5px 14px;font:800 12px/1 inherit;letter-spacing:1px;
+         transition:.15s}
+.langbtn:hover{border-color:var(--sage)}
+.langbtn.on{background:var(--sage-dark);border-color:var(--sage-dark);color:#fff}
+
+/* ---------- cabecera ---------- */
+.head{text-align:center;padding:38px 0 22px}
+.eyebrow{display:inline-block;font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+         color:var(--sage);background:#EEF3E7;padding:7px 15px;border-radius:99px}
+.head h1{font-size:clamp(30px,6.5vw,50px);line-height:1.08;margin:15px 0 10px;font-weight:900;letter-spacing:-.5px}
+.head h1 em{font-style:normal;background:linear-gradient(90deg,var(--accent),var(--gold));
+            -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+            transition:background .6s ease}
+.head p{color:var(--muted);font-size:16.5px;max-width:520px;margin:0 auto;line-height:1.55}
+
+/* ---------- EL ESCENARIO (el truco esta aqui) ---------- */
+.stage{position:relative;height:min(76vh,620px);border-radius:var(--r);overflow:hidden;
+       box-shadow:var(--shadow);margin-top:26px;cursor:grab;
+       background:linear-gradient(170deg,var(--sky1),var(--sky2));transition:background .7s ease}
+.stage:active{cursor:grabbing}
+.layer{position:absolute;inset:-8%;display:flex;align-items:center;justify-content:center;
+       will-change:transform;transition:transform .35s cubic-bezier(.2,.8,.3,1)}
+/* colina / fondo lejano */
+.l-far{align-items:flex-end}
+.l-far .hill{width:130%;height:52%;background:var(--far);
+             border-radius:50% 50% 0 0 / 100% 100% 0 0;transition:background .7s ease}
+/* suelo */
+.l-ground{align-items:flex-end}
+.l-ground .floor{width:130%;height:26%;background:var(--ground);transition:background .7s ease;
+                 border-radius:44% 56% 0 0 / 26% 22% 0 0}
+/* protagonistas: escenas dibujadas (SVG), no emojis */
+.l-props{align-items:flex-end;padding-bottom:4%}
+.l-props svg{display:none;width:min(86%,560px);height:auto;
+             filter:drop-shadow(0 16px 26px rgba(70,40,30,.22))}
+.l-props svg.on{display:block;animation:enter .65s cubic-bezier(.2,.9,.3,1) both}
+/* lamina pintada: manda sobre el vectorial cuando esa tematica la tiene */
+#photoArt{display:none;width:auto;height:min(78%,430px);border-radius:14px;
+          box-shadow:0 18px 34px rgba(70,40,30,.26)}
+#photoArt.on{display:block;animation:enter .65s cubic-bezier(.2,.9,.3,1) both}
+.l-props:has(#photoArt.on) svg{display:none}
+@keyframes enter{from{opacity:0;transform:translateY(22px) scale(.96)}to{opacity:1;transform:none}}
+/* piezas que respiran dentro del dibujo */
+.bob  {animation:bob  4.6s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.bob2 {animation:bob  5.4s ease-in-out infinite -1.8s;transform-box:fill-box;transform-origin:center}
+.sway {animation:sway 6.2s ease-in-out infinite;transform-box:fill-box;transform-origin:bottom center}
+.spin {animation:spin 9s linear infinite;transform-box:fill-box;transform-origin:center}
+.blink{animation:blink 3.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@keyframes sway{0%,100%{transform:rotate(-2.5deg)}50%{transform:rotate(2.5deg)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes blink{0%,92%,100%{opacity:1}96%{opacity:.35}}
+/* purpurina flotante */
+.l-near{pointer-events:none}
+.l-near span{position:absolute;font-size:clamp(16px,3.6vw,26px);opacity:.92;
+             animation:float 7s ease-in-out infinite;filter:drop-shadow(0 4px 8px rgba(0,0,0,.12))}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-22px)}}
+
+/* etiquetas flotantes dentro del escenario */
+/* lienzo 3D real (WebGL). Si el movil no puede, se queda el dibujo plano debajo. */
+#gl{position:absolute;inset:0;width:100%;height:100%;display:none;z-index:3;touch-action:none}
+.stage.is3d #gl{display:block}
+.stage.is3d .layer{display:none}
+.stage-tag{position:absolute;left:16px;bottom:16px;z-index:5;background:rgba(255,255,255,.92);
+           backdrop-filter:blur(8px);padding:10px 16px;border-radius:99px;font-weight:800;font-size:14px;
+           box-shadow:0 8px 22px rgba(70,40,30,.18)}
+.stage-hint{position:absolute;right:16px;top:16px;z-index:5;background:rgba(46,37,33,.55);
+            backdrop-filter:blur(6px);color:#fff;padding:8px 14px;border-radius:99px;font-size:12.5px;font-weight:700}
+
+/* ---------- pasos ---------- */
+.step{margin-top:34px}
+.step-n{display:flex;align-items:center;gap:11px;margin-bottom:15px}
+.step-n b{width:29px;height:29px;border-radius:50%;background:var(--sage);color:#fff;display:grid;
+          place-items:center;font-size:14.5px;flex:none}
+.step-n h2{font-size:20.5px;font-weight:800;letter-spacing:-.2px}
+
+/* selector de tematica */
+.themes{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:11px}
+.th{border:2.5px solid #EFE6DF;background:#fff;border-radius:19px;padding:13px 7px 11px;text-align:center;
+    cursor:pointer;transition:.22s;font-family:inherit;font-size:13px;font-weight:800;color:var(--ink)}
+.th:hover{transform:translateY(-3px);border-color:#E0D3C8;box-shadow:0 12px 24px -14px rgba(90,60,45,.5)}
+.th .ico{font-size:31px;display:block;margin-bottom:6px;line-height:1}
+.th[aria-pressed="true"]{border-color:var(--accent);background:#FFF8FC;
+                         box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 16%,transparent)}
+.th.invent{border-style:dashed;background:#FFFDF6}
+
+/* campos */
+/* "Nº ADULTOS" no cabia en 78px, partia en dos lineas y empujaba su caja
+   un renglon mas abajo que las otras tres. Dos arreglos, no uno:
+   columnas mas anchas para que el rotulo quepa entero, y align-items:end
+   para que las cajas se alineen POR ABAJO pase lo que pase con el texto. */
+.fields{display:grid;grid-template-columns:1fr 78px 88px 98px;gap:11px;align-items:end}
+.fields .lab{white-space:nowrap}
+@media(max-width:620px){.fields{grid-template-columns:1fr 1fr 1fr}.fields label:first-child{grid-column:1/-1}}
+label{display:block}
+.lab{font-size:12.5px;font-weight:800;color:var(--muted);margin-bottom:6px;letter-spacing:.2px}
+input{width:100%;font-family:inherit;font-size:16px;font-weight:700;color:var(--ink);
+      border:2.5px solid #EFE6DF;background:#fff;border-radius:15px;padding:13px 15px;transition:.2s}
+input:focus{outline:0;border-color:var(--sage);box-shadow:0 0 0 4px rgba(107,130,104,.14)}
+
+/* La fecha va SUELTA debajo, no metida en la fila de cuatro cajitas:
+   ahi no cabe sin volver a descuadrar los rotulos como paso con
+   "Nº ADULTOS". Y ademas es la pregunta mas importante del formulario,
+   asi que merece su propio renglon. */
+.fecha{margin-top:14px}
+/* El rotulo se ponia AL LADO de la caja en vez de encima. Motivo: en la
+   fila de cuatro, la caja mide el 100% y empuja el rotulo arriba sola;
+   aqui la caja solo mide 240px, asi que cabian los dos en el mismo
+   renglon. Se lo digo explicito y ya se comporta como las otras.     */
+.fecha .lab{display:block}
+.fecha input{max-width:240px}
+.fecha-msg{margin-top:10px;font-size:12.5px;line-height:1.5;color:var(--muted);
+           border-radius:13px;padding:10px 13px;display:none}
+.fecha-msg.on{display:block}
+.fecha-msg.ok{background:#F7FAF4;border:1.5px dashed #DBE7D2;color:var(--sage-dark)}
+.fecha-msg.aviso{background:#FFF6EE;border:1.5px dashed #F0D6BE;color:#A85E2B}
+
+/* packs */
+/* Los tres MODOS de celebrar. Van mas gordos que los packs a proposito:
+   es la primera decision y tiene que verse que manda sobre lo de abajo. */
+.modos{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-bottom:15px}
+.modo{border:2.5px solid #EFE6DF;background:#fff;border-radius:19px;padding:15px 13px;cursor:pointer;
+      text-align:left;transition:.16s;font:inherit}
+.modo:hover{transform:translateY(-3px);box-shadow:0 12px 24px -14px rgba(90,60,45,.5)}
+.modo[aria-pressed="true"]{border-color:var(--accent);background:#FFF8FC}
+.modo .mi{font-size:22px;display:block;margin-bottom:5px}
+.modo b{display:block;font-size:15px;font-weight:900;margin-bottom:2px}
+.modo small{color:var(--muted);font-size:12.5px;line-height:1.35;display:block}
+/* El dia solo sale en alquiler: el finde cuesta 200€ mas y esconderlo
+   seria venderle una cifra que luego no es.                            */
+.dias{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:14px}
+/* OJO: sin esta linea el display:flex le gana al atributo hidden y el
+   selector de dia sale SIEMPRE, hasta en el Family Lounge.          */
+.dias[hidden]{display:none}
+.dias .lab{margin:0}
+.dia{border:2px solid #EFE6DF;background:#fff;border-radius:13px;padding:8px 14px;cursor:pointer;
+     font:inherit;font-size:13px;font-weight:800;color:var(--muted);transition:.16s}
+.dia[aria-pressed="true"]{border-color:var(--sage);background:#F7FAF4;color:var(--sage-dark)}
+.note-res{margin-top:13px;font-size:12.5px;line-height:1.55;color:var(--muted);
+          background:#FFFBF5;border:1.5px dashed #EADFD3;border-radius:14px;padding:12px 14px}
+.note-res b{color:var(--ink)}
+@media(max-width:620px){.modos{grid-template-columns:1fr}}
+.packs{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
+@media(max-width:560px){.packs{grid-template-columns:1fr}}
+.pk{border:2.5px solid #EFE6DF;background:#fff;border-radius:19px;padding:16px;cursor:pointer;
+    transition:.22s;text-align:left;font-family:inherit}
+.pk:hover{transform:translateY(-3px);box-shadow:0 12px 24px -14px rgba(90,60,45,.5)}
+.pk[aria-pressed="true"]{border-color:var(--sage);background:#F7FAF4}
+.pk b{display:block;font-size:16px;font-weight:900;margin-bottom:3px}
+.pk small{color:var(--muted);font-size:13px;line-height:1.4;display:block}
+.pk .price{margin-top:9px;font-weight:900;color:var(--sage-dark);font-size:15px}
+.pk .note{margin-top:5px;font-size:11.5px;color:var(--muted);font-weight:700;display:block}
+
+/* extras */
+.extras{display:grid;grid-template-columns:repeat(auto-fill,minmax(216px,1fr));gap:11px}
+.ex{border:2.5px solid #EFE6DF;background:#fff;border-radius:17px;padding:14px 15px;cursor:pointer;
+    transition:.2s;text-align:left;font-family:inherit;display:flex;gap:11px;align-items:flex-start}
+.ex:hover{border-color:#E0D3C8}
+.ex[aria-pressed="true"]{border-color:var(--sage);background:#F7FAF4}
+.ex .tick{width:22px;height:22px;border-radius:7px;border:2.5px solid #DCCFC4;flex:none;margin-top:1px;
+          display:grid;place-items:center;font-size:13px;color:#fff;transition:.2s}
+.ex[aria-pressed="true"] .tick{background:var(--sage);border-color:var(--sage)}
+.ex b{display:block;font-size:14.5px;font-weight:800;line-height:1.3}
+.ex small{color:var(--muted);font-size:12.5px;font-weight:700;display:block;margin-top:2px}
+
+/* catering a medida */
+.custom{margin-top:11px;border:2.5px dashed #E7D9B8;background:#FFFDF6;border-radius:17px;padding:15px}
+.custom b{font-size:14.5px;display:block;margin-bottom:3px}
+.custom small{color:var(--muted);font-size:12.5px;font-weight:700;display:block;margin-bottom:9px}
+.custom textarea{width:100%;font-family:inherit;font-size:15px;font-weight:600;color:var(--ink);
+                 border:2.5px solid #EFE6DF;background:#fff;border-radius:13px;padding:11px 13px;
+                 resize:vertical;min-height:64px}
+.custom textarea:focus{outline:0;border-color:var(--gold);box-shadow:0 0 0 4px rgba(231,178,76,.16)}
+
+/* total en vivo */
+.total{margin-top:16px;background:#fff;border:2.5px solid #EFE6DF;border-radius:19px;padding:17px 19px}
+.total .row{display:flex;justify-content:space-between;gap:14px;font-size:14px;font-weight:700;
+            padding:6px 0;color:var(--muted)}
+.total .row b{color:var(--ink);font-weight:800;white-space:nowrap}
+.total .sum{display:flex;justify-content:space-between;align-items:baseline;gap:14px;
+            border-top:2.5px dashed #EFE6DF;margin-top:9px;padding-top:13px}
+.total .sum span{font-size:15px;font-weight:800}
+.total .sum strong{font-size:27px;font-weight:900;color:var(--sage-dark);letter-spacing:-.5px}
+.total .warn{margin-top:9px;font-size:12px;color:var(--muted);font-weight:700;line-height:1.45}
+
+/* ---------- EL CARTEL FINAL (lo que se comparte) ---------- */
+.poster{margin:34px 0 0;border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);
+        background:linear-gradient(170deg,var(--sky1),var(--sky2));transition:background .7s ease;
+        padding:32px 24px 26px;text-align:center;position:relative}
+.poster .pico{font-size:60px;line-height:1;filter:drop-shadow(0 10px 16px rgba(70,40,30,.22))}
+.poster .pk-eyebrow{font-size:11.5px;font-weight:900;letter-spacing:2.4px;text-transform:uppercase;
+                    color:var(--ink);opacity:.5;margin:14px 0 6px}
+.poster h3{font-size:clamp(25px,5.6vw,36px);font-weight:900;line-height:1.12;letter-spacing:-.5px}
+.poster .meta{margin-top:12px;display:flex;flex-wrap:wrap;gap:7px;justify-content:center}
+.poster .chip{background:rgba(255,255,255,.85);padding:7px 14px;border-radius:99px;
+              font-size:13px;font-weight:800;backdrop-filter:blur(6px)}
+.poster .foot{margin-top:18px;font-size:12.5px;font-weight:800;opacity:.55;letter-spacing:.6px}
+
+/* botones */
+.cta{display:flex;gap:11px;flex-wrap:wrap;justify-content:center;margin-top:20px}
+.btn{font-family:inherit;font-size:15.5px;font-weight:800;border:0;border-radius:99px;
+     padding:15px 26px;cursor:pointer;transition:.2s;text-decoration:none;display:inline-block}
+.btn-wa{background:#25D366;color:#fff;box-shadow:0 12px 26px -12px rgba(37,211,102,.9)}
+.btn-wa:hover{transform:translateY(-2px)}
+.btn-ghost{background:#fff;color:var(--ink);border:2.5px solid #EFE6DF}
+.btn-ghost:hover{border-color:#DCCFC4}
+
+.scarcity{margin-top:16px;text-align:center;font-size:14px;color:var(--sage-dark);
+          background:#F1F6EC;border-radius:15px;padding:13px 18px;font-weight:700;line-height:1.5}
+footer{padding:44px 20px 60px;text-align:center;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+
+<div class="langbar">
+  <button class="langbtn on" data-l="es" type="button">ES</button>
+  <button class="langbtn"    data-l="ca" type="button">CA</button>
+  <button class="langbtn"    data-l="en" type="button">EN</button>
+</div>
+
+<div class="wrap">
+
+  <div class="head">
+    <span class="eyebrow">Party Studio</span>
+    <h1><span data-i18n="hero_pre">Diseña el cumple de</span> <em id="hName">tu peque</em><span data-i18n="hero_post"></span></h1>
+    <p data-i18n="hero_sub">Elige la temática y mira cómo se transforma la sala. Mueve el ratón o inclina el móvil.</p>
+  </div>
+
+  <!-- ESCENARIO -->
+  <div class="stage" id="stage">
+    <div class="layer l-far"  data-depth="6"><div class="hill"></div></div>
+    <div class="layer l-ground" data-depth="12"><div class="floor"></div></div>
+    <div class="layer l-props" data-depth="26" id="props">
+<!-- Cartel pintado a mano (ilustracion real). Si la tematica no tiene lamina,
+     se queda el dibujo vectorial de abajo. -->
+<img id="photoArt" alt="" src="" hidden>
+
+<svg data-art="unicornios" viewBox="0 0 320 190" aria-hidden="true">
+  <g class="sway">
+    <path d="M18 178a92 92 0 0 1 184 0h-19a73 73 0 0 0-146 0Z" fill="#FF9AB8"/>
+    <path d="M37 178a73 73 0 0 1 146 0h-19a54 54 0 0 0-108 0Z" fill="#FFC489"/>
+    <path d="M56 178a54 54 0 0 1 108 0h-19a35 35 0 0 0-70 0Z" fill="#FFE58C"/>
+    <path d="M75 178a35 35 0 0 1 70 0h-19a16 16 0 0 0-32 0Z" fill="#A6DCAC"/>
+  </g>
+  <g class="bob2"><ellipse cx="62" cy="48" rx="30" ry="16" fill="#fff"/><circle cx="46" cy="44" r="13" fill="#fff"/><circle cx="76" cy="40" r="16" fill="#fff"/></g>
+  <g class="bob" transform="translate(190 26)">
+    <path d="M44 164V86c0-10 6-18 16-20l30-6v104Z" fill="#fff"/>
+    <ellipse cx="52" cy="62" rx="42" ry="30" transform="rotate(-16 52 62)" fill="#fff"/>
+    <circle cx="18" cy="80" r="15" fill="#fff"/><circle cx="12" cy="80" r="3" fill="#E9C3D2"/>
+    <path d="M66 34 62 8l20 20Z" fill="#fff"/>
+    <path d="M58 30 68 -8l10 32Z" fill="#E7B24C"/>
+    <path d="M62 12h12M65 2h9" stroke="#FFF2D0" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="42" cy="56" r="4.5" fill="#3B2C33"/>
+    <path d="M78 22c24 8 34 32 26 56-6 18-6 36 2 52l-24 6c-10-22-10-42-4-60 6-20 6-38 0-54Z" fill="#C77DC0"/>
+    <path d="M88 30c18 12 22 34 14 54-6 14-6 28-2 42l-18 4c-6-18-6-34-2-48 6-18 8-36 8-52Z" fill="#F58BB8"/>
+  </g>
+</svg>
+
+<svg data-art="superheroes" viewBox="0 0 320 190" aria-hidden="true">
+  <g fill="#2F4F9E" opacity=".5">
+    <rect x="8" y="96" width="38" height="94" rx="4"/><rect x="52" y="70" width="30" height="120" rx="4"/>
+    <rect x="228" y="84" width="34" height="106" rx="4"/><rect x="268" y="110" width="42" height="80" rx="4"/>
+  </g>
+  <g fill="#CFDFF7">
+    <rect x="16" y="106" width="8" height="10"/><rect x="30" y="106" width="8" height="10"/><rect x="16" y="126" width="8" height="10"/>
+    <rect x="60" y="82" width="8" height="10"/><rect x="60" y="102" width="8" height="10"/>
+    <rect x="236" y="96" width="8" height="10"/><rect x="248" y="96" width="8" height="10"/>
+    <rect x="276" y="122" width="8" height="10"/><rect x="290" y="122" width="8" height="10"/>
+  </g>
+  <path class="spin" d="M96 48 104 28l8 20 20-8-8 20 20 8-20 8 8 20-20-8-8 20-8-20-20 8 8-20-20-8 20-8-8-20Z" fill="#FFD75E"/>
+  <g class="bob" transform="translate(118 56)">
+    <path d="M18 26C-6 18-14 44-2 56l30 10Z" fill="#C4283B"/>
+    <path d="M22 24c-20-6-28 14-18 26l26 8Z" fill="#F2596B"/>
+    <rect x="24" y="22" width="48" height="30" rx="14" fill="#3D6ED8"/>
+    <path d="M38 30h18l-9 17Z" fill="#FFD75E"/>
+    <circle cx="84" cy="26" r="15" fill="#F7C9A6"/>
+    <path d="M69 20a15 15 0 0 1 27 0Z" fill="#3B2C33"/>
+    <rect x="88" y="6" width="34" height="12" rx="6" fill="#F7C9A6"/>
+    <rect x="30" y="50" width="14" height="32" rx="7" fill="#3D6ED8"/>
+    <rect x="52" y="50" width="14" height="26" rx="7" fill="#3D6ED8"/>
+  </g>
+</svg>
+
+<svg data-art="princesas" viewBox="0 0 320 190" aria-hidden="true">
+  <g class="sway">
+    <rect x="96" y="88" width="128" height="102" fill="#FFF3F8"/>
+    <rect x="60" y="66" width="42" height="124" fill="#FFE8F1"/>
+    <rect x="218" y="66" width="42" height="124" fill="#FFE8F1"/>
+    <path d="M54 68h54l-27-40Z" fill="#E05C92"/>
+    <path d="M212 68h54l-27-40Z" fill="#E05C92"/>
+    <path d="M126 90h68l-34-36Z" fill="#F2789F"/>
+    <path d="m160 54 3-24 3 24Z" fill="#C89334"/>
+    <path d="M164 30h20l-20 11Z" fill="#F58BB8"/>
+    <rect x="146" y="132" width="28" height="58" rx="14" fill="#E05C92"/>
+    <g fill="#F9C6DC"><rect x="72" y="96" width="16" height="22" rx="8"/><rect x="230" y="96" width="16" height="22" rx="8"/><rect x="112" y="114" width="16" height="22" rx="8"/><rect x="190" y="114" width="16" height="22" rx="8"/></g>
+  </g>
+  <g class="bob" transform="translate(16 96)">
+    <path d="M0 40 6 4l14 18L34 0l14 22 14-18 6 36Z" fill="#E7B24C"/>
+    <rect x="0" y="40" width="68" height="13" rx="5" fill="#F5CC7A"/>
+    <circle cx="34" cy="16" r="5" fill="#F2789F"/><circle cx="12" cy="46" r="3.5" fill="#fff"/><circle cx="56" cy="46" r="3.5" fill="#fff"/>
+  </g>
+</svg>
+
+<svg data-art="dinosaurios" viewBox="0 0 320 190" aria-hidden="true">
+  <path d="M6 190 62 70l56 120Z" fill="#8E6A55"/>
+  <path d="M44 100h36l-7-16-11 9-9-11Z" fill="#E2603C"/>
+  <g class="bob" transform="translate(92 30)">
+    <path d="M10 158c-8-28 2-56 28-68 30-14 66-8 84 14 10 12 12 26 8 40l-8 14H22Z" fill="#5FA24A"/>
+    <path d="M118 108c4-30-2-58-16-74-10-12-6-28 10-30 14-2 24 10 24 24 0 34 10 60 20 80Z" fill="#6EB356"/>
+    <circle cx="124" cy="8" r="16" fill="#6EB356"/><circle cx="117" cy="4" r="3.5" fill="#2B3A22"/>
+    <path d="M10 158c-14 2-26-6-30-18 12-2 22 2 30 8Z" fill="#5FA24A"/>
+    <g fill="#8FCB74"><circle cx="58" cy="112" r="7"/><circle cx="84" cy="122" r="6"/><circle cx="38" cy="128" r="5"/></g>
+  </g>
+  <g class="sway" fill="#3E7A33">
+    <path d="M262 190c-2-30 8-52 26-64-6 24-6 44 0 64Z"/>
+    <path d="M290 190c-8-26-4-48 10-62 2 24 0 42-2 62Z"/>
+  </g>
+</svg>
+
+<svg data-art="sirenas" viewBox="0 0 320 190" aria-hidden="true">
+  <g fill="#E0567F"><path d="M24 190c-4-24 4-40 18-46 0 18 2 34 6 46Z"/><path d="M46 190c0-18 8-30 18-34-4 14-6 24-6 34Z"/></g>
+  <g fill="#F27BA0"><path d="M268 190c6-24 0-42-12-50 0 20-2 36-6 50Z"/></g>
+  <g class="bob" transform="translate(108 14)">
+    <circle cx="52" cy="28" r="20" fill="#F7C9A6"/>
+    <path d="M31 26c0-15 10-24 21-24s21 9 21 24c-4-9-38-9-42 0Z" fill="#B4503C"/>
+    <path d="M30 24c-7 23-3 46 5 62l11-5c-8-18-10-38-6-57Z" fill="#C75A44"/>
+    <path d="M74 24c9 23 7 47-1 63l-11-6c8-16 10-34 4-57Z" fill="#C75A44"/>
+    <rect x="40" y="46" width="24" height="30" rx="10" fill="#F7C9A6"/>
+    <path d="M40 76c18 6 30 26 24 48-6 20-4 34 4 48l-22 8c-16-22-22-46-18-66 4-18 8-28 12-38Z" fill="#28A3C4"/>
+    <path d="M46 172c-16 4-26-6-28-20 16 0 26 6 34 12Z" fill="#3FBCD9"/>
+    <path d="M46 172c8 8 22 12 38 6-8-14-22-18-34-14Z" fill="#3FBCD9"/>
+    <g fill="#7FE0F2"><circle cx="46" cy="98" r="4"/><circle cx="53" cy="120" r="4"/><circle cx="44" cy="140" r="4"/></g>
+  </g>
+  <g fill="#fff" opacity=".5"><circle cx="86" cy="46" r="7"/><circle cx="244" cy="70" r="10"/><circle cx="264" cy="38" r="6"/><circle cx="68" cy="98" r="5"/></g>
+</svg>
+
+<svg data-art="astronautas" viewBox="0 0 320 190" aria-hidden="true">
+  <circle cx="64" cy="72" r="40" fill="#F2A05E"/>
+  <circle cx="52" cy="60" r="9" fill="#D9854A"/><circle cx="78" cy="86" r="6" fill="#D9854A"/>
+  <ellipse cx="64" cy="72" rx="62" ry="13" fill="none" stroke="#E7B24C" stroke-width="7" transform="rotate(-18 64 72)"/>
+  <g class="bob" transform="translate(158 20)">
+    <path d="M56 20c26 18 34 50 28 84H28C22 70 30 38 56 20Z" fill="#FDFBF8"/>
+    <path d="M56 20c-4-12-4-16 0-20 4 4 4 8 0 20Z" fill="#E2574C"/>
+    <circle cx="56" cy="62" r="14" fill="#6A4FCF"/><circle cx="56" cy="62" r="7" fill="#B9A8F5"/>
+    <path d="M28 104 8 132l20-8Z" fill="#E2574C"/><path d="M84 104l20 28-20-8Z" fill="#E2574C"/>
+    <path class="blink" d="M40 104h32l-16 48Z" fill="#F5A623"/>
+    <path class="blink" d="M48 104h16l-8 30Z" fill="#FFE08A"/>
+  </g>
+  <g fill="#FFF0B8"><path d="m258 34 4 10 10 4-10 4-4 10-4-10-10-4 10-4Z"/><path d="m118 40 3 8 8 3-8 3-3 8-3-8-8-3 8-3Z"/><path d="m300 110 3 8 8 3-8 3-3 8-3-8-8-3 8-3Z"/></g>
+</svg>
+
+<svg data-art="coches" viewBox="0 0 320 190" aria-hidden="true">
+  <g transform="translate(18 26)">
+    <rect x="0" y="0" width="10" height="150" rx="4" fill="#6B6158"/>
+    <g fill="#2E2521"><rect x="10" y="4" width="16" height="14"/><rect x="42" y="4" width="16" height="14"/><rect x="26" y="18" width="16" height="14"/><rect x="10" y="32" width="16" height="14"/><rect x="42" y="32" width="16" height="14"/></g>
+    <g fill="#FFFFFF"><rect x="26" y="4" width="16" height="14"/><rect x="10" y="18" width="16" height="14"/><rect x="42" y="18" width="16" height="14"/><rect x="26" y="32" width="16" height="14"/></g>
+  </g>
+  <g class="bob" transform="translate(94 72)">
+    <path d="M6 62c-8-12-4-28 10-32l22-6 18-18c6-6 14-8 22-6l26 8c10 4 16 12 18 22l4 18c2 12-6 22-18 22H20c-6 0-11-3-14-8Z" fill="#E0722A"/>
+    <path d="M56 16 44 30h40l-8-12c-4-4-14-6-20-2Z" fill="#CDE4F7"/>
+    <rect x="0" y="44" width="126" height="10" rx="5" fill="#B4551C"/>
+    <circle cx="30" cy="70" r="18" fill="#2E2521"/><circle cx="30" cy="70" r="8" fill="#D9D2CC"/>
+    <circle cx="100" cy="70" r="18" fill="#2E2521"/><circle cx="100" cy="70" r="8" fill="#D9D2CC"/>
+  </g>
+  <g stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" opacity=".75"><path d="M252 92h48M260 114h38M268 134h30"/></g>
+</svg>
+
+<svg data-art="futbol" viewBox="0 0 320 190" aria-hidden="true">
+  <g transform="translate(26 56)">
+    <rect x="0" y="0" width="168" height="116" rx="6" fill="none" stroke="#FFFFFF" stroke-width="9"/>
+    <g stroke="#FFFFFF" stroke-width="2.5" opacity=".7">
+      <path d="M24 6v104M48 6v104M72 6v104M96 6v104M120 6v104M144 6v104"/>
+      <path d="M6 22h156M6 44h156M6 66h156M6 88h156"/>
+    </g>
+  </g>
+  <g class="bob" transform="translate(206 96)">
+    <circle cx="34" cy="34" r="34" fill="#FFFFFF"/>
+    <path d="m34 10 14 10-5 17H25l-5-17Z" fill="#2E2521"/>
+    <path d="M6 26 20 37l-6 16-12-3ZM62 26 48 37l6 16 12-3ZM20 60l6-6h16l6 6-8 10H28Z" fill="#2E2521"/>
+  </g>
+  <g class="bob2" transform="translate(246 16)">
+    <path d="M14 4h36v20c0 12-8 20-18 20s-18-8-18-20Z" fill="#E7B24C"/>
+    <path d="M14 8H4v8c0 8 5 12 10 12M50 8h10v8c0 8-5 12-10 12" fill="none" stroke="#E7B24C" stroke-width="4"/>
+    <rect x="28" y="44" width="8" height="12" fill="#E7B24C"/>
+    <rect x="16" y="56" width="32" height="9" rx="3" fill="#C89334"/>
+  </g>
+</svg>
+
+<svg data-art="piratas" viewBox="0 0 320 190" aria-hidden="true">
+  <g class="sway" transform="translate(66 6)">
+    <rect x="84" y="18" width="7" height="112" fill="#8E6A55"/>
+    <path d="M91 22h44l-10 12 10 12H91Z" fill="#2E2521"/>
+    <circle cx="110" cy="34" r="4.5" fill="#FFFFFF"/>
+    <path d="M84 52 30 74c-4 2-4 8 0 10l54 20Z" fill="#FDFBF8"/>
+    <path d="M91 52l54 22c4 2 4 8 0 10l-54 20Z" fill="#F2E9E2"/>
+    <rect x="18" y="122" width="152" height="10" rx="4" fill="#6B4E3E"/>
+    <path d="M18 132h152c-6 22-24 34-52 34H70c-28 0-46-12-52-34Z" fill="#8E6A55"/>
+  </g>
+  <path d="M0 176c20-10 40-10 60 0s40 10 60 0 40-10 60 0 40 10 60 0 42-10 82 0v14H0Z" fill="#1E94B8" opacity=".45"/>
+  <g class="bob2" transform="translate(14 116)">
+    <rect x="0" y="14" width="54" height="34" rx="6" fill="#8E6A55"/>
+    <path d="M0 20c0-10 12-16 27-16s27 6 27 16Z" fill="#A87F63"/>
+    <rect x="0" y="24" width="54" height="8" fill="#E7B24C"/>
+    <rect x="22" y="26" width="10" height="14" rx="3" fill="#E7B24C"/>
+  </g>
+</svg>
+
+<svg data-art="selva" viewBox="0 0 320 190" aria-hidden="true">
+  <g class="sway" fill="#3E7A33">
+    <path d="M18 190C8 150 20 114 50 96c-14 32-16 62-10 94Z"/>
+    <path d="M54 190c-16-36-10-72 16-92-6 32-4 62 4 92Z"/>
+    <path d="M298 190c10-38-2-72-30-90 12 30 14 60 8 90Z"/>
+  </g>
+  <g class="bob" transform="translate(106 42)">
+    <path d="M48 8c-8-8-2-18 8-14 12-6 26-6 38 0 10-4 16 6 8 14 12 12 18 28 18 44 0 30-22 52-45 52S30 82 30 52c0-16 6-32 18-44Z" fill="#E8A24C"/>
+    <circle cx="49" cy="0" r="12" fill="#D98A34"/><circle cx="97" cy="0" r="12" fill="#D98A34"/>
+    <ellipse cx="73" cy="66" rx="34" ry="27" fill="#F7D9A8"/>
+    <circle cx="58" cy="46" r="5" fill="#3B2C33"/><circle cx="88" cy="46" r="5" fill="#3B2C33"/>
+    <path d="M73 58l-9 8h18Z" fill="#3B2C33"/>
+    <path d="M73 66v8M73 74c-4 6-14 6-16 0M73 74c4 6 14 6 16 0" stroke="#3B2C33" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+  <g class="bob2" transform="translate(246 86)">
+    <ellipse cx="24" cy="24" rx="20" ry="22" fill="#2E2521"/>
+    <path d="M6 14C-14 8-16 30 2 34Z" fill="#E2603C"/>
+    <path d="M6 16C-6 16-8 26 2 30Z" fill="#E7B24C"/>
+    <circle cx="18" cy="15" r="3.5" fill="#FFFFFF"/>
+    <path d="M36 40c10 8 12 20 6 28-8-8-10-18-6-28Z" fill="#2E2521"/>
+  </g>
+</svg>
+
+<svg data-art="granja" viewBox="0 0 320 190" aria-hidden="true">
+  <circle class="spin" cx="278" cy="34" r="24" fill="#FFD75E"/>
+  <g transform="translate(20 54)">
+    <path d="M0 42 64 6l64 36v94H0Z" fill="#D1483F"/>
+    <path d="M0 42 64 6l64 36Z" fill="#B03A33"/>
+    <rect x="46" y="86" width="36" height="50" fill="#FDFBF8"/>
+    <rect x="56" y="52" width="16" height="18" fill="#FDFBF8"/>
+    <path d="M46 86h36M64 86v50" stroke="#D1483F" stroke-width="4"/>
+  </g>
+  <g class="bob" transform="translate(164 88)">
+    <ellipse cx="56" cy="42" rx="52" ry="32" fill="#FDFBF8"/>
+    <path d="M22 24c11-6 21 3 16 13-6 11-21 5-16-13ZM74 52c12-6 22 4 16 14-6 11-22 2-16-14Z" fill="#3B2C33"/>
+    <circle cx="100" cy="20" r="22" fill="#FDFBF8"/>
+    <ellipse cx="106" cy="29" rx="13" ry="10" fill="#F2A7B8"/>
+    <circle cx="95" cy="13" r="3.5" fill="#3B2C33"/>
+    <path d="M82 2c-9-6-5-14 5-10ZM118 2c9-6 5-14-5-10Z" fill="#FDFBF8"/>
+    <g fill="#3B2C33"><rect x="16" y="66" width="9" height="26" rx="4"/><rect x="40" y="68" width="9" height="24" rx="4"/><rect x="72" y="68" width="9" height="24" rx="4"/></g>
+  </g>
+</svg>
+
+<svg data-art="hadas" viewBox="0 0 320 190" aria-hidden="true">
+  <g transform="translate(26 72)">
+    <rect x="30" y="52" width="36" height="64" rx="6" fill="#F2E2CE"/>
+    <path d="M-4 56C-4 24 18 2 48 2s52 22 52 54Z" fill="#E0567F"/>
+    <g fill="#FFF3F8"><circle cx="24" cy="30" r="8"/><circle cx="72" cy="24" r="10"/><circle cx="50" cy="46" r="6"/></g>
+    <path d="M38 82h20v34H38Z" fill="#8E6A55"/>
+  </g>
+  <g class="bob" transform="translate(176 22)">
+    <path d="M36 40C10 20 8 48 30 58ZM52 40c26-20 28 8 6 18Z" fill="#B9E8F2"/>
+    <path d="M34 60C12 54 14 84 34 78ZM54 60c22-6 20 24 0 18Z" fill="#D8C4F7"/>
+    <path d="M34 40h20l8 42c2 10-6 18-18 18s-20-8-18-18Z" fill="#C77DC0"/>
+    <circle cx="44" cy="24" r="15" fill="#F7C9A6"/>
+    <path d="M29 22c0-12 8-18 15-18s15 6 15 18c-4-8-26-8-30 0Z" fill="#E7B24C"/>
+    <path d="M62 64l24-18" stroke="#E7B24C" stroke-width="5" stroke-linecap="round"/>
+    <path class="blink" d="m90 32 4 10 10 4-10 4-4 10-4-10-10-4 10-4Z" fill="#FFE08A"/>
+  </g>
+  <g fill="#F58BB8"><circle cx="120" cy="176" r="8"/><circle cx="142" cy="184" r="6"/><circle cx="276" cy="178" r="9"/></g>
+</svg>
+
+
+<svg data-art="arcoiris" viewBox="0 0 320 190" aria-hidden="true">
+  <g class="sway">
+    <path d="M20 190a114 114 0 0 1 228 0h-23a91 91 0 0 0-182 0Z" fill="#FF9AB8"/>
+    <path d="M43 190a91 91 0 0 1 182 0h-23a68 68 0 0 0-136 0Z" fill="#FFC489"/>
+    <path d="M66 190a68 68 0 0 1 136 0h-23a45 45 0 0 0-90 0Z" fill="#FFE58C"/>
+    <path d="M89 190a45 45 0 0 1 90 0h-23a22 22 0 0 0-44 0Z" fill="#A6DCAC"/>
+    <path d="M112 190a22 22 0 0 1 44 0Z" fill="#9EC7F2"/>
+  </g>
+  <g class="bob" transform="translate(212 20)">
+    <path d="M42 6C18 6 0 26 0 48c0 20 24 40 42 56 18-16 42-36 42-56C84 26 66 6 42 6Z" fill="#E0567F"/>
+    <path d="M42 6c-8 0-14 20-14 44 0 18 6 38 14 54 8-16 14-36 14-54C56 26 50 6 42 6Z" fill="#FFD75E"/>
+    <path d="M28 104h28l-4 12H32Z" fill="#8E6A55"/>
+    <path d="M32 116v10M52 116v10" stroke="#8E6A55" stroke-width="2.5"/>
+    <rect x="22" y="124" width="40" height="26" rx="7" fill="#A87F63"/>
+  </g>
+  <g class="bob2" fill="#FFFFFF"><ellipse cx="46" cy="54" rx="30" ry="15"/><circle cx="30" cy="50" r="13"/><circle cx="58" cy="46" r="16"/></g>
+</svg>
+
+<svg data-art="dulces" viewBox="0 0 320 190" aria-hidden="true">
+  <g class="bob" transform="translate(26 26)">
+    <path d="M14 78h60l-24 78c-2 6-10 6-12 0Z" fill="#E8A24C"/>
+    <path d="M14 78h60M20 98h48M27 118h34" stroke="#C89334" stroke-width="3"/>
+    <circle cx="30" cy="60" r="24" fill="#F58BB8"/>
+    <circle cx="58" cy="60" r="24" fill="#B9E8F2"/>
+    <circle cx="44" cy="38" r="24" fill="#FFF3F8"/>
+    <circle cx="44" cy="12" r="7" fill="#E2574C"/>
+  </g>
+  <g class="bob2" transform="translate(116 72)">
+    <circle cx="50" cy="50" r="48" fill="#E8A24C"/>
+    <path d="M50 2c26 0 48 22 48 48 0 12-18 4-30 12-14 10-30 6-44 0C10 54 0 62 2 46 6 20 26 2 50 2Z" fill="#F58BB8"/>
+    <circle cx="50" cy="50" r="17" fill="#FFFBF8"/>
+    <g fill="#FFFFFF"><rect x="24" y="24" width="13" height="4" rx="2" transform="rotate(-24 24 24)"/><rect x="62" y="20" width="13" height="4" rx="2" transform="rotate(18 62 20)"/><rect x="76" y="52" width="13" height="4" rx="2" transform="rotate(-40 76 52)"/><rect x="16" y="58" width="13" height="4" rx="2" transform="rotate(30 16 58)"/></g>
+  </g>
+  <g class="bob" transform="translate(230 80)">
+    <path d="M6 42h60l-8 56c-1 6-6 10-12 10H26c-6 0-11-4-12-10Z" fill="#F2E2CE"/>
+    <path d="M22 58v40M36 58v44M50 58v40" stroke="#D9C7B2" stroke-width="3"/>
+    <path d="M6 42c0-20 14-34 30-34s30 14 30 34Z" fill="#F58BB8"/>
+    <circle cx="36" cy="2" r="7" fill="#E2574C"/>
+  </g>
+</svg>
+
+<svg data-art="mascotas" viewBox="0 0 320 190" aria-hidden="true">
+  <g class="bob" transform="translate(30 46)">
+    <path d="M14 34 8 0l30 18ZM90 34 96 0 66 18Z" fill="#9A8A80"/>
+    <path d="M18 30 14 12l16 10ZM86 30l4-18-16 10Z" fill="#F2A7B8"/>
+    <ellipse cx="52" cy="128" rx="40" ry="26" fill="#9A8A80"/>
+    <ellipse cx="52" cy="70" rx="46" ry="42" fill="#9A8A80"/>
+    <circle cx="36" cy="62" r="6" fill="#2E2521"/><circle cx="68" cy="62" r="6" fill="#2E2521"/>
+    <path d="M52 78 45 84h14Z" fill="#F2A7B8"/>
+    <path d="M52 86v6M52 92c-5 7-16 7-18 0M52 92c5 7 16 7 18 0" stroke="#2E2521" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+  <g class="bob2" transform="translate(164 58)">
+    <path d="M12 40C-8 34-8 80 14 86Z" fill="#8E6A55"/>
+    <path d="M108 40c20-6 20 40-2 46Z" fill="#8E6A55"/>
+    <ellipse cx="60" cy="70" rx="52" ry="44" fill="#C89334"/>
+    <circle cx="40" cy="56" r="6" fill="#2E2521"/><circle cx="80" cy="56" r="6" fill="#2E2521"/>
+    <ellipse cx="60" cy="92" rx="26" ry="20" fill="#F2E2CE"/>
+    <ellipse cx="60" cy="80" rx="11" ry="9" fill="#2E2521"/>
+    <path d="M60 90v8M60 98c-6 8-18 6-18-2M60 98c6 8 18 6 18-2" stroke="#2E2521" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>
+
+<svg data-art="videojuegos" viewBox="0 0 320 190" aria-hidden="true">
+  <g fill="#6A4FCF" opacity=".3"><rect x="8" y="24" width="18" height="18"/><rect x="32" y="48" width="18" height="18"/><rect x="288" y="40" width="18" height="18"/><rect x="264" y="16" width="18" height="18"/><rect x="288" y="88" width="18" height="18"/></g>
+  <g class="bob" transform="translate(44 54)">
+    <path d="M52 8h116c24 0 42 20 46 44l8 44c4 22-16 38-34 26l-28-18H62l-28 18C16 134-4 118 0 96l8-44C12 28 28 8 52 8Z" fill="#3D3550"/>
+    <g fill="#FDFBF8"><rect x="46" y="46" width="42" height="12" rx="5"/><rect x="61" y="31" width="12" height="42" rx="5"/></g>
+    <circle cx="162" cy="40" r="11" fill="#E2574C"/><circle cx="188" cy="62" r="11" fill="#5FA24A"/>
+    <circle cx="162" cy="84" r="11" fill="#F5A623"/><circle cx="136" cy="62" r="11" fill="#3D6ED8"/>
+  </g>
+  <g class="bob2" fill="#E2574C" transform="translate(120 6)"><path d="M12 12h12v12H12ZM24 0h12v12H24ZM36 12h12v12H36ZM24 24h12v12H24Z"/></g>
+</svg>
+
+<svg data-art="disco" viewBox="0 0 320 190" aria-hidden="true">
+  <g opacity=".4" fill="#FFD75E"><path d="M126 96 26 190h44l60-84ZM194 96l100 94h-44l-60-84Z"/></g>
+  <g class="bob" transform="translate(108 8)">
+    <path d="M52 0v26" stroke="#9A8A80" stroke-width="4"/>
+    <circle cx="52" cy="78" r="52" fill="#B9C7E8"/>
+    <g fill="#8E9FC4"><rect x="16" y="46" width="18" height="18" rx="3"/><rect x="42" y="34" width="18" height="18" rx="3"/><rect x="70" y="46" width="18" height="18" rx="3"/><rect x="16" y="88" width="18" height="18" rx="3"/><rect x="44" y="100" width="18" height="18" rx="3"/><rect x="72" y="88" width="18" height="18" rx="3"/><rect x="44" y="66" width="18" height="18" rx="3"/></g>
+    <circle class="blink" cx="34" cy="56" r="7" fill="#FFFFFF"/>
+  </g>
+  <g class="bob2" fill="#E0567F" transform="translate(24 68)">
+    <circle cx="8" cy="46" r="9"/><rect x="14" y="6" width="5" height="42"/><path d="M19 6c14 2 20 8 22 18-6-8-14-10-22-8Z"/>
+  </g>
+  <g class="bob" fill="#6A4FCF" transform="translate(250 52)">
+    <circle cx="8" cy="48" r="9"/><circle cx="46" cy="40" r="9"/><rect x="14" y="4" width="5" height="46"/><rect x="52" y="0" width="5" height="42"/><path d="M14 4 57 0v11L14 15Z"/>
+  </g>
+</svg>
+
+<svg data-art="ciencia" viewBox="0 0 320 190" aria-hidden="true">
+  <g class="bob" transform="translate(100 34)">
+    <path d="M44 8h28v50l34 70c6 12-2 26-16 26H26c-14 0-22-14-16-26l34-70Z" fill="#DCEAF2"/>
+    <path d="M22 100h72l12 28c6 12-2 26-16 26H26c-14 0-22-14-16-26Z" fill="#5FC4A8"/>
+    <circle cx="40" cy="126" r="7" fill="#BFF0E0"/><circle cx="72" cy="138" r="5" fill="#BFF0E0"/>
+    <rect x="38" y="0" width="40" height="10" rx="4" fill="#9A8A80"/>
+    <g class="bob2" fill="#5FC4A8"><circle cx="58" cy="-14" r="6"/><circle cx="80" cy="-30" r="4"/></g>
+  </g>
+  <g transform="translate(226 70)">
+    <g fill="none" stroke="#6A4FCF" stroke-width="4">
+      <ellipse cx="40" cy="40" rx="40" ry="15"/>
+      <ellipse cx="40" cy="40" rx="40" ry="15" transform="rotate(60 40 40)"/>
+      <ellipse cx="40" cy="40" rx="40" ry="15" transform="rotate(-60 40 40)"/>
+    </g>
+    <circle cx="40" cy="40" r="9" fill="#E2574C"/>
+  </g>
+  <g transform="translate(22 98)">
+    <rect x="0" y="0" width="20" height="76" rx="9" fill="#DCEAF2"/>
+    <rect x="0" y="40" width="20" height="36" rx="9" fill="#F5A623"/>
+    <rect x="30" y="14" width="20" height="62" rx="9" fill="#DCEAF2"/>
+    <rect x="30" y="44" width="20" height="32" rx="9" fill="#E0567F"/>
+  </g>
+</svg>
+
+<svg data-art="magia" viewBox="0 0 320 190" aria-hidden="true">
+  <g class="sway" transform="translate(92 22)">
+    <path d="M64 6c8 0 12 6 12 14l14 96H38L52 20c0-8 4-14 12-14Z" fill="#4B3A7A"/>
+    <path d="M40 96h48l4 20H36Z" fill="#E7B24C"/>
+    <path d="M2 116h124c8 0 14 5 14 12s-6 12-14 12H2c-8 0-14-5-14-12s6-12 14-12Z" fill="#3B2C5E"/>
+    <g fill="#FFE08A"><path d="m64 44 4 10 10 4-10 4-4 10-4-10-10-4 10-4Z"/><path d="m84 70 3 7 7 3-7 3-3 7-3-7-7-3 7-3Z"/></g>
+  </g>
+  <g class="bob" transform="translate(240 96)">
+    <rect x="0" y="0" width="8" height="74" rx="4" fill="#3B2C33" transform="rotate(18 4 37)"/>
+    <path class="blink" d="m22-12 6 16 16 6-16 6-6 16-6-16-16-6 16-6Z" fill="#FFD75E"/>
+  </g>
+  <g class="bob2" transform="translate(22 110)">
+    <path d="M14 12h24v10l14 30c4 10-4 20-14 20H14C4 72-4 62 0 52l14-30Z" fill="#C77DC0"/>
+    <rect x="16" y="0" width="20" height="14" rx="4" fill="#8E6A55"/>
+    <circle cx="20" cy="54" r="5" fill="#F7DCE6"/>
+  </g>
+  <g fill="#FFE08A"><circle cx="288" cy="34" r="4"/><circle cx="58" cy="46" r="3"/><circle cx="264" cy="156" r="3"/></g>
+</svg>
+
+<svg data-art="invent" viewBox="0 0 320 190" aria-hidden="true">
+  <g transform="translate(68 12)">
+    <path d="M90 112v56M90 168l-46 18M90 168l46 18" stroke="#A87F63" stroke-width="7" stroke-linecap="round"/>
+    <rect x="10" y="0" width="160" height="114" rx="8" fill="#FFFDF6" stroke="#E7B24C" stroke-width="4" stroke-dasharray="10 8"/>
+    <g class="blink" fill="#E7B24C">
+      <path d="m56 42 6 16 16 6-16 6-6 16-6-16-16-6 16-6Z"/>
+      <path d="m120 30 4 11 11 4-11 4-4 11-4-11-11-4 11-4Z"/>
+      <path d="m114 80 3 8 8 3-8 3-3 8-3-8-8-3 8-3Z"/>
+    </g>
+  </g>
+  <g class="bob" transform="translate(234 80)">
+    <rect x="0" y="0" width="18" height="64" rx="4" fill="#F5A623" transform="rotate(24 9 32)"/>
+    <path d="M40 72 28 60l-8 18Z" fill="#F7C9A6"/>
+    <path d="M40 72l-6-6-4 10Z" fill="#3B2C33"/>
+  </g>
+</svg>
+
+    </div>
+    <div class="layer l-near" data-depth="46" id="near"></div>
+    <canvas id="gl"></canvas>
+    <div class="stage-tag" id="tag">🦄 Unicornios</div>
+    <div class="stage-hint" data-i18n="hint">✨ mueve para ver</div>
+  </div>
+
+  <!-- PASO 1 -->
+  <div class="step">
+    <div class="step-n"><b>1</b><h2 data-i18n="p1">¿Qué temática quiere?</h2></div>
+    <div class="themes" id="themes"></div>
+  </div>
+
+  <!-- PASO 2 -->
+  <div class="step">
+    <div class="step-n"><b>2</b><h2 data-i18n="p2">¿Quién cumple años?</h2></div>
+    <div class="fields">
+      <label><span class="lab" data-i18n="l_name">NOMBRE DEL PEQUE</span><input id="fName" placeholder="Martina" data-i18n-ph="ph_name" maxlength="18"></label>
+      <label><span class="lab" data-i18n="l_age">EDAD</span><input id="fAge" type="number" min="1" max="14" placeholder="5"></label>
+      <label><span class="lab" data-i18n="l_kids">Nº NIÑOS</span><input id="fKids" type="number" min="1" max="60" placeholder="15"></label>
+      <label><span class="lab" data-i18n="l_ad">Nº ADULTOS</span><input id="fAd" type="number" min="0" max="60" placeholder="20"></label>
+    </div>
+    <div class="fecha">
+      <label><span class="lab" data-i18n="l_fecha">¿QUÉ DÍA LE HARÍA ILUSIÓN?</span>
+        <input id="fFecha" type="date"></label>
+      <div class="fecha-msg" id="fechaMsg"></div>
+    </div>
+  </div>
+
+  <!-- PASO 3 -->
+  <div class="step">
+    <div class="step-n"><b>3</b><h2 data-i18n="p3">¿Cómo lo celebras?</h2></div>
+    <div class="modos" id="modos"></div>
+    <!-- el selector de dia solo aparece en alquiler de sala, que es el
+         unico donde el precio cambia entre semana / fin de semana -->
+    <div class="dias" id="dias" hidden>
+      <span class="lab" data-i18n="l_dia">¿QUÉ DÍA?</span>
+      <button class="dia" data-d="LJ" aria-pressed="true" data-i18n="d_lj">Lunes a jueves</button>
+      <button class="dia" data-d="VD" aria-pressed="false" data-i18n="d_vd">Viernes a domingo y festivos</button>
+    </div>
+    <div class="packs" id="packs"></div>
+    <div class="note-res" id="noteRes"></div>
+  </div>
+
+  <!-- PASO 4 -->
+  <div class="step">
+    <div class="step-n"><b>4</b><h2 data-i18n="p4">Añade lo que quieras</h2></div>
+    <div class="extras" id="extras"></div>
+
+    <div class="custom">
+      <b data-i18n="cat_t">🥗 ¿Catering a medida?</b>
+      <small data-i18n="cat_s">Alergias, sin gluten, vegetariano, sin cerdo… o un menú distinto. Cuéntanoslo y te lo preparamos.</small>
+      <textarea id="fCat" maxlength="300" data-i18n-ph="cat_ph"
+        placeholder="Ej: 2 niños celíacos y 1 sin lactosa. ¿Podéis hacer los nuggets al horno?"></textarea>
+    </div>
+
+    <!-- Igual que el catering: aqui no hay lista cerrada. Lo que una madre
+         pide y no esta en los botones se pierde; con esto, llega. -->
+    <div class="custom">
+      <b data-i18n="div_t">🎪 ¿Otra diversión en mente?</b>
+      <small data-i18n="div_s">Chocolatada, karaoke, cañón de burbujas, un personaje concreto, una sorpresa para la entrada… Si se le puede montar, se le monta.</small>
+      <textarea id="fDiv" maxlength="300" data-i18n-ph="div_ph"
+        placeholder="Ej: le encanta Bluey, ¿podéis conseguir el personaje? Y algo de magia para los mayores."></textarea>
+    </div>
+
+    <div class="total" id="total"></div>
+  </div>
+
+  <!-- CARTEL -->
+  <div class="step">
+    <div class="step-n"><b>5</b><h2 data-i18n="p5">Así sería su fiesta</h2></div>
+    <div class="poster" id="poster">
+      <div class="pico" id="pIco">🦄</div>
+      <div class="pk-eyebrow" data-i18n="cartel_sub">Kids &amp; Kafé · Les Corts, Barcelona</div>
+      <h3 id="pTitle">El cumple de tu peque</h3>
+      <div class="meta" id="pMeta"></div>
+      <div class="foot" data-i18n="cartel_pie">🎂 DISEÑADO EN EL PARTY STUDIO</div>
+    </div>
+
+    <div class="cta">
+      <a class="btn btn-wa" id="waBtn" target="_blank" rel="noopener" data-i18n="b_wa">💬 Enviar mi fiesta por WhatsApp</a>
+      <button class="btn btn-ghost" id="shot" data-i18n="b_save">📸 Guardar mi cartel</button>
+    </div>
+
+    <div class="scarcity">
+      <span data-i18n="aviso1">🗓️ Cuando hay cumple </span><b data-i18n="aviso2">cerramos el centro entero para vosotros</b><span data-i18n="aviso3">, así que solo hay </span><b data-i18n="aviso4">una fiesta por sábado</b><span data-i18n="aviso5">. Las fechas vuelan.</span>
+    </div>
+  </div>
+
+</div>
+
+<footer data-i18n="pie">Party Studio · Kids &amp; Kafé</footer>
+
+<script>
+/* ================= IDIOMAS (ES · CA · EN) =================
+   Mismo sistema que casal-inscripcion y extraescolar-inscripcion: UNA sola
+   pagina y ?lang=ca / ?lang=en. No hay copias en /ca y /en a proposito:
+   este archivo lleva un motor 3D dentro, y mantener tres copias significa
+   arreglar cada cosa tres veces (y olvidarse de una).
+
+   Dos piezas:
+     · T('clave')  -> textos sueltos (avisos, mensaje de WhatsApp...).
+     · DATOS       -> los packs, modos, extras y tematicas NO se tocan en
+                      cada sitio donde se pintan: se les CAMBIA EL CONTENIDO
+                      al vuelo. Asi p.n, p.d, m.s... siguen funcionando igual
+                      y no hay que tocar ni una linea de los renderizadores. */
+var LANG = 'es';
+
+var TXT = {
+es:{
+  hero_pre:'Diseña el cumple de', hero_em:'tu peque', hero_post:'',
+  hero_sub:'Elige la temática y mira cómo se transforma la sala. Mueve el ratón o inclina el móvil.',
+  hint:'✨ mueve para ver',
+  p1:'¿Qué temática quiere?', p2:'¿Quién cumple años?', p3:'¿Cómo lo celebras?',
+  p4:'Añade lo que quieras', p5:'Así sería su fiesta',
+  l_name:'NOMBRE DEL PEQUE', l_age:'EDAD', l_kids:'Nº NIÑOS', l_ad:'Nº ADULTOS',
+  l_fecha:'¿QUÉ DÍA LE HARÍA ILUSIÓN?',
+  l_dia:'¿QUÉ DÍA?', d_lj:'Lunes a jueves', d_vd:'Viernes a domingo y festivos',
+  cat_t:'🥗 ¿Catering a medida?',
+  cat_s:'Alergias, sin gluten, vegetariano, sin cerdo… o un menú distinto. Cuéntanoslo y te lo preparamos.',
+  cat_ph:'Ej: 2 niños celíacos y 1 sin lactosa. ¿Podéis hacer los nuggets al horno?',
+  div_t:'🎪 ¿Otra diversión en mente?',
+  div_s:'Chocolatada, karaoke, cañón de burbujas, un personaje concreto, una sorpresa para la entrada… Si se le puede montar, se le monta.',
+  div_ph:'Ej: le encanta Bluey, ¿podéis conseguir el personaje? Y algo de magia para los mayores.',
+  ph_name:'Martina',
+  cartel_sub:'Kids & Kafé · Les Corts, Barcelona',
+  cartel_t:'El cumple de tu peque', cartel_de:'El cumple de ', cartel_post:'',
+  cartel_pie:'🎂 DISEÑADO EN EL PARTY STUDIO',
+  b_wa:'💬 Enviar mi fiesta por WhatsApp', b_save:'📸 Guardar mi cartel',
+  aviso1:'🗓️ Cuando hay cumple ', aviso2:'cerramos el centro entero para vosotros',
+  aviso3:', así que solo hay ', aviso4:'una fiesta por sábado', aviso5:'. Las fechas vuelan.',
+  pie:'Party Studio · Kids & Kafé',
+  total:'Total estimado', consultar:'a consultar', incluido:'incluido',
+  ent_ad:'Entrada adultos ×', mon_obl:'Monitor extra (obligatorio +15 niños)',
+  pastel_l:'Pastel temático (se pide al centro)',
+  cat_med:'Catering a medida', div_med:'Diversión a medida', limpieza:'Limpieza',
+  por_nino:'/niño', finde_l:' · V-D y festivos', diario_l:' · L-J',
+  extra_per:' personas extra · ', cu:' c/u', a_consultar:'A consultar', pk_medida:'Presupuesto a medida',
+  warn_casa:'El cumple a domicilio se presupuesta a medida según la distancia y lo que montemos. Escríbenos y te lo cerramos al momento.',
+  warn_a:'Estimación orientativa. Para bloquear la fecha se deja una paga y señal de ',
+  warn_b:', que se descuenta del total. El pastel se pide siempre al centro.',
+  r_casa1:'Vamos a Barcelona y pueblos de alrededor. Llevamos decoración, monitores y animación, y lo dejamos todo recogido.',
+  r_casa2:'Reserva con al menos un mes de antelación.',
+  r_casa3:'El presupuesto depende de la distancia y de lo que montemos: escríbenos y te lo cerramos.',
+  r_c1:'La reserva del área de cumpleaños es de 2 horas.',
+  r_c2:'El pastel se pide siempre al centro (no se puede traer de fuera).',
+  r_c3:'Reserva con un mes de antelación. Cuando hay un cumple, cerramos el centro al público: cada sábado y cada domingo solo hay sitio para UNA celebración.',
+  r_c4a:'Para bloquear la fecha se dejan ', r_c4b:' de señal, que se descuentan del total. Si cancelas tú, la señal no se devuelve.',
+  f_pocoa:'⏳ Faltan ', f_pocob:' días. Pedimos reservar con un mes de antelación, así que escríbenos cuanto antes y miramos si podemos encajarlo.',
+  f_findea:'📅 Es ', f_findeb:'. Los fines de semana cerramos el centro al público para la fiesta, así que solo hay sitio para UNA celebración ese día: se ocupan pronto.',
+  f_tarifa:'💶 Viernes, fin de semana y festivos van con la tarifa de fin de semana.',
+  f_oka:'✅ ', f_okb:'. Entre semana el centro sigue abierto al público y va con tarifa de diario.',
+  anio:' año', anios:' años', peques:' peques', adultos_c:' adultos',
+  guardado:'✅ ¡Guardado!', err_cartel:'No se ha podido preparar el cartel. Prueba otra vez 🙏',
+  err_lamina:'Esta temática todavía no tiene lámina para imprimir.\nTodas las demás sí la tienen: elige una y vuelve a darle 🎨',
+  wa_hola:'¡Hola! He diseñado el cumple de mi peque en el Party Studio 🎂',
+  wa_peque:'👦 Peque: ', wa_edad:'🎈 Edad: ', wa_ninos:'👧 Nº de niños: ',
+  wa_ad:'👩 Nº de adultos: ', wa_fecha:'📅 Fecha que le haría ilusión: ',
+  wa_tema:' Temática: ', wa_donde:'📍 Dónde: ', wa_total:'TOTAL ESTIMADO: ',
+  wa_cat:'🥗 Catering a medida: ', wa_div:'🎪 Diversión a medida: ',
+  wa_pd:'(por decir)', wa_sinfecha:'(aún por decidir)',
+  wa_fin1:'¿Tenéis libre ese día?', wa_fin2:'¿Qué fechas tenéis libres?',
+  wa_finde:' · viernes a domingo/festivo', wa_diario:' · lunes a jueves',
+  dias:['domingo','lunes','martes','miércoles','jueves','viernes','sábado'],
+  meses:['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'],
+  fmt:function(d,m,M){ return d + ' ' + m + ' de ' + M; }
+},
+ca:{
+  hero_pre:'Dissenya l\'aniversari de', hero_em:'el teu peque', hero_post:'',
+  hero_sub:'Tria la temàtica i mira com es transforma la sala. Mou el ratolí o inclina el mòbil.',
+  hint:'✨ mou per veure',
+  p1:'Quina temàtica vol?', p2:'Qui fa anys?', p3:'Com ho celebreu?',
+  p4:'Afegeix el que vulguis', p5:'Així seria la seva festa',
+  l_name:'NOM DEL PEQUE', l_age:'EDAT', l_kids:'Nº NENS', l_ad:'Nº ADULTS',
+  l_fecha:'QUIN DIA LI FARIA IL·LUSIÓ?',
+  l_dia:'QUIN DIA?', d_lj:'De dilluns a dijous', d_vd:'De divendres a diumenge i festius',
+  cat_t:'🥗 Càtering a mida?',
+  cat_s:'Al·lèrgies, sense gluten, vegetarià, sense porc… o un menú diferent. Explica-nos-ho i t\'ho preparem.',
+  cat_ph:'Ex: 2 nens celíacs i 1 sense lactosa. Podeu fer els nuggets al forn?',
+  div_t:'🎪 Alguna altra diversió al cap?',
+  div_s:'Xocolatada, karaoke, canó de bombolles, un personatge concret, una sorpresa per a l\'entrada… Si es pot muntar, es munta.',
+  div_ph:'Ex: li encanta el Bluey, podeu aconseguir el personatge? I una mica de màgia per als grans.',
+  ph_name:'Martina',
+  cartel_sub:'Kids & Kafé · Les Corts, Barcelona',
+  cartel_t:'L\'aniversari del teu peque', cartel_de:'L\'aniversari de ', cartel_post:'',
+  cartel_pie:'🎂 DISSENYAT AL PARTY STUDIO',
+  b_wa:'💬 Enviar la meva festa per WhatsApp', b_save:'📸 Desar el meu cartell',
+  aviso1:'🗓️ Quan hi ha aniversari ', aviso2:'tanquem el centre sencer per a vosaltres',
+  aviso3:', així que només hi ha ', aviso4:'una festa per dissabte', aviso5:'. Les dates volen.',
+  pie:'Party Studio · Kids & Kafé',
+  total:'Total estimat', consultar:'a consultar', incluido:'inclòs',
+  ent_ad:'Entrada adults ×', mon_obl:'Monitor extra (obligatori +15 nens)',
+  pastel_l:'Pastís temàtic (es demana al centre)',
+  cat_med:'Càtering a mida', div_med:'Diversió a mida', limpieza:'Neteja',
+  por_nino:'/nen', finde_l:' · Dv-Dg i festius', diario_l:' · Dl-Dj',
+  extra_per:' persones extra · ', cu:' c/u', a_consultar:'A consultar', pk_medida:'Pressupost a mida',
+  warn_casa:'L\'aniversari a domicili es pressuposta a mida segons la distància i el que muntem. Escriu-nos i t\'ho tanquem al moment.',
+  warn_a:'Estimació orientativa. Per bloquejar la data es deixa una paga i senyal de ',
+  warn_b:', que es descompta del total. El pastís es demana sempre al centre.',
+  r_casa1:'Anem a Barcelona i pobles del voltant. Portem decoració, monitors i animació, i ho deixem tot recollit.',
+  r_casa2:'Reserva amb un mes d\'antelació com a mínim.',
+  r_casa3:'El pressupost depèn de la distància i del que muntem: escriu-nos i t\'ho tanquem.',
+  r_c1:'La reserva de l\'àrea d\'aniversaris és de 2 hores.',
+  r_c2:'El pastís es demana sempre al centre (no es pot portar de fora).',
+  r_c3:'Reserva amb un mes d\'antelació. Quan hi ha un aniversari, tanquem el centre al públic: cada dissabte i cada diumenge només hi ha lloc per a UNA celebració.',
+  r_c4a:'Per bloquejar la data es deixen ', r_c4b:' de senyal, que es descompten del total. Si cancel·les tu, el senyal no es retorna.',
+  f_pocoa:'⏳ Falten ', f_pocob:' dies. Demanem reservar amb un mes d\'antelació, així que escriu-nos com abans millor i mirem si ho podem encaixar.',
+  f_findea:'📅 És ', f_findeb:'. Els caps de setmana tanquem el centre al públic per a la festa, així que només hi ha lloc per a UNA celebració aquell dia: s\'ocupen aviat.',
+  f_tarifa:'💶 Divendres, cap de setmana i festius van amb la tarifa de cap de setmana.',
+  f_oka:'✅ ', f_okb:'. Entre setmana el centre segueix obert al públic i va amb tarifa de diari.',
+  anio:' any', anios:' anys', peques:' peques', adultos_c:' adults',
+  guardado:'✅ Desat!', err_cartel:'No s\'ha pogut preparar el cartell. Prova un altre cop 🙏',
+  err_lamina:'Aquesta temàtica encara no té làmina per imprimir.\nTotes les altres sí que en tenen: tria\'n una i torna-hi 🎨',
+  wa_hola:'Hola! He dissenyat l\'aniversari del meu peque al Party Studio 🎂',
+  wa_peque:'👦 Peque: ', wa_edad:'🎈 Edat: ', wa_ninos:'👧 Nº de nens: ',
+  wa_ad:'👩 Nº d\'adults: ', wa_fecha:'📅 Data que li faria il·lusió: ',
+  wa_tema:' Temàtica: ', wa_donde:'📍 On: ', wa_total:'TOTAL ESTIMAT: ',
+  wa_cat:'🥗 Càtering a mida: ', wa_div:'🎪 Diversió a mida: ',
+  wa_pd:'(per dir)', wa_sinfecha:'(encara per decidir)',
+  wa_fin1:'Teniu lliure aquell dia?', wa_fin2:'Quines dates teniu lliures?',
+  wa_finde:' · de divendres a diumenge/festiu', wa_diario:' · de dilluns a dijous',
+  dias:['diumenge','dilluns','dimarts','dimecres','dijous','divendres','dissabte'],
+  meses:['gener','febrer','març','abril','maig','juny','juliol','agost','setembre','octubre','novembre','desembre'],
+  fmt:function(d,m,M){ return d + ' ' + m + ' de ' + M; }
+},
+en:{
+  hero_pre:'Design', hero_em:'your little one', hero_post:'\u2019s birthday party',
+  hero_sub:'Pick a theme and watch the room transform. Move your mouse or tilt your phone.',
+  hint:'✨ move to look around',
+  p1:'Which theme do they want?', p2:'Who\'s having a birthday?', p3:'How do you want to celebrate?',
+  p4:'Add whatever you like', p5:'Here\'s their party',
+  l_name:'CHILD\'S NAME', l_age:'AGE', l_kids:'HOW MANY KIDS', l_ad:'HOW MANY ADULTS',
+  l_fecha:'WHICH DAY WOULD THEY LOVE?',
+  l_dia:'WHICH DAY?', d_lj:'Monday to Thursday', d_vd:'Friday to Sunday and holidays',
+  cat_t:'🥗 Custom catering?',
+  cat_s:'Allergies, gluten-free, vegetarian, no pork… or a completely different menu. Tell us and we\'ll sort it.',
+  cat_ph:'E.g. 2 coeliac kids and 1 lactose-free. Could you bake the nuggets instead of frying?',
+  div_t:'🎪 Any other fun in mind?',
+  div_s:'Hot chocolate, karaoke, a bubble machine, a specific character, a surprise entrance… If it can be done, we\'ll do it.',
+  div_ph:'E.g. she loves Bluey — could you get the character? And some magic for the older ones.',
+  ph_name:'Martina',
+  cartel_sub:'Kids & Kafé · Les Corts, Barcelona',
+  cartel_t:'Your little one\'s birthday', cartel_de:'', cartel_post:'\u2019s birthday',
+  cartel_pie:'🎂 DESIGNED AT THE PARTY STUDIO',
+  b_wa:'💬 Send my party on WhatsApp', b_save:'📸 Save my poster',
+  aviso1:'🗓️ When there\'s a birthday we ', aviso2:'close the whole centre just for you',
+  aviso3:', so there\'s only ', aviso4:'one party per Saturday', aviso5:'. Dates go fast.',
+  pie:'Party Studio · Kids & Kafé',
+  total:'Estimated total', consultar:'on request', incluido:'included',
+  ent_ad:'Adult entry ×', mon_obl:'Extra host (required over 15 kids)',
+  pastel_l:'Themed cake (ordered through us)',
+  cat_med:'Custom catering', div_med:'Custom entertainment', limpieza:'Cleaning',
+  por_nino:'/child', finde_l:' · Fri-Sun and holidays', diario_l:' · Mon-Thu',
+  extra_per:' extra people · ', cu:' each', a_consultar:'On request', pk_medida:'Tailor-made quote',
+  warn_casa:'At-home birthdays are quoted individually, based on the distance and what we set up. Message us and we\'ll close it right away.',
+  warn_a:'Rough estimate. To lock in the date we take a ',
+  warn_b:' deposit, which comes off the total. The cake is always ordered through us.',
+  r_casa1:'We cover Barcelona and nearby towns. We bring decoration, monitors and entertainment, and we clear everything away afterwards.',
+  r_casa2:'Please book at least a month ahead.',
+  r_casa3:'The quote depends on the distance and what we set up: message us and we\'ll close it.',
+  r_c1:'The birthday area is booked for 2 hours.',
+  r_c2:'The cake is always ordered through us (outside cakes aren\'t allowed).',
+  r_c3:'Book a month ahead. When there\'s a birthday we close the centre to the public: each Saturday and each Sunday there\'s room for just ONE celebration.',
+  r_c4a:'To lock in the date we take a ', r_c4b:' deposit, which comes off the total. If you cancel, the deposit isn\'t refunded.',
+  f_pocoa:'⏳ That\'s in ', f_pocob:' days. We ask for a month\'s notice, so message us as soon as you can and we\'ll see if we can fit it in.',
+  f_findea:'📅 That\'s a ', f_findeb:'. At weekends we close the centre to the public for the party, so there\'s room for just ONE celebration that day — they go fast.',
+  f_tarifa:'💶 Fridays, weekends and holidays use the weekend rate.',
+  f_oka:'✅ ', f_okb:'. On weekdays the centre stays open to the public and the weekday rate applies.',
+  anio:' year old', anios:' years old', peques:' kids', adultos_c:' adults',
+  guardado:'✅ Saved!', err_cartel:'Couldn\'t prepare the poster. Please try again 🙏',
+  err_lamina:'This theme doesn\'t have a printable artwork yet.\nAll the others do: pick one and try again 🎨',
+  wa_hola:'Hi! I\'ve designed my little one\'s birthday in the Party Studio 🎂',
+  wa_peque:'👦 Child: ', wa_edad:'🎈 Age: ', wa_ninos:'👧 Kids: ',
+  wa_ad:'👩 Adults: ', wa_fecha:'📅 Date they\'d love: ',
+  wa_tema:' Theme: ', wa_donde:'📍 Where: ', wa_total:'ESTIMATED TOTAL: ',
+  wa_cat:'🥗 Custom catering: ', wa_div:'🎪 Custom entertainment: ',
+  wa_pd:'(to be confirmed)', wa_sinfecha:'(not decided yet)',
+  wa_fin1:'Do you have that day free?', wa_fin2:'Which dates do you have free?',
+  wa_finde:' · Friday to Sunday/holiday', wa_diario:' · Monday to Thursday',
+  dias:['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+  meses:['January','February','March','April','May','June','July','August','September','October','November','December'],
+  /* En ingles la fecha se dice al reves: "Saturday 14 November". */
+  fmt:function(d,m,M){ return d + ' ' + m + ' ' + M; }
+}
+};
+
+/* T('clave') devuelve el texto en el idioma activo. Si faltara una clave en
+   catalan o ingles, cae al castellano en vez de dejar un hueco en blanco. */
+function T(k){ var o = TXT[LANG]; return (o && o[k] != null) ? o[k] : TXT.es[k]; }
+/* El escenario 3D vive en otro <script type="module">, o sea otro ambito.
+   La unica via para hablar con el es window, igual que KK_THEME o KK3D. */
+window.KK_T = T;
+
+/* ---------------- TEMÁTICAS ----------------
+   Cada una repinta el escenario entero: cielo, colina, suelo, color de marca,
+   protagonistas y purpurina. Cambiar aquí = cambiar toda la escena.            */
+const THEMES = {
+  unicornios:  {n:'Unicornios',  i:'🦄', sky:['#FFE9F3','#E8D9FF'], far:'#F6D9EE', gr:'#E9D5F5', ac:'#C77DC0', near:['✨','💖','⭐','🌸','✨','💫']},
+  princesas:   {n:'Princesas',   i:'👑', sky:['#FFEFF5','#FFE0EC'], far:'#FBD3E4', gr:'#F4C2D8', ac:'#E05C92', near:['✨','💗','👑','🌟','💕','✨']},
+  superheroes: {n:'Superhéroes', i:'🦸', sky:['#DDEBFF','#C9D8FF'], far:'#BFD2F5', gr:'#A9BEEC', ac:'#3D6ED8', near:['⚡','⭐','💥','✨','⚡','🌟']},
+  dinosaurios: {n:'Dinosaurios', i:'🦕', sky:['#E8F5DC','#D3EBC4'], far:'#BEDFAB', gr:'#A6CF93', ac:'#4F8A3D', near:['🍃','🌿','✨','🍃','🌱','🍃']},
+  sirenas:     {n:'Sirenas',     i:'🧜', sky:['#D9F3F7','#BEE8F2'], far:'#A8DDEC', gr:'#8ACEE3', ac:'#1E94B8', near:['🫧','🐠','✨','🫧','💙','🐟']},
+  astronautas: {n:'Astronautas', i:'🚀', sky:['#E4E0F7','#CFC6EE'], far:'#BDB2E6', gr:'#A79ADB', ac:'#6A4FCF', near:['⭐','✨','🌟','💫','⭐','🛸']},
+  piratas:     {n:'Piratas',     i:'🏴‍☠️',sky:['#DFF0F7','#C3E2F0'], far:'#A9D6E8', gr:'#8CC6DE', ac:'#1E6E8C', near:['⚓','✨','🦜','💰','🌊','⭐']},
+  selva:       {n:'Selva',       i:'🦁', sky:['#EAF6DC','#D6EDC0'], far:'#BCDFA2', gr:'#9ECF85', ac:'#4F8A3D', near:['🍃','🐒','✨','🌴','🦜','🍃']},
+  granja:      {n:'Granja',      i:'🐄', sky:['#FFF6DC','#FFE9BC'], far:'#F7DDA6', gr:'#DCC98A', ac:'#C06A2E', near:['🌻','🐔','✨','🌾','🐑','⭐']},
+  hadas:       {n:'Hadas',       i:'🧚', sky:['#F3ECFF','#E3D6FA'], far:'#D9C8F2', gr:'#C6B2E8', ac:'#8A5FBF', near:['✨','🌸','💫','🍄','🦋','✨']},
+  arcoiris:    {n:'Arcoíris',    i:'🌈', sky:['#EAF6FF','#D6ECFF'], far:'#C2E0F7', gr:'#AAD2EE', ac:'#4FA3D9', near:['☁️','✨','⭐','🎈','💫','☁️']},
+  dulces:      {n:'Dulces',      i:'🍦', sky:['#FFF1E8','#FFE2D2'], far:'#FFD2BC', gr:'#F7BCA2', ac:'#E0567F', near:['🍬','🧁','✨','🍭','🍩','⭐']},
+  mascotas:    {n:'Mascotas',    i:'🐱', sky:['#F6F1EA','#EAE0D4'], far:'#DCCDBC', gr:'#C9B8A4', ac:'#A87F63', near:['🐾','✨','🦴','🐾','⭐','💛']},
+  videojuegos: {n:'Videojuegos', i:'🎮', sky:['#E8E4FA','#D4CCF2'], far:'#C2B8EC', gr:'#ACA0E0', ac:'#6A4FCF', near:['👾','⭐','✨','🕹️','💎','⚡']},
+  disco:       {n:'Disco',       i:'🪩', sky:['#F0EAFA','#E0D6F5'], far:'#D0C2EE', gr:'#BCACE2', ac:'#B44FA8', near:['🎵','✨','🎶','💫','⭐','🎵']},
+  ciencia:     {n:'Ciencia',     i:'🔬', sky:['#E6F5F2','#CFEBE4'], far:'#B6DED4', gr:'#9CCEC2', ac:'#2E9B84', near:['⚗️','✨','💡','🧪','⭐','💫']},
+  magia:       {n:'Magia',       i:'🪄', sky:['#EDE8FA','#DCD2F2'], far:'#CABCEC', gr:'#B4A4E0', ac:'#6A4FCF', near:['✨','🌟','💫','🔮','⭐','✨']},
+  coches:      {n:'Coches',      i:'🏎️', sky:['#FFEEDC','#FFDCC0'], far:'#FFCEA6', gr:'#F5B98A', ac:'#E0722A', near:['💨','⚡','✨','💨','🔥','⭐']},
+  futbol:      {n:'Fútbol',      i:'⚽', sky:['#E3F4E6','#CBEBD3'], far:'#AEDDBB', gr:'#8FCCA1', ac:'#2E8B57', near:['✨','⭐','🎉','✨','🏅','🎊']},
+  policia:     {n:'Policía',     i:'🚓', sky:['#E6EDF8','#D2DFF2'], far:'#BACFEA', gr:'#A4BEE0', ac:'#2B4E8C', near:['⭐','🚨','✨','⭐','💫','🚨']},
+  invent:      {n:'La inventamos',i:'✏️',sky:['#FFF6E2','#FFEBC7'], far:'#FFE0A8', gr:'#F7D18C', ac:'#E7B24C', near:['✨','⭐','💫','🌟','✨','🎈']}
+};
+
+/* Tematicas que YA tienen lamina pintada en /art-cumples.
+   Al añadir una lamina nueva: copiar el .jpg y añadir su linea aquí.
+   Van como ruta completa a proposito: asi build-offline.mjs puede
+   cambiarlas por la imagen incrustada y que funcione con doble clic. */
+/* ty = a que altura del cartel (0=arriba, 1=abajo) cae el hueco del nombre.
+   Cada lamina tiene el hueco en un sitio distinto, por eso va uno por uno. */
+const ART_PHOTO = {
+  /* Cada tematica tiene su lamina pintada. ty = a que altura cae el nombre
+     del peque (el hueco crema, medido foto a foto); col = la tinta.        */
+  unicornios:  {src:'art-cumples/unicornios.jpg',ty:0.63, col:'#8A5E86'},
+  princesas:   {src:'art-cumples/princesas.jpg',ty:0.70, col:'#A8557A'},
+  futbol:      {src:'art-cumples/futbol.jpg',ty:0.70, col:'#3C6B47'},
+  coches:      {src:'art-cumples/coches.jpg',ty:0.72, col:'#A6511F'},
+  policia:     {src:'art-cumples/policia.jpg',ty:0.78, col:'#2B4E8C'},
+  superheroes: {src:'art-cumples/superheroes.jpg',ty:0.76, col:'#2C4A8B'},
+  dinosaurios: {src:'art-cumples/dinosaurios.jpg',ty:0.80, col:'#4D7840'},
+  sirenas:     {src:'art-cumples/sirenas.jpg',ty:0.79, col:'#2C758C'},
+  astronautas: {src:'art-cumples/astronautas.jpg',ty:0.77, col:'#443385'},
+  piratas:     {src:'art-cumples/piratas.jpg',ty:0.80, col:'#2D718A'},
+  selva:       {src:'art-cumples/selva.jpg', ty:0.79, col:'#4D7840'},
+  granja:      {src:'art-cumples/granja.jpg',ty:0.74, col:'#885430'},
+  hadas:       {src:'art-cumples/hadas.jpg', ty:0.78, col:'#593D7A'},
+  arcoiris:    {src:'art-cumples/arcoiris.jpg',ty:0.76, col:'#2E668A'},
+  dulces:      {src:'art-cumples/dulces.jpg',ty:0.78, col:'#8C2C48'},
+  mascotas:    {src:'art-cumples/mascotas.jpg',ty:0.83, col:'#705847'},
+  videojuegos: {src:'art-cumples/videojuegos.jpg',ty:0.79, col:'#443385'},
+  disco:       {src:'art-cumples/disco.jpg', ty:0.78, col:'#793F72'},
+  ciencia:     {src:'art-cumples/ciencia.jpg',ty:0.79, col:'#358372'},
+  magia:       {src:'art-cumples/magia.jpg', ty:0.81, col:'#443385'}
+};
+window.KK_ART_PHOTO = ART_PHOTO;
+
+/* PRECIOS REALES sacados de cumpleanos.html (12 sep 2026).
+   Si cambian en la web, hay que cambiarlos aquí también.
+   Aquí esta TODO lo que ofreces en cumpleaños, no solo los packs: los tres
+   Party, los tres alquileres de sala y el cumple a domicilio.            */
+
+/* Tres maneras distintas de celebrar. La madre elige PRIMERO la manera y
+   solo despues ve las opciones de esa manera: si le enseñas las 7 de golpe
+   no elige ninguna, se agobia y se va.                                   */
+const MODOS = [
+  {id:'pack', i:'🎉', n:'Pack de fiesta',   s:'Lo montamos todo nosotros'},
+  {id:'sala', i:'🏠', n:'Alquiler de sala', s:'La sala para vosotros solos'},
+  {id:'casa', i:'🚗', n:'A domicilio',      s:'Llevamos la fiesta a tu casa'}
+];
+
+/* tipo = como se calcula el precio:
+     fijo      -> el precio es ese
+     porNino   -> se multiplica por el numero de niños
+     dia       -> cambia si es entre semana o fin de semana
+     consultar -> no hay precio publicado, no me lo invento              */
+const PACKS = [
+  /* ---- los tres packs de fiesta ---- */
+  {id:'party1', modo:'pack', tipo:'fijo', n:'Party 1', base:450, aforo:20, pastel:false,
+   d:'Media sala · decoración básica temática · juegos grupales y mini discoteca.',
+   note:'Máx. 20 personas · a partir de 20: +7€/persona'},
+  {id:'party2', modo:'pack', tipo:'fijo', n:'Party 2', base:650, aforo:80, pastel:false,
+   d:'Sala completa · decoración básica temática · juegos grupales y mini discoteca.',
+   note:'Aforo 80 · +15 niños: monitor extra 40€'},
+  {id:'party3', modo:'pack', tipo:'fijo', n:'Party 3', base:890, aforo:80, pastel:true,
+   d:'Sala completa · decoración COMPLETA con globos · pastel temático (12-15 porciones) · personaje disfrazado, taller o pintacaras (1h).',
+   note:'Aforo 80 · el más completo · personaje adicional +100€/h'},
+
+  /* ---- alquiler de sala ---- */
+  {id:'lounge', modo:'sala', tipo:'porNino', n:'Family Lounge', base:25, aforo:12, pastel:false,
+   d:'2 horas de celebración · menú infantil o taller · sala de juego incluida.',
+   note:'Aforo 12 adultos · entrada adulto 3€ · catering adultos 12€'},
+  {id:'completa', modo:'sala', tipo:'dia', n:'Sala completa · 3h', base:350, baseFinde:550, aforo:80, pastel:false,
+   d:'1 monitor incluido · 200 m² de rincones temáticos · 100 m² de baile y psicomotricidad · mobiliario para eventos.',
+   note:'L-J 350€ · V-D y festivos 550€'},
+  {id:'media', modo:'sala', tipo:'dia', n:'Media sala · 3h', base:230, baseFinde:310, aforo:20, pastel:false,
+   d:'1 monitor incluido · rincones temáticos + sala de baile · mobiliario para eventos.',
+   note:'L-J 230€ · V-D y festivos 310€ · aforo 20 (+7€/persona)'},
+
+  /* ---- a domicilio ---- */
+  {id:'domicilio', modo:'casa', tipo:'consultar', n:'Cumple a domicilio', base:0, aforo:0, pastel:false,
+   d:'Llevamos decoración, monitores y animación a tu casa, y lo dejamos todo recogido al terminar.',
+   note:'Barcelona y pueblos de alrededor · presupuesto a medida'}
+];
+
+/* Extras reales. precio null = "a consultar" (no me invento cifras). */
+const EXTRAS = [
+  {id:'catNinos', i:'🍔', n:'Pack catering niños',   s:'10€ por niño',            tipo:'porNino',  precio:10},
+  {id:'catAdult', i:'🥪', n:'Pack catering adultos', s:'12€ por persona',         tipo:'porAdulto',precio:12},
+  {id:'taller',   i:'✨', n:'Taller a medida',       s:'Diseñado para tu peque',  tipo:'consultar',precio:null},
+  /* "Muñecón" a secas dejaba fuera media oferta: la madre que quiere una
+     princesa, un mago o un pintacaras no se veia reflejada y no lo pedia.
+     Mismo precio de la web (100€/h), pero la puerta abierta a lo que sea. */
+  {id:'personaje',i:'🎭', n:'Personaje o animación',
+   s:'Muñecón, princesa, superhéroe, mago, pintacaras, magia, burbujas… desde 100€/h',
+   tipo:'fijo', precio:100},
+  {id:'monitor',  i:'🙋', n:'Monitor extra',         s:'40€',                     tipo:'fijo',     precio:40}
+];
+
+/* ---------------- LOS MISMOS DATOS, EN TRES IDIOMAS ----------------
+   Los packs, modos, extras y tematicas NO se duplican. Se les CAMBIA EL
+   CONTENIDO al vuelo: aplicarIdiomaDatos('ca') le pisa el .n y el .d a cada
+   pack con su version catalana. Asi los sitios donde se pintan (p.n, p.d,
+   m.s, x.s...) siguen funcionando igual y no hay que tocar ni una linea de
+   los renderizadores. Guardamos antes una copia del castellano para poder
+   volver a el.                                                            */
+const DATOS = {
+  ca:{
+    MODOS:{
+      pack:{n:'Pack de festa',    s:'Ho muntem tot nosaltres'},
+      sala:{n:'Lloguer de sala',  s:'La sala per a vosaltres sols'},
+      casa:{n:'A domicili',       s:'Portem la festa a casa teva'}
+    },
+    PACKS:{
+      party1:{d:'Mitja sala · decoració bàsica temàtica · jocs en grup i mini discoteca.',
+              note:'Màx. 20 persones · a partir de 20: +7€/persona'},
+      party2:{d:'Sala completa · decoració bàsica temàtica · jocs en grup i mini discoteca.',
+              note:'Aforament 80 · +15 nens: monitor extra 40€'},
+      party3:{d:'Sala completa · decoració COMPLETA amb globus · pastís temàtic (12-15 racions) · personatge disfressat, taller o pintacares (1h).',
+              note:'Aforament 80 · el més complet · personatge addicional +100€/h'},
+      lounge:{d:'2 hores de celebració · menú infantil o taller · sala de joc inclosa.',
+              note:'Aforament 12 adults · entrada adult 3€ · càtering adults 12€'},
+      completa:{n:'Sala completa · 3h',
+              d:'1 monitor inclòs · 200 m² de racons temàtics · 100 m² de ball i psicomotricitat · mobiliari per a esdeveniments.',
+              note:'Dl-Dj 350€ · Dv-Dg i festius 550€'},
+      media:{n:'Mitja sala · 3h',
+              d:'1 monitor inclòs · racons temàtics + sala de ball · mobiliari per a esdeveniments.',
+              note:'Dl-Dj 230€ · Dv-Dg i festius 310€ · aforament 20 (+7€/persona)'},
+      domicilio:{n:'Aniversari a domicili',
+              d:'Portem decoració, monitors i animació a casa teva, i ho deixem tot recollit en acabar.',
+              note:'Barcelona i pobles del voltant · pressupost a mida'}
+    },
+    EXTRAS:{
+      catNinos:{n:'Pack càtering nens',    s:'10€ per nen'},
+      catAdult:{n:'Pack càtering adults',  s:'12€ per persona'},
+      taller:{  n:'Taller a mida',         s:'Dissenyat per al teu petit'},
+      personaje:{n:'Personatge o animació',
+                 s:'Ninot, princesa, superheroi, mag, pintacares, màgia, bombolles… des de 100€/h'},
+      monitor:{ n:'Monitor extra',         s:'40€'}
+    },
+    THEMES:{
+      unicornios:'Unicorns', princesas:'Princeses', superheroes:'Superherois',
+      dinosaurios:'Dinosaures', sirenas:'Sirenes', astronautas:'Astronautes',
+      piratas:'Pirates', selva:'Selva', granja:'Granja', hadas:'Fades',
+      arcoiris:'Arc de Sant Martí', dulces:'Dolços', mascotas:'Mascotes',
+      videojuegos:'Videojocs', disco:'Disco', ciencia:'Ciència', magia:'Màgia',
+      coches:'Cotxes', futbol:'Futbol', policia:'Policia', invent:"Ens l'inventem"
+    }
+  },
+  en:{
+    MODOS:{
+      pack:{n:'Party pack',    s:'We set everything up'},
+      sala:{n:'Room hire',     s:'The room just for you'},
+      casa:{n:'At your place', s:'We bring the party to you'}
+    },
+    PACKS:{
+      party1:{d:'Half the room · basic themed decoration · group games and mini disco.',
+              note:'Max. 20 people · over 20: +7€/person'},
+      party2:{d:'Whole room · basic themed decoration · group games and mini disco.',
+              note:'Capacity 80 · over 15 kids: extra host 40€'},
+      party3:{d:'Whole room · FULL decoration with balloons · themed cake (12-15 slices) · costumed character, workshop or face painting (1h).',
+              note:'Capacity 80 · the most complete · extra character +100€/h'},
+      lounge:{n:'Family Lounge',
+              d:'2 hours of celebration · kids menu or workshop · play area included.',
+              note:'Capacity 12 adults · adult entry 3€ · adult catering 12€'},
+      completa:{n:'Whole room · 3h',
+              d:'1 host included · 200 m² of themed corners · 100 m² for dancing and movement · event furniture.',
+              note:'Mon-Thu 350€ · Fri-Sun and holidays 550€'},
+      media:{n:'Half room · 3h',
+              d:'1 host included · themed corners + dance room · event furniture.',
+              note:'Mon-Thu 230€ · Fri-Sun and holidays 310€ · capacity 20 (+7€/person)'},
+      domicilio:{n:'Party at your place',
+              d:'We bring decoration, hosts and entertainment to your home, and leave everything tidy afterwards.',
+              note:'Barcelona and nearby towns · tailor-made quote'}
+    },
+    EXTRAS:{
+      catNinos:{n:'Kids catering pack',   s:'10€ per child'},
+      catAdult:{n:'Adults catering pack', s:'12€ per person'},
+      taller:{  n:'Tailor-made workshop', s:'Designed for your little one'},
+      personaje:{n:'Character or entertainer',
+                 s:'Mascot, princess, superhero, magician, face painting, magic, bubbles… from 100€/h'},
+      monitor:{ n:'Extra host',           s:'40€'}
+    },
+    THEMES:{
+      unicornios:'Unicorns', princesas:'Princesses', superheroes:'Superheroes',
+      dinosaurios:'Dinosaurs', sirenas:'Mermaids', astronautas:'Astronauts',
+      piratas:'Pirates', selva:'Jungle', granja:'Farm', hadas:'Fairies',
+      arcoiris:'Rainbow', dulces:'Sweets', mascotas:'Pets',
+      videojuegos:'Video games', disco:'Disco', ciencia:'Science', magia:'Magic',
+      coches:'Cars', futbol:'Football', policia:'Police', invent:'We make it up'
+    }
+  }
+};
+
+/* La foto de familia del castellano, hecha ANTES de pisar nada. Sin esto,
+   al volver de ingles a castellano nos quedariamos en ingles para siempre. */
+const ES_ORIG = {
+  MODOS:  Object.fromEntries(MODOS.map(m => [m.id, {n:m.n, s:m.s}])),
+  PACKS:  Object.fromEntries(PACKS.map(p => [p.id, {n:p.n, d:p.d, note:p.note}])),
+  EXTRAS: Object.fromEntries(EXTRAS.map(x => [x.id, {n:x.n, s:x.s}])),
+  THEMES: Object.fromEntries(Object.entries(THEMES).map(([k,t]) => [k, t.n]))
+};
+
+function aplicarIdiomaDatos(l){
+  const D = (l === 'es') ? null : DATOS[l];
+  MODOS.forEach(m  => Object.assign(m, ES_ORIG.MODOS[m.id],  D && D.MODOS[m.id]));
+  PACKS.forEach(p  => Object.assign(p, ES_ORIG.PACKS[p.id],  D && D.PACKS[p.id]));
+  EXTRAS.forEach(x => Object.assign(x, ES_ORIG.EXTRAS[x.id], D && D.EXTRAS[x.id]));
+  Object.entries(THEMES).forEach(([k,t]) =>
+    t.n = (D && D.THEMES[k]) || ES_ORIG.THEMES[k]);
+}
+
+const LIMPIEZA = 30;   // "Limpieza: 30€" en la web
+const SENAL    = 100;  // paga y señal para bloquear fecha
+const P_EXTRA  = 7;    // +7€ por persona cuando se pasa del aforo
+const E_ADULTO = 3;    // entrada de adulto en el Family Lounge
+
+const state = {theme:'unicornios', modo:'pack', pack:'party2', dia:'LJ', fecha:'',
+               name:'', age:'', kids:'', adults:'',
+               extras:new Set(), catering:'', diversion:''};
+
+const $ = s => document.querySelector(s);
+
+/* Creamos los nodos con textContent en vez de innerHTML.
+   Asi lo que escribe la madre NUNCA se interpreta como codigo. */
+function el(tag, cls, text){
+  const n = document.createElement(tag);
+  if(cls)  n.className = cls;
+  if(text != null) n.textContent = text;
+  return n;
+}
+function clear(node){ while(node.firstChild) node.removeChild(node.firstChild); }
+
+/* ---------------- PINTAR EL ESCENARIO ---------------- */
+const NEAR_POS = [[8,18],[76,12],[18,72],[86,64],[46,8],[62,80]];
+
+function paint(){
+  const t = THEMES[state.theme], r = document.documentElement.style;
+  r.setProperty('--sky1',t.sky[0]); r.setProperty('--sky2',t.sky[1]);
+  r.setProperty('--far',t.far);     r.setProperty('--ground',t.gr);
+  r.setProperty('--accent',t.ac);
+
+  /* Las escenas ya estan dibujadas en el HTML: solo encendemos la que toca. */
+  document.querySelectorAll('#props svg').forEach(s =>
+    s.classList.toggle('on', s.dataset.art === state.theme));
+
+  /* Si esa tematica tiene lamina pintada, manda la lamina. */
+  window.KK_THEME = state.theme;
+  window.KK_NOMBRE = state.name;
+  window.KK_EDAD   = state.age;
+  /* Los colores del mundo tambien, que el 3D arranca DESPUES que esto
+     y si no los tiene se inventa una paleta que no pega con la tematica. */
+  window.KK_TPAL  = t;
+  const ph = $('#photoArt'), tienePh = !!ART_PHOTO[state.theme];
+  if(ph){
+    if(tienePh){ ph.src = ART_PHOTO[state.theme].src; ph.hidden = false; }
+    else { ph.hidden = true; ph.removeAttribute('src'); }
+    ph.classList.toggle('on', tienePh);
+  }
+
+  const near = $('#near'); clear(near);
+  t.near.forEach((e,i) => {
+    const s = el('span', null, e);
+    const [x,y] = NEAR_POS[i % NEAR_POS.length];
+    s.style.left = x + '%';
+    s.style.top  = y + '%';
+    s.style.animationDelay = (-i * 1.15) + 's';
+    near.appendChild(s);
+  });
+
+  /* si el escenario 3D esta vivo, le pasamos la tematica */
+  if(window.KK3D) window.KK3D.setTheme(state.theme, t);
+
+  $('#tag').textContent  = t.i + ' ' + t.n;
+  $('#pIco').textContent = t.i;
+
+  document.querySelectorAll('.th').forEach(b =>
+    b.setAttribute('aria-pressed', b.dataset.k === state.theme));
+  document.querySelectorAll('.pk').forEach(b =>
+    b.setAttribute('aria-pressed', b.dataset.k === state.pack));
+  document.querySelectorAll('.modo').forEach(b =>
+    b.setAttribute('aria-pressed', b.dataset.k === state.modo));
+
+  /* Cambiar de opcion DENTRO del alquiler (Lounge -> Sala completa) no
+     reconstruye los botones, asi que el "¿que dia?" hay que refrescarlo
+     tambien aqui o se queda escondido cuando ya hace falta.            */
+  const pkSel = PACKS.find(x => x.id === state.pack);
+  $('#dias').hidden = !(pkSel && pkSel.tipo === 'dia') || !!state.fecha;
+  document.querySelectorAll('.dia').forEach(b =>
+    b.setAttribute('aria-pressed', String(b.dataset.d === state.dia)));
+
+  updatePoster();
+}
+
+/* ---------------- EL PRESUPUESTO EN VIVO ----------------
+   Devuelve las lineas del desglose + el total. Lo que no tiene precio
+   cerrado sale como "a consultar" y NO suma: mejor quedarse corto que
+   prometer un precio que luego no es.                                      */
+const eur = n => n.toLocaleString(LANG === 'en' ? 'en-GB' : (LANG === 'ca' ? 'ca-ES' : 'es-ES')) + '€';
+
+function presupuesto(){
+  const pk  = PACKS.find(p => p.id === state.pack);
+  const kids= parseInt(state.kids,10)   || 0;
+  const ad  = parseInt(state.adults,10) || 0;
+  const gente = kids + ad;
+  const lineas = [];
+  let total = 0;
+
+  /* EL PRECIO BASE, segun como se cobre esa opcion */
+  if(pk.tipo === 'porNino'){
+    /* Family Lounge: 25€ por niño, no un precio cerrado */
+    const sub = pk.base * kids;
+    lineas.push([pk.n + ' · ' + eur(pk.base) + T('por_nino') + ' ×' + (kids || '?'),
+                 kids ? eur(sub) : '—']);
+    total += sub;
+    /* y la entrada de los adultos, que en el Lounge se paga aparte */
+    if(ad){
+      const sa = E_ADULTO * ad;
+      lineas.push([T('ent_ad') + ad, eur(sa)]); total += sa;
+    }
+  }
+  else if(pk.tipo === 'dia'){
+    /* el alquiler de sala cuesta distinto entre semana que en finde */
+    const finde = state.dia === 'VD';
+    const base  = finde ? pk.baseFinde : pk.base;
+    lineas.push([pk.n + (finde ? T('finde_l') : T('diario_l')), eur(base)]);
+    total += base;
+  }
+  else if(pk.tipo === 'consultar'){
+    lineas.push([pk.n, T('consultar')]);
+  }
+  else {
+    lineas.push([pk.n, eur(pk.base)]); total += pk.base;
+  }
+
+  /* AFORO: en media sala (Party 1 y Media sala) se pagan +7€ por persona
+     a partir de 20. Lo calculo yo para que no se lleve la sorpresa luego. */
+  if(pk.aforo && ['party1','media'].includes(pk.id) && gente > pk.aforo){
+    const ex = (gente - pk.aforo) * P_EXTRA;
+    lineas.push(['+' + (gente - pk.aforo) + T('extra_per') + eur(P_EXTRA) + T('cu'), eur(ex)]);
+    total += ex;
+  }
+  /* Mas de 15 niños: el monitor extra es OBLIGATORIO, no opcional. */
+  if(pk.modo !== 'casa' && kids > 15 && !state.extras.has('monitor')){
+    lineas.push([T('mon_obl'), eur(40)]); total += 40;
+  }
+  /* EL PASTEL. Es obligatorio pedirlo al centro: si no sale en la lista,
+     la madre se cree que lo trae ella y luego hay un disgusto. En cambio
+     a domicilio no pinta nada, que la fiesta no es en tu sala.          */
+  if(pk.modo !== 'casa'){
+    lineas.push([T('pastel_l'),
+                 pk.pastel ? T('incluido') : T('consultar')]);
+  }
+
+  state.extras.forEach(id => {
+    const e = EXTRAS.find(x => x.id === id);
+    if(e.tipo === 'porNino'  ){ const s = e.precio*kids; lineas.push([e.n+' ×'+kids, kids?eur(s):'—']); total += s; }
+    else if(e.tipo==='porAdulto'){ const s = e.precio*ad; lineas.push([e.n+' ×'+ad,  ad  ?eur(s):'—']); total += s; }
+    else if(e.tipo==='fijo'  ){ lineas.push([e.n, eur(e.precio)]); total += e.precio; }
+    else                      { lineas.push([e.n, T('consultar')]); }
+  });
+
+  if(state.catering.trim())  lineas.push([T('cat_med'), T('consultar')]);
+  if(state.diversion.trim()) lineas.push([T('div_med'), T('consultar')]);
+  /* la limpieza es de NUESTRA sala: si la fiesta es en su casa, no la cobras */
+  if(pk.modo !== 'casa'){ lineas.push([T('limpieza'), eur(LIMPIEZA)]); total += LIMPIEZA; }
+
+  return {lineas, total, pk};
+}
+
+function renderTotal(){
+  const {lineas,total} = presupuesto();
+  const box = $('#total'); clear(box);
+
+  lineas.forEach(([k,v]) => {
+    const r = el('div','row'); r.appendChild(el('span',null,k)); r.appendChild(el('b',null,v));
+    box.appendChild(r);
+  });
+
+  const pk = PACKS.find(p => p.id === state.pack);
+  const sum = el('div','sum');
+  sum.appendChild(el('span',null,T('total')));
+  /* "Total estimado: 0€" en el cumple a domicilio daba risa. Si no hay
+     precio publicado, se dice que no lo hay, no se enseña un cero.     */
+  sum.appendChild(el('strong',null, total > 0 ? eur(total) : T('a_consultar')));
+  box.appendChild(sum);
+
+  box.appendChild(el('div','warn', pk.modo === 'casa'
+    ? T('warn_casa')
+    : T('warn_a') + eur(SENAL) + T('warn_b')));
+}
+
+/* ---------------- EL CARTEL ---------------- */
+function updatePoster(){
+  renderTotal();
+  const t  = THEMES[state.theme];
+  const nm = state.name.trim();
+  const pk = PACKS.find(p => p.id === state.pack);
+
+  $('#hName').textContent  = nm || T('hero_em');
+  $('#pTitle').textContent = nm ? (T('cartel_de') + nm + T('cartel_post')) : T('cartel_t');
+
+  const {lineas,total} = presupuesto();
+
+  const chips = [];
+  if(state.age)    chips.push('🎂 ' + state.age + (String(state.age) === '1' ? T('anio') : T('anios')));
+  chips.push(t.i + ' ' + t.n);
+  if(state.kids)   chips.push('👧 ' + state.kids + T('peques'));
+  if(state.adults) chips.push('👩 ' + state.adults + T('adultos_c'));
+  if(state.fecha) chips.push('📅 ' + fechaBonita());
+  chips.push('🎉 ' + pk.n);
+  chips.push('💛 ' + (total > 0 ? eur(total) : 'a consultar'));
+
+  const meta = $('#pMeta'); clear(meta);
+  chips.forEach(c => meta.appendChild(el('span','chip',c)));
+
+  const desglose = lineas.map(([k,v]) => '· ' + k + ': ' + v).join('\n');
+
+  const pd = T('wa_pd');
+  const msg =
+    T('wa_hola') + '\n\n' +
+    T('wa_peque') + (nm           || pd) + '\n' +
+    T('wa_edad')  + (state.age    || pd) + '\n' +
+    T('wa_ninos') + (state.kids   || pd) + '\n' +
+    T('wa_ad')    + (state.adults || pd) + '\n' +
+    T('wa_fecha') + (fechaBonita() || T('wa_sinfecha')) + '\n' +
+    t.i + T('wa_tema') + t.n  + '\n' +
+    T('wa_donde') + MODOS.find(m => m.id === state.modo).n +
+      (pk.tipo === 'dia' ? (state.dia === 'VD' ? T('wa_finde') : T('wa_diario')) : '') + '\n\n' +
+    '🎉 ' + pk.n + '\n' + desglose + '\n' +
+    T('wa_total') + (total > 0 ? eur(total) : T('consultar')) + '\n' +
+    (state.catering.trim()  ? '\n' + T('wa_cat') + state.catering.trim()  + '\n' : '') +
+    (state.diversion.trim() ? '\n' + T('wa_div') + state.diversion.trim() + '\n' : '') +
+    '\n' + (state.fecha ? T('wa_fin1') : T('wa_fin2'));
+  $('#waBtn').href = 'https://wa.me/34637319226?text=' + encodeURIComponent(msg);
+}
+
+/* ---------------- CONSTRUIR LOS BOTONES ---------------- */
+const themesBox = $('#themes');
+/* Envuelto en funcion (antes era suelto) para poder volver a pintarlo
+   cuando se cambia de idioma. Igual los modos y los extras.          */
+function renderThemes(){
+ clear(themesBox);
+ Object.entries(THEMES).forEach(([k,t]) => {
+  const b = el('button', 'th' + (k === 'invent' ? ' invent' : ''));
+  b.dataset.k = k;
+  b.setAttribute('aria-pressed','false');
+  b.appendChild(el('span','ico',t.i));
+  b.appendChild(document.createTextNode(t.n));
+  b.onclick = () => { state.theme = k; paint(); };
+  themesBox.appendChild(b);
+ });
+}
+renderThemes();
+
+/* --- los tres modos --- */
+const modosBox = $('#modos');
+function renderModos(){
+ clear(modosBox);
+ MODOS.forEach(m => {
+  const b = el('button','modo');
+  b.dataset.k = m.id;
+  b.setAttribute('aria-pressed', String(m.id === state.modo));
+  b.appendChild(el('span','mi',m.i));
+  b.appendChild(el('b',null,m.n));
+  b.appendChild(el('small',null,m.s));
+  b.onclick = () => {
+    state.modo = m.id;
+    /* al cambiar de modo hay que saltar a una opcion de ESE modo, si no
+       te quedas con "Party 2" seleccionado dentro de "A domicilio"    */
+    state.pack = PACKS.find(x => x.modo === m.id).id;
+    renderPacks(); paint();
+  };
+  modosBox.appendChild(b);
+ });
+}
+renderModos();
+
+/* --- entre semana / fin de semana --- */
+document.querySelectorAll('.dia').forEach(b => {
+  b.onclick = () => {
+    state.dia = b.dataset.d;
+    document.querySelectorAll('.dia').forEach(o =>
+      o.setAttribute('aria-pressed', String(o.dataset.d === state.dia)));
+    updatePoster();
+  };
+});
+
+/* --- las opciones del modo elegido --- */
+const packsBox = $('#packs');
+function renderPacks(){
+  clear(packsBox);
+  const lista = PACKS.filter(p => p.modo === state.modo);
+  /* con 1 sola opcion (domicilio) la rejilla de 3 deja dos huecos feos */
+  packsBox.style.gridTemplateColumns = 'repeat(' + Math.min(lista.length,3) + ',1fr)';
+
+  lista.forEach(p => {
+    const b = el('button','pk');
+    b.dataset.k = p.id;
+    b.setAttribute('aria-pressed', String(p.id === state.pack));
+    b.appendChild(el('b',null,p.n));
+    b.appendChild(el('small',null,p.d));
+    /* cada tipo enseña su precio como se cobra de verdad */
+    const precio = p.tipo === 'porNino'   ? eur(p.base) + ' ' + T('por_nino')
+                 : p.tipo === 'dia'       ? eur(p.base) + '–' + eur(p.baseFinde)
+                 : p.tipo === 'consultar' ? T('pk_medida')
+                 :                          eur(p.base);
+    b.appendChild(el('div','price',precio));
+    b.appendChild(el('small','note',p.note));
+    b.onclick = () => { state.pack = p.id; paint(); };
+    packsBox.appendChild(b);
+  });
+
+  /* el selector de dia solo tiene sentido si la opcion cobra por dia */
+  const pk = PACKS.find(x => x.id === state.pack);
+  /* Si ya hay fecha, los botones de dia SOBRAN: la fecha ya lo ha decidido.
+     Dejarlos puestos solo sirve para que alguien los toque y se contradiga
+     con su propia fecha.                                                */
+  $('#dias').hidden = !(pk && pk.tipo === 'dia') || !!state.fecha;
+
+  /* las reglas de reserva, distintas si la fiesta es en tu casa */
+  const nota = $('#noteRes'); clear(nota);
+  const reglas = state.modo === 'casa'
+    ? [['📍 ', T('r_casa1')],
+       ['📅 ', T('r_casa2')],
+       ['💶 ', T('r_casa3')]]
+    : [['⏰ ', T('r_c1')],
+       ['🎂 ', T('r_c2')],
+       ['📅 ', T('r_c3')],
+       ['💶 ', T('r_c4a') + eur(SENAL) + T('r_c4b')]];
+  reglas.forEach(([i,txt]) => {
+    const r = el('div'); r.appendChild(document.createTextNode(i + txt));
+    nota.appendChild(r);
+  });
+}
+renderPacks();
+
+const extrasBox = $('#extras');
+function renderExtras(){
+ clear(extrasBox);
+ EXTRAS.forEach(x => {
+  const b = el('button','ex');
+  b.dataset.k = x.id;
+  /* Lee del estado, no pone 'false' a pelo: al repintar por cambio de
+     idioma los extras ya marcados tienen que seguir marcados.        */
+  b.setAttribute('aria-pressed', String(state.extras.has(x.id)));
+  b.appendChild(el('span','tick','✓'));
+  const txt = el('span');
+  txt.appendChild(el('b',null,x.i + ' ' + x.n));
+  txt.appendChild(el('small',null,x.s));
+  b.appendChild(txt);
+  b.onclick = () => {
+    state.extras.has(x.id) ? state.extras.delete(x.id) : state.extras.add(x.id);
+    b.setAttribute('aria-pressed', state.extras.has(x.id));
+    updatePoster();
+  };
+  extrasBox.appendChild(b);
+ });
+}
+renderExtras();
+
+/* El nombre solo llegaba al cartel 3D al cambiar de tematica, porque era
+   paint() quien avisaba al escenario. Escribiendo no se enteraba nadie.
+   Ahora se avisa al escribir, pero con freno: repintar la lamina entera y
+   subirla a la tarjeta grafica en CADA tecla va a tirones. Se espera a que
+   la madre pare de teclear (0,25 s) y entonces se repinta una sola vez.  */
+let esperaNombre;
+function avisarCartel(){
+  window.KK_NOMBRE = state.name;
+  window.KK_EDAD   = state.age;
+  clearTimeout(esperaNombre);
+  esperaNombre = setTimeout(() => {
+    if(window.KK3D && window.KK3D.refrescarNombre) window.KK3D.refrescarNombre();
+  }, 250);
+}
+$('#fName').oninput = e => { state.name    = e.target.value; updatePoster(); avisarCartel(); };
+$('#fAge').oninput  = e => { state.age     = e.target.value; updatePoster(); avisarCartel(); };
+$('#fKids').oninput = e => { state.kids    = e.target.value; updatePoster(); };
+$('#fAd').oninput   = e => { state.adults  = e.target.value; updatePoster(); };
+$('#fCat').oninput  = e => { state.catering= e.target.value; updatePoster(); };
+$('#fDiv').oninput  = e => { state.diversion= e.target.value; updatePoster(); };
+
+/* ================= LA FECHA ================= */
+/* Tres cosas hace este campo, y la segunda es la que importa de verdad:
+     1. Le manda la fecha a Barbara por WhatsApp.
+     2. DECIDE SOLA si es entre semana o fin de semana. El precio de la
+        sala cambia (350 vs 550), y antes eso lo elegia la madre a mano
+        en unos botones. Una madre que pide el sabado y deja marcado
+        "lunes a jueves" se va con un precio que no existe, y luego hay
+        que decirle que no. Sabiendo el dia, el ordenador no se equivoca.
+     3. Avisa de tus dos reglas justo cuando se incumplen, no en una
+        letra pequeña al final que nadie lee.                          */
+const fFecha = $('#fFecha');
+const hoy = new Date(); hoy.setHours(0,0,0,0);
+/* No se pueden pedir fechas pasadas. El formato que quiere el navegador
+   es aaaa-mm-dd, por eso el relleno con ceros.                        */
+const dosDig = n => String(n).padStart(2,'0');
+const aISO   = d => d.getFullYear() + '-' + dosDig(d.getMonth()+1) + '-' + dosDig(d.getDate());
+fFecha.min = aISO(hoy);
+
+
+/* Devuelve la fecha como objeto, o null si no hay nada escrito.
+   OJO: new Date('2026-11-15') lo lee como hora cero de GREENWICH, que en
+   España puede caer en el dia ANTERIOR. Por eso se parte a mano.      */
+function fechaObj(){
+  if(!state.fecha) return null;
+  const [a,m,d] = state.fecha.split('-').map(Number);
+  return new Date(a, m-1, d);
+}
+function fechaBonita(){
+  const f = fechaObj(); if(!f) return '';
+  /* El orden cambia con el idioma: "sabado 14 de noviembre" pero
+     "Saturday 14 November". Por eso el formato tambien va en el diccionario. */
+  return T('fmt')(T('dias')[f.getDay()], f.getDate(), T('meses')[f.getMonth()]);
+}
+
+function pintarFecha(){
+  const caja = $('#fechaMsg');
+  const f = fechaObj();
+  caja.className = 'fecha-msg';
+  if(!f){ caja.textContent = ''; return; }
+
+  const dia   = f.getDay();                        /* 0=domingo ... 6=sabado */
+  const finde = (dia === 5 || dia === 6 || dia === 0);
+  /* Dias que faltan, redondeando hacia arriba para que "justo un mes" no
+     salga como 29 por una hora de diferencia.                          */
+  const faltan = Math.ceil((f - hoy) / 86400000);
+
+  /* Esto es el punto 2: la fecha manda sobre los botones de dia. */
+  state.dia = finde ? 'VD' : 'LJ';
+  document.querySelectorAll('.dia').forEach(b =>
+    b.setAttribute('aria-pressed', String(b.dataset.d === state.dia)));
+
+  const partes = [];
+  if(faltan < 30)
+    partes.push(T('f_pocoa') + faltan + T('f_pocob'));
+  if(dia === 6 || dia === 0)
+    partes.push(T('f_findea') + T('dias')[dia] + T('f_findeb'));
+  if(finde)
+    partes.push(T('f_tarifa'));
+
+  caja.classList.add('on', faltan < 30 ? 'aviso' : 'ok');
+  const bonita = fechaBonita();
+  caja.textContent = partes.length ? partes.join(' ')
+                   : T('f_oka') + bonita.charAt(0).toUpperCase() + bonita.slice(1) + T('f_okb');
+}
+
+fFecha.onchange = e => { state.fecha = e.target.value; pintarFecha(); paint(); };
+
+/* ---------------- PROFUNDIDAD (esto es lo que "parece 3D") ----------------
+   Cada capa se mueve a distinta velocidad segun su data-depth.
+   Es el mismo truco que usa el ojo para calcular distancia: paralaje.         */
+const layers = [...document.querySelectorAll('.layer')];
+function tilt(nx, ny){                       // nx, ny van de -1 a 1
+  layers.forEach(l => {
+    const d = +l.dataset.depth;
+    l.style.transform = 'translate3d(' + (nx*d) + 'px,' + (ny*d*0.55) + 'px,0)';
+  });
+}
+const stage = $('#stage');
+stage.addEventListener('mousemove', e => {
+  const r = stage.getBoundingClientRect();
+  tilt((e.clientX-r.left)/r.width*2-1, (e.clientY-r.top)/r.height*2-1);
+});
+stage.addEventListener('mouseleave', () => tilt(0,0));
+stage.addEventListener('touchmove', e => {
+  const r = stage.getBoundingClientRect(), t = e.touches[0];
+  tilt((t.clientX-r.left)/r.width*2-1, (t.clientY-r.top)/r.height*2-1);
+}, {passive:true});
+
+/* inclinacion real del movil (iOS pide permiso con un toque) */
+function startTilt(){
+  addEventListener('deviceorientation', e => {
+    if(e.gamma == null) return;
+    tilt(Math.max(-1,Math.min(1, e.gamma/26)),
+         Math.max(-1,Math.min(1,(e.beta-45)/34)));
+  });
+}
+if(typeof DeviceOrientationEvent !== 'undefined' && DeviceOrientationEvent.requestPermission){
+  stage.addEventListener('click', () => DeviceOrientationEvent.requestPermission()
+    .then(p => p === 'granted' && startTilt()).catch(()=>{}), {once:true});
+} else { startTilt(); }
+
+$('#shot').onclick = () => {
+  const b = $('#shot');
+  if(!ART_PHOTO[state.theme] || !window.KK3D || !window.KK3D.guardarCartel){
+    alert(T('err_lamina'));
+    return;
+  }
+  const txt = b.textContent;
+  b.textContent = '⏳ Preparando…'; b.disabled = true;
+
+  window.KK3D.guardarCartel().then(blob => {
+    /* Nombre de archivo limpio: la madre lo va a ver en su movil. */
+    const nom = (state.name || 'cumple').trim().replace(/[^\p{L}\p{N}]+/gu, '-') || 'cumple';
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `cartel-${nom}-${state.theme}.jpg`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+    b.textContent = T('guardado');
+    setTimeout(() => { b.textContent = txt; b.disabled = false; }, 2200);
+  }).catch(() => {
+    b.textContent = txt; b.disabled = false;
+    alert(T('err_cartel'));
+  });
+};
+
+/* ---------------- CAMBIAR DE IDIOMA ----------------
+   Cuatro cosas y en este orden:
+     1. los DATOS (packs, modos, extras, tematicas) se traducen al vuelo
+     2. los textos sueltos del HTML, por su data-i18n
+     3. se vuelven a pintar los botones, que llevan datos dentro
+     4. paint() refresca cartel, presupuesto y mensaje de WhatsApp
+   No se recarga la pagina a proposito: recargar mataria el escenario 3D y
+   borraria todo lo que la madre lleve escrito.                          */
+function setLang(l){
+  if(!TXT[l]) l = 'es';
+  LANG = l;
+  document.documentElement.lang = l;
+
+  aplicarIdiomaDatos(l);
+
+  document.querySelectorAll('[data-i18n]').forEach(n => {
+    const v = T(n.dataset.i18n);
+    if(typeof v === 'string') n.textContent = v;
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(n => {
+    const v = T(n.dataset.i18nPh);
+    if(typeof v === 'string') n.placeholder = v;
+  });
+
+  document.querySelectorAll('.langbtn').forEach(b =>
+    b.classList.toggle('on', b.dataset.l === l));
+
+  renderThemes(); renderModos(); renderPacks(); renderExtras();
+  pintarFecha();
+  paint();
+}
+
+document.querySelectorAll('.langbtn').forEach(b =>
+  b.onclick = () => setLang(b.dataset.l));
+
+/* ?lang=ca / ?lang=en. Mismo sistema que casal-inscripcion y
+   extraescolar-inscripcion: UNA sola pagina, sin copias en /ca y /en.
+   Si no viene nada, se mira el idioma del navegador: una madre catalana
+   que entra desde Google no tiene por que saber que hay un boton CA.   */
+(function(){
+  const q = new URLSearchParams(location.search).get('lang');
+  if(q && TXT[q]) return setLang(q);
+  const nav = (navigator.language || 'es').slice(0,2).toLowerCase();
+  setLang(TXT[nav] ? nav : 'es');
+})();
+</script>
+
+<!-- ============ ESCENARIO 3D REAL (WebGL / three.js) ============ -->
+<script type="module">
+import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
+
+const canvas = document.getElementById('gl');
+const stage  = document.getElementById('stage');
+
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type    = THREE.PCFSoftShadowMap;
+renderer.toneMapping       = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 0.95;
+renderer.outputColorSpace  = THREE.SRGBColorSpace;
+
+const scene  = new THREE.Scene();
+
+/* ---- El "entorno": lo que reflejan los globos ----
+   Un globo brillante (y sobre todo uno cromado) no tiene color propio:
+   ensena lo que tiene alrededor. Sin esto, los metalizados salen NEGROS,
+   porque reflejan la nada. Es un degradado tonto de techo claro a suelo
+   calido, pero basta para que los brillos parezcan de estudio de fotos. */
+(function entorno(){
+  /* 2:1 obligatorio: "equirectangular" es una panoramica, como un mapamundi.
+     Con otra proporcion three lo estira mal y los reflejos salen sucios. */
+  const c = document.createElement('canvas'); c.width = 128; c.height = 64;
+  const x = c.getContext('2d');
+  const g = x.createLinearGradient(0, 0, 0, 64);
+  g.addColorStop(0.00, '#ffffff');   /* techo  */
+  g.addColorStop(0.40, '#eef2fa');
+  /* De aqui para abajo la sala es AZUL MARINO: si el entorno siguiera siendo
+     crema, los globos reflejarian una habitacion blanca que ya no existe y
+     por eso salian lavados. Ahora reflejan tu pared.                      */
+  g.addColorStop(0.58, '#54709C');
+  g.addColorStop(1.00, '#22385C');   /* suelo  */
+  x.fillStyle = g; x.fillRect(0, 0, 128, 64);
+
+  /* Un par de "focos" claros: sin ellos el metal no tiene donde brillar
+     y se queda plano. Son los reflejos de los fluorescentes del techo. */
+  x.fillStyle = '#ffffff';
+  x.fillRect(14, 3, 34, 13);
+  x.fillRect(78, 5, 30, 11);
+
+  const tex = new THREE.CanvasTexture(c);
+  tex.mapping = THREE.EquirectangularReflectionMapping;
+  const pm = new THREE.PMREMGenerator(renderer);
+  scene.environment = pm.fromEquirectangular(tex).texture;
+  pm.dispose(); tex.dispose();
+})();
+
+const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
+camera.position.set(0, 2.4, 6.6);
+camera.lookAt(0, 1.35, 0);
+
+/* ---- luces: una clave calida + relleno de cielo + contraluz ---- */
+/* Este relleno blanco es el que LAVA el color: le cae a todo por igual y
+   un globo rosa iluminado con mucho blanco deja de ser rosa. Bajado de
+   0.85 a 0.58, y el "cielo" ya no es blanco puro sino crema calido.    */
+const hemi = new THREE.HemisphereLight(0xFFF4E6, 0x35507A, 0.58);
+scene.add(hemi);
+
+const key = new THREE.DirectionalLight(0xfff3e2, 1.42);  /* compensa el relleno */
+key.position.set(4.5, 7, 5);
+key.castShadow = true;
+key.shadow.mapSize.set(1024, 1024);
+key.shadow.camera.near = 1;  key.shadow.camera.far = 26;
+key.shadow.camera.left = -9; key.shadow.camera.right = 9;
+key.shadow.camera.top  =  9; key.shadow.camera.bottom = -9;
+key.shadow.bias = -0.0012;
+key.shadow.radius = 4;
+scene.add(key);
+
+const rim = new THREE.DirectionalLight(0xffffff, 0.45);
+rim.position.set(-6, 3.5, -5);
+scene.add(rim);
+
+/* ---- suelo real que recibe sombras ---- */
+/* Parquet marron oscuro, el de tu local. Igual que la pared marino: esto es
+   TU sala y NO cambia con la tematica. Las lamas se dibujan a mano aqui y
+   se repiten por el suelo; el numerito "aleatorio" es siempre el mismo
+   (semilla fija) para que el suelo no baile cada vez que abres la pagina. */
+const parquetTex = (() => {
+  const c = document.createElement('canvas'); c.width = c.height = 512;
+  const x = c.getContext('2d');
+  x.fillStyle = '#120A05'; x.fillRect(0, 0, 512, 512);      /* la junta */
+  const FIL = 6, ALTO = 512/FIL, LARGO = 170;
+  let semilla = 7;
+  const rnd = () => (semilla = (semilla*16807) % 2147483647) / 2147483647;
+  for(let f = 0; f < FIL; f++){
+    const desfase = (f % 2) ? -LARGO*0.45 : 0;              /* al tresbolillo */
+    for(let l = -1; l*LARGO + desfase < 512; l++){
+      const X = l*LARGO + desfase, Y = f*ALTO;
+      /* Antes el tono podia llegar a 1.28, o sea ACLARAR la lama por encima
+         del marron base. Ahora el tope es 1: la lama nunca sale mas clara
+         que el color de la madera, solo mas oscura. Asi el suelo se lee
+         como un parquet nogal de verdad y no como tarima clarita.        */
+      const tono = 0.58 + rnd()*0.42;                       /* cada lama, su tono */
+      x.fillStyle = `rgb(${Math.round(56*tono)},${Math.round(31*tono)},${Math.round(17*tono)})`;
+      x.fillRect(X+1.5, Y+1.5, LARGO-3, ALTO-3);
+      for(let v = 0; v < 10; v++){                          /* la veta */
+        const vy = Y + 4 + rnd()*(ALTO-8);
+        x.strokeStyle = rnd() < 0.5 ? 'rgba(255,214,168,0.06)' : 'rgba(0,0,0,0.30)';
+        x.lineWidth = 0.5 + rnd()*1.6;
+        x.beginPath(); x.moveTo(X+3, vy);
+        x.bezierCurveTo(X+LARGO*0.3, vy+(rnd()-0.5)*5,
+                        X+LARGO*0.7, vy+(rnd()-0.5)*5, X+LARGO-3, vy);
+        x.stroke();
+      }
+    }
+  }
+  return new THREE.CanvasTexture(c);
+})();
+parquetTex.wrapS = parquetTex.wrapT = THREE.RepeatWrapping;
+parquetTex.repeat.set(6, 6);
+parquetTex.colorSpace = THREE.SRGBColorSpace;
+parquetTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+/* roughness 0.62 = madera barnizada, pero MENOS espejo que antes: con 0.55
+   el cielo claro se reflejaba en todo el suelo y lo volvia gris. Y el
+   envMap baja de 0.5 a 0.22 por lo mismo. Oscurecer solo la textura no
+   servia de nada si luego la luz blanca la volvia a lavar por encima.
+   El color deja de ser blanco: multiplica y hunde el marron sin apagarlo. */
+const floorMat = new THREE.MeshStandardMaterial({map:parquetTex, color:0xC9A382,
+  roughness:0.62, metalness:0, envMapIntensity:0.22});
+const floor = new THREE.Mesh(new THREE.CircleGeometry(13, 64), floorMat);
+floor.rotation.x = -Math.PI/2;
+floor.receiveShadow = true;
+scene.add(floor);
+
+/* ================= LA PARED DE LA TIENDA =================
+   Azul marino, como la tuya de verdad. Esto NO cambia con la tematica:
+   es tu sala, igual que las sillas naranjas. El mundo de colores lo ponen
+   los globos y el cartel DELANTE, no la pared.
+
+   Y de paso arregla algo que no se veia bien: sobre fondo claro, los globos
+   claros y la tarta blanca se perdian. Sobre marino, todo lo claro salta. */
+const MARINO = 0x1B3358;
+
+const paredTex = (() => {
+  const c = document.createElement('canvas'); c.width = c.height = 256;
+  const x = c.getContext('2d');
+  x.fillStyle = '#16294A'; x.fillRect(0, 0, 256, 256);
+  /* Una pared lisa de un solo azul parece un telon de cartulina. En la sala
+     de verdad los focos dejan una mancha de luz detras del cartel y las
+     esquinas quedan mas oscuras: eso es lo que pinta este degradado. */
+  const g = x.createRadialGradient(128, 150, 10, 128, 150, 175);
+  g.addColorStop(0, 'rgba(86,126,180,0.75)');
+  g.addColorStop(1, 'rgba(86,126,180,0)');
+  x.fillStyle = g; x.fillRect(0, 0, 256, 256);
+  return new THREE.CanvasTexture(c);
+})();
+
+const pared = new THREE.Mesh(
+  new THREE.PlaneGeometry(48, 26),
+  new THREE.MeshStandardMaterial({map:paredTex, color:MARINO, roughness:0.95, metalness:0}));
+pared.position.set(0, 9, -6.2);
+pared.receiveShadow = true;
+scene.add(pared);
+
+/* niebla suave = profundidad de verdad, lo lejano se difumina.
+   Ahora tira a marino para que el suelo se funda con la pared en vez de
+   cortarse con una raya clara justo donde se juntan. */
+scene.fog = new THREE.Fog(MARINO, 12, 27);
+
+/* grupo que gira con el dedo */
+const world = new THREE.Group();
+scene.add(world);
+
+/* ================= GLOBOS ================= */
+/* Un globo no es una esfera: se estira hacia arriba y acaba en pico. */
+const balloonGeo = new THREE.SphereGeometry(1, 40, 32);
+balloonGeo.scale(1, 1.22, 1);
+{ const p = balloonGeo.attributes.position;
+  for(let i=0;i<p.count;i++){
+    const y = p.getY(i);
+    if(y < -0.9){ const k = (-y - 0.9) / 0.32; p.setX(i, p.getX(i)*(1-k*0.86)); p.setZ(i, p.getZ(i)*(1-k*0.86)); }
+  }
+  balloonGeo.computeVertexNormals(); }
+
+const knotGeo   = new THREE.ConeGeometry(0.1, 0.2, 12);
+const stringMat = new THREE.LineBasicMaterial({color:0xffffff, transparent:true, opacity:0.5});
+
+function makeBalloon(color, r){
+  const g = new THREE.Group();
+  const mat = new THREE.MeshPhysicalMaterial({
+    color, roughness:0.88, metalness:0, clearcoat:0, envMapIntensity:0.30,
+    sheen:0
+  });
+  const b = new THREE.Mesh(balloonGeo, mat);
+  b.castShadow = true; b.scale.setScalar(r);
+  g.add(b);
+
+  const k = new THREE.Mesh(knotGeo, mat);
+  k.position.y = -1.24*r; k.rotation.x = Math.PI; k.scale.setScalar(r);
+  g.add(k);
+
+  /* el hilo, con un poco de curva */
+  const pts = [];
+  for(let i=0;i<=14;i++){ const t=i/14; pts.push(new THREE.Vector3(Math.sin(t*5)*0.055*t, -1.34*r - t*(1.5*r+0.5), 0)); }
+  g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), stringMat));
+
+  g.userData = {mat, phase: Math.random()*Math.PI*2, spin:(Math.random()-0.5)*0.25};
+  return g;
+}
+
+/* Sueltos con hilo dejamos poquitos: en los cumples de verdad casi todos
+   los globos van pegados en guirnalda, no flotando por ahi. */
+const balloons = [];
+/* OJO con el primero: estaba en x=-2.7, z=0.9 o sea CLAVADO encima de la
+   mesa dulce, y su hilo colgaba justo por delante del pastel. No era la
+   guirnalda la que tapaba la tarta: era este globo suelto. Lo aparto a la
+   izquierda y lo subo, para que enmarque la mesa en vez de cubrirla.   */
+const BPOS = [[-3.85,3.05,1.5,0.46],[2.6,2.5,1.0,0.48],[-1.5,4.15,-2.9,0.36]];
+BPOS.forEach(([x,y,z,r]) => { const b = makeBalloon(0xffffff, r); b.position.set(x,y,z); world.add(b); balloons.push(b); });
+
+/* ================= GUIRNALDA (el racimo) ================= */
+/* Esto es lo que hace que un cumple parezca montado por profesionales:
+   globos PEGADOS, de 5 tamanos distintos, subiendo en arco. Van sin hilo
+   (en la realidad van grapados a una tira) y NO flotan: solo respiran. */
+const arco = new THREE.CatmullRomCurve3([
+  new THREE.Vector3(-4.3, 0.05,-0.9), new THREE.Vector3(-4.2, 1.6, -1.3),
+  new THREE.Vector3(-3.8, 3.2, -1.7), new THREE.Vector3(-2.8, 4.6, -2.0),
+  new THREE.Vector3(-1.1, 5.4, -2.2), new THREE.Vector3( 1.1, 5.45,-2.2),
+  new THREE.Vector3( 2.8, 4.7, -2.0), new THREE.Vector3( 3.9, 3.3, -1.7),
+  new THREE.Vector3( 4.3, 1.7, -1.3), new THREE.Vector3( 4.4, 0.15,-0.9)
+]);
+
+/* menos triangulos que el globo con hilo: de estos hay 70, no 3 */
+const globoGeo = new THREE.SphereGeometry(1, 20, 15);
+globoGeo.scale(1, 1.17, 1);
+
+const racimo = [];
+const NRACIMO = 104;
+for(let i = 0; i < NRACIMO; i++){
+  const t = i / (NRACIMO - 1);
+  const p = arco.getPoint(t);
+
+  /* Tamanos mezclados: muchos pequenos y algunos gordos. El Math.pow hace
+     que salgan mas pequenos que grandes, que es como se montan de verdad. */
+  const r = 0.12 + Math.pow(Math.random(), 1.9) * 0.25;
+
+  /* El racimo engorda por el centro del arco y afina en las puntas */
+  const grosor = 0.34 + Math.sin(t * Math.PI) * 0.52;
+
+  /* 1 de cada 7 va cromado, como los plateados de tus fotos */
+  /* Menos cromados: sobre marino un globo plateado se lee como uno blanco.
+     De 1 de cada 7 a 1 de cada 14: siguen dando el brillo, sin blanquear. */
+  const cromo = Math.random() < 0.05;
+  const mat = new THREE.MeshPhysicalMaterial({
+    color: 0xffffff,
+    /* MATTE. "roughness" es lo aspero que es: 0 = espejo, 1 = papel mate.
+       Estaba en 0.32 = globo de plastico recien inflado, con un brillo
+       blanco enorme que tapaba el color. A 0.88 es globo mate, el color
+       se ve entero y no hay reflejo que lo blanquee.                    */
+    roughness: cromo ? 0.14 : 0.88,
+    metalness: cromo ? 0.70 : 0,
+    /* Cuanta luz del entorno recogen. Los cromados necesitan MUCHA: un metal
+       no tiene color propio, solo devuelve lo que le llega, y con poco se
+       queda apagado como una lata vieja en vez de un globo plateado. */
+    envMapIntensity: cromo ? 2.6 : 0.30,
+    /* barniz y halo: FUERA en los mates. Eran las dos capas blancas. */
+    clearcoat: cromo ? 0.45 : 0, clearcoatRoughness: 0.22,
+    /* El "sheen" es un halo blanco de terciopelo por todo el globo. Con 0.55
+       se comia el color: sobre pared marino todos salian blancos. Bajado a
+       0.15 el globo sigue teniendo brillo, pero el color pastel se ve.    */
+    sheen: 0
+  });
+
+  const g = new THREE.Mesh(globoGeo, mat);
+  g.castShadow = true;
+  g.scale.setScalar(r);
+  g.position.set(
+    p.x + (Math.random() - 0.5) * grosor * 1.7,
+    p.y + (Math.random() - 0.5) * grosor * 1.7,
+    p.z + (Math.random() - 0.5) * 0.9
+  );
+  g.rotation.set((Math.random()-0.5)*0.5, Math.random()*6.28, (Math.random()-0.5)*0.5);
+  g.userData = {mat, base: g.position.clone(), phase: Math.random()*6.28, cromo};
+  world.add(g);
+  racimo.push(g);
+}
+
+/* ================= REGALOS ================= */
+const gifts = [];
+function makeGift(w,h,d){
+  const g = new THREE.Group();
+  const box = new THREE.Mesh(new THREE.BoxGeometry(w,h,d),
+    new THREE.MeshStandardMaterial({color:0xffffff, roughness:0.55}));
+  box.castShadow = true; box.receiveShadow = true; box.position.y = h/2;
+  g.add(box);
+  const rmat = new THREE.MeshStandardMaterial({color:0xE7B24C, roughness:0.35, metalness:0.25});
+  const r1 = new THREE.Mesh(new THREE.BoxGeometry(w*0.16, h*1.02, d*1.02), rmat);
+  r1.position.y = h/2; g.add(r1);
+  const r2 = new THREE.Mesh(new THREE.BoxGeometry(w*1.02, h*1.02, d*0.16), rmat);
+  r2.position.y = h/2; g.add(r2);
+  const bow = new THREE.Mesh(new THREE.TorusGeometry(w*0.22, w*0.07, 10, 22), rmat);
+  bow.position.y = h + w*0.12; bow.rotation.x = Math.PI/2; bow.castShadow = true; g.add(bow);
+  g.userData = {box: box.material};
+  gifts.push(g);
+  return g;
+}
+/* Los regalos se juntan al centro: antes tapaban las mesas de los lados. */
+const g1 = makeGift(1.0,0.85,1.0); g1.position.set(-1.50,0,1.7);  g1.rotation.y = 0.4;  world.add(g1);
+const g2 = makeGift(0.72,0.62,0.72); g2.position.set(-0.80,0,2.3); g2.rotation.y = -0.6; world.add(g2);
+const g3 = makeGift(0.88,1.05,0.88); g3.position.set(1.60,0,1.8);  g3.rotation.y = -0.3; world.add(g3);
+
+/* ================= MOBILIARIO =================
+   Sacado de tus fotos de cumples de verdad. Antes el decorado flotaba y
+   parecia un escaparate; en una sala de verdad todo se APOYA en muebles:
+   la mesa dulce con sus peanas, la mesa larga de los peques puesta, y
+   las sillas de la tienda.
+
+   Lo que cambia de color con la tematica son los MANTELES. Las peanas van
+   blancas y las sillas naranjas/amarillas SIEMPRE, porque asi son las
+   tuyas en las 8 fotos: es lo que hace que se reconozca tu sala.        */
+
+const manteles = [];                 /* materiales que se tinen */
+/* El PASTEL TEMATICO del pack, en este orden fijo:
+   0 bizcocho de abajo · 1 topper de arriba · 2 magdalenas.
+   El piso de ARRIBA se queda crema a proposito: si tines los dos, la vela
+   y el topper se pierden y el pastel deja de leerse como pastel.        */
+const tartas = [];
+const BLANCO  = () => new THREE.MeshStandardMaterial({color:0xFFFFFF, roughness:0.45});
+const LOZA    = () => new THREE.MeshStandardMaterial({color:0xFDFCFA, roughness:0.28});
+
+function pieza(geo, mat, x, y, z){
+  const m = new THREE.Mesh(geo, mat);
+  m.position.set(x, y, z);
+  m.castShadow = true; m.receiveShadow = true;
+  return m;
+}
+
+/* ---- MESA DULCE: la tarta manda, lo demas acompana ---- */
+function mesaDulce(){
+  const g = new THREE.Group();
+
+  /* El mantel cae hasta el suelo y se abre un poco abajo: por eso el
+     cilindro es mas estrecho arriba que abajo. La tapa de arriba hace
+     de superficie de la mesa, asi nos ahorramos un tablero aparte. */
+  const matMantel = new THREE.MeshStandardMaterial({color:0xffffff, roughness:0.86});
+  g.add(pieza(new THREE.CylinderGeometry(1.02, 1.20, 1.04, 40), matMantel, 0, 0.52, 0));
+  manteles.push(matMantel);
+
+  const blanco = BLANCO();
+  const ALTO = 1.04;
+
+  /* tres peanas a distinta altura = escalera para la vista */
+  const p1 = pieza(new THREE.CylinderGeometry(0.27,0.29,0.60,26), blanco, -0.34, ALTO+0.30, -0.06);
+  const p2 = pieza(new THREE.CylinderGeometry(0.23,0.25,0.38,26), blanco,  0.32, ALTO+0.19,  0.10);
+  const p3 = pieza(new THREE.CylinderGeometry(0.30,0.32,0.22,26), blanco,  0.00, ALTO+0.11,  0.44);
+  g.add(p1, p2, p3);
+
+  /* LA TARTA, dos pisos. El de abajo cambia con cada tematica. */
+  const bizcocho = new THREE.MeshStandardMaterial({color:0xffffff, roughness:0.58});
+  tartas.push(bizcocho);                                    /* -> tartas[0] */
+  const base = ALTO + 0.60;
+  g.add(pieza(new THREE.CylinderGeometry(0.30,0.30,0.30,30), bizcocho, -0.34, base+0.15, -0.06));
+  g.add(pieza(new THREE.CylinderGeometry(0.205,0.205,0.24,30), BLANCO(), -0.34, base+0.42,-0.06));
+
+  /* lacitos de nata en el borde del piso de abajo: un cilindro liso parece
+     una lata de pintura, con la puntilla parece tarta de pasteleria.     */
+  const nata = new THREE.MeshStandardMaterial({color:0xFFFCF6, roughness:0.5});
+  for(let i = 0; i < 12; i++){
+    const a = i/12 * Math.PI*2;
+    g.add(pieza(new THREE.SphereGeometry(0.034,10,8), nata,
+                -0.34 + Math.cos(a)*0.298, base+0.300, -0.06 + Math.sin(a)*0.298));
+  }
+
+  /* el topper: tres bolitas del color de la tematica junto a la vela */
+  const topper = new THREE.MeshStandardMaterial({color:0xffffff, roughness:0.36});
+  tartas.push(topper);                                      /* -> tartas[1] */
+  [[0.085,0.02],[-0.07,0.065],[0.015,-0.085]].forEach(([dx,dz]) =>
+    g.add(pieza(new THREE.SphereGeometry(0.038,12,10), topper,
+                -0.34+dx*1.35, base+0.575, -0.06+dz*1.35)));
+  /* la velita */
+  const vela = pieza(new THREE.CylinderGeometry(0.019,0.019,0.17,8), BLANCO(), -0.34, base+0.625,-0.06);
+  g.add(vela);
+  const llama = new THREE.Mesh(new THREE.SphereGeometry(0.035,10,8),
+    new THREE.MeshBasicMaterial({color:0xFFD86B, toneMapped:false}));
+  llama.position.set(-0.34, base+0.725, -0.06); g.add(llama);
+
+  /* cupcakes en la peana mediana y galletas en la baja. La cobertura de las
+     magdalenas tambien se tine: asi la mesa entera va a juego con el cumple. */
+  const loza = LOZA();
+  const cobertura = new THREE.MeshStandardMaterial({color:0xffffff, roughness:0.44});
+  tartas.push(cobertura);                                   /* -> tartas[2] */
+  [[-0.14,0.02],[0.32,-0.16],[0.50,0.10]].forEach(([dx,dz]) => {
+    const X = 0.32 + dx*0.42, Z = 0.10 + dz;
+    g.add(pieza(new THREE.CylinderGeometry(0.075,0.06,0.13,14), loza, X, ALTO+0.44, Z));
+    g.add(pieza(new THREE.SphereGeometry(0.072,14,12), cobertura, X, ALTO+0.525, Z));
+  });
+  g.add(pieza(new THREE.CylinderGeometry(0.20,0.20,0.025,22), loza, 0.00, ALTO+0.23, 0.44));
+
+  return g;
+}
+
+/* ---- TORRE DE PEANAS (el otro lado) ----
+   Mesa de comer con sillas FUERA: no es decorado, es mobiliario de uso, y
+   ademas tapaba. Esto es lo que si decora: las peanas cilindricas de
+   alquiler, a tres alturas, con bolas y un plato alto encima.            */
+function peanas(){
+  const g = new THREE.Group();
+  const blanco = BLANCO();
+
+  /* Tres alturas MUY distintas (1.05 / 0.72 / 0.44). Si fueran parecidas
+     pareceria un error de medida; separadas, parece decoracion pensada. */
+  const T = [[ 0.00, 1.05, 0.30, 0.00],
+             [-0.62, 0.72, 0.26, 0.16],
+             [ 0.55, 0.44, 0.23,-0.12]];
+  T.forEach(([x,h,r,z]) =>
+    g.add(pieza(new THREE.CylinderGeometry(r, r*1.06, h, 26), blanco, x, h/2, z)));
+
+  /* bolas de decoracion: se tinen con la tematica */
+  const bolaA = new THREE.MeshStandardMaterial({color:0xffffff, roughness:0.38});
+  const bolaB = new THREE.MeshStandardMaterial({color:0xffffff, roughness:0.38});
+  manteles.push(bolaA, bolaB);
+  g.add(pieza(new THREE.SphereGeometry(0.20, 24, 18), bolaA, -0.62, 0.72+0.20, 0.16));
+  g.add(pieza(new THREE.SphereGeometry(0.15, 22, 16), bolaB,  0.55, 0.44+0.15,-0.12));
+
+  /* plato alto con dulces en la peana grande */
+  const loza = LOZA();
+  g.add(pieza(new THREE.CylinderGeometry(0.05,0.06,0.14,14), loza, 0, 1.12, 0));
+  g.add(pieza(new THREE.CylinderGeometry(0.28,0.28,0.025,26), loza, 0, 1.20, 0));
+  [[-0.13,0.05],[0.11,-0.08],[0.02,0.14]].forEach(([dx,dz]) =>
+    g.add(pieza(new THREE.SphereGeometry(0.055,14,12), loza, dx, 1.27, dz)));
+  return g;
+}
+
+/* Los muebles van al FONDO, flanqueando el cartel, no delante: en tus fotos
+   la mesa dulce esta siempre pegada a la pared de globos, nunca en medio. */
+const dulce = mesaDulce();
+/* Estaba en z=-1.25, o sea DETRAS de los pies de la guirnalda (z=-0.9): el
+   pastel quedaba tapado por un globo gordo. Si el pastel cambia con la
+   tematica pero no se ve, no sirve de nada. Lo traigo delante del racimo. */
+dulce.position.set(-2.70, 0, 0.55); dulce.rotation.y = 0.34;
+dulce.scale.setScalar(0.90);
+world.add(dulce);
+
+const torre = peanas();
+torre.position.set(2.85, 0, 0.35); torre.rotation.y = -0.38;
+world.add(torre);
+
+/* ================= CONFETI (una sola malla, 180 trozos) ================= */
+const CONF = 180;
+const confGeo = new THREE.PlaneGeometry(0.11, 0.17);
+/* el confeti, mate tambien: brillaba y se veia blanco en vez de su color */
+const confMat = new THREE.MeshStandardMaterial({side:THREE.DoubleSide, roughness:0.85, metalness:0});
+const confetti = new THREE.InstancedMesh(confGeo, confMat, CONF);
+confetti.instanceColor = new THREE.InstancedBufferAttribute(new Float32Array(CONF*3), 3);
+const cData = [], dummy = new THREE.Object3D();
+for(let i=0;i<CONF;i++){
+  cData.push({x:(Math.random()-0.5)*15, y:Math.random()*9, z:(Math.random()-0.5)*11,
+              vy:0.006+Math.random()*0.016, rx:Math.random()*6, ry:Math.random()*6,
+              sx:(Math.random()-0.5)*0.02, sr:(Math.random()-0.5)*0.06});
+}
+world.add(confetti);
+
+/* ================= EL CARTEL TEMATICO ================= */
+/* Cogemos el dibujo SVG que ya existe en la pagina y lo convertimos en
+   una textura. Asi el mundo 3D y el dibujo plano nunca se contradicen. */
+/* fog:false a proposito — la niebla da profundidad a globos y regalos, pero
+   al cartel le quitaba el color y salia lavado. El cartel va a color pleno. */
+const heroMat = new THREE.MeshBasicMaterial({transparent:true, toneMapped:false,
+                                             fog:false, opacity:0});
+const hero = new THREE.Mesh(new THREE.PlaneGeometry(5.4, 3.21), heroMat);
+hero.position.set(0, 1.95, -0.6);
+world.add(hero);
+
+/* sombra de contacto pintada (mas suave y barata que una sombra real) */
+const shadowTex = (() => {
+  const c = document.createElement('canvas'); c.width = c.height = 128;
+  const g = c.getContext('2d').createRadialGradient(64,64,0,64,64,64);
+  g.addColorStop(0,'rgba(70,40,30,.45)'); g.addColorStop(1,'rgba(70,40,30,0)');
+  const ctx = c.getContext('2d'); ctx.fillStyle = g; ctx.fillRect(0,0,128,128);
+  return new THREE.CanvasTexture(c);
+})();
+const contact = new THREE.Mesh(new THREE.PlaneGeometry(7.5, 3.2),
+  new THREE.MeshBasicMaterial({map:shadowTex, transparent:true, depthWrite:false}));
+contact.rotation.x = -Math.PI/2; contact.position.set(0, 0.012, 0.2);
+world.add(contact);
+
+const texCache = new Map();
+const loader = new THREE.TextureLoader();
+function finishTex(t){
+  t.colorSpace = THREE.SRGBColorSpace;
+  t.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  return t;
+}
+function svgTexture(key){
+  const svg = document.querySelector('#props svg[data-art="' + key + '"]');
+  if(!svg) return Promise.resolve(null);
+  const c = svg.cloneNode(true);
+  c.classList.remove('on');
+  c.setAttribute('xmlns','http://www.w3.org/2000/svg');
+  c.setAttribute('width','1280'); c.setAttribute('height','760');
+  const url = 'data:image/svg+xml;charset=utf-8,' +
+              encodeURIComponent(new XMLSerializer().serializeToString(c));
+  return new Promise(res => loader.load(url,
+    t => { texCache.set(key, finishTex(t)); res(t); },
+    undefined,
+    () => res(null)));
+}
+
+/* ---- Laminas: se cargan una vez y se guardan como imagen, no como textura,
+        porque encima hay que escribir el nombre y eso se hace en un lienzo. ---- */
+const imgCache = new Map();
+/* cachear=false para las laminas de imprimir: son enormes y el navegador las
+   guarda descomprimidas (~16 MB cada una). Se usan una vez y se sueltan. */
+function laminaImg(src, cachear = true){
+  if(cachear && imgCache.has(src)) return Promise.resolve(imgCache.get(src));
+  return new Promise(res => {
+    const im = new Image();
+    im.onload  = () => { if(cachear) imgCache.set(src, im); res(im); };
+    im.onerror = () => res(null);
+    im.src = src;
+  });
+}
+
+/* La tipografia del cartel es la MISMA que la de la pagina (Nunito).
+   Ojo: aqui hay que poner una fuente que la pagina cargue de verdad; si se
+   pone uuna que no esta, el lienzo no avisa, simplemente escribe en Georgia. */
+const TIPO = "'Nunito', system-ui, sans-serif";
+
+/* El lienzo no espera a que baje la fuente: si pintamos antes de tiempo,
+   el nombre sale con otra letra y se queda asi. Por eso preguntamos primero. */
+const tipoLista = (document.fonts && document.fonts.load)
+  ? document.fonts.load("900 100px 'Nunito'").then(() => document.fonts.ready)
+  : Promise.resolve();
+
+/* Pinta la lamina + el nombre del peque. Devuelve el lienzo, que sirve
+   para el 3D y (mas adelante) para descargar/imprimir el cartel. */
+function componerCartel(im, info){
+  const c = document.createElement('canvas');
+  c.width = im.naturalWidth; c.height = im.naturalHeight;
+  const x = c.getContext('2d');
+  x.drawImage(im, 0, 0);
+
+  const nombre = (window.KK_NOMBRE || '').trim();
+  const edad   = (window.KK_EDAD || '').toString().trim();
+  if(nombre){
+    const W = c.width, H = c.height, cy = H * (info.ty || 0.68);
+    x.textAlign = 'center'; x.textBaseline = 'middle';
+
+    /* El nombre se encoge si es largo, para no salirse del hueco */
+    let px = W * 0.155;
+    x.font = `900 ${px}px ${TIPO}`;
+    while(x.measureText(nombre).width > W * 0.66 && px > W * 0.05){
+      px *= 0.94;
+      x.font = `900 ${px}px ${TIPO}`;
+    }
+    x.fillStyle = info.col || '#8A5E86';
+    x.fillText(nombre, W/2, cy);
+
+    if(edad){
+      x.font = `700 ${px*0.42}px ${TIPO}`;
+      x.globalAlpha = 0.85;
+      x.fillText(edad + window.KK_T(edad === '1' ? 'anio' : 'anios'), W/2, cy + px*0.72);
+      x.globalAlpha = 1;
+    }
+  }
+  return c;
+}
+
+function heroTexture(key){
+  const info = (window.KK_ART_PHOTO || {})[key];
+
+  /* Sin lamina: dibujo vectorial, y ese si se puede cachear tal cual. */
+  if(!info){
+    if(texCache.has(key)) return Promise.resolve(texCache.get(key));
+    return svgTexture(key);
+  }
+
+  /* Con lamina: se recompone cada vez porque el nombre puede haber cambiado.
+     La imagen de fondo sí está cacheada, así que no se vuelve a descargar. */
+  return Promise.all([laminaImg(info.src), tipoLista]).then(([im]) => {
+    if(!im) return svgTexture(key);          /* si falla, no dejamos la anterior */
+    return finishTex(new THREE.CanvasTexture(componerCartel(im, info)));
+  });
+}
+
+
+/* ================= PALETA POR TEMATICA ================= */
+/* Los colores no saltan: se interpolan. Por eso cambiar de mundo se ve caro. */
+const cur = {floor:new THREE.Color(0xE9D5F5), fog:new THREE.Color(MARINO)};
+const tgt = {floor:new THREE.Color(0xE9D5F5), fog:new THREE.Color(MARINO)};
+const balloonTargets = balloons.map(() => new THREE.Color(0xF58BB8));
+const racimoTargets  = racimo.map(()   => new THREE.Color(0xF58BB8));
+const giftTargets    = gifts.map(() => new THREE.Color(0xffffff));
+const mantelTargets  = manteles.map(() => new THREE.Color(0xffffff));
+const tartaTargets   = tartas.map(() => new THREE.Color(0xffffff));
+
+/* Mirando tus fotos, NINGUNA guirnalda es de un solo color: siempre hay
+   2-3 tonos del color del mundo + crema + blanco. Sin el crema y el blanco
+   el racimo parece pintado de un bote y canta a falso. */
+const BLANCA = new THREE.Color(0xffffff);
+
+function shades(hex){
+  const hsl = {}; new THREE.Color(hex).getHSL(hsl);
+  /* La clave del pastel: el SUELO de saturacion. Antes multiplicabamos la
+     saturacion del color y, si la tematica traia un color flojo, salia casi
+     blanco. Sobre pared clara se perdonaba; sobre marino canta muchisimo.
+     Ahora ningun globo baja de 0.30 de color, pase lo que pase.          */
+  /* 👇 EL BICHO QUE LOS DEJABA BLANCOS. three.js, si no le dices nada, se
+     cree que el color que le pasas ya viene "en crudo" y al pintarlo lo
+     aclara muchisimo: un lila bonito acababa en blanco sucio. Diciendole
+     SRGBColorSpace entiende el color como lo ves tu en el movil.         */
+  const mk = (dh, s, l) => new THREE.Color().setHSL(
+    (hsl.h + dh + 1) % 1,
+    /* PASTEL VIVO no es pastel APAGADO. Un macaron tiene MUCHO color y
+       MUCHA luz a la vez. Lo que mataba la vida era el techo de color en
+       0.80 y, sobre todo, el suelo en 0.46: cualquier tematica floja se
+       quedaba ahi y salia lavada. Ahora ninguna baja de 0.58.           */
+    Math.min(0.90, Math.max(0.58, hsl.s * s)),
+    /* Y bajo el techo de LUZ de 0.78 a 0.73: pasado ese punto no hay color
+       que valga, todo tira a blanco por mucha saturacion que le metas.  */
+    Math.min(0.73, l),
+    THREE.SRGBColorSpace);
+  /* COLORES DE VERDAD, no degradados de un solo tono.
+     Antes toda la guirnalda era el mismo color de la tematica con sus
+     vecinos: bonito pero soso, y con cualquier tono flojo se iba a blanco.
+     Ahora es una guirnalda pastel DE COLORES — azul, rosa, amarillo, coral,
+     menta, lila — y el color de la tematica manda porque va el primero y se
+     repite mas veces en el reparto. Son colores escritos a mano, asi que
+     ninguno puede acabar en blanco por mucho que la tematica sea palida. */
+  return [
+    mk(0, 1.00, 0.62),               /* 0 · el color de la tematica  */
+    new THREE.Color('#77B8EE'),      /* 1 · azul pastel VIVO         */
+    new THREE.Color('#F584A2'),      /* 2 · rosa pastel VIVO         */
+    new THREE.Color('#FBD260'),      /* 3 · amarillo pastel VIVO     */
+    new THREE.Color('#F88272'),      /* 4 · rojo/coral pastel VIVO   */
+    new THREE.Color('#73DEA1'),      /* 5 · verde menta pastel VIVO  */
+    mk(0, 1.00, 0.50),               /* 6 · la tematica, mas honda   */
+    new THREE.Color('#BD94E6')       /* 7 · lila pastel VIVO         */
+  ];
+}
+
+let fading = false, ultimaKey = null, tReponer = 0;
+window.KK3D = {
+  setTheme(key, t){
+    const cambiaTema = key !== ultimaKey;
+    ultimaKey = key;
+
+    /* Escribir el nombre repinta el cartel. Sin esto repintariamos una
+       imagen de 4 millones de pixeles en CADA tecla. */
+    if(!cambiaTema){
+      clearTimeout(tReponer);
+      tReponer = setTimeout(() => aplicarCartel(key, false), 200);
+      return;
+    }
+    this._pintar(key, t);
+  },
+  _pintar(key, t){
+    /* El suelo coge un punto del color del mundo, pero apagado: es suelo de
+       tienda, no una alfombra de colores. Y la niebla se queda marino, con
+       apenas un soplo de la tematica, para no romper la pared. */
+    tgt.fog.set(MARINO).lerp(new THREE.Color(t.far), 0.10);
+    const pal = shades(t.ac);
+    balloonTargets.forEach((c,i) => c.copy(pal[i % pal.length]));
+    /* Los cromados no cogen el color del mundo: se quedan plata/champan,
+       igual que los metalizados de verdad, que solo vienen en esos tonos. */
+    /* El orden NO es al azar: manda el color del mundo (1 y 0), y el crema
+       y el blanco solo salpican. Repartiendolos a partes iguales el racimo
+       salia descolorido y no se sabia de que tematica era. */
+    /* El reparto: 1 de cada 3 globos es del color de la tematica (el 0), y
+       el resto van rotando por todos los colores. Si los repartieramos a
+       partes iguales no se sabria de que cumple es; si fueran todos del
+       color de la tematica, volveriamos a la guirnalda sosa de antes. */
+    const ORDEN = [0,2,1,0,3,5,0,4,7,0,1,2,0,6,3,0,5,1,0,4];
+    racimoTargets.forEach((c,i) => racimo[i].userData.cromo
+      ? c.setHex(i % 2 ? 0xDDE1E6 : 0xE8D9B4)
+      : c.copy(pal[ORDEN[i % ORDEN.length]]));
+    giftTargets.forEach((c,i) => c.copy(pal[(i*3+1) % pal.length]));
+    /* Manteles en tono CLARO, nunca en el hondo: la mesa es el fondo sobre
+       el que se ve la tarta. Si el mantel grita, no se ve lo que hay encima. */
+    mantelTargets.forEach((c,i) => c.copy(pal[i % 2 ? 3 : 1]).lerp(BLANCA, 0.12));
+    /* EL PASTEL TEMATICO. El bizcocho va suave (es comida: si grita da
+       reparo), el topper va a fondo para que se vea de lejos, y la
+       cobertura de las magdalenas, en medio.                            */
+    if(tartaTargets[0]) tartaTargets[0].copy(pal[0]).lerp(BLANCA, 0.18);
+    if(tartaTargets[1]) tartaTargets[1].copy(pal[6]);
+    /* Las magdalenas iban a pal[2], que es el ROSA FIJO: se quedaban rosas
+       aunque el cumple fuera de selva. Van con la tematica, en un tono medio
+       entre el bizcocho (palido) y el topper (hondo): asi la mesa se lee
+       como una escalera del mismo color y no como tres cosas sueltas.    */
+    if(tartaTargets[2]) tartaTargets[2].copy(pal[0]).lerp(BLANCA, 0.06);
+    for(let i=0;i<CONF;i++){
+      const c = pal[i % pal.length];
+      confetti.instanceColor.setXYZ(i, c.r, c.g, c.b);
+    }
+    confetti.instanceColor.needsUpdate = true;
+
+    /* el cartel se desvanece, cambia y vuelve */
+    aplicarCartel(key, true);
+  }
+};
+
+function aplicarCartel(key, conFundido){
+  if(conFundido) fading = true;
+  heroTexture(key).then(tex => {
+    if(tex){
+      const viejo = heroMat.map;
+      heroMat.map = tex; heroMat.needsUpdate = true;
+      /* El lienzo anterior ya no lo ve nadie: se suelta para no ir
+         acumulando carteles viejos en la memoria de la tarjeta grafica. */
+      if(viejo && viejo !== tex && viejo.isCanvasTexture) viejo.dispose();
+
+      /* El cartel se adapta a la forma de la imagen: si le metemos una foto
+         vertical, deja de ser apaisado solo. Alto fijo, ancho el que toque. */
+      const im = tex.image, a = (im && im.width && im.height) ? im.width/im.height : 5.4/3.21;
+      const H = a < 1 ? 4.4 : 3.8, W = H * a;
+      hero.scale.set(W/5.4, H/3.21, 1);
+      window.KK3D_heroY = H/2 + 0.3;
+      contact.scale.set(Math.max(0.6, W/7.5), 1, 1);
+      heroW = W; heroH = H; frameHero();   /* la camara se recoloca sola */
+    }
+    if(conFundido) fading = false;
+  });
+}
+
+/* Repinta el cartel con el nombre nuevo SIN fundido: el fundido esta pensado
+   para el cambio de tematica; al teclear daria un parpadeo molesto.      */
+window.KK3D.refrescarNombre = function(){
+  if(window.KK_THEME) aplicarCartel(window.KK_THEME, false);
+};
+
+/* ================= GUARDAR EL CARTEL PARA IMPRIMIR ================= */
+/* La lamina de pantalla mide 821px: vale para el movil, pero impresa se ve
+   pixelada. La de imprimir mide 1744x2336 = un A5 a 300 puntos. Solo se
+   descarga cuando alguien le da al boton, para no cargar 1 MB porque si. */
+window.KK3D.guardarCartel = function(){
+  const key  = window.KK_THEME;
+  const info = (window.KK_ART_PHOTO || {})[key];
+  if(!info) return Promise.reject(new Error('sin-lamina'));
+
+  const grande = info.src.replace('art-cumples/', 'art-cumples/print/');
+  return Promise.all([
+    /* si algun dia falta la version grande, tiramos de la de pantalla */
+    laminaImg(grande, false).then(im => im || laminaImg(info.src)),
+    tipoLista
+  ]).then(([im]) => {
+    if(!im) throw new Error('no-imagen');
+    const lienzo = componerCartel(im, info);
+    return new Promise((ok, mal) => lienzo.toBlob(
+      b => b ? ok(b) : mal(new Error('no-blob')), 'image/jpeg', 0.92));
+  });
+};
+
+/* ================= GIRAR CON EL DEDO ================= */
+let rotY = 0, rotTarget = 0, tiltX = 0, tiltTarget = 0, dragging = false, lastX = 0, lastY = 0, idle = 0;
+
+stage.addEventListener('pointerdown', e => { dragging = true; lastX = e.clientX; lastY = e.clientY; idle = 0; stage.setPointerCapture(e.pointerId); });
+stage.addEventListener('pointerup',   e => { dragging = false; });
+stage.addEventListener('pointermove', e => {
+  if(dragging){
+    rotTarget  += (e.clientX - lastX) * 0.006;
+    tiltTarget += (e.clientY - lastY) * 0.0022;
+    tiltTarget  = Math.max(-0.12, Math.min(0.30, tiltTarget));
+    lastX = e.clientX; lastY = e.clientY; idle = 0;
+  } else {
+    const r = stage.getBoundingClientRect();
+    rotTarget  = ((e.clientX - r.left)/r.width  - 0.5) * 0.55;
+    tiltTarget = ((e.clientY - r.top )/r.height - 0.5) * 0.18;
+  }
+});
+addEventListener('deviceorientation', e => {
+  if(e.gamma == null || dragging) return;
+  rotTarget  = Math.max(-0.6, Math.min(0.6, e.gamma/60)) * 0.6;
+  tiltTarget = Math.max(-0.1, Math.min(0.26, ((e.beta||45) - 45)/90));
+});
+
+/* ================= BUCLE ================= */
+/* Cuanto mide el cartel ahora mismo (lo rellena setTheme al cargar la lamina) */
+let heroW = 5.4, heroH = 3.21, camDist = 6.6;
+
+/* La camara NO lleva una distancia fija: se calcula para que el cartel
+   ocupe siempre lo mismo, sea movil estrecho o pantalla ancha.
+   Asi nunca se ve "lejos" ni se sale por arriba. */
+function frameHero(){
+  const vFov = camera.fov * Math.PI/180;
+  const OCUPA = 0.88;                       /* el cartel llena el 88% del alto */
+  const dAlto  = heroH / (2*OCUPA*Math.tan(vFov/2));
+  const hFov   = 2*Math.atan(Math.tan(vFov/2) * camera.aspect);
+  const dAncho = heroW / (2*0.42*Math.tan(hFov/2));  /* y como mucho el 42% del ancho */
+  camDist = Math.max(dAlto, dAncho) + 0.6;  /* +0.6: el cartel esta un poco al fondo */
+  window.__dbg = {heroW, heroH, camDist:+camDist.toFixed(2), aspect:+camera.aspect.toFixed(2)};
+}
+
+function resize(){
+  const r = stage.getBoundingClientRect();
+  if(!r.width) return;
+  renderer.setSize(r.width, r.height, false);
+  camera.aspect = r.width / r.height;
+  camera.updateProjectionMatrix();
+  frameHero();
+}
+addEventListener('resize', resize);
+new ResizeObserver(resize).observe(stage);
+resize();
+
+const clock = new THREE.Clock();
+renderer.setAnimationLoop(() => {
+  const dt = Math.min(clock.getDelta(), 0.05), t = clock.elapsedTime;
+
+  /* colores suaves */
+  cur.fog.lerp(tgt.fog, dt*2.4);     scene.fog.color.copy(cur.fog);
+
+  /* globos: flotan y giran despacio */
+  balloons.forEach((b,i) => {
+    b.userData.mat.color.lerp(balloonTargets[i], dt*2.4);
+    b.position.y += Math.sin(t*0.9 + b.userData.phase) * dt * 0.22;
+    b.rotation.y += b.userData.spin * dt;
+    b.rotation.z  = Math.sin(t*0.7 + b.userData.phase) * 0.07;
+  });
+  /* la guirnalda NO flota: esta grapada. Solo respira un pelin. */
+  racimo.forEach((g,i) => {
+    const u = g.userData;
+    u.mat.color.lerp(racimoTargets[i], dt*2.4);
+    g.position.y = u.base.y + Math.sin(t*0.9 + u.phase) * 0.035;
+    g.position.x = u.base.x + Math.cos(t*0.7 + u.phase) * 0.022;
+  });
+  gifts.forEach((g,i) => g.userData.box.color.lerp(giftTargets[i], dt*2.4));
+  manteles.forEach((m,i) => m.color.lerp(mantelTargets[i], dt*2.4));
+  tartas.forEach((m,i) => m.color.lerp(tartaTargets[i], dt*2.4));
+
+  /* confeti cayendo y volteando */
+  for(let i=0;i<CONF;i++){
+    const c = cData[i];
+    c.y -= c.vy; c.x += c.sx*0.3; c.rx += c.sr; c.ry += c.sr*0.7;
+    if(c.y < -0.4){ c.y = 8 + Math.random()*2; c.x = (Math.random()-0.5)*15; }
+    dummy.position.set(c.x, c.y, c.z);
+    dummy.rotation.set(c.rx, c.ry, c.rx*0.4);
+    dummy.updateMatrix();
+    confetti.setMatrixAt(i, dummy.matrix);
+  }
+  confetti.instanceMatrix.needsUpdate = true;
+
+  /* el cartel respira y aparece */
+  heroMat.opacity += ((fading ? 0 : 1) - heroMat.opacity) * dt*6;
+  hero.position.y = (window.KK3D_heroY || 1.95) + Math.sin(t*0.8)*0.06;
+
+  /* giro suave; si nadie toca, gira solo un poquito */
+  idle += dt;
+  if(idle > 3 && !dragging) rotTarget += Math.sin(t*0.25) * dt * 0.12;
+  rotY  += (rotTarget  - rotY ) * dt*3.2;
+  tiltX += (tiltTarget - tiltX) * dt*3.2;
+  world.rotation.y = rotY;
+  const mira = (window.KK3D_heroY || 1.95);
+  camera.position.set(Math.sin(rotY*0.35)*1.5, mira + 0.25 + tiltX*2.2, camDist);
+  camera.lookAt(0, mira - tiltX*0.6, 0);
+
+  renderer.render(scene, camera);
+});
+
+/* si WebGL va, encendemos el 3D; si no, se queda el dibujo plano */
+stage.classList.add('is3d');
+/* La tematica de arranque la dice la pagina, no el dibujo: hay tematicas
+   que solo tienen lamina pintada y ningun SVG (policia, por ejemplo). */
+if(window.KK3D && window.KK_THEME)
+  window.KK3D.setTheme(window.KK_THEME,
+                       /* Los colores REALES de la tematica, que la pagina ya dejo
+                          apuntados antes de que arrancara el 3D. El lila de detras
+                          es solo el paracaidas por si algo fallara. */
+                       window.KK_TPAL || {gr:'#E9D5F5', far:'#F6D9EE', ac:'#C77DC0'});
+</script>
+</body>
+</html>
