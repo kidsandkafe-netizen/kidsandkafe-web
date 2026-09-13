@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="ca">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aniversaris infantils temàtics a Barcelona (Les Corts) · Kids & Kafé</title>
-<meta name="description" content="Aniversaris infantils temàtics a Barcelona (Les Corts): decoració, globus, monitors, tallers i 300 m² només per a vosaltres. Vosaltres celebreu, nosaltres ens encarreguem de tot. Des del 2018.">
-<meta name="keywords" content="celebrar aniversari Barcelona, festa infantil Barcelona, festes infantils Barcelona, aniversaris infantils Barcelona, aniversaris temàtics Barcelona, celebrar aniversari nens, sala per a festes infantils Les Corts, lloguer sala aniversari Barcelona, aniversari amb monitors i tallers Barcelona, decoració aniversari infantil, mini discoteca aniversari, aniversari a domicili Barcelona, festes infantils a domicili">
-<meta property="og:title" content="Aniversaris per a nens a Barcelona · Kids & Kafé">
-<meta property="og:description" content="Decoracions temàtiques, globus, monitors, tallers, mini discoteca i 300 m² només per a vosaltres. Vosaltres celebreu, nosaltres ens encarreguem de tot. A Les Corts, Barcelona des del 2018.">
+<title>Themed kids birthday parties in Barcelona (Les Corts) · Kids & Kafé</title>
+<meta name="description" content="Themed kids birthday parties in Barcelona (Les Corts): decorations, balloons, monitors, workshops and 300 m² just for you. You celebrate, we handle everything. Since 2018.">
+<meta name="keywords" content="kids birthday party Barcelona, children's party Barcelona, themed kids birthday Barcelona, birthday party venue Barcelona, party room hire Les Corts, kids party with monitors and workshops Barcelona, birthday decoration kids Barcelona, mini disco kids party, celebrate birthday kids Barcelona, kids birthday party at home Barcelona, home birthday party Barcelona">
+<meta property="og:title" content="Kids birthday parties in Barcelona · Kids & Kafé">
+<meta property="og:description" content="Themed decorations, balloons, monitors, workshops, mini disco and 300 m² just for you. You celebrate, we handle everything. In Les Corts, Barcelona since 2018.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://www.kidsandkafe.es/ca/cumpleanos">
+<meta property="og:url" content="https://www.kidsandkafe.es/en/cumpleanos">
 <meta property="og:image" content="https://www.kidsandkafe.es/img/hero.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://www.kidsandkafe.es/img/hero.jpg">
-<link rel="canonical" href="https://www.kidsandkafe.es/ca/cumpleanos">
+<link rel="canonical" href="https://www.kidsandkafe.es/en/cumpleanos">
 <link rel="alternate" hreflang="es" href="https://www.kidsandkafe.es/cumpleanos">
 <link rel="alternate" hreflang="en" href="https://www.kidsandkafe.es/en/cumpleanos">
 <link rel="alternate" hreflang="ca" href="https://www.kidsandkafe.es/ca/cumpleanos">
@@ -37,6 +37,39 @@
 .cx2 h3{font-family:'Nunito',serif;font-size:20.5px;font-weight:600;margin:0 0 7px;color:var(--ink)}
 .cx2 p{font-size:13.5px;color:var(--muted);margin:0;line-height:1.55}
 .cx2 .kicker{display:inline-block;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--acc);margin-bottom:10px}
+/* ✦ Tarjeta de pack EDITORIAL (opcion A) — mismo orden que la app:
+      arco de globos → sello → nombre → frase → ✓ incluye → ahorro → no incluye → precio.
+      Regla de oro: ✓ verde SOLO para lo que entra en el precio. Lo que se paga
+      aparte vive en la caja gris de abajo; un ✓ ahi seria una promesa falsa. */
+.phead{position:relative;height:150px;margin:-32px -28px 18px;border-radius:24px 24px 0 0;overflow:hidden;
+       background:radial-gradient(130% 100% at 50% 4%,#FFF7EF 0%,#F1F7E6 42%,#E4F0D6 78%,#D8E8C6 100%)}
+.phead svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+/* la del medio va espejada para que las tres no salgan calcadas */
+.pcard.feat .phead svg{transform:scaleX(-1)}
+@keyframes kkspk{0%,100%{opacity:.25;transform:scale(.7)}50%{opacity:1;transform:scale(1.15)}}
+.kk-spk{animation:kkspk 3s ease-in-out infinite}
+.pk-kick{font-size:10px;font-weight:900;letter-spacing:1.8px;color:var(--sage);text-transform:uppercase;margin-bottom:6px}
+.pk-frase{font-size:14px;color:var(--muted);line-height:1.5;margin:8px 0 0}
+.pk-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+.pk-chip{display:flex;align-items:center;gap:6px;background:var(--pink-bg);border:1px solid var(--pink-soft);
+         color:var(--ink);padding:7px 11px;border-radius:11px;font-size:12.5px;font-weight:700;line-height:1.25}
+.pk-chip i{color:var(--sage);font-weight:900;font-style:normal}
+.pk-ahorro{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#FBEFD6,#F6E2B8);
+           color:#8A6316;font-size:12px;font-weight:900;padding:6px 12px;border-radius:20px;margin-top:12px}
+.pk-no{background:rgba(90,60,45,.045);border-radius:12px;padding:10px 12px;font-size:12px;color:var(--muted);line-height:1.5;margin-top:12px}
+.pk-no b{color:var(--ink)}
+.pk-foot{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-top:auto;padding-top:14px;border-top:1px solid rgba(90,60,45,.12)}
+.pk-big{font-family:'Nunito',serif;font-size:38px;font-weight:600;color:var(--pink);letter-spacing:-1px;line-height:1}
+.pk-meta{font-size:11.5px;color:var(--muted);margin-top:5px}
+.pk-cta{padding:11px 18px;font-size:13.5px;white-space:nowrap}
+/* franja de veterania — el argumento que no se puede copiar */
+.vet{display:flex;align-items:center;gap:13px;background:var(--pink-bg);border:1px solid var(--pink-soft);
+     border-radius:16px;padding:15px 18px;margin-top:26px}
+.vet-n{font-family:'Nunito',serif;font-size:34px;font-weight:600;color:var(--sage);line-height:1;flex-shrink:0}
+.vet-t{font-size:13.5px;color:var(--muted);line-height:1.4}
+.vet-t b{color:var(--ink)}
+@media(prefers-reduced-motion:reduce){.kk-spk{animation:none}}
+@media(max-width:560px){.phead{height:128px}.pk-big{font-size:34px}}
 </style>
 <script type="application/ld+json">
 {
@@ -45,66 +78,66 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Quant dura la festa?",
+      "name": "How long does the party last?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "La reserva de l'àrea d'aniversari és de 2 hores. El lloguer de sala (completa o mitja) és de 3 hores."
+        "text": "The birthday area booking is 2 hours. Room hire (full or half) is 3 hours."
       }
     },
     {
       "@type": "Question",
-      "name": "Es poden afegir tallers o activitats a l'aniversari?",
+      "name": "Can we add workshops or activities to the party?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Sí. És un servei opcional: dissenyem un taller o activitat a mida per al teu peque segons els seus gustos."
+        "text": "Yes. It's an optional service: we design a bespoke workshop or activity for your little one, tailored to their taste."
       }
     },
     {
       "@type": "Question",
-      "name": "Puc portar el meu propi pastís?",
+      "name": "Can I bring my own cake?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "És obligatori demanar el pastís al centre. Podem preparar pastissos temàtics de 12-15 porcions."
+        "text": "Ordering the cake from the centre is required. We can prepare themed cakes of 12-15 servings."
       }
     },
     {
       "@type": "Question",
-      "name": "Què passa si venen més convidats?",
+      "name": "What if more guests come?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Els paquets inclouen 20 nens. A partir del nen 20 són 7€ per nen (al Premium i al VIP aquest preu ja porta el càtering inclòs) i 3€ per adult addicional. A partir de 20 nens recomanem un monitor extra (40€)."
+        "text": "The packages include 20 children. From the 20th child onwards it is €7 per child (on Premium and VIP that price already includes catering) and €3 per additional adult. From 20 children we recommend an extra monitor (€40)."
       }
     },
     {
       "@type": "Question",
-      "name": "Amb quanta antelació cal reservar?",
+      "name": "How far in advance should I book a birthday party?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Com a mínim un mes abans. Els caps de setmana són les dates més demanades: quan hi ha un aniversari reservat, el centre es tanca al públic, així que cada dissabte i diumenge només hi ha lloc per a una celebració."
+        "text": "At least one month in advance. Weekends are the most requested dates: when a birthday is booked we close the centre to the public, so each Saturday and Sunday there is room for one celebration only."
       }
     },
     {
       "@type": "Question",
-      "name": "Quines temàtiques feu?",
+      "name": "What birthday themes do you do?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Totes. Superherois, princeses, unicorns, dinosaures, sirenes, astronautes, cotxes, futbol… i si el teu petit vol una temàtica que no hem fet mai, l'hi inventem. Fem l'impossible possible."
+        "text": "We do every theme: superheroes, princesses, unicorns, dinosaurs, mermaids, astronauts, cars, football and any character the child likes. If a family asks for a theme we have never done before, we invent it and build it anyway."
       }
     },
     {
       "@type": "Question",
-      "name": "Puc veure la sala abans de reservar?",
+      "name": "Can I see the room before booking?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Sí. Pots venir a conèixer l'espai en el nostre horari d'obertura, al Carrer de Nicaragua 117 (Les Corts). Avisa'ns per WhatsApp al +34 637 319 226 per assegurar-nos que no hi hagi una festa privada en aquella estona."
+        "text": "Yes. You can come and see the space during opening hours, at Carrer de Nicaragua 117, in the Les Corts neighbourhood of Barcelona. It is best to let us know on WhatsApp at +34 637 319 226 to check there is no private party at that time."
       }
     },
     {
       "@type": "Question",
-      "name": "Quant és la senyal i es retorna si cancel·lo?",
+      "name": "How much is the deposit to book a birthday and is it refunded if I cancel?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Per bloquejar la data es deixa una paga i senyal de 100€, que es descompta del preu final de la festa. Si cal canviar la data, es perd el 30% de l'import i el 70% restant es guarda per al nou dia. En cas de cancel·lació definitiva, el 50% de l'import es pot bescanviar per altres serveis del centre: bons, tallers o hores de joc."
+        "text": "To lock in the date you leave a €100 deposit, which is deducted from the final price of the party. If you need to move the date, 30% of the amount is lost and the remaining 70% is kept for the new day. In case of definitive cancellation, 50% of the amount can be exchanged for other services at the centre: passes, workshops or play hours."
       }
     }
   ]
@@ -114,9 +147,9 @@
 {
   "@context": "https://schema.org",
   "@type": "Service",
-  "serviceType": "Aniversaris infantils",
-  "name": "Aniversaris infantils temàtics a Barcelona",
-  "description": "Festes d'aniversari infantils temàtiques a Les Corts, Barcelona: decoració temàtica, globus, monitors, mini discoteca, tallers opcionals i sala de 300 m² només per a vosaltres. També a domicili.",
+  "serviceType": "Kids birthday parties",
+  "name": "Themed kids birthday parties in Barcelona",
+  "description": "Themed kids birthday parties in Les Corts, Barcelona: themed decoration, balloons, monitors, mini disco, optional workshops and a 300 m² room just for you. Home service also available.",
   "provider": { "@type": "LocalBusiness", "@id": "https://www.kidsandkafe.es/#business", "name": "Kids & Kafé" },
   "areaServed": { "@type": "City", "name": "Barcelona" },
   "audience": { "@type": "PeopleAudience", "suggestedMinAge": 0, "suggestedMaxAge": 8 },
@@ -132,28 +165,32 @@
     "highPrice": "1190",
     "offerCount": "3",
     "availability": "https://schema.org/InStock",
-    "url": "https://www.kidsandkafe.es/ca/cumpleanos"
+    "url": "https://www.kidsandkafe.es/en/cumpleanos"
   }
 }
 </script>
 </head>
 <body>
+
+<!-- 🎈 Arco de globos: se dibuja UNA vez aqui y las tarjetas de pack lo
+     reutilizan con <use href="#kk-arco">. No necesita ninguna foto. -->
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute"><defs><radialGradient id="kkb-blush" cx="36%" cy="28%" r="78%"><stop offset="0%" stop-color="#FDE0EC"/><stop offset="52%" stop-color="#F7BAD3"/><stop offset="100%" stop-color="#EE9BBC"/></radialGradient><radialGradient id="kkb-peach" cx="36%" cy="28%" r="78%"><stop offset="0%" stop-color="#FFE7D4"/><stop offset="52%" stop-color="#FFC9A8"/><stop offset="100%" stop-color="#F7AC82"/></radialGradient><radialGradient id="kkb-lemon" cx="36%" cy="28%" r="78%"><stop offset="0%" stop-color="#FFF4CE"/><stop offset="52%" stop-color="#FBE39C"/><stop offset="100%" stop-color="#F3D274"/></radialGradient><radialGradient id="kkb-mint" cx="36%" cy="28%" r="78%"><stop offset="0%" stop-color="#DBF3E2"/><stop offset="52%" stop-color="#B7E4C7"/><stop offset="100%" stop-color="#95D3AC"/></radialGradient><radialGradient id="kkb-lav" cx="36%" cy="28%" r="78%"><stop offset="0%" stop-color="#ECE0F8"/><stop offset="52%" stop-color="#D6BEF0"/><stop offset="100%" stop-color="#BFA0E4"/></radialGradient><radialGradient id="kkb-sky" cx="36%" cy="28%" r="78%"><stop offset="0%" stop-color="#DCEEFB"/><stop offset="52%" stop-color="#BBDCF3"/><stop offset="100%" stop-color="#98C6E9"/></radialGradient><filter id="kkb-sh" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="3" stdDeviation="3.2" flood-color="#7E9468" flood-opacity=".26"/></filter><g id="kk-arco"><g fill="#fff"><g class="kk-spk" style="transform-origin:52px 46px;animation-delay:0s"><path d="M52 40 L53.4 44.6 L58 46 L53.4 47.4 L52 52 L50.6 47.4 L46 46 L50.6 44.6 Z" opacity=".9"/></g><g class="kk-spk" style="transform-origin:150px 24px;animation-delay:0.5s"><path d="M150 18 L151.4 22.6 L156 24 L151.4 25.4 L150 30 L148.6 25.4 L144 24 L148.6 22.6 Z" opacity=".9"/></g><g class="kk-spk" style="transform-origin:214px 22px;animation-delay:1s"><path d="M214 16 L215.4 20.6 L220 22 L215.4 23.4 L214 28 L212.6 23.4 L208 22 L212.6 20.6 Z" opacity=".9"/></g><g class="kk-spk" style="transform-origin:312px 52px;animation-delay:1.5s"><path d="M312 46 L313.4 50.6 L318 52 L313.4 53.4 L312 58 L310.6 53.4 L306 52 L310.6 50.6 Z" opacity=".9"/></g><g class="kk-spk" style="transform-origin:30px 96px;animation-delay:2s"><path d="M30 90 L31.4 94.6 L36 96 L31.4 97.4 L30 102 L28.6 97.4 L24 96 L28.6 94.6 Z" opacity=".9"/></g><g class="kk-spk" style="transform-origin:332px 104px;animation-delay:2.5s"><path d="M332 98 L333.4 102.6 L338 104 L333.4 105.4 L332 110 L330.6 105.4 L326 104 L330.6 102.6 Z" opacity=".9"/></g></g><g opacity=".55"><ellipse cx="46" cy="150" rx="10" ry="12" fill="url(#kkb-sky)"/><ellipse cx="66" cy="120" rx="11" ry="13" fill="url(#kkb-lav)"/><ellipse cx="86" cy="96" rx="10" ry="12" fill="url(#kkb-blush)"/><ellipse cx="112" cy="74" rx="11" ry="13" fill="url(#kkb-lemon)"/><ellipse cx="140" cy="58" rx="10" ry="12" fill="url(#kkb-mint)"/><ellipse cx="172" cy="50" rx="11" ry="13" fill="url(#kkb-peach)"/><ellipse cx="204" cy="50" rx="10" ry="12" fill="url(#kkb-sky)"/><ellipse cx="234" cy="58" rx="11" ry="13" fill="url(#kkb-blush)"/><ellipse cx="262" cy="74" rx="10" ry="12" fill="url(#kkb-lemon)"/><ellipse cx="286" cy="98" rx="11" ry="13" fill="url(#kkb-mint)"/><ellipse cx="306" cy="122" rx="10" ry="12" fill="url(#kkb-lav)"/></g><g filter="url(#kkb-sh)"><ellipse cx="26" cy="162" rx="17" ry="21" fill="url(#kkb-blush)"/><ellipse cx="20.56" cy="154.86" rx="4.42" ry="3.99" fill="#fff" opacity=".55"/><ellipse cx="44" cy="132" rx="15" ry="18" fill="url(#kkb-peach)"/><ellipse cx="39.2" cy="125.88" rx="3.9" ry="3.42" fill="#fff" opacity=".55"/><ellipse cx="58" cy="106" rx="18" ry="22" fill="url(#kkb-lemon)"/><ellipse cx="52.24" cy="98.52" rx="4.68" ry="4.18" fill="#fff" opacity=".55"/><ellipse cx="78" cy="82" rx="16" ry="19" fill="url(#kkb-mint)"/><ellipse cx="72.88" cy="75.54" rx="4.16" ry="3.61" fill="#fff" opacity=".55"/><ellipse cx="100" cy="62" rx="19" ry="23" fill="url(#kkb-lav)"/><ellipse cx="93.92" cy="54.18" rx="4.94" ry="4.37" fill="#fff" opacity=".55"/><ellipse cx="126" cy="48" rx="16" ry="19" fill="url(#kkb-sky)"/><ellipse cx="120.88" cy="41.54" rx="4.16" ry="3.61" fill="#fff" opacity=".55"/><ellipse cx="154" cy="40" rx="18" ry="22" fill="url(#kkb-blush)"/><ellipse cx="148.24" cy="32.52" rx="4.68" ry="4.18" fill="#fff" opacity=".55"/><ellipse cx="184" cy="37" rx="16" ry="19" fill="url(#kkb-peach)"/><ellipse cx="178.88" cy="30.54" rx="4.16" ry="3.61" fill="#fff" opacity=".55"/><ellipse cx="214" cy="41" rx="19" ry="23" fill="url(#kkb-lemon)"/><ellipse cx="207.92" cy="33.18" rx="4.94" ry="4.37" fill="#fff" opacity=".55"/><ellipse cx="242" cy="50" rx="16" ry="19" fill="url(#kkb-mint)"/><ellipse cx="236.88" cy="43.54" rx="4.16" ry="3.61" fill="#fff" opacity=".55"/><ellipse cx="266" cy="66" rx="18" ry="22" fill="url(#kkb-lav)"/><ellipse cx="260.24" cy="58.52" rx="4.68" ry="4.18" fill="#fff" opacity=".55"/><ellipse cx="288" cy="88" rx="16" ry="19" fill="url(#kkb-sky)"/><ellipse cx="282.88" cy="81.54" rx="4.16" ry="3.61" fill="#fff" opacity=".55"/><ellipse cx="306" cy="114" rx="19" ry="23" fill="url(#kkb-blush)"/><ellipse cx="299.92" cy="106.18" rx="4.94" ry="4.37" fill="#fff" opacity=".55"/><ellipse cx="322" cy="142" rx="15" ry="18" fill="url(#kkb-peach)"/><ellipse cx="317.2" cy="135.88" rx="3.9" ry="3.42" fill="#fff" opacity=".55"/><ellipse cx="336" cy="168" rx="17" ry="21" fill="url(#kkb-lemon)"/><ellipse cx="330.56" cy="160.86" rx="4.42" ry="3.99" fill="#fff" opacity=".55"/></g></g></defs></svg>
 <div id="prog"></div>
 <header id="hdr"><nav>
   <a href="/" class="brand"><img src="../img/logo.png" alt="Kids & Kafé"><b>Kids&nbsp;&amp;&nbsp;Kafé</b></a>
   <div class="navlinks" id="nav">
-    <a href="/">Inici</a>
-    <a href="nosotros">Nosaltres</a>
-    <a href="zonas">Zones de joc</a>
+    <a href="/">Home</a>
+    <a href="nosotros">About</a>
+    <a href="zonas">Play zones</a>
     <a href="kids-drop">Kids Drop</a>
-    <a href="actividades">Activitats</a>
-    <a href="talleres">Tallers</a>
-    <a href="precios">Preus</a>
-    <a href="cumpleanos" class="active">Aniversaris</a>
+    <a href="actividades">Activities</a>
+    <a href="talleres">Workshops</a>
+    <a href="precios">Prices</a>
+    <a href="cumpleanos" class="active">Birthdays</a>
     <a href="baby-explorer">Baby Explorer</a>
-    <a href="franquicia">Franquícia</a>
-    <span class="langsw"><a href="../cumpleanos">ES</a><b>CA</b><a href="../en/cumpleanos">EN</a></span>
-    <a href="contacto#app" class="nav-cta">Reserva a l'app</a>
+    <a href="franquicia">Franchise</a>
+    <span class="langsw"><a href="../cumpleanos">ES</a><a href="../ca/cumpleanos">CA</a><b>EN</b></span>
+    <a href="contacto#app" class="nav-cta">Book in the app</a>
   </div>
   <button class="burger" onclick="document.getElementById('nav').classList.toggle('open')">☰</button>
 </nav></header>
@@ -162,66 +199,66 @@
   <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
   <div class="wrap">
     <div class="eyebrow c" data-rv>Party Zone</div>
-    <h1 data-rv data-delay="1">Aniversaris infantils a Barcelona amb <em>decoració temàtica</em></h1>
-    <p data-rv data-delay="2">Decoració temàtica, globus, monitors, mini discoteca i una sala d'aniversaris de 300 m² només per a vosaltres. Preferiu celebrar a casa? També portem la festa a domicili per Barcelona i pobles del voltant. Vosaltres celebreu, nosaltres ens encarreguem de tot.</p>
+    <h1 data-rv data-delay="1">Kids birthday parties in Barcelona with <em>themed decoration</em></h1>
+    <p data-rv data-delay="2">Themed decorations, balloons, monitors, a mini disco and a 300 m² party room just for you. Prefer to celebrate at home? We also bring the party to your place across Barcelona and nearby towns. You celebrate, we take care of everything.</p>
     <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:26px" data-rv data-delay="3">
-      <a href="https://wa.me/34637319226?text=Hola%2C%20vull%20reservar%20un%20aniversari%20a%20Kids%20%26%20Kaf%C3%A9%20%F0%9F%8E%82%0A%0AData%3A%20%0AEdat%20del%20petit%3A%20%0ANre.%20de%20nens%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-pink">🎉 Reserva la teva data</a>
-      <a href="../party-studio.html?lang=ca" class="btn btn-sage">🎨 Dissenya la festa</a>
-      <a href="#paquetes" class="btn btn-ghost">Veure paquets i preus</a>
+      <a href="https://wa.me/34637319226?text=Hi%2C%20I%20want%20to%20book%20a%20birthday%20at%20Kids%20%26%20Kaf%C3%A9%20%F0%9F%8E%82%0A%0ADate%3A%20%0AChild%27s%20age%3A%20%0AApprox.%20no.%20of%20children%3A%20" target="_blank" rel="noopener" class="btn btn-pink">🎉 Book your date</a>
+      <a href="../party-studio.html?lang=en" class="btn btn-sage">🎨 Design the party</a>
+      <a href="#paquetes" class="btn btn-ghost">See packages and prices</a>
     </div>
-    <div class="crumb" data-rv data-delay="4"><a href="/">Inici</a> · Aniversaris</div>
+    <div class="crumb" data-rv data-delay="4"><a href="/">Home</a> · Birthdays</div>
   </div>
 </section>
 
 <!-- BENEFICIOS -->
 <section style="padding-top:46px">
   <div class="wrap center">
-    <div class="eyebrow c" data-rv>Sense preocupacions</div>
-    <h2 class="title" data-rv data-delay="1">Vosaltres gaudiu, <em>de tota la resta ens encarreguem</em></h2>
+    <div class="eyebrow c" data-rv>Stress-free</div>
+    <h2 class="title" data-rv data-delay="1">You enjoy, <em>we take care of everything else</em></h2>
     <div class="cx2-grid">
       <div class="cx2" style="--acc:#F0699A;--soft:#FFE3EE" data-rv="s" data-delay="1">
         <div class="conf"><i style="left:14%;top:16%;background:#F7B7CE"></i><i style="right:16%;top:22%;background:#FBD08A;border-radius:50%"></i><i style="left:22%;bottom:20%;background:#B79BE8"></i><i style="right:20%;bottom:26%;background:#8FD4A9;border-radius:50%"></i></div>
-        <span class="kicker">Decoració</span>
+        <span class="kicker">Decoration</span>
         <svg class="art" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="b1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FBA7C6"/><stop offset="1" stop-color="#EF6E9E"/></linearGradient><linearGradient id="b2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFD59B"/><stop offset="1" stop-color="#F6B25E"/></linearGradient><linearGradient id="b3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#C9B0F1"/><stop offset="1" stop-color="#A987E4"/></linearGradient></defs><path d="M38 52 C30 60 46 66 40 78" stroke="#C99" stroke-width="1.6" stroke-linecap="round"/><path d="M60 50 C68 60 52 66 60 80" stroke="#C99" stroke-width="1.6" stroke-linecap="round"/><path d="M50 58 C48 66 52 70 50 82" stroke="#C99" stroke-width="1.6" stroke-linecap="round"/><ellipse cx="38" cy="38" rx="15" ry="18" fill="url(#b2)"/><path d="M38 56 l-3 4 h6 z" fill="#F6B25E"/><ellipse cx="62" cy="34" rx="15" ry="18" fill="url(#b3)"/><path d="M62 52 l-3 4 h6 z" fill="#A987E4"/><ellipse cx="50" cy="46" rx="16" ry="19" fill="url(#b1)"/><path d="M50 65 l-3 4 h6 z" fill="#EF6E9E"/><ellipse cx="45" cy="40" rx="4" ry="6" fill="#fff" opacity=".55"/></svg>
-        <h3>Decoració temàtica</h3><p>Muntem i recollim. Tu només arribes i celebres.</p>
+        <h3>Themed decoration</h3><p>We set up and clean up. You just arrive and celebrate.</p>
       </div>
       <div class="cx2" style="--acc:#3FB985;--soft:#DEF3E6" data-rv="s" data-delay="2">
         <div class="conf"><i style="left:16%;top:18%;background:#8FD4A9"></i><i style="right:14%;top:24%;background:#F7B7CE;border-radius:50%"></i><i style="left:20%;bottom:22%;background:#FBD08A"></i><i style="right:22%;bottom:20%;background:#B79BE8;border-radius:50%"></i></div>
-        <span class="kicker">Animació</span>
+        <span class="kicker">Entertainment</span>
         <svg class="art" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="cone" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#63C795"/><stop offset="1" stop-color="#39A87A"/></linearGradient></defs><path d="M20 82 L50 60 L58 68 Z" fill="url(#cone)"/><path d="M26 76 L44 63" stroke="#fff" stroke-width="2" opacity=".5" stroke-linecap="round"/><circle cx="62" cy="40" r="4" fill="#F0699A"/><rect x="72" y="30" width="7" height="7" rx="2" fill="#F6B25E" transform="rotate(20 75 33)"/><circle cx="80" cy="52" r="3.5" fill="#B79BE8"/><rect x="58" y="24" width="6" height="6" rx="2" fill="#63C795" transform="rotate(-15 61 27)"/><path d="M56 62 C64 50 60 42 70 36" stroke="#F0699A" stroke-width="2" stroke-linecap="round"/><path d="M60 66 C72 60 74 50 84 48" stroke="#FBD08A" stroke-width="2" stroke-linecap="round"/><circle cx="70" cy="60" r="3" fill="#8FD4A9"/><circle cx="86" cy="38" r="2.6" fill="#F7B7CE"/></svg>
-        <h3>Monitors per a tot</h3><p>Jocs grupals, animació i mini discoteca dirigida.</p>
+        <h3>Monitors for everything</h3><p>Group games, entertainment and a guided mini disco.</p>
       </div>
       <div class="cx2" style="--acc:#9A73E0;--soft:#EBE1FB" data-rv="s" data-delay="3">
         <div class="conf"><i style="left:15%;top:20%;background:#B79BE8;border-radius:50%"></i><i style="right:16%;top:16%;background:#F7B7CE"></i><i style="left:22%;bottom:22%;background:#8FD4A9;border-radius:50%"></i><i style="right:20%;bottom:24%;background:#FBD08A"></i></div>
-        <span class="kicker">Pista de ball</span>
+        <span class="kicker">Dance floor</span>
         <svg class="art" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="ball" cx="0.35" cy="0.3" r="0.8"><stop offset="0" stop-color="#EADFFB"/><stop offset="0.6" stop-color="#B79BE8"/><stop offset="1" stop-color="#8A64D6"/></radialGradient></defs><line x1="50" y1="14" x2="50" y2="30" stroke="#B79BE8" stroke-width="2"/><circle cx="50" cy="52" r="22" fill="url(#ball)"/><g stroke="#fff" stroke-width="1" opacity=".55"><path d="M32 46 H68 M30 52 H70 M32 58 H68"/><path d="M42 31 V73 M50 30 V74 M58 31 V73"/></g><rect x="44" y="44" width="6" height="6" fill="#fff" opacity=".85"/><rect x="54" y="54" width="5" height="5" fill="#fff" opacity=".7"/><path d="M78 40 l2 5 5 2 -5 2 -2 5 -2-5 -5-2 5-2 z" fill="#FBD08A"/><path d="M22 60 l1.5 4 4 1.5 -4 1.5 -1.5 4 -1.5-4 -4-1.5 4-1.5 z" fill="#F7B7CE"/></svg>
-        <h3>300 m² per a vosaltres</h3><p>Sala de joc + pista de ball amb llum i so.</p>
+        <h3>300 m² just for you</h3><p>Play room + dance floor with lights and sound.</p>
       </div>
       <div class="cx2" style="--acc:#EA9B2E;--soft:#FCEBC6" data-rv="s" data-delay="4">
         <div class="conf"><i style="left:16%;top:18%;background:#FBD08A"></i><i style="right:15%;top:22%;background:#F7B7CE;border-radius:50%"></i><i style="left:22%;bottom:24%;background:#B79BE8"></i><i style="right:20%;bottom:20%;background:#8FD4A9;border-radius:50%"></i></div>
-        <span class="kicker">Dolç</span>
+        <span class="kicker">Sweet</span>
         <svg class="art" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="ic1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF3E0"/><stop offset="1" stop-color="#FBD9A6"/></linearGradient><linearGradient id="ic2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FBB7CE"/><stop offset="1" stop-color="#F28FB5"/></linearGradient></defs><ellipse cx="50" cy="82" rx="30" ry="5" fill="#EAD9C2" opacity=".7"/><path d="M26 78 V60 h48 V78 a4 4 0 0 1-4 4 H30 a4 4 0 0 1-4-4z" fill="url(#ic1)"/><path d="M32 60 V46 a4 4 0 0 1 4-4 h28 a4 4 0 0 1 4 4 V60 z" fill="url(#ic2)"/><path d="M32 52 q6 6 12 0 t12 0 t12 0" stroke="#fff" stroke-width="2.4" fill="none" opacity=".8"/><circle cx="40" cy="70" r="2" fill="#F28FB5"/><circle cx="52" cy="72" r="2" fill="#8FD4A9"/><circle cx="62" cy="69" r="2" fill="#B79BE8"/><rect x="48" y="28" width="4" height="16" rx="1.5" fill="#F6B25E"/><path d="M50 20 c4 3 3 8 -0 9 c-3-1-4-6 0-9z" fill="#F0699A"/></svg>
-        <h3>Pastís i càtering</h3><p>Menús per a nens i adults, i pastís temàtic.</p>
+        <h3>Cake and catering</h3><p>Menus for kids and adults, plus a themed cake.</p>
       </div>
       <div class="cx2" style="grid-column:1/-1;--acc:#E0568B;text-align:center;background:linear-gradient(135deg,#FFE7B0 0%,#FBCDE0 58%,#E9D6FB 100%);border:1px solid rgba(224,86,139,.3);box-shadow:0 30px 56px -26px rgba(224,86,139,.5)" data-rv="s" data-delay="5">
         <div class="conf"><i style="left:10%;top:20%;background:#F6D98A"></i><i style="right:12%;top:24%;background:#F7B7CE;border-radius:50%"></i><i style="left:14%;bottom:22%;background:#B79BE8"></i><i style="right:16%;bottom:26%;background:#8FD4A9;border-radius:50%"></i></div>
         <svg class="art" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="palg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F7DB92"/><stop offset="1" stop-color="#D2A23A"/></linearGradient></defs><path d="M50 22C31 22 18 35 18 51c0 11 8 19 19 19 5 0 8-3 8-8 0-4 3-7 8-7 10 0 21-8 21-22C74 33 65 22 50 22Z" fill="url(#palg)"/><circle cx="33" cy="46" r="4.2" fill="#F0699A"/><circle cx="44" cy="36" r="4.2" fill="#63C795"/><circle cx="58" cy="38" r="4.2" fill="#8A64D6"/><circle cx="62" cy="54" r="4.2" fill="#EF6E9E"/><rect x="63" y="58" width="6" height="28" rx="3" fill="#B98A4A" transform="rotate(-38 66 72)"/><path d="M78 62l7 7-5 5-7-7z" fill="#F0699A" transform="rotate(-38 80 66)"/></svg>
-        <span class="kicker">✨ Extra premium · opcional</span>
-        <h3>Taller a mida per al teu peque</h3>
-        <p style="max-width:640px;margin:0 auto">Dissenyem un taller o activitat especial pensat per al teu peque, al seu gust. Un detall únic que fa l'aniversari inoblidable.</p>
+        <span class="kicker">✨ Premium extra · optional</span>
+        <h3>Bespoke workshop for your little one</h3>
+        <p style="max-width:640px;margin:0 auto">We design a special workshop or activity for your little one, tailored to their taste. A unique touch that makes the party unforgettable.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- TEMÀTIQUES -->
+<!-- TEMÁTICAS -->
 <section style="padding-top:0">
   <div class="wrap"><div class="news" data-rv="s">
-    <span class="news-badge">🦄 Qualsevol temàtica</span>
-    <h2>La temàtica que se t'acudeixi. I si no existeix, ens la inventem</h2>
-    <p>Superherois, princeses, unicorns, dinosaures, sirenes, astronautes, cotxes, futbol, el seu dibuix preferit… I si el teu petit vol alguna cosa que no hem fet mai, l'hi muntem igualment. Ens ho demaneu les mares i els nens, i ens ho inventem: <strong>aquí l'impossible es fa possible</strong>.</p>
+    <span class="news-badge">🦄 Any theme you like</span>
+    <h2>Whatever theme you can think of. And if it doesn't exist, we'll invent it</h2>
+    <p>Superheroes, princesses, unicorns, dinosaurs, mermaids, astronauts, cars, football, their favourite cartoon… And if your little one wants something we've never done before, we'll build it anyway. Mums and children ask us for it, and we invent it: <strong>here we make the impossible possible</strong>.</p>
     <div class="news-cta">
-      <a href="https://wa.me/34637319226?text=Hola%2C%20vull%20un%20aniversari%20amb%20una%20tem%C3%A0tica%20especial%20%F0%9F%8E%82%0A%0AData%3A%20%0AEdat%20del%20petit%3A%20%0ANre.%20de%20nens%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-wa lg">💬 Explica'ns la temàtica del teu petit</a>
+      <a href="https://wa.me/34637319226?text=Hi%2C%20I%27d%20like%20a%20birthday%20with%20a%20special%20theme%20%F0%9F%8E%82%0A%0ADate%3A%20%0AChild%27s%20age%3A%20%0AApprox.%20no.%20of%20children%3A%20" target="_blank" rel="noopener" class="btn btn-wa lg">💬 Tell us your little one's theme</a>
     </div>
   </div></div>
 </section>
@@ -229,40 +266,62 @@
 <!-- PAQUETES -->
 <section id="paquetes" class="party-sec">
   <div class="wrap">
-    <div class="center"><div class="eyebrow c" data-rv>Paquets de festa</div><h2 class="title" data-rv data-delay="1">Tria la teva celebració</h2><p class="lead" data-rv data-delay="2">Tres paquets de <strong>3 hores</strong>, per a 20 nens. De dilluns a divendres tots surten més barats. T'expliquem també què <em>no</em> porta cada un, perquè no hi hagi sorpreses.</p></div>
+    <div class="center"><div class="eyebrow c" data-rv>Party packages</div><h2 class="title" data-rv data-delay="1">Choose your celebration</h2><p class="lead" data-rv data-delay="2">Three <strong>3-hour</strong> packages, for 20 children. Monday to Friday they all cost less. We also tell you what each one does <em>not</em> include, so there are no surprises.</p></div>
     <div class="cards">
       <div class="pcard" data-rv="s" data-delay="1">
-        <h4>Standard</h4><div class="price">365€</div>
-        <div style="margin:-10px 0 16px;font-size:14px;font-weight:800;color:#B5641F">De dilluns a divendres: 315€</div>
-        <ul><li>Mitja sala privada, només per a vosaltres</li><li>1 monitor</li><li>Pastís temàtic per a 20 persones</li><li>Mobiliari per a esdeveniments</li><li>3 hores de celebració</li><li>Nen addicional 7€ · adult addicional 3€</li></ul>
-        <div style="margin-top:14px;padding-top:13px;border-top:1px solid rgba(90,60,45,.12);font-size:13px;color:var(--muted);line-height:1.5"><b style="color:var(--ink)">No inclou:</b> càtering, decoració temàtica ni servei de neteja. Els pots afegir a part.</div>
-        <a href="https://wa.me/34637319226?text=Hola%2C%20vull%20reservar%20el%20pack%20Standard%20%F0%9F%8E%82%0A%0AData%3A%20%0AEdat%20del%20petit%3A%20%0ANre.%20de%20nens%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Reservar Standard</a>
+        <div class="phead"><svg viewBox="0 0 360 216" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><use href="#kk-arco"/></svg></div>
+        <div class="pk-kick">The essentials</div>
+        <h4>Standard</h4>
+        <p class="pk-frase">Half the room just for you, with a host and cake. The essential party, no fuss.</p>
+        <div class="pk-chips"><span class="pk-chip"><i>✓</i>Half room, private</span><span class="pk-chip"><i>✓</i>1 host</span><span class="pk-chip"><i>✓</i>Cake for 20</span><span class="pk-chip"><i>✓</i>Event furniture</span><span class="pk-chip"><i>✓</i>3 hours</span></div>
+        <div><span class="pk-ahorro">💶 Monday to Friday €315 · you save €50</span></div>
+        <div class="pk-no"><b>Not included:</b> catering, themed decoration or cleaning service. Extra child €7 · extra adult €3.</div>
+        <div class="pk-foot">
+          <div><div class="pk-big">€365</div><div class="pk-meta">3 h · up to 30 people</div></div>
+          <a href="https://wa.me/34637319226?text=Hi%2C%20I%20want%20to%20book%20the%20Standard%20package%20%F0%9F%8E%82%0A%0ADate%3A%20%0AChild%27s%20age%3A%20%0AApprox.%20no.%20of%20children%3A%20" target="_blank" rel="noopener" class="btn btn-ghost pk-cta">Book →</a>
+        </div>
       </div>
       <div class="pcard feat" data-rv="s" data-delay="2">
-        <span class="ribbon">Més popular</span>
-        <h4>Premium</h4><div class="price">795€</div>
-        <div style="margin:-10px 0 16px;font-size:14px;font-weight:800;color:#B5641F">De dilluns a divendres: 635€</div>
-        <ul><li>Sala completa privada</li><li>1 monitor</li><li>Pastís temàtic per a 20 persones</li><li>Decoració bàsica personalitzada</li><li>Càtering per a 20 nens</li><li>Mobiliari complet i neteja inclosa</li><li>3 hores de celebració</li></ul>
-        <div style="margin-top:14px;padding-top:13px;border-top:1px solid rgba(90,60,45,.12);font-size:13px;color:var(--muted);line-height:1.5"><b style="color:var(--ink)">No inclou:</b> taller ni personatge disfressat, i la decoració és la bàsica (no la completa amb globus). Nen addicional 7€ amb càtering · monitor extra 40€.</div>
-        <a href="https://wa.me/34637319226?text=Hola%2C%20vull%20reservar%20el%20pack%20Premium%20%F0%9F%8E%82%0A%0AData%3A%20%0AEdat%20del%20petit%3A%20%0ANre.%20de%20nens%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-pink" style="margin-top:18px;width:100%;justify-content:center">Reservar Premium</a>
+        <span class="ribbon">Most popular</span>
+        <div class="phead"><svg viewBox="0 0 360 216" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><use href="#kk-arco"/></svg></div>
+        <h4>Premium</h4>
+        <p class="pk-frase">The whole room, decorated, with the children's food already sorted.</p>
+        <div class="pk-chips"><span class="pk-chip"><i>✓</i>Full private room</span><span class="pk-chip"><i>✓</i>1 host</span><span class="pk-chip"><i>✓</i>Cake for 20</span><span class="pk-chip"><i>✓</i>Personalised decoration</span><span class="pk-chip"><i>✓</i>Catering for 20 kids</span><span class="pk-chip"><i>✓</i>Cleaning included</span><span class="pk-chip"><i>✓</i>3 hours</span></div>
+        <div><span class="pk-ahorro">💶 Monday to Friday €635 · you save €160</span></div>
+        <div class="pk-no"><b>Not included:</b> a workshop or costumed character, and the decoration is the basic one (not the full balloon setup). Extra child €7 with catering · extra host €40.</div>
+        <div class="pk-foot">
+          <div><div class="pk-big">€795</div><div class="pk-meta">3 h · 20 children included</div></div>
+          <a href="https://wa.me/34637319226?text=Hi%2C%20I%20want%20to%20book%20the%20Premium%20package%20%F0%9F%8E%82%0A%0ADate%3A%20%0AChild%27s%20age%3A%20%0AApprox.%20no.%20of%20children%3A%20" target="_blank" rel="noopener" class="btn btn-pink pk-cta">Book →</a>
+        </div>
       </div>
       <div class="pcard" data-rv="s" data-delay="3">
-        <h4>VIP</h4><div class="price">1.190€</div>
-        <div style="margin:-10px 0 16px;font-size:14px;font-weight:800;color:#B5641F">De dilluns a divendres: 995€</div>
-        <ul><li>Sala exclusiva privada</li><li>Decoració completa temàtica i personalitzada</li><li>Pastís temàtic per a 20 porcions</li><li>2 monitors per a jocs grupals</li><li>Taller, animació, personatge disfressat o pintacares per a 20 nens</li><li>Càtering infantil per a 20 nens</li><li>Neteja inclosa · 3 hores</li></ul>
-        <div style="margin-top:14px;padding-top:13px;border-top:1px solid rgba(90,60,45,.12);font-size:13px;color:var(--muted);line-height:1.5"><b style="color:var(--ink)">Ho porta tot.</b> Només s'afegeixen a part els capricis: ninot addicional 100€/h, fotografia professional des de 90€ o càtering d'adults.</div>
-        <a href="https://wa.me/34637319226?text=Hola%2C%20vull%20reservar%20el%20pack%20VIP%20%F0%9F%8E%82%0A%0AData%3A%20%0AEdat%20del%20petit%3A%20%0ANre.%20de%20nens%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Reservar VIP</a>
+        <div class="phead"><svg viewBox="0 0 360 216" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><use href="#kk-arco"/></svg></div>
+        <div class="pk-kick">All included</div>
+        <h4>VIP</h4>
+        <p class="pk-frase">Full decoration, two hosts and a costumed character. You just enjoy it.</p>
+        <div class="pk-chips"><span class="pk-chip"><i>✓</i>Exclusive private room</span><span class="pk-chip"><i>✓</i>Full themed decoration</span><span class="pk-chip"><i>✓</i>Cake for 20</span><span class="pk-chip"><i>✓</i>2 hosts</span><span class="pk-chip"><i>✓</i>Workshop or character</span><span class="pk-chip"><i>✓</i>Catering for 20 kids</span><span class="pk-chip"><i>✓</i>Cleaning included</span></div>
+        <div><span class="pk-ahorro">💶 Monday to Friday €995 · you save €195</span></div>
+        <div class="pk-no"><b>It has everything.</b> Only the treats are extra: extra mascot €100, professional photography from €90 or adult catering.</div>
+        <div class="pk-foot">
+          <div><div class="pk-big">€1,190</div><div class="pk-meta">3 h · 20 children included</div></div>
+          <a href="https://wa.me/34637319226?text=Hi%2C%20I%20want%20to%20book%20the%20VIP%20package%20%F0%9F%8E%82%0A%0ADate%3A%20%0AChild%27s%20age%3A%20%0AApprox.%20no.%20of%20children%3A%20" target="_blank" rel="noopener" class="btn btn-ghost pk-cta">Book →</a>
+        </div>
       </div>
     </div>
 
-    <div class="note" data-rv style="border-left-color:#B5641F"><b>Tens bo del centre?</b> Els clients amb bo actiu tenen un <b>10% de descompte sobre el total</b> de la celebració. I celebrar <b>de dilluns a divendres</b> surt entre 50€ i 195€ més barat que el cap de setmana.</div>
+    <div class="vet" data-rv>
+      <div class="vet-n">8</div>
+      <div class="vet-t"><b>years of birthday parties</b><br>at Kids &amp; Kafé, Les Corts</div>
+    </div>
+
+    <div class="note" data-rv style="border-left-color:#B5641F"><b>Do you have a pass with us?</b> Customers with an active pass get <b>10% off the total</b> of the celebration. And celebrating <b>Monday to Friday</b> is between €50 and €195 cheaper than the weekend.</div>
 
     <!-- Party Studio: la madre que aun no se decide entre Standard, Premium y VIP se
          iba de la pagina. Aqui la recogemos y la dejamos jugar. -->
     <div class="center" style="margin-top:46px" data-rv="s">
-      <h3 style="font-family:Fraunces,serif;font-size:26px;margin:0 0 10px">Prefereixes veure-la abans de decidir?</h3>
-      <p class="lead" style="margin:0 auto 22px;max-width:620px">Tria la temàtica, mira com queda la sala en 3D, calcula el preu a l'instant i envia'ns-ho per WhatsApp. Sense compromís i en dos minuts.</p>
-      <a href="../party-studio.html?lang=ca" class="btn btn-sage">🎨 Entrar al Party Studio</a>
+      <h3 style="font-family:Fraunces,serif;font-size:26px;margin:0 0 10px">Would you rather see it first?</h3>
+      <p class="lead" style="margin:0 auto 22px;max-width:620px">Pick a theme, watch the room transform in 3D, get an instant price and send it to us on WhatsApp. No commitment, takes two minutes.</p>
+      <a href="../party-studio.html?lang=en" class="btn btn-sage">🎨 Open the Party Studio</a>
     </div>
   </div>
 </section>
@@ -271,12 +330,12 @@
 <section style="padding-top:0">
   <div class="wrap"><div class="trust" data-rv="s">
     <div class="stars">⭐⭐⭐⭐⭐</div>
-    <h3>4,2 sobre 5 · 491 ressenyes a Google</h3>
-    <p>Centenars de famílies de Barcelona ja han celebrat aquí l'aniversari del seu petit. Organitzem festes des del 2018. Mira-ho tu mateixa abans de decidir.</p>
+    <h3>4.2 out of 5 · 491 Google reviews</h3>
+    <p>Hundreds of Barcelona families have already celebrated their little one's birthday here. We've been throwing parties since 2018. See it for yourself before you decide.</p>
     <div class="tlogos">
-      <span>🎂 Celebrant des del 2018</span>
-      <a href="https://www.google.com/maps/search/Kids+and+Kafe+Barcelona" target="_blank" rel="noopener" class="btn btn-ghost">Veure ressenyes a Google</a>
-      <a href="https://instagram.com/kidsandkafe" target="_blank" rel="noopener" class="btn btn-pink">Veure festes a Instagram</a>
+      <span>🎂 Celebrating since 2018</span>
+      <a href="https://www.google.com/maps/search/Kids+and+Kafe+Barcelona" target="_blank" rel="noopener" class="btn btn-ghost">See Google reviews</a>
+      <a href="https://instagram.com/kidsandkafe" target="_blank" rel="noopener" class="btn btn-pink">See parties on Instagram</a>
     </div>
   </div></div>
 </section>
@@ -284,22 +343,22 @@
 <!-- OTRAS OPCIONES -->
 <section>
   <div class="wrap">
-    <div class="center"><div class="eyebrow c" data-rv>Altres opcions</div><h2 class="title" data-rv data-delay="1">Lloguer i Family Lounge</h2></div>
+    <div class="center"><div class="eyebrow c" data-rv>Other options</div><h2 class="title" data-rv data-delay="1">Room hire and Family Lounge</h2></div>
     <div class="cards">
       <div class="pcard" data-rv="s" data-delay="1">
-        <h4>Family Lounge</h4><div class="price">25€<span> /nen</span></div>
-        <ul><li>2 hores de joc</li><li>Berenar inclòs</li><li>Entrada d'adults 3€</li><li><b>Amb taller inclòs: 38€/nen</b></li><li>El pastís es demana al centre</li></ul>
-        <a href="https://wa.me/34637319226?text=Hola%2C%20m%27interessa%20celebrar%20al%20Family%20Lounge%20%F0%9F%8E%82%0A%0AData%3A%20%0AEdat%20del%20petit%3A%20%0ANre.%20de%20nens%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Consultar Family Lounge</a>
+        <h4>Family Lounge</h4><div class="price">€25<span> /child</span></div>
+        <ul><li>2 hours of play</li><li>Afternoon snack included</li><li>Adult entry €3</li><li><b>With workshop included: €38/child</b></li><li>The cake is ordered from the centre</li></ul>
+        <a href="https://wa.me/34637319226?text=Hi%2C%20I%27m%20interested%20in%20the%20Family%20Lounge%20%F0%9F%8E%82%0A%0ADate%3A%20%0AChild%27s%20age%3A%20%0AApprox.%20no.%20of%20children%3A%20" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Ask about Family Lounge</a>
       </div>
       <div class="pcard" data-rv="s" data-delay="2">
-        <h4>Sala completa · 3h</h4><div class="price">350-550€</div>
-        <ul><li>1 monitor inclòs</li><li>200 m² de racons temàtics</li><li>100 m² de ball i psicomotricitat</li><li>Mobiliari per a esdeveniments</li><li>Dl-Dj 350€ · Dv-Dg i festius 550€</li></ul>
-        <a href="https://wa.me/34637319226?text=Hola%2C%20vull%20llogar%20la%20sala%20completa%20%F0%9F%8E%82%0A%0AData%3A%20%0AEdat%20del%20petit%3A%20%0ANre.%20de%20nens%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Consultar sala completa</a>
+        <h4>Full room · 3h</h4><div class="price">€350-550</div>
+        <ul><li>1 monitor included</li><li>200 m² of themed corners</li><li>100 m² of dance and movement</li><li>Furniture for events</li><li>Mon-Thu €350 · Fri-Sun and holidays €550</li></ul>
+        <a href="https://wa.me/34637319226?text=Hi%2C%20I%27d%20like%20to%20rent%20the%20full%20room%20%F0%9F%8E%82%0A%0ADate%3A%20%0AChild%27s%20age%3A%20%0AApprox.%20no.%20of%20children%3A%20" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Ask about the full room</a>
       </div>
       <div class="pcard" data-rv="s" data-delay="3">
-        <h4>Mitja sala · 3h</h4><div class="price">230-310€</div>
-        <ul><li>1 monitor inclòs</li><li>Aforament fins a 25 persones (+7€ extra)</li><li>Racons temàtics + sala de ball</li><li>Mobiliari per a esdeveniments</li><li>Dl-Dj 230€ · Dv-Dg i festius 310€</li></ul>
-        <a href="https://wa.me/34637319226?text=Hola%2C%20vull%20llogar%20mitja%20sala%20%F0%9F%8E%82%0A%0AData%3A%20%0AEdat%20del%20petit%3A%20%0ANre.%20de%20nens%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Consultar mitja sala</a>
+        <h4>Half room · 3h</h4><div class="price">€230-310</div>
+        <ul><li>1 monitor included</li><li>Capacity up to 25 people (+€7 extra)</li><li>Themed corners + dance room</li><li>Furniture for events</li><li>Mon-Thu €230 · Fri-Sun and holidays €310</li></ul>
+        <a href="https://wa.me/34637319226?text=Hi%2C%20I%27d%20like%20to%20rent%20the%20half%20room%20%F0%9F%8E%82%0A%0ADate%3A%20%0AChild%27s%20age%3A%20%0AApprox.%20no.%20of%20children%3A%20" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Ask about the half room</a>
       </div>
     </div>
   </div>
@@ -308,62 +367,62 @@
 <!-- CATERING -->
 <section style="background:var(--pink-bg)">
   <div class="wrap">
-    <div class="center"><div class="eyebrow c" data-rv>Càtering</div><h2 class="title" data-rv data-delay="1">Per menjar i gaudir</h2></div>
+    <div class="center"><div class="eyebrow c" data-rv>Catering</div><h2 class="title" data-rv data-delay="1">To eat and enjoy</h2></div>
     <div class="catering" style="grid-template-columns:repeat(auto-fit,minmax(250px,1fr))">
-      <div class="cbox" data-rv="r"><h5>🍔 Pack càtering nens</h5><div class="pp">10€ / nen</div><p>Entrepà de pernil i formatge amb pa brioix, truita de patates, mini donuts, bikini de Nutella, aigua i suc.</p></div>
-      <div class="cbox" data-rv="l"><h5>🥪 Pack càtering adults</h5><div class="pp">12€ / persona</div><p>Sandvitx de salmó i pollastre, mini entrepà, safata de mini dolços, croquetes, quiche, olives. Gerra d'aigua i 1 refresc per persona.</p></div>
-      <div class="cbox" data-rv="r"><h5>🥗 Safates soltes</h5><div class="pp">18€ – 45€</div><p>Entrepà de pernil i formatge amb pa brioix, 12 u. · 23€<br>Fruita per a 10-15 nens · 45€<br>Hummus amb verdures · 35€<br>Truita de patates amb pa i tomàquet · 18€<br>Pa de vidre amb pernil ibèric · 28€<br>Croquetes, 12 u. · 20€<br>Mini croissant farcit, 12 u. · 23€</p></div>
+      <div class="cbox" data-rv="r"><h5>🍔 Kids catering pack</h5><div class="pp">€10 / child</div><p>Ham and cheese brioche sandwich, Spanish omelette, mini donuts, Nutella bikini, water and juice.</p></div>
+      <div class="cbox" data-rv="l"><h5>🥪 Adults catering pack</h5><div class="pp">€12 / person</div><p>Salmon and chicken sandwich, mini sandwich, mini sweets platter, croquettes, quiche, olives. Jug of water and 1 soft drink per person.</p></div>
+      <div class="cbox" data-rv="r"><h5>🥗 Individual platters</h5><div class="pp">€18 – €45</div><p>Ham and cheese brioche sandwich, 12 pcs · €23<br>Fruit for 10-15 children · €45<br>Hummus with vegetables · €35<br>Spanish omelette with bread and tomato · €18<br>Crystal bread with Iberian ham · €28<br>Croquettes, 12 pcs · €20<br>Filled mini croissants, 12 pcs · €23</p></div>
     </div>
 
-    <!-- Adicionals: magia, personatges, foto i hora extra. -->
-    <div class="center" style="margin-top:56px"><div class="eyebrow c" data-rv>Addicionals</div><h2 class="title" data-rv data-delay="1">Per pujar el nivell</h3></div>
+    <!-- Extras: magic, characters, photography and the extra hour. -->
+    <div class="center" style="margin-top:56px"><div class="eyebrow c" data-rv>Extras</div><h2 class="title" data-rv data-delay="1">Take it up a level</h2></div>
     <div class="catering" style="grid-template-columns:repeat(auto-fit,minmax(250px,1fr))">
-      <div class="cbox" data-rv="r"><h5>🪄 Màgia i globoflèxia</h5><div class="pp">180€ – 215€</div><p>Xou de màgia d'1 hora · 180€<br>Xou de màgia + globoflèxia · 215€</p></div>
-      <div class="cbox" data-rv="l"><h5>🎭 Personatges i animació</h5><div class="pp">125€ / hora</div><p>Ninots i personatges temàtics, princeses, superherois, pintacares i bombolles.<br>Ninot addicional · 100€</p></div>
-      <div class="cbox" data-rv="r"><h5>📸 Fotografia professional</h5><div class="pp">des de 90€</div><p>Un fotògraf cobrint la festa, perquè no hagis d'estar tu amb el mòbil.<br>Caixes de regal personalitzades · consultar</p></div>
-      <div class="cbox" data-rv="l"><h5>⏰ Hora addicional</h5><div class="pp">100€</div><p>Si la festa s'anima i la voleu allargar. Subjecte a la disponibilitat de la sala.</p></div>
+      <div class="cbox" data-rv="r"><h5>🪄 Magic and balloon art</h5><div class="pp">€180 – €215</div><p>1-hour magic show · €180<br>Magic show + balloon art · €215</p></div>
+      <div class="cbox" data-rv="l"><h5>🎭 Characters and entertainment</h5><div class="pp">€125 / hour</div><p>Mascots and themed characters, princesses, superheroes, face painting and bubbles.<br>Extra mascot · €100</p></div>
+      <div class="cbox" data-rv="r"><h5>📸 Professional photography</h5><div class="pp">from €90</div><p>A photographer covering the party, so you don't have to be the one behind the phone.<br>Personalised gift boxes · on request</p></div>
+      <div class="cbox" data-rv="l"><h5>⏰ Extra hour</h5><div class="pp">€100</div><p>If the party takes off and you want to stretch it. Subject to room availability.</p></div>
     </div>
-    <div class="note" data-rv><b>Important:</b> els paquets d'aniversari duren <b>3 hores</b> (el Family Lounge, 2 hores) i és obligatori demanar el pastís al centre. Et donem <b>30 minuts gratis abans</b> per muntar i decorar. Si portes càtering de fora, el servei de neteja són 35€. No es pot fer servir confeti ni enganxar res a les parets. <b>Per bloquejar la data es deixa una paga i senyal de 100€</b>, que es descompta del preu final; el pagament complet es fa com a màxim una setmana abans.</div>
+    <div class="note" data-rv><b>Important:</b> the birthday packages last <b>3 hours</b> (the Family Lounge, 2 hours) and ordering the cake from the centre is required. We give you <b>30 free minutes beforehand</b> to set up and decorate. If you bring outside catering, the cleaning service is €35. Confetti and sticking anything to the walls are not allowed. <b>To lock in your date you leave a €100 deposit</b>, which is deducted from the final price; full payment is made at the latest one week before.</div>
   </div>
 </section>
 
 <!-- FIESTAS REALES -->
 <section style="padding-top:0">
-  <div class="wrap center" style="margin-bottom:30px"><div class="eyebrow c" data-rv>Festes reals</div><h2 class="title" data-rv data-delay="1">Així celebrem a Kids & Kafé</h2><p class="lead" data-rv data-delay="2">Decoracions temàtiques que enamoren. T'imagines la festa del teu petit aquí?</p></div>
+  <div class="wrap center" style="margin-bottom:30px"><div class="eyebrow c" data-rv>Real parties</div><h2 class="title" data-rv data-delay="1">This is how we celebrate at Kids & Kafé</h2><p class="lead" data-rv data-delay="2">Themed decorations you'll love. Can you picture your little one's party here?</p></div>
   <div class="wrap"><div class="gal">
-    <img src="../img/g1.jpg" alt="Aniversari infantil temàtic a Barcelona amb decoració de globus" data-rv="s">
-    <img src="../img/g2.jpg" alt="Festa infantil temàtica a Kids &amp; Kafé · taula dolça i decoració" data-rv="s" data-delay="1">
-    <img src="../img/g3.jpg" alt="Sala d'aniversaris de 300 m² per a festes infantils a Les Corts" data-rv="s" data-delay="2">
+    <img src="../img/g1.jpg" alt="Themed kids birthday party in Barcelona with balloon decoration" data-rv="s">
+    <img src="../img/g2.jpg" alt="Themed kids party at Kids &amp; Kafé · sweet table and decoration" data-rv="s" data-delay="1">
+    <img src="../img/g3.jpg" alt="300 m² birthday party room for kids parties in Les Corts" data-rv="s" data-delay="2">
   </div></div>
 </section>
 
 <!-- SEO CONTENT -->
 <section style="padding-top:0">
   <div class="wrap" style="max-width:820px">
-    <h2 class="title" data-rv style="margin-bottom:16px">Aniversaris infantils a Barcelona amb decoració temàtica inclosa</h2>
-    <p data-rv data-delay="1">A Kids &amp; Kafé organitzem aniversaris infantils a Barcelona des del 2018, al bell mig del barri de Les Corts. Cada festa inclou <strong>decoració temàtica que muntem i recollim nosaltres</strong>: globus, taula dolça i ambientació a joc amb allò que més li agrada al teu peque —superherois, princeses, animals, unicorns o el tema que trieu. Tu només arribes i celebres; de la resta ens encarreguem nosaltres.</p>
-    <p data-rv data-delay="2">La nostra sala de <strong>300 m² és només per a vosaltres</strong> durant la celebració: zona de joc tou, pista de ball amb llum i so per a la mini discoteca, i monitors que dirigeixen els jocs perquè cap nen es quedi fora. És el pla ideal per a peques de <strong>0 a 8 anys</strong>, amb espai segur per als més petits i activitat de sobres per als grans.</p>
-    <h2 class="title" data-rv data-delay="3" style="margin:34px 0 16px">Prefereixes celebrar-ho a casa? Portem la festa a domicili</h2>
-    <p data-rv data-delay="4">Si et va millor a casa, muntem l'aniversari <strong>a domicili per Barcelona i pobles del voltant</strong>: portem decoració, monitors i animació, i ho deixem tot recollit en acabar. Tria entre els nostres <strong>paquets Standard, Premium i VIP</strong> o el lloguer de sala, i afegeix un taller a mida com a extra premium per fer-ho encara més especial. Escriu-nos per WhatsApp i et confirmem la data al moment.</p>
+    <h2 class="title" data-rv style="margin-bottom:16px">Kids birthday parties in Barcelona with themed decoration included</h2>
+    <p data-rv data-delay="1">At Kids &amp; Kafé we've been throwing kids birthday parties in Barcelona since 2018, right in the Les Corts neighbourhood. Every party comes with <strong>themed decoration we set up and take down ourselves</strong>: balloons, a sweet table and styling to match whatever your little one loves —superheroes, princesses, animals, unicorns or any theme you choose. You just show up and celebrate; we handle the rest.</p>
+    <p data-rv data-delay="2">Our <strong>300 m² room is all yours</strong> during the party: a soft play area, a dance floor with lights and sound for the mini disco, and monitors who lead the games so no child is left out. It's the perfect plan for kids aged <strong>0 to 8</strong>, with a safe space for the youngest and plenty of activity for the older ones.</p>
+    <h2 class="title" data-rv data-delay="3" style="margin:34px 0 16px">Prefer to celebrate at home? We bring the party to you</h2>
+    <p data-rv data-delay="4">If home works better for you, we set up the birthday party <strong>at your place across Barcelona and nearby towns</strong>: we bring decoration, monitors and entertainment, and leave everything tidy afterwards. Choose from our <strong>Standard, Premium and VIP packages</strong> or room hire, and add a custom workshop as a premium extra to make it even more special. Message us on WhatsApp and we'll confirm your date right away.</p>
   </div>
 </section>
 
 <!-- FAQ -->
 <section>
   <div class="wrap">
-    <div class="center"><div class="eyebrow c" data-rv>Dubtes freqüents</div><h2 class="title" data-rv data-delay="1">Abans de reservar</h2></div>
+    <div class="center"><div class="eyebrow c" data-rv>Frequently asked</div><h2 class="title" data-rv data-delay="1">Before you book</h2></div>
     <div class="faq">
-      <details data-rv><summary>Quant dura la festa?</summary><p>Els paquets Standard, Premium i VIP duren <b>3 hores</b>, igual que el lloguer de sala. El Family Lounge (l'opció petita) són 2 hores. En tots et donem 30 minuts extra gratis abans de començar per muntar.</p></details>
-      <details data-rv><summary>Es poden afegir tallers o activitats a l'aniversari?</summary><p>Sí. És un servei opcional: dissenyem un taller o activitat a mida per al teu peque segons els seus gustos.</p></details>
-      <details data-rv><summary>Puc portar el meu propi pastís?</summary><p>És obligatori demanar el pastís al centre. Els tres paquets ja porten pastís temàtic per a 20 persones inclòs en el preu.</p></details>
-      <details data-rv><summary>Què passa si venen més convidats?</summary><p>Els paquets inclouen 20 nens. A partir del nen 20 són 7€ més per nen (al Premium i al VIP aquest preu ja porta el càtering) i 3€ per adult addicional. A partir de 20 nens recomanem un monitor extra (40€).</p></details>
-      <details data-rv><summary>Amb quanta antelació cal reservar?</summary><p>Com a mínim un mes abans. Els caps de setmana són les dates més demanades i volen: quan hi ha un aniversari reservat, el centre es tanca al públic, així que cada dissabte i diumenge només hi ha lloc per a una celebració.</p></details>
-      <details data-rv><summary>Quines temàtiques feu?</summary><p>Totes. Superherois, princeses, unicorns, dinosaures, sirenes, astronautes, cotxes, futbol… i si el teu petit vol una temàtica que no hem fet mai, l'hi inventem. Fem l'impossible possible.</p></details>
-      <details data-rv><summary>Puc veure la sala abans de reservar?</summary><p>És clar. Pots venir a conèixer l'espai en el nostre horari d'obertura, al Carrer de Nicaragua 117 (Les Corts). Avisa'ns per WhatsApp al +34 637 319 226 per assegurar-nos que no hi hagi una festa privada en aquella estona.</p></details>
-      <details data-rv><summary>Quant és la senyal i es retorna si cancel·lo?</summary><p>Per bloquejar la data es deixa una paga i senyal de 100€, que es descompta del preu final. Si has de <b>canviar la data</b>, es perd el 30% i el 70% restant es guarda per al nou dia. Si <b>cancel·les definitivament</b>, el 50% de l'import es pot bescanviar per altres serveis del centre: bons, tallers o hores de joc.</p></details>
+      <details data-rv><summary>How long does the party last?</summary><p>The Standard, Premium and VIP packages last <b>3 hours</b>, the same as room hire. The Family Lounge (the small option) is 2 hours. With all of them we give you 30 extra free minutes before the start to set up.</p></details>
+      <details data-rv><summary>Can we add workshops or activities to the party?</summary><p>Yes. It's an optional service: we design a bespoke workshop or activity for your little one, tailored to their taste.</p></details>
+      <details data-rv><summary>Can I bring my own cake?</summary><p>Ordering the cake from the centre is required. All three packages already include a themed cake for 20 people in the price.</p></details>
+      <details data-rv><summary>What if more guests come?</summary><p>The packages include 20 children. From the 20th child onwards it is €7 more per child (on Premium and VIP that price already includes catering) and €3 per additional adult. From 20 children we recommend an extra monitor (€40).</p></details>
+      <details data-rv><summary>How far in advance should I book?</summary><p>At least one month ahead. Weekends are the most requested dates and they go fast: when a birthday is booked we close the centre to the public, so each Saturday and Sunday there is room for one celebration only.</p></details>
+      <details data-rv><summary>What themes do you do?</summary><p>All of them. Superheroes, princesses, unicorns, dinosaurs, mermaids, astronauts, cars, football… and if your little one wants a theme we've never done before, we'll invent it for them. We make the impossible possible.</p></details>
+      <details data-rv><summary>Can I see the room before booking?</summary><p>Of course. You're welcome to come and see the space during our opening hours, at Carrer de Nicaragua 117 (Les Corts). Let us know on WhatsApp at +34 637 319 226 so we can make sure there isn't a private party on at that time.</p></details>
+      <details data-rv><summary>How much is the deposit and is it refunded if I cancel?</summary><p>To lock in your date you leave a €100 deposit, which is deducted from the final price. If you need to <b>move the date</b>, 30% is lost and the remaining 70% is kept for the new day. If you <b>cancel definitively</b>, 50% of the amount can be exchanged for other services at the centre: passes, workshops or play hours.</p></details>
     </div>
     <div class="center" style="margin-top:36px" data-rv>
-      <a href="https://wa.me/34637319226?text=Hola%2C%20vull%20reservar%20un%20aniversari%20%F0%9F%8E%82%0A%0AData%3A%20%0AEdat%20del%20petit%3A%20%0ANre.%20de%20nens%20aprox.%3A%20" class="btn btn-pink" target="_blank" rel="noopener">Consulta disponibilitat per WhatsApp</a>
+      <a href="https://wa.me/34637319226?text=Hi%2C%20I%20want%20to%20book%20a%20birthday%20%F0%9F%8E%82%0A%0ADate%3A%20%0AChild%27s%20age%3A%20%0AApprox.%20no.%20of%20children%3A%20" class="btn btn-pink" target="_blank" rel="noopener">Check availability on WhatsApp</a>
     </div>
   </div>
 </section>
@@ -371,31 +430,31 @@
 <!-- CTA RESERVA -->
 <section style="padding-top:0">
   <div class="wrap"><div class="news big" data-rv="s">
-    <span class="news-badge">🎂 Un sol aniversari al dia</span>
-    <h2>Reserva l'aniversari del teu petit</h2>
-    <p>Quan hi ha una festa reservada, el centre es tanca al públic: cada dissabte i diumenge només hi ha lloc per a una celebració. Reserva com a mínim un mes abans i bloqueja la teva data amb 100€ de paga i senyal, que es descompten del preu final.</p>
+    <span class="news-badge">🎂 One party per day</span>
+    <h2>Book your little one's birthday</h2>
+    <p>When a party is booked we close the centre to the public: that's why <strong>each Saturday and Sunday has room for one celebration only</strong>. Book at least a month ahead and a €100 deposit locks in your date. Write to us and we'll confirm availability right away.</p>
     <div class="news-cta">
-      <a href="https://wa.me/34637319226?text=Hola%2C%20vull%20reservar%20un%20aniversari%20%F0%9F%8E%82%0A%0AData%3A%20%0AEdat%20del%20petit%3A%20%0ANre.%20de%20nens%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-wa lg">💬 Reservar per WhatsApp</a>
-      <a href="contacto#app" class="btn btn-pink lg">📅 Reservar a l'app</a>
+      <a href="https://wa.me/34637319226?text=Hi%2C%20I%20want%20to%20book%20a%20birthday%20%F0%9F%8E%82%0A%0ADate%3A%20%0AChild%27s%20age%3A%20%0AApprox.%20no.%20of%20children%3A%20" target="_blank" rel="noopener" class="btn btn-wa lg">💬 Book on WhatsApp</a>
+      <a href="contacto#app" class="btn btn-pink lg">📅 Book in the app</a>
     </div>
   </div></div>
 </section>
 
 <footer><div class="wrap">
   <div class="foot-grid">
-    <div class="foot-brand" data-rv><img src="../img/logo.png" alt="Kids & Kafé"><p>Centre infantil i espai de joc pedagògic a Barcelona.</p></div>
-    <div data-rv data-delay="1"><h4>Contacte</h4>
+    <div class="foot-brand" data-rv><img src="../img/logo.png" alt="Kids & Kafé"><p>Children's centre and educational play space in Barcelona.</p></div>
+    <div data-rv data-delay="1"><h4>Contact</h4>
       <a href="https://www.google.com/maps/search/Carrer+de+Nicaragua+117+08029+Barcelona" target="_blank" rel="noopener">📍 Carrer de Nicaragua, 117 · 08029 Barcelona</a>
-      <span class="foot-contact-extra" style="color:rgba(255,255,255,.55);font-size:13px">🕒 Oberts els 12 mesos · horari flexible</span>
+      <span class="foot-contact-extra" style="color:rgba(255,255,255,.55);font-size:13px">🕒 Open all year round · flexible hours</span>
       <a href="https://wa.me/34637319226" target="_blank" rel="noopener">📲 WhatsApp: +34 637 319 226</a>
       <a href="mailto:kidsandkafe@gmail.com">✉️ kidsandkafe@gmail.com</a>
       <a href="https://instagram.com/kidsandkafe" target="_blank" rel="noopener">📷 Instagram</a>
     </div>
-    <div data-rv data-delay="2"><h4>Pàgines</h4>
-      <a href="/">Inici</a><a href="nosotros">Nosaltres</a><a href="zonas">Zones de joc</a><a href="baby-explorer">Baby Explorer</a><a href="talleres">Tallers</a>
+    <div data-rv data-delay="2"><h4>Pages</h4>
+      <a href="/">Home</a><a href="nosotros">About</a><a href="zonas">Play zones</a><a href="baby-explorer">Baby Explorer</a><a href="talleres">Workshops</a>
     </div>
   </div>
-  <div class="foot-bottom">© 2026 Kids & Kafé · Kids & Kafé Inversión, SL · Tots els drets reservats · Dissenyat per Rashid Shahpazir Masoudi</div>
+  <div class="foot-bottom">© 2026 Kids & Kafé · Kids & Kafé Inversión, SL · All rights reserved · Designed by Rashid Shahpazir Masoudi</div>
 </div></footer>
 <a href="https://wa.me/34637319226" class="wa-float" target="_blank" rel="noopener" aria-label="WhatsApp">💬</a>
 <div id="lightbox"><img src="" alt=""></div>
