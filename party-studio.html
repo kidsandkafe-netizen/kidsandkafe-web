@@ -173,7 +173,8 @@ input:focus{outline:0;border-color:var(--sage);box-shadow:0 0 0 4px rgba(107,130
 .packs{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
 @media(max-width:560px){.packs{grid-template-columns:1fr}}
 .pk{border:2.5px solid #EFE6DF;background:#fff;border-radius:19px;padding:16px;cursor:pointer;
-    transition:.22s;text-align:left;font-family:inherit}
+    transition:.22s;text-align:left;font-family:inherit;
+    display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start}
 .pk:hover{transform:translateY(-3px);box-shadow:0 12px 24px -14px rgba(90,60,45,.5)}
 .pk[aria-pressed="true"]{border-color:var(--sage);background:#F7FAF4}
 .pk b{display:block;font-size:16px;font-weight:900;margin-bottom:3px}
@@ -780,10 +781,12 @@ es:{
   aviso3:', así que solo hay ', aviso4:'una fiesta por sábado', aviso5:'. Las fechas vuelan.',
   pie:'Party Studio · Kids & Kafé',
   total:'Total estimado', consultar:'a consultar', incluido:'incluido',
-  ent_ad:'Entrada adultos ×', mon_obl:'Monitor extra (obligatorio +15 niños)',
+  ent_ad:'Entrada adultos ×', mon_obl:'Monitor extra (obligatorio a partir de 20 niños)',
   pastel_l:'Pastel temático (se pide al centro)',
   cat_med:'Catering a medida', div_med:'Diversión a medida', limpieza:'Limpieza',
   por_nino:'/niño', finde_l:' · V-D y festivos', diario_l:' · L-J',
+  no_inc:'No incluye:', extra_nin:' niños extra · ',
+  r_c5:'¿Tienes bono del centro? Te hacemos un 10% de descuento sobre el total.',
   extra_per:' personas extra · ', cu:' c/u', a_consultar:'A consultar', pk_medida:'Presupuesto a medida',
   warn_casa:'El cumple a domicilio se presupuesta a medida según la distancia y lo que montemos. Escríbenos y te lo cerramos al momento.',
   warn_a:'Estimación orientativa. Para bloquear la fecha se deja una paga y señal de ',
@@ -791,10 +794,10 @@ es:{
   r_casa1:'Vamos a Barcelona y pueblos de alrededor. Llevamos decoración, monitores y animación, y lo dejamos todo recogido.',
   r_casa2:'Reserva con al menos un mes de antelación.',
   r_casa3:'El presupuesto depende de la distancia y de lo que montemos: escríbenos y te lo cerramos.',
-  r_c1:'La reserva del área de cumpleaños es de 2 horas.',
+  r_c1:'Los packs y el alquiler de sala son de 3 horas (el Family Lounge, 2). Tienes 30 minutos gratis antes y después para montar y recoger.',
   r_c2:'El pastel se pide siempre al centro (no se puede traer de fuera).',
   r_c3:'Reserva con un mes de antelación. Cuando hay un cumple, cerramos el centro al público: cada sábado y cada domingo solo hay sitio para UNA celebración.',
-  r_c4a:'Para bloquear la fecha se dejan ', r_c4b:' de señal, que se descuentan del total. Si cancelas tú, la señal no se devuelve.',
+  r_c4a:'Para bloquear la fecha se dejan ', r_c4b:' de señal, que se descuentan del total. Si cambias la fecha se mantiene el 70%; si cancelas, el 50% queda canjeable en bonos, talleres u horas de juego.',
   f_pocoa:'⏳ Faltan ', f_pocob:' días. Pedimos reservar con un mes de antelación, así que escríbenos cuanto antes y miramos si podemos encajarlo.',
   f_findea:'📅 Es ', f_findeb:'. Los fines de semana cerramos el centro al público para la fiesta, así que solo hay sitio para UNA celebración ese día: se ocupan pronto.',
   f_tarifa:'💶 Viernes, fin de semana y festivos van con la tarifa de fin de semana.',
@@ -838,10 +841,12 @@ ca:{
   aviso3:', així que només hi ha ', aviso4:'una festa per dissabte', aviso5:'. Les dates volen.',
   pie:'Party Studio · Kids & Kafé',
   total:'Total estimat', consultar:'a consultar', incluido:'inclòs',
-  ent_ad:'Entrada adults ×', mon_obl:'Monitor extra (obligatori +15 nens)',
+  ent_ad:'Entrada adults ×', mon_obl:'Monitor extra (obligatori a partir de 20 nens)',
   pastel_l:'Pastís temàtic (es demana al centre)',
   cat_med:'Càtering a mida', div_med:'Diversió a mida', limpieza:'Neteja',
   por_nino:'/nen', finde_l:' · Dv-Dg i festius', diario_l:' · Dl-Dj',
+  no_inc:'No inclou:', extra_nin:' nens extra · ',
+  r_c5:'Tens bo del centre? Et fem un 10% de descompte sobre el total.',
   extra_per:' persones extra · ', cu:' c/u', a_consultar:'A consultar', pk_medida:'Pressupost a mida',
   warn_casa:'L\'aniversari a domicili es pressuposta a mida segons la distància i el que muntem. Escriu-nos i t\'ho tanquem al moment.',
   warn_a:'Estimació orientativa. Per bloquejar la data es deixa una paga i senyal de ',
@@ -849,10 +854,10 @@ ca:{
   r_casa1:'Anem a Barcelona i pobles del voltant. Portem decoració, monitors i animació, i ho deixem tot recollit.',
   r_casa2:'Reserva amb un mes d\'antelació com a mínim.',
   r_casa3:'El pressupost depèn de la distància i del que muntem: escriu-nos i t\'ho tanquem.',
-  r_c1:'La reserva de l\'àrea d\'aniversaris és de 2 hores.',
+  r_c1:'Els packs i el lloguer de sala són de 3 hores (el Family Lounge, 2). Tens 30 minuts gratis abans i després per muntar i recollir.',
   r_c2:'El pastís es demana sempre al centre (no es pot portar de fora).',
   r_c3:'Reserva amb un mes d\'antelació. Quan hi ha un aniversari, tanquem el centre al públic: cada dissabte i cada diumenge només hi ha lloc per a UNA celebració.',
-  r_c4a:'Per bloquejar la data es deixen ', r_c4b:' de senyal, que es descompten del total. Si cancel·les tu, el senyal no es retorna.',
+  r_c4a:'Per bloquejar la data es deixen ', r_c4b:' de senyal, que es descompten del total. Si canvies la data es manté el 70%; si cancel·les, el 50% queda bescanviable en bons, tallers o hores de joc.',
   f_pocoa:'⏳ Falten ', f_pocob:' dies. Demanem reservar amb un mes d\'antelació, així que escriu-nos com abans millor i mirem si ho podem encaixar.',
   f_findea:'📅 És ', f_findeb:'. Els caps de setmana tanquem el centre al públic per a la festa, així que només hi ha lloc per a UNA celebració aquell dia: s\'ocupen aviat.',
   f_tarifa:'💶 Divendres, cap de setmana i festius van amb la tarifa de cap de setmana.',
@@ -896,10 +901,12 @@ en:{
   aviso3:', so there\'s only ', aviso4:'one party per Saturday', aviso5:'. Dates go fast.',
   pie:'Party Studio · Kids & Kafé',
   total:'Estimated total', consultar:'on request', incluido:'included',
-  ent_ad:'Adult entry ×', mon_obl:'Extra host (required over 15 kids)',
+  ent_ad:'Adult entry ×', mon_obl:'Extra host (required from 20 children)',
   pastel_l:'Themed cake (ordered through us)',
   cat_med:'Custom catering', div_med:'Custom entertainment', limpieza:'Cleaning',
   por_nino:'/child', finde_l:' · Fri-Sun and holidays', diario_l:' · Mon-Thu',
+  no_inc:'Not included:', extra_nin:' extra children · ',
+  r_c5:'Got a centre pass? We give you 10% off the total.',
   extra_per:' extra people · ', cu:' each', a_consultar:'On request', pk_medida:'Tailor-made quote',
   warn_casa:'At-home birthdays are quoted individually, based on the distance and what we set up. Message us and we\'ll close it right away.',
   warn_a:'Rough estimate. To lock in the date we take a ',
@@ -907,10 +914,10 @@ en:{
   r_casa1:'We cover Barcelona and nearby towns. We bring decoration, monitors and entertainment, and we clear everything away afterwards.',
   r_casa2:'Please book at least a month ahead.',
   r_casa3:'The quote depends on the distance and what we set up: message us and we\'ll close it.',
-  r_c1:'The birthday area is booked for 2 hours.',
+  r_c1:'Packs and room hire are 3 hours (Family Lounge, 2). You get 30 minutes free before and after to set up and clear away.',
   r_c2:'The cake is always ordered through us (outside cakes aren\'t allowed).',
   r_c3:'Book a month ahead. When there\'s a birthday we close the centre to the public: each Saturday and each Sunday there\'s room for just ONE celebration.',
-  r_c4a:'To lock in the date we take a ', r_c4b:' deposit, which comes off the total. If you cancel, the deposit isn\'t refunded.',
+  r_c4a:'To lock in the date we take a ', r_c4b:' deposit, which comes off the total. If you move the date you keep 70%; if you cancel, 50% stays as credit for passes, workshops or play hours.',
   f_pocoa:'⏳ That\'s in ', f_pocob:' days. We ask for a month\'s notice, so message us as soon as you can and we\'ll see if we can fit it in.',
   f_findea:'📅 That\'s a ', f_findeb:'. At weekends we close the centre to the public for the party, so there\'s room for just ONE celebration that day — they go fast.',
   f_tarifa:'💶 Fridays, weekends and holidays use the weekend rate.',
@@ -947,13 +954,13 @@ const THEMES = {
   unicornios:  {n:'Unicornios',  i:'🦄', sky:['#FFE9F3','#E8D9FF'], far:'#F6D9EE', gr:'#E9D5F5', ac:'#C77DC0', near:['✨','💖','⭐','🌸','✨','💫']},
   princesas:   {n:'Princesas',   i:'👑', sky:['#FFEFF5','#FFE0EC'], far:'#FBD3E4', gr:'#F4C2D8', ac:'#E05C92', near:['✨','💗','👑','🌟','💕','✨']},
   superheroes: {n:'Superhéroes', i:'🦸', sky:['#DDEBFF','#C9D8FF'], far:'#BFD2F5', gr:'#A9BEEC', ac:'#3D6ED8', near:['⚡','⭐','💥','✨','⚡','🌟']},
-  dinosaurios: {n:'Dinosaurios', i:'🦕', sky:['#E8F5DC','#D3EBC4'], far:'#BEDFAB', gr:'#A6CF93', ac:'#4F8A3D', near:['🍃','🌿','✨','🍃','🌱','🍃']},
-  sirenas:     {n:'Sirenas',     i:'🧜', sky:['#D9F3F7','#BEE8F2'], far:'#A8DDEC', gr:'#8ACEE3', ac:'#1E94B8', near:['🫧','🐠','✨','🫧','💙','🐟']},
+  dinosaurios: {n:'Dinosaurios', i:'🦖', sky:['#E8F5DC','#D3EBC4'], far:'#BEDFAB', gr:'#A6CF93', ac:'#4F8A3D', near:['🍃','🌿','✨','🍃','🌱','🍃']},
+  sirenas:     {n:'Sirenas',     i:'🧜‍♀️', sky:['#D9F3F7','#BEE8F2'], far:'#A8DDEC', gr:'#8ACEE3', ac:'#1E94B8', near:['🫧','🐠','✨','🫧','💙','🐟']},
   astronautas: {n:'Astronautas', i:'🚀', sky:['#E4E0F7','#CFC6EE'], far:'#BDB2E6', gr:'#A79ADB', ac:'#6A4FCF', near:['⭐','✨','🌟','💫','⭐','🛸']},
   piratas:     {n:'Piratas',     i:'🏴‍☠️',sky:['#DFF0F7','#C3E2F0'], far:'#A9D6E8', gr:'#8CC6DE', ac:'#1E6E8C', near:['⚓','✨','🦜','💰','🌊','⭐']},
   selva:       {n:'Selva',       i:'🦁', sky:['#EAF6DC','#D6EDC0'], far:'#BCDFA2', gr:'#9ECF85', ac:'#4F8A3D', near:['🍃','🐒','✨','🌴','🦜','🍃']},
   granja:      {n:'Granja',      i:'🐄', sky:['#FFF6DC','#FFE9BC'], far:'#F7DDA6', gr:'#DCC98A', ac:'#C06A2E', near:['🌻','🐔','✨','🌾','🐑','⭐']},
-  hadas:       {n:'Hadas',       i:'🧚', sky:['#F3ECFF','#E3D6FA'], far:'#D9C8F2', gr:'#C6B2E8', ac:'#8A5FBF', near:['✨','🌸','💫','🍄','🦋','✨']},
+  hadas:       {n:'Hadas',       i:'🧚‍♀️', sky:['#F3ECFF','#E3D6FA'], far:'#D9C8F2', gr:'#C6B2E8', ac:'#8A5FBF', near:['✨','🌸','💫','🍄','🦋','✨']},
   arcoiris:    {n:'Arcoíris',    i:'🌈', sky:['#EAF6FF','#D6ECFF'], far:'#C2E0F7', gr:'#AAD2EE', ac:'#4FA3D9', near:['☁️','✨','⭐','🎈','💫','☁️']},
   dulces:      {n:'Dulces',      i:'🍦', sky:['#FFF1E8','#FFE2D2'], far:'#FFD2BC', gr:'#F7BCA2', ac:'#E0567F', near:['🍬','🧁','✨','🍭','🍩','⭐']},
   mascotas:    {n:'Mascotas',    i:'🐱', sky:['#F6F1EA','#EAE0D4'], far:'#DCCDBC', gr:'#C9B8A4', ac:'#A87F63', near:['🐾','✨','🦴','🐾','⭐','💛']},
@@ -999,10 +1006,11 @@ const ART_PHOTO = {
 };
 window.KK_ART_PHOTO = ART_PHOTO;
 
-/* PRECIOS REALES sacados de cumpleanos.html (12 sep 2026).
+/* PRECIOS REALES del dossier "birthday info 2026-27" (13 sep 2026).
    Si cambian en la web, hay que cambiarlos aquí también.
    Aquí esta TODO lo que ofreces en cumpleaños, no solo los packs: los tres
-   Party, los tres alquileres de sala y el cumple a domicilio.            */
+   packs (Standard / Premium / VIP), el Family Lounge con y sin taller, los
+   dos alquileres de sala y el cumple a domicilio.                        */
 
 /* Tres maneras distintas de celebrar. La madre elige PRIMERO la manera y
    solo despues ve las opciones de esa manera: si le enseñas las 7 de golpe
@@ -1017,47 +1025,77 @@ const MODOS = [
      fijo      -> el precio es ese
      porNino   -> se multiplica por el numero de niños
      dia       -> cambia si es entre semana o fin de semana
-     consultar -> no hay precio publicado, no me lo invento              */
-const PACKS = [
-  /* ---- los tres packs de fiesta ---- */
-  {id:'party1', modo:'pack', tipo:'fijo', n:'Party 1', base:450, aforo:20, pastel:false,
-   d:'Media sala · decoración básica temática · juegos grupales y mini discoteca.',
-   note:'Máx. 20 personas · a partir de 20: +7€/persona'},
-  {id:'party2', modo:'pack', tipo:'fijo', n:'Party 2', base:650, aforo:80, pastel:false,
-   d:'Sala completa · decoración básica temática · juegos grupales y mini discoteca.',
-   note:'Aforo 80 · +15 niños: monitor extra 40€'},
-  {id:'party3', modo:'pack', tipo:'fijo', n:'Party 3', base:890, aforo:80, pastel:true,
-   d:'Sala completa · decoración COMPLETA con globos · pastel temático (12-15 porciones) · personaje disfrazado, taller o pintacaras (1h).',
-   note:'Aforo 80 · el más completo · personaje adicional +100€/h'},
+     consultar -> no hay precio publicado, no me lo invento
 
-  /* ---- alquiler de sala ---- */
-  {id:'lounge', modo:'sala', tipo:'porNino', n:'Family Lounge', base:25, aforo:12, pastel:false,
-   d:'2 horas de celebración · menú infantil o taller · sala de juego incluida.',
-   note:'Aforo 12 adultos · entrada adulto 3€ · catering adultos 12€'},
-  {id:'completa', modo:'sala', tipo:'dia', n:'Sala completa · 3h', base:350, baseFinde:550, aforo:80, pastel:false,
+   Campos que no son precio pero deciden el presupuesto:
+     aforo      -> tope de PERSONAS; pasado el tope, +7€ por persona
+     incKids    -> niños que ya van dentro (con su catering); pasados, +7€
+     pastel     -> el pastel tematico va incluido
+     cateringInc-> el catering infantil va incluido (no se cobra dos veces)
+     limpieza   -> la limpieza va incluida (no se suman los 35€)
+     no         -> lo que NO entra. Esto es lo que de verdad quita dudas:
+                   quien alquila la sala a secas tiene que saber que no hay
+                   catering ANTES de hacerse la ilusion, no despues.      */
+const PACKS = [
+  /* ---- los tres packs de fiesta · 3 horas ---- */
+  {id:'standard', modo:'pack', tipo:'dia', n:'Standard', base:315, baseFinde:365,
+   aforo:30, pastel:true,
+   d:'Media sala privada · 1 monitor · pastel temático para 20 personas · mobiliario.',
+   no:'catering, decoración ni limpieza.',
+   note:'3h · hasta 30 personas · niño extra 7€ · adulto extra 3€'},
+  {id:'premium', modo:'pack', tipo:'dia', n:'Premium', base:635, baseFinde:795,
+   aforo:0, incKids:20, pastel:true, cateringInc:true, limpieza:true,
+   d:'Sala completa privada · 1 monitor · pastel temático para 20 personas · decoración básica personalizada · catering para 20 niños · mobiliario completo · limpieza incluida.',
+   no:'taller, animación ni personaje disfrazado (se añaden aparte).',
+   note:'3h · 20 niños incluidos · niño extra 7€ con catering · monitor extra 40€ a partir de 20'},
+  {id:'vip', modo:'pack', tipo:'dia', n:'VIP', base:995, baseFinde:1190,
+   aforo:0, incKids:20, pastel:true, cateringInc:true, limpieza:true,
+   d:'Sala exclusiva privada · decoración completa temática y personalizada · pastel temático (20 porciones) · 2 monitores para juegos grupales · taller, animación, personaje disfrazado o pintacaras para 20 niños · catering infantil para 20 niños · limpieza incluida.',
+   no:'nada, lo lleva todo. Aparte solo van los caprichos: magia, fotógrafo o un muñecón más.',
+   note:'3h · 20 niños incluidos · niño extra 7€ con catering · monitor extra 40€ a partir de 20'},
+
+  /* ---- celebración práctica · 2 horas ---- */
+  {id:'lounge', modo:'sala', tipo:'porNino', n:'Family Lounge', base:25, aforo:0, pastel:false,
+   d:'2 horas de juego · merienda incluida · sin sala privada, el centro sigue abierto.',
+   no:'sala privada, decoración, monitor ni taller. El pastel se pide al centro.',
+   note:'2h · 25€/niño · entrada de adulto 3€ · la cafetería se pide en el bar'},
+  {id:'loungeTaller', modo:'sala', tipo:'porNino', n:'Family Lounge + taller', base:38, aforo:0, pastel:false,
+   d:'2 horas de juego · merienda incluida · taller a elegir (slime, tote bag, science, art & plant…).',
+   no:'sala privada ni decoración. El pastel se pide al centro.',
+   note:'2h · 38€/niño · entrada de adulto 3€ · taller incluido'},
+
+  /* ---- alquiler de sala · 3 horas ---- */
+  {id:'completa', modo:'sala', tipo:'dia', n:'Sala completa · 3h', base:350, baseFinde:550, aforo:0, pastel:false,
    d:'1 monitor incluido · 200 m² de rincones temáticos · 100 m² de baile y psicomotricidad · mobiliario para eventos.',
-   note:'L-J 350€ · V-D y festivos 550€'},
-  {id:'media', modo:'sala', tipo:'dia', n:'Media sala · 3h', base:230, baseFinde:310, aforo:20, pastel:false,
+   no:'catering, pastel, decoración, taller ni limpieza (35€ si traes catering de fuera).',
+   note:'3h · L-J 350€ · V-D y festivos 550€'},
+  {id:'media', modo:'sala', tipo:'dia', n:'Media sala · 3h', base:230, baseFinde:310, aforo:25, pastel:false,
    d:'1 monitor incluido · rincones temáticos + sala de baile · mobiliario para eventos.',
-   note:'L-J 230€ · V-D y festivos 310€ · aforo 20 (+7€/persona)'},
+   no:'catering, pastel, decoración, taller ni limpieza (35€ si traes catering de fuera).',
+   note:'3h · L-J 230€ · V-D y festivos 310€ · hasta 25 personas (+7€ c/u)'},
 
   /* ---- a domicilio ---- */
   {id:'domicilio', modo:'casa', tipo:'consultar', n:'Cumple a domicilio', base:0, aforo:0, pastel:false,
    d:'Llevamos decoración, monitores y animación a tu casa, y lo dejamos todo recogido al terminar.',
+   no:'nada cerrado: se presupuesta a medida según la distancia y lo que montemos.',
    note:'Barcelona y pueblos de alrededor · presupuesto a medida'}
 ];
 
 /* Extras reales. precio null = "a consultar" (no me invento cifras). */
 const EXTRAS = [
-  {id:'catNinos', i:'🍔', n:'Pack catering niños',   s:'10€ por niño',            tipo:'porNino',  precio:10},
+  {id:'catNinos', i:'🍔', n:'Pack catering niños',   s:'10€ por niño · bocadillo brioche, tortilla, mini donuts, bikini de Nutella, agua y zumo', tipo:'porNino',  precio:10},
   {id:'catAdult', i:'🥪', n:'Pack catering adultos', s:'12€ por persona',         tipo:'porAdulto',precio:12},
-  {id:'taller',   i:'✨', n:'Taller a medida',       s:'Diseñado para tu peque',  tipo:'consultar',precio:null},
+  {id:'bandejas', i:'🥗', n:'Bandejas sueltas',      s:'Fruta, hummus, tortilla, jamón ibérico, croquetas, mini croissant… de 18€ a 45€', tipo:'consultar', precio:null},
+  {id:'taller',   i:'✨', n:'Taller a medida',       s:'Slime, tote bag, science, art & plant, cooking, sensory…',  tipo:'consultar',precio:null},
   /* "Muñecón" a secas dejaba fuera media oferta: la madre que quiere una
-     princesa, un mago o un pintacaras no se veia reflejada y no lo pedia.
-     Mismo precio de la web (100€/h), pero la puerta abierta a lo que sea. */
+     princesa, un mago o un pintacaras no se veia reflejada y no lo pedia. */
   {id:'personaje',i:'🎭', n:'Personaje o animación',
-   s:'Muñecón, princesa, superhéroe, mago, pintacaras, magia, burbujas… desde 100€/h',
-   tipo:'fijo', precio:100},
+   s:'Muñecón, princesa, superhéroe, pintacaras, burbujas… 125€/hora',
+   tipo:'fijo', precio:125},
+  {id:'magia',    i:'🪄', n:'Show de magia (1h)',    s:'180€',                    tipo:'fijo',     precio:180},
+  {id:'magiaGlob',i:'🎈', n:'Magia + globoflexia',   s:'215€',                    tipo:'fijo',     precio:215},
+  {id:'foto',     i:'📸', n:'Fotografía profesional',s:'desde 90€',               tipo:'fijo',     precio:90},
+  {id:'horaExtra',i:'⏰', n:'Hora adicional',      s:'100€ · sujeto a disponibilidad de la sala', tipo:'fijo', precio:100},
   {id:'monitor',  i:'🙋', n:'Monitor extra',         s:'40€',                     tipo:'fijo',     precio:40}
 ];
 
@@ -1076,30 +1114,46 @@ const DATOS = {
       casa:{n:'A domicili',       s:'Portem la festa a casa teva'}
     },
     PACKS:{
-      party1:{d:'Mitja sala · decoració bàsica temàtica · jocs en grup i mini discoteca.',
-              note:'Màx. 20 persones · a partir de 20: +7€/persona'},
-      party2:{d:'Sala completa · decoració bàsica temàtica · jocs en grup i mini discoteca.',
-              note:'Aforament 80 · +15 nens: monitor extra 40€'},
-      party3:{d:'Sala completa · decoració COMPLETA amb globus · pastís temàtic (12-15 racions) · personatge disfressat, taller o pintacares (1h).',
-              note:'Aforament 80 · el més complet · personatge addicional +100€/h'},
-      lounge:{d:'2 hores de celebració · menú infantil o taller · sala de joc inclosa.',
-              note:'Aforament 12 adults · entrada adult 3€ · càtering adults 12€'},
+      standard:{d:'Mitja sala privada · 1 monitor · pastís temàtic per a 20 persones · mobiliari.',
+              no:'càtering, decoració ni neteja.',
+              note:'3h · fins a 30 persones · nen extra 7€ · adult extra 3€'},
+      premium:{d:'Sala completa privada · 1 monitor · pastís temàtic per a 20 persones · decoració bàsica personalitzada · càtering per a 20 nens · mobiliari complet · neteja inclosa.',
+              no:'taller, animació ni personatge disfressat (s\'afegeixen a part).',
+              note:'3h · 20 nens inclosos · nen extra 7€ amb càtering · monitor extra 40€ a partir de 20'},
+      vip:{   d:'Sala exclusiva privada · decoració completa temàtica i personalitzada · pastís temàtic (20 racions) · 2 monitors per a jocs en grup · taller, animació, personatge disfressat o pintacares per a 20 nens · càtering infantil per a 20 nens · neteja inclosa.',
+              no:'res, ho porta tot. A part només hi van els capricis: màgia, fotògraf o un ninot més.',
+              note:'3h · 20 nens inclosos · nen extra 7€ amb càtering · monitor extra 40€ a partir de 20'},
+      lounge:{d:'2 hores de joc · berenar inclòs · sense sala privada, el centre segueix obert.',
+              no:'sala privada, decoració, monitor ni taller. El pastís es demana al centre.',
+              note:'2h · 25€/nen · entrada d\'adult 3€ · la cafeteria es demana a la barra'},
+      loungeTaller:{n:'Family Lounge + taller',
+              d:'2 hores de joc · berenar inclòs · taller a triar (slime, tote bag, science, art & plant…).',
+              no:'sala privada ni decoració. El pastís es demana al centre.',
+              note:'2h · 38€/nen · entrada d\'adult 3€ · taller inclòs'},
       completa:{n:'Sala completa · 3h',
               d:'1 monitor inclòs · 200 m² de racons temàtics · 100 m² de ball i psicomotricitat · mobiliari per a esdeveniments.',
-              note:'Dl-Dj 350€ · Dv-Dg i festius 550€'},
+              no:'càtering, pastís, decoració, taller ni neteja (35€ si portes càtering de fora).',
+              note:'3h · Dl-Dj 350€ · Dv-Dg i festius 550€'},
       media:{n:'Mitja sala · 3h',
               d:'1 monitor inclòs · racons temàtics + sala de ball · mobiliari per a esdeveniments.',
-              note:'Dl-Dj 230€ · Dv-Dg i festius 310€ · aforament 20 (+7€/persona)'},
+              no:'càtering, pastís, decoració, taller ni neteja (35€ si portes càtering de fora).',
+              note:'3h · Dl-Dj 230€ · Dv-Dg i festius 310€ · fins a 25 persones (+7€ c/u)'},
       domicilio:{n:'Aniversari a domicili',
               d:'Portem decoració, monitors i animació a casa teva, i ho deixem tot recollit en acabar.',
+              no:'res tancat: es pressuposta a mida segons la distància i el que muntem.',
               note:'Barcelona i pobles del voltant · pressupost a mida'}
     },
     EXTRAS:{
-      catNinos:{n:'Pack càtering nens',    s:'10€ per nen'},
+      catNinos:{n:'Pack càtering nens',    s:'10€ per nen · entrepà brioix, truita, mini donuts, bikini de Nutella, aigua i suc'},
       catAdult:{n:'Pack càtering adults',  s:'12€ per persona'},
-      taller:{  n:'Taller a mida',         s:'Dissenyat per al teu petit'},
+      bandejas:{n:'Safates soltes',        s:'Fruita, hummus, truita, pernil ibèric, croquetes, mini croissant… de 18€ a 45€'},
+      taller:{  n:'Taller a mida',         s:'Slime, tote bag, science, art & plant, cooking, sensory…'},
       personaje:{n:'Personatge o animació',
-                 s:'Ninot, princesa, superheroi, mag, pintacares, màgia, bombolles… des de 100€/h'},
+                 s:'Ninot, princesa, superheroi, pintacares, bombolles… 125€/hora'},
+      magia:{   n:'Xou de màgia (1h)',     s:'180€'},
+      magiaGlob:{n:'Màgia + globoflèxia',  s:'215€'},
+      foto:{    n:'Fotografia professional',s:'des de 90€'},
+      horaExtra:{n:'Hora addicional',      s:'100€ · subjecte a la disponibilitat de la sala'},
       monitor:{ n:'Monitor extra',         s:'40€'}
     },
     THEMES:{
@@ -1118,31 +1172,47 @@ const DATOS = {
       casa:{n:'At your place', s:'We bring the party to you'}
     },
     PACKS:{
-      party1:{d:'Half the room · basic themed decoration · group games and mini disco.',
-              note:'Max. 20 people · over 20: +7€/person'},
-      party2:{d:'Whole room · basic themed decoration · group games and mini disco.',
-              note:'Capacity 80 · over 15 kids: extra host 40€'},
-      party3:{d:'Whole room · FULL decoration with balloons · themed cake (12-15 slices) · costumed character, workshop or face painting (1h).',
-              note:'Capacity 80 · the most complete · extra character +100€/h'},
+      standard:{d:'Half the room, private · 1 host · themed cake for 20 people · furniture.',
+              no:'catering, decoration or cleaning.',
+              note:'3h · up to 30 people · extra child 7€ · extra adult 3€'},
+      premium:{d:'Whole room, private · 1 host · themed cake for 20 people · basic personalised decoration · catering for 20 children · full furniture · cleaning included.',
+              no:'workshop, entertainment or costumed character (added separately).',
+              note:'3h · 20 children included · extra child 7€ with catering · extra host 40€ over 20'},
+      vip:{   d:'Exclusive private room · full themed and personalised decoration · themed cake (20 slices) · 2 hosts for group games · workshop, entertainment, costumed character or face painting for 20 children · kids catering for 20 · cleaning included.',
+              no:'nothing, it has everything. Only the treats go on top: magic, photographer or an extra mascot.',
+              note:'3h · 20 children included · extra child 7€ with catering · extra host 40€ over 20'},
       lounge:{n:'Family Lounge',
-              d:'2 hours of celebration · kids menu or workshop · play area included.',
-              note:'Capacity 12 adults · adult entry 3€ · adult catering 12€'},
+              d:'2 hours of play · afternoon snack included · no private room, the centre stays open.',
+              no:'private room, decoration, host or workshop. The cake is ordered from us.',
+              note:'2h · 25€/child · adult entry 3€ · café orders go through the bar'},
+      loungeTaller:{n:'Family Lounge + workshop',
+              d:'2 hours of play · afternoon snack included · workshop of your choice (slime, tote bag, science, art & plant…).',
+              no:'private room or decoration. The cake is ordered from us.',
+              note:'2h · 38€/child · adult entry 3€ · workshop included'},
       completa:{n:'Whole room · 3h',
               d:'1 host included · 200 m² of themed corners · 100 m² for dancing and movement · event furniture.',
-              note:'Mon-Thu 350€ · Fri-Sun and holidays 550€'},
+              no:'catering, cake, decoration, workshop or cleaning (35€ if you bring outside catering).',
+              note:'3h · Mon-Thu 350€ · Fri-Sun and holidays 550€'},
       media:{n:'Half room · 3h',
               d:'1 host included · themed corners + dance room · event furniture.',
-              note:'Mon-Thu 230€ · Fri-Sun and holidays 310€ · capacity 20 (+7€/person)'},
+              no:'catering, cake, decoration, workshop or cleaning (35€ if you bring outside catering).',
+              note:'3h · Mon-Thu 230€ · Fri-Sun and holidays 310€ · up to 25 people (+7€ each)'},
       domicilio:{n:'Party at your place',
               d:'We bring decoration, hosts and entertainment to your home, and leave everything tidy afterwards.',
+              no:'nothing fixed: quoted to measure depending on distance and what we set up.',
               note:'Barcelona and nearby towns · tailor-made quote'}
     },
     EXTRAS:{
-      catNinos:{n:'Kids catering pack',   s:'10€ per child'},
+      catNinos:{n:'Kids catering pack',   s:'10€ per child · brioche sandwich, potato omelette, mini donuts, Nutella bikini, water and juice'},
       catAdult:{n:'Adults catering pack', s:'12€ per person'},
-      taller:{  n:'Tailor-made workshop', s:'Designed for your little one'},
+      bandejas:{n:'Individual platters',  s:'Fruit, hummus, omelette, Iberian ham, croquettes, mini croissant… from 18€ to 45€'},
+      taller:{  n:'Tailor-made workshop', s:'Slime, tote bag, science, art & plant, cooking, sensory…'},
       personaje:{n:'Character or entertainer',
-                 s:'Mascot, princess, superhero, magician, face painting, magic, bubbles… from 100€/h'},
+                 s:'Mascot, princess, superhero, face painting, bubbles… 125€/hour'},
+      magia:{   n:'Magic show (1h)',      s:'180€'},
+      magiaGlob:{n:'Magic + balloon art', s:'215€'},
+      foto:{    n:'Professional photography',s:'from 90€'},
+      horaExtra:{n:'Extra hour',          s:'100€ · subject to room availability'},
       monitor:{ n:'Extra host',           s:'40€'}
     },
     THEMES:{
@@ -1160,7 +1230,7 @@ const DATOS = {
    al volver de ingles a castellano nos quedariamos en ingles para siempre. */
 const ES_ORIG = {
   MODOS:  Object.fromEntries(MODOS.map(m => [m.id, {n:m.n, s:m.s}])),
-  PACKS:  Object.fromEntries(PACKS.map(p => [p.id, {n:p.n, d:p.d, note:p.note}])),
+  PACKS:  Object.fromEntries(PACKS.map(p => [p.id, {n:p.n, d:p.d, note:p.note, no:p.no}])),
   EXTRAS: Object.fromEntries(EXTRAS.map(x => [x.id, {n:x.n, s:x.s}])),
   THEMES: Object.fromEntries(Object.entries(THEMES).map(([k,t]) => [k, t.n]))
 };
@@ -1174,12 +1244,12 @@ function aplicarIdiomaDatos(l){
     t.n = (D && D.THEMES[k]) || ES_ORIG.THEMES[k]);
 }
 
-const LIMPIEZA = 30;   // "Limpieza: 30€" en la web
+const LIMPIEZA = 35;   // limpieza si traes catering de fuera (dossier 2026-27)
 const SENAL    = 100;  // paga y señal para bloquear fecha
 const P_EXTRA  = 7;    // +7€ por persona cuando se pasa del aforo
 const E_ADULTO = 3;    // entrada de adulto en el Family Lounge
 
-const state = {theme:'unicornios', modo:'pack', pack:'party2', dia:'LJ', fecha:'',
+const state = {theme:'unicornios', modo:'pack', pack:'premium', dia:'LJ', fecha:'',
                name:'', age:'', kids:'', adults:'',
                extras:new Set(), catering:'', diversion:''};
 
@@ -1297,15 +1367,23 @@ function presupuesto(){
     lineas.push([pk.n, eur(pk.base)]); total += pk.base;
   }
 
-  /* AFORO: en media sala (Party 1 y Media sala) se pagan +7€ por persona
-     a partir de 20. Lo calculo yo para que no se lleve la sorpresa luego. */
-  if(pk.aforo && ['party1','media'].includes(pk.id) && gente > pk.aforo){
+  /* AFORO: Standard (30 personas) y Media sala (25) tienen tope. Pasado el
+     tope se pagan +7€ por persona. Lo calculo yo para que no se lleve la
+     sorpresa luego. Los demas llevan aforo:0 y esta regla ni se asoma.   */
+  if(pk.aforo && gente > pk.aforo){
     const ex = (gente - pk.aforo) * P_EXTRA;
     lineas.push(['+' + (gente - pk.aforo) + T('extra_per') + eur(P_EXTRA) + T('cu'), eur(ex)]);
     total += ex;
   }
-  /* Mas de 15 niños: el monitor extra es OBLIGATORIO, no opcional. */
-  if(pk.modo !== 'casa' && kids > 15 && !state.extras.has('monitor')){
+  /* Premium y VIP traen 20 niños dentro, con su catering. A partir del 20,
+     7€ por niño (y ese niño tambien come).                               */
+  if(pk.incKids && kids > pk.incKids){
+    const ex = (kids - pk.incKids) * P_EXTRA;
+    lineas.push(['+' + (kids - pk.incKids) + T('extra_nin') + eur(P_EXTRA) + T('cu'), eur(ex)]);
+    total += ex;
+  }
+  /* Mas de 20 niños: el monitor extra es OBLIGATORIO, no opcional. */
+  if(pk.modo !== 'casa' && kids > 20 && !state.extras.has('monitor')){
     lineas.push([T('mon_obl'), eur(40)]); total += 40;
   }
   /* EL PASTEL. Es obligatorio pedirlo al centro: si no sale en la lista,
@@ -1318,6 +1396,9 @@ function presupuesto(){
 
   state.extras.forEach(id => {
     const e = EXTRAS.find(x => x.id === id);
+    /* Premium y VIP ya traen el catering de los niños. Si lo marca igual,
+       se enseña como incluido pero NO se cobra dos veces.               */
+    if(id === 'catNinos' && pk.cateringInc){ lineas.push([e.n, T('incluido')]); return; }
     if(e.tipo === 'porNino'  ){ const s = e.precio*kids; lineas.push([e.n+' ×'+kids, kids?eur(s):'—']); total += s; }
     else if(e.tipo==='porAdulto'){ const s = e.precio*ad; lineas.push([e.n+' ×'+ad,  ad  ?eur(s):'—']); total += s; }
     else if(e.tipo==='fijo'  ){ lineas.push([e.n, eur(e.precio)]); total += e.precio; }
@@ -1326,8 +1407,13 @@ function presupuesto(){
 
   if(state.catering.trim())  lineas.push([T('cat_med'), T('consultar')]);
   if(state.diversion.trim()) lineas.push([T('div_med'), T('consultar')]);
-  /* la limpieza es de NUESTRA sala: si la fiesta es en su casa, no la cobras */
-  if(pk.modo !== 'casa'){ lineas.push([T('limpieza'), eur(LIMPIEZA)]); total += LIMPIEZA; }
+  /* la limpieza es de NUESTRA sala: si la fiesta es en su casa, no la cobras.
+     Y Premium y VIP ya la llevan dentro: cobrarla otra vez era inflar el
+     presupuesto justo en los packs buenos.                               */
+  if(pk.modo !== 'casa'){
+    if(pk.limpieza){ lineas.push([T('limpieza'), T('incluido')]); }
+    else           { lineas.push([T('limpieza'), eur(LIMPIEZA)]); total += LIMPIEZA; }
+  }
 
   return {lineas, total, pk};
 }
@@ -1431,7 +1517,7 @@ function renderModos(){
   b.onclick = () => {
     state.modo = m.id;
     /* al cambiar de modo hay que saltar a una opcion de ESE modo, si no
-       te quedas con "Party 2" seleccionado dentro de "A domicilio"    */
+       te quedas con "Premium" seleccionado dentro de "A domicilio"    */
     state.pack = PACKS.find(x => x.modo === m.id).id;
     renderPacks(); paint();
   };
@@ -1455,8 +1541,10 @@ const packsBox = $('#packs');
 function renderPacks(){
   clear(packsBox);
   const lista = PACKS.filter(p => p.modo === state.modo);
-  /* con 1 sola opcion (domicilio) la rejilla de 3 deja dos huecos feos */
-  packsBox.style.gridTemplateColumns = 'repeat(' + Math.min(lista.length,3) + ',1fr)';
+  /* con 1 sola opcion (domicilio) la rejilla de 3 deja dos huecos feos,
+     y con 4 (el alquiler) la de 3 deja una tarjeta huerfana abajo.     */
+  const cols = lista.length === 4 ? 2 : Math.min(lista.length, 3);
+  packsBox.style.gridTemplateColumns = 'repeat(' + cols + ',1fr)';
 
   lista.forEach(p => {
     const b = el('button','pk');
@@ -1471,6 +1559,18 @@ function renderPacks(){
                  :                          eur(p.base);
     b.appendChild(el('div','price',precio));
     b.appendChild(el('small','note',p.note));
+    /* Lo que NO entra, en la propia tarjeta. Es lo que mas dudas quita:
+       quien alquila la sala a secas tiene que enterarse de que no hay
+       catering ANTES de hacerse la ilusion, no cuando ya ha escrito.   */
+    if(p.no){
+      const nx = el('small');
+      nx.style.cssText = 'margin-top:8px;padding-top:8px;border-top:1px solid rgba(90,60,45,.14);font-size:11.5px;line-height:1.4';
+      const nb = el('b', null, T('no_inc'));
+      nb.style.cssText = 'display:inline;font-size:11.5px;font-weight:900;color:#B5641F';
+      nx.appendChild(nb);
+      nx.appendChild(document.createTextNode(' ' + p.no));
+      b.appendChild(nx);
+    }
     b.onclick = () => { state.pack = p.id; paint(); };
     packsBox.appendChild(b);
   });
@@ -1491,7 +1591,8 @@ function renderPacks(){
     : [['⏰ ', T('r_c1')],
        ['🎂 ', T('r_c2')],
        ['📅 ', T('r_c3')],
-       ['💶 ', T('r_c4a') + eur(SENAL) + T('r_c4b')]];
+       ['💶 ', T('r_c4a') + eur(SENAL) + T('r_c4b')],
+       ['💳 ', T('r_c5')]];
   reglas.forEach(([i,txt]) => {
     const r = el('div'); r.appendChild(document.createTextNode(i + txt));
     nota.appendChild(r);
@@ -1714,6 +1815,28 @@ document.querySelectorAll('.langbtn').forEach(b =>
   if(q && TXT[q]) return setLang(q);
   const nav = (navigator.language || 'es').slice(0,2).toLowerCase();
   setLang(TXT[nav] ? nav : 'es');
+})();
+
+/* ?n=Martina&e=5  → rellena nombre y edad.
+   Lo manda la APP (Centro -> Cumpleanos -> "Disenarlo"), que ya sabe como se
+   llama el peque y cuantos cumple. Asi la madre no reescribe lo que ya dimos
+   de alta: llega al estudio y su nombre ya esta en el cartel.
+   Va al final porque los campos tienen que existir ya en el DOM. Si no viene
+   ningun parametro no hace nada, y la pagina abierta desde Google no cambia. */
+(function(){
+  const q = new URLSearchParams(location.search);
+  const pon = (id, val) => {
+    if(!val) return;
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.value = val;
+    /* disparamos el mismo 'input' que escribe la madre: asi corre el oninput
+       de arriba, se actualiza state y se repinta el cartel. Sin esto el campo
+       se veria relleno pero el cartel saldria vacio. */
+    el.dispatchEvent(new Event('input', {bubbles:true}));
+  };
+  pon('fName', (q.get('n') || '').slice(0,18));
+  pon('fAge',  (q.get('e') || '').replace(/[^0-9]/g,'').slice(0,2));
 })();
 </script>
 
