@@ -145,6 +145,15 @@ input:focus{outline:0;border-color:var(--sage);box-shadow:0 0 0 4px rgba(107,130
 .fecha-msg.ok{background:#F7FAF4;border:1.5px dashed #DBE7D2;color:var(--sage-dark)}
 .fecha-msg.aviso{background:#FFF6EE;border:1.5px dashed #F0D6BE;color:#A85E2B}
 
+/* Telefono OPCIONAL del paso 5. Va debajo del cartel y encima de los
+   botones a proposito: en ese punto ya ha visto el precio y no se
+   asusta. Obligatorio espantaria a media pagina; opcional no cuesta
+   nada y a cambio Barbara puede llamar a quien no escriba. */
+.tel-box{margin:18px auto 0;max-width:340px;text-align:center}
+.tel-box .lab{display:block}
+.tel-box input{text-align:center}
+.tel-ayuda{margin-top:9px;font-size:12.5px;line-height:1.5;color:var(--muted)}
+
 /* packs */
 /* Los tres MODOS de celebrar. Van mas gordos que los packs a proposito:
    es la primera decision y tiene que verse que manda sobre lo de abajo. */
@@ -727,6 +736,13 @@ footer{padding:44px 20px 60px;text-align:center;color:var(--muted);font-size:13p
       <div class="foot" data-i18n="cartel_pie">🎂 DISEÑADO EN EL PARTY STUDIO</div>
     </div>
 
+    <div class="tel-box">
+      <label><span class="lab" data-i18n="l_tel">TU TELÉFONO (OPCIONAL)</span>
+        <input id="fTel" type="tel" inputmode="tel" autocomplete="tel" maxlength="20"
+               placeholder="600 000 000" data-i18n-ph="ph_tel"></label>
+      <div class="tel-ayuda" data-i18n="tel_ayuda">Si lo dejas, te escribimos nosotros y te guardamos la fecha. Si no, tranquila: no hace falta.</div>
+    </div>
+
     <div class="cta">
       <a class="btn btn-wa" id="waBtn" target="_blank" rel="noopener" data-i18n="b_wa">💬 Enviar mi fiesta por WhatsApp</a>
       <button class="btn btn-ghost" id="shot" data-i18n="b_save">📸 Guardar mi cartel</button>
@@ -777,6 +793,8 @@ es:{
   cartel_t:'El cumple de tu peque', cartel_de:'El cumple de ', cartel_post:'',
   cartel_pie:'🎂 DISEÑADO EN EL PARTY STUDIO',
   b_wa:'💬 Enviar mi fiesta por WhatsApp', b_save:'📸 Guardar mi cartel',
+  l_tel:'TU TELÉFONO (OPCIONAL)', ph_tel:'600 000 000',
+  tel_ayuda:'Si lo dejas, te escribimos nosotros y te guardamos la fecha. Si no, tranquila: no hace falta.',
   aviso1:'🗓️ Cuando hay cumple ', aviso2:'cerramos el centro entero para vosotros',
   aviso3:', así que solo hay ', aviso4:'una fiesta por sábado', aviso5:'. Las fechas vuelan.',
   pie:'Party Studio · Kids & Kafé',
@@ -837,6 +855,8 @@ ca:{
   cartel_t:'L\'aniversari del teu peque', cartel_de:'L\'aniversari de ', cartel_post:'',
   cartel_pie:'🎂 DISSENYAT AL PARTY STUDIO',
   b_wa:'💬 Enviar la meva festa per WhatsApp', b_save:'📸 Desar el meu cartell',
+  l_tel:'EL TEU TELÈFON (OPCIONAL)', ph_tel:'600 000 000',
+  tel_ayuda:'Si el deixes, t\'escrivim nosaltres i et guardem la data. Si no, tranquil·la: no cal.',
   aviso1:'🗓️ Quan hi ha aniversari ', aviso2:'tanquem el centre sencer per a vosaltres',
   aviso3:', així que només hi ha ', aviso4:'una festa per dissabte', aviso5:'. Les dates volen.',
   pie:'Party Studio · Kids & Kafé',
@@ -897,6 +917,8 @@ en:{
   cartel_t:'Your little one\'s birthday', cartel_de:'', cartel_post:'\u2019s birthday',
   cartel_pie:'🎂 DESIGNED AT THE PARTY STUDIO',
   b_wa:'💬 Send my party on WhatsApp', b_save:'📸 Save my poster',
+  l_tel:'YOUR PHONE (OPTIONAL)', ph_tel:'600 000 000',
+  tel_ayuda:'Leave it and we’ll write to you and hold the date. If not, no problem at all.',
   aviso1:'🗓️ When there\'s a birthday we ', aviso2:'close the whole centre just for you',
   aviso3:', so there\'s only ', aviso4:'one party per Saturday', aviso5:'. Dates go fast.',
   pie:'Party Studio · Kids & Kafé',
@@ -1250,7 +1272,7 @@ const P_EXTRA  = 7;    // +7€ por persona cuando se pasa del aforo
 const E_ADULTO = 3;    // entrada de adulto en el Family Lounge
 
 const state = {theme:'unicornios', modo:'pack', pack:'premium', dia:'LJ', fecha:'',
-               name:'', age:'', kids:'', adults:'',
+               name:'', age:'', kids:'', adults:'', tel:'',
                extras:new Set(), catering:'', diversion:''};
 
 const $ = s => document.querySelector(s);
@@ -1483,7 +1505,100 @@ function updatePoster(){
     (state.diversion.trim() ? '\n' + T('wa_div') + state.diversion.trim() + '\n' : '') +
     '\n' + (state.fecha ? T('wa_fin1') : T('wa_fin2'));
   $('#waBtn').href = 'https://wa.me/34637319226?text=' + encodeURIComponent(msg);
+
+  /* Cualquier cambio del diseno pasa por aqui, asi que es el unico
+     sitio donde hay que avisar al guardado. */
+  marcarCambio();
 }
+
+/* ================= GUARDAR EL DISENO =================
+   El agujero que tapa esto: si una madre disena la fiesta entera y
+   NO pulsa el boton verde, el cumple se pierde y nadie se entera.
+   Aqui el diseno se guarda en Supabase aunque no escriba nunca.
+
+   Reglas, y son importantes:
+   · Solo guarda si el diseno es DE VERDAD (hay nombre, edad, fecha,
+     gente o extras). Curiosear la pagina no genera fila, o la tabla
+     se llenaria de basura y dejaria de servir para nada.
+   · Una sola fila por visita. Si ademas pulsa WhatsApp, se guarda una
+     segunda fila con enviado_wa = true y la misma "sesion". Asi se ve
+     el embudo: cuantos disenan vs cuantos llegan a escribir.
+   · Se escribe con fetch a pelo, sin la libreria de Supabase: es UNA
+     peticion y no merece la pena cargar 100 KB para eso.
+   · Si falla, falla en SILENCIO. Esto jamas puede romperle la pagina
+     a una madre que solo queria ver precios.                        */
+const SB_URL = 'https://ovztunykbpvsilauxjhe.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im92enR1bnlrYnB2c2lsYXV4amhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMDY2MDMsImV4cCI6MjA5Mjc4MjYwM30.wRGp44Vxf9wqkK7x9p-okePmC9rsTRQo6XKnaMZJ2iE';
+const SESION = Math.random().toString(36).slice(2) + '-' + Date.now().toString(36);
+let yaGuardado = false, yaEnviado = false, relojIdle = null;
+
+function disenoReal(){
+  return !!(state.name.trim() || state.age || state.fecha || state.kids ||
+            state.adults || state.extras.size || state.catering.trim() ||
+            state.diversion.trim() || (state.tel || '').trim());
+}
+
+function filaDiseno(enviado){
+  const t   = THEMES[state.theme];
+  const pk  = PACKS.find(x => x.id === state.pack);
+  const mo  = MODOS.find(x => x.id === state.modo);
+  const {lineas, total} = presupuesto();
+  /* Los extras se guardan con su NOMBRE, no con el id: la fila la va a
+     leer una persona en el panel, no un programa. */
+  const exNom = [...state.extras]
+    .map(id => (EXTRAS.find(x => x.id === id) || {}).n || id).join(' · ');
+  return {
+    sesion: SESION,
+    enviado_wa: !!enviado,
+    idioma: LANG,
+    nombre_peque: state.name.trim()      || null,
+    edad:         state.age              || null,
+    ninos:        state.kids             || null,
+    adultos:      state.adults           || null,
+    fecha_fiesta: state.fecha            || null,
+    telefono:    (state.tel || '').trim()|| null,
+    tema:  t  ? t.n  : state.theme,
+    modo:  mo ? mo.n : state.modo,
+    pack:  pk ? pk.n : state.pack,
+    dia:   (pk && pk.tipo === 'dia') ? state.dia : null,
+    extras:    exNom                     || null,
+    catering:  state.catering.trim()     || null,
+    diversion: state.diversion.trim()    || null,
+    total:  total > 0 ? Math.round(total) : null,
+    resumen: lineas.map(l => l[0] + ': ' + l[1]).join('\n') || null
+  };
+}
+
+function guardarDiseno(enviado){
+  if(!disenoReal()) return;
+  if(enviado){ if(yaEnviado) return; yaEnviado = true; }
+  else if(yaGuardado) return;
+  yaGuardado = true;
+  clearTimeout(relojIdle);
+  try{
+    fetch(SB_URL + '/rest/v1/party_studio_disenos', {
+      method:'POST', keepalive:true,
+      headers:{ 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY,
+                'Content-Type':'application/json', 'Prefer':'return=minimal' },
+      body: JSON.stringify(filaDiseno(enviado))
+    }).catch(function(){});
+  }catch(e){}
+}
+
+function marcarCambio(){
+  if(yaGuardado || !disenoReal()) return;
+  clearTimeout(relojIdle);
+  relojIdle = setTimeout(function(){ guardarDiseno(false); }, 20000);
+}
+
+/* Si se va antes de los 20 s, lo guardamos al salir. keepalive:true es
+   lo que permite que la peticion sobreviva al cierre de la pestana.
+   En movil el evento fiable es visibilitychange, no pagehide, asi que
+   van los dos: el que llegue primero gana y el otro ya no hace nada. */
+addEventListener('pagehide', function(){ guardarDiseno(false); });
+document.addEventListener('visibilitychange', function(){
+  if(document.visibilityState === 'hidden') guardarDiseno(false);
+});
 
 /* ---------------- CONSTRUIR LOS BOTONES ---------------- */
 const themesBox = $('#themes');
@@ -1644,6 +1759,7 @@ $('#fKids').oninput = e => { state.kids    = e.target.value; updatePoster(); };
 $('#fAd').oninput   = e => { state.adults  = e.target.value; updatePoster(); };
 $('#fCat').oninput  = e => { state.catering= e.target.value; updatePoster(); };
 $('#fDiv').oninput  = e => { state.diversion= e.target.value; updatePoster(); };
+$('#fTel').oninput  = e => { state.tel      = e.target.value; marcarCambio();  };
 
 /* ================= LA FECHA ================= */
 /* Tres cosas hace este campo, y la segunda es la que importa de verdad:
@@ -1745,6 +1861,11 @@ if(typeof DeviceOrientationEvent !== 'undefined' && DeviceOrientationEvent.reque
   stage.addEventListener('click', () => DeviceOrientationEvent.requestPermission()
     .then(p => p === 'granted' && startTilt()).catch(()=>{}), {once:true});
 } else { startTilt(); }
+
+/* Al pulsar WhatsApp guardamos ANTES de que se vaya, marcado como enviado.
+   No bloqueamos el enlace: el fetch sale con keepalive y la madre se va
+   a WhatsApp sin notar nada. */
+$('#waBtn').addEventListener('click', function(){ guardarDiseno(true); });
 
 $('#shot').onclick = () => {
   const b = $('#shot');
