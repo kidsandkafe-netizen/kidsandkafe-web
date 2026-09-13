@@ -37,6 +37,39 @@
 .cx2 h3{font-family:'Nunito',serif;font-size:20.5px;font-weight:600;margin:0 0 7px;color:var(--ink)}
 .cx2 p{font-size:13.5px;color:var(--muted);margin:0;line-height:1.55}
 .cx2 .kicker{display:inline-block;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--acc);margin-bottom:10px}
+/* ✦ Tarjeta de pack EDITORIAL (opcion A) — mismo orden que la app:
+      arco de globos → sello → nombre → frase → ✓ incluye → ahorro → no incluye → precio.
+      Regla de oro: ✓ verde SOLO para lo que entra en el precio. Lo que se paga
+      aparte vive en la caja gris de abajo; un ✓ ahi seria una promesa falsa. */
+.phead{position:relative;height:150px;margin:-32px -28px 18px;border-radius:24px 24px 0 0;overflow:hidden;
+       background:radial-gradient(130% 100% at 50% 4%,#FFF7EF 0%,#F1F7E6 42%,#E4F0D6 78%,#D8E8C6 100%)}
+.phead svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+/* la del medio va espejada para que las tres no salgan calcadas */
+.pcard.feat .phead svg{transform:scaleX(-1)}
+@keyframes kkspk{0%,100%{opacity:.25;transform:scale(.7)}50%{opacity:1;transform:scale(1.15)}}
+.kk-spk{animation:kkspk 3s ease-in-out infinite}
+.pk-kick{font-size:10px;font-weight:900;letter-spacing:1.8px;color:var(--sage);text-transform:uppercase;margin-bottom:6px}
+.pk-frase{font-size:14px;color:var(--muted);line-height:1.5;margin:8px 0 0}
+.pk-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+.pk-chip{display:flex;align-items:center;gap:6px;background:var(--pink-bg);border:1px solid var(--pink-soft);
+         color:var(--ink);padding:7px 11px;border-radius:11px;font-size:12.5px;font-weight:700;line-height:1.25}
+.pk-chip i{color:var(--sage);font-weight:900;font-style:normal}
+.pk-ahorro{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#FBEFD6,#F6E2B8);
+           color:#8A6316;font-size:12px;font-weight:900;padding:6px 12px;border-radius:20px;margin-top:12px}
+.pk-no{background:rgba(90,60,45,.045);border-radius:12px;padding:10px 12px;font-size:12px;color:var(--muted);line-height:1.5;margin-top:12px}
+.pk-no b{color:var(--ink)}
+.pk-foot{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-top:auto;padding-top:14px;border-top:1px solid rgba(90,60,45,.12)}
+.pk-big{font-family:'Nunito',serif;font-size:38px;font-weight:600;color:var(--pink);letter-spacing:-1px;line-height:1}
+.pk-meta{font-size:11.5px;color:var(--muted);margin-top:5px}
+.pk-cta{padding:11px 18px;font-size:13.5px;white-space:nowrap}
+/* franja de veterania — el argumento que no se puede copiar */
+.vet{display:flex;align-items:center;gap:13px;background:var(--pink-bg);border:1px solid var(--pink-soft);
+     border-radius:16px;padding:15px 18px;margin-top:26px}
+.vet-n{font-family:'Nunito',serif;font-size:34px;font-weight:600;color:var(--sage);line-height:1;flex-shrink:0}
+.vet-t{font-size:13.5px;color:var(--muted);line-height:1.4}
+.vet-t b{color:var(--ink)}
+@media(prefers-reduced-motion:reduce){.kk-spk{animation:none}}
+@media(max-width:560px){.phead{height:128px}.pk-big{font-size:34px}}
 </style>
 <script type="application/ld+json">
 {
@@ -138,6 +171,10 @@
 </script>
 </head>
 <body>
+
+<!-- 🎈 Arco de globos: se dibuja UNA vez aqui y las tarjetas de pack lo
+     reutilizan con <use href="#kk-arco">. No necesita ninguna foto. -->
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute"><defs><radialGradient id="kkb-blush" cx="36%" cy="28%" r="78%"><stop offset="0%" stop-color="#FDE0EC"/><stop offset="52%" stop-color="#F7BAD3"/><stop offset="100%" stop-color="#EE9BBC"/></radialGradient><radialGradient id="kkb-peach" cx="36%" cy="28%" r="78%"><stop offset="0%" stop-color="#FFE7D4"/><stop offset="52%" stop-color="#FFC9A8"/><stop offset="100%" stop-color="#F7AC82"/></radialGradient><radialGradient id="kkb-lemon" cx="36%" cy="28%" r="78%"><stop offset="0%" stop-color="#FFF4CE"/><stop offset="52%" stop-color="#FBE39C"/><stop offset="100%" stop-color="#F3D274"/></radialGradient><radialGradient id="kkb-mint" cx="36%" cy="28%" r="78%"><stop offset="0%" stop-color="#DBF3E2"/><stop offset="52%" stop-color="#B7E4C7"/><stop offset="100%" stop-color="#95D3AC"/></radialGradient><radialGradient id="kkb-lav" cx="36%" cy="28%" r="78%"><stop offset="0%" stop-color="#ECE0F8"/><stop offset="52%" stop-color="#D6BEF0"/><stop offset="100%" stop-color="#BFA0E4"/></radialGradient><radialGradient id="kkb-sky" cx="36%" cy="28%" r="78%"><stop offset="0%" stop-color="#DCEEFB"/><stop offset="52%" stop-color="#BBDCF3"/><stop offset="100%" stop-color="#98C6E9"/></radialGradient><filter id="kkb-sh" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="3" stdDeviation="3.2" flood-color="#7E9468" flood-opacity=".26"/></filter><g id="kk-arco"><g fill="#fff"><g class="kk-spk" style="transform-origin:52px 46px;animation-delay:0s"><path d="M52 40 L53.4 44.6 L58 46 L53.4 47.4 L52 52 L50.6 47.4 L46 46 L50.6 44.6 Z" opacity=".9"/></g><g class="kk-spk" style="transform-origin:150px 24px;animation-delay:0.5s"><path d="M150 18 L151.4 22.6 L156 24 L151.4 25.4 L150 30 L148.6 25.4 L144 24 L148.6 22.6 Z" opacity=".9"/></g><g class="kk-spk" style="transform-origin:214px 22px;animation-delay:1s"><path d="M214 16 L215.4 20.6 L220 22 L215.4 23.4 L214 28 L212.6 23.4 L208 22 L212.6 20.6 Z" opacity=".9"/></g><g class="kk-spk" style="transform-origin:312px 52px;animation-delay:1.5s"><path d="M312 46 L313.4 50.6 L318 52 L313.4 53.4 L312 58 L310.6 53.4 L306 52 L310.6 50.6 Z" opacity=".9"/></g><g class="kk-spk" style="transform-origin:30px 96px;animation-delay:2s"><path d="M30 90 L31.4 94.6 L36 96 L31.4 97.4 L30 102 L28.6 97.4 L24 96 L28.6 94.6 Z" opacity=".9"/></g><g class="kk-spk" style="transform-origin:332px 104px;animation-delay:2.5s"><path d="M332 98 L333.4 102.6 L338 104 L333.4 105.4 L332 110 L330.6 105.4 L326 104 L330.6 102.6 Z" opacity=".9"/></g></g><g opacity=".55"><ellipse cx="46" cy="150" rx="10" ry="12" fill="url(#kkb-sky)"/><ellipse cx="66" cy="120" rx="11" ry="13" fill="url(#kkb-lav)"/><ellipse cx="86" cy="96" rx="10" ry="12" fill="url(#kkb-blush)"/><ellipse cx="112" cy="74" rx="11" ry="13" fill="url(#kkb-lemon)"/><ellipse cx="140" cy="58" rx="10" ry="12" fill="url(#kkb-mint)"/><ellipse cx="172" cy="50" rx="11" ry="13" fill="url(#kkb-peach)"/><ellipse cx="204" cy="50" rx="10" ry="12" fill="url(#kkb-sky)"/><ellipse cx="234" cy="58" rx="11" ry="13" fill="url(#kkb-blush)"/><ellipse cx="262" cy="74" rx="10" ry="12" fill="url(#kkb-lemon)"/><ellipse cx="286" cy="98" rx="11" ry="13" fill="url(#kkb-mint)"/><ellipse cx="306" cy="122" rx="10" ry="12" fill="url(#kkb-lav)"/></g><g filter="url(#kkb-sh)"><ellipse cx="26" cy="162" rx="17" ry="21" fill="url(#kkb-blush)"/><ellipse cx="20.56" cy="154.86" rx="4.42" ry="3.99" fill="#fff" opacity=".55"/><ellipse cx="44" cy="132" rx="15" ry="18" fill="url(#kkb-peach)"/><ellipse cx="39.2" cy="125.88" rx="3.9" ry="3.42" fill="#fff" opacity=".55"/><ellipse cx="58" cy="106" rx="18" ry="22" fill="url(#kkb-lemon)"/><ellipse cx="52.24" cy="98.52" rx="4.68" ry="4.18" fill="#fff" opacity=".55"/><ellipse cx="78" cy="82" rx="16" ry="19" fill="url(#kkb-mint)"/><ellipse cx="72.88" cy="75.54" rx="4.16" ry="3.61" fill="#fff" opacity=".55"/><ellipse cx="100" cy="62" rx="19" ry="23" fill="url(#kkb-lav)"/><ellipse cx="93.92" cy="54.18" rx="4.94" ry="4.37" fill="#fff" opacity=".55"/><ellipse cx="126" cy="48" rx="16" ry="19" fill="url(#kkb-sky)"/><ellipse cx="120.88" cy="41.54" rx="4.16" ry="3.61" fill="#fff" opacity=".55"/><ellipse cx="154" cy="40" rx="18" ry="22" fill="url(#kkb-blush)"/><ellipse cx="148.24" cy="32.52" rx="4.68" ry="4.18" fill="#fff" opacity=".55"/><ellipse cx="184" cy="37" rx="16" ry="19" fill="url(#kkb-peach)"/><ellipse cx="178.88" cy="30.54" rx="4.16" ry="3.61" fill="#fff" opacity=".55"/><ellipse cx="214" cy="41" rx="19" ry="23" fill="url(#kkb-lemon)"/><ellipse cx="207.92" cy="33.18" rx="4.94" ry="4.37" fill="#fff" opacity=".55"/><ellipse cx="242" cy="50" rx="16" ry="19" fill="url(#kkb-mint)"/><ellipse cx="236.88" cy="43.54" rx="4.16" ry="3.61" fill="#fff" opacity=".55"/><ellipse cx="266" cy="66" rx="18" ry="22" fill="url(#kkb-lav)"/><ellipse cx="260.24" cy="58.52" rx="4.68" ry="4.18" fill="#fff" opacity=".55"/><ellipse cx="288" cy="88" rx="16" ry="19" fill="url(#kkb-sky)"/><ellipse cx="282.88" cy="81.54" rx="4.16" ry="3.61" fill="#fff" opacity=".55"/><ellipse cx="306" cy="114" rx="19" ry="23" fill="url(#kkb-blush)"/><ellipse cx="299.92" cy="106.18" rx="4.94" ry="4.37" fill="#fff" opacity=".55"/><ellipse cx="322" cy="142" rx="15" ry="18" fill="url(#kkb-peach)"/><ellipse cx="317.2" cy="135.88" rx="3.9" ry="3.42" fill="#fff" opacity=".55"/><ellipse cx="336" cy="168" rx="17" ry="21" fill="url(#kkb-lemon)"/><ellipse cx="330.56" cy="160.86" rx="4.42" ry="3.99" fill="#fff" opacity=".55"/></g></g></defs></svg>
 <div id="prog"></div>
 <header id="hdr"><nav>
   <a href="/" class="brand"><img src="img/logo.png" alt="Kids & Kafé"><b>Kids&nbsp;&amp;&nbsp;Kafé</b></a>
@@ -232,27 +269,49 @@
     <div class="center"><div class="eyebrow c" data-rv>Paquetes de fiesta</div><h2 class="title" data-rv data-delay="1">Elige tu celebración</h2><p class="lead" data-rv data-delay="2">Tres paquetes de <strong>3 horas</strong>, para 20 niños. De lunes a viernes todos salen más baratos. Te decimos también lo que <em>no</em> lleva cada uno, para que no haya sorpresas.</p></div>
     <div class="cards">
       <div class="pcard" data-rv="s" data-delay="1">
-        <h4>Standard</h4><div class="price">365€</div>
-        <div style="margin:-10px 0 16px;font-size:14px;font-weight:800;color:#B5641F">De lunes a viernes: 315€</div>
-        <ul><li>Media sala privada, solo para vosotros</li><li>1 monitor</li><li>Pastel temático para 20 personas</li><li>Mobiliario para eventos</li><li>3 horas de celebración</li><li>Niño adicional 7€ · adulto adicional 3€</li></ul>
-        <div style="margin-top:14px;padding-top:13px;border-top:1px solid rgba(90,60,45,.12);font-size:13px;color:var(--muted);line-height:1.5"><b style="color:var(--ink)">No incluye:</b> catering, decoración temática ni servicio de limpieza. Puedes añadirlos aparte.</div>
-        <a href="https://wa.me/34637319226?text=Hola%2C%20quiero%20reservar%20el%20pack%20Standard%20%F0%9F%8E%82%0A%0AFecha%3A%20%0AEdad%20del%20peque%3A%20%0AN%C2%BA%20de%20ni%C3%B1os%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Reservar Standard</a>
+        <div class="phead"><svg viewBox="0 0 360 216" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><use href="#kk-arco"/></svg></div>
+        <div class="pk-kick">La esencial</div>
+        <h4>Standard</h4>
+        <p class="pk-frase">Media sala para vosotros solos, con monitor y pastel. La fiesta esencial, sin complicaciones.</p>
+        <div class="pk-chips"><span class="pk-chip"><i>✓</i>Media sala privada</span><span class="pk-chip"><i>✓</i>1 monitor</span><span class="pk-chip"><i>✓</i>Pastel para 20</span><span class="pk-chip"><i>✓</i>Mobiliario</span><span class="pk-chip"><i>✓</i>3 horas</span></div>
+        <div><span class="pk-ahorro">💶 De lunes a viernes 315€ · ahorras 50€</span></div>
+        <div class="pk-no"><b>No incluye:</b> catering, decoración temática ni servicio de limpieza. Niño adicional 7€ · adulto adicional 3€.</div>
+        <div class="pk-foot">
+          <div><div class="pk-big">365€</div><div class="pk-meta">3 h · hasta 30 personas</div></div>
+          <a href="https://wa.me/34637319226?text=Hola%2C%20quiero%20reservar%20el%20pack%20Standard%20%F0%9F%8E%82%0A%0AFecha%3A%20%0AEdad%20del%20peque%3A%20%0AN%C2%BA%20de%20ni%C3%B1os%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-ghost pk-cta">Reservar →</a>
+        </div>
       </div>
       <div class="pcard feat" data-rv="s" data-delay="2">
         <span class="ribbon">Más popular</span>
-        <h4>Premium</h4><div class="price">795€</div>
-        <div style="margin:-10px 0 16px;font-size:14px;font-weight:800;color:#B5641F">De lunes a viernes: 635€</div>
-        <ul><li>Sala completa privada</li><li>1 monitor</li><li>Pastel temático para 20 personas</li><li>Decoración básica personalizada</li><li>Catering para 20 niños</li><li>Mobiliario completo y limpieza incluida</li><li>3 horas de celebración</li></ul>
-        <div style="margin-top:14px;padding-top:13px;border-top:1px solid rgba(90,60,45,.12);font-size:13px;color:var(--muted);line-height:1.5"><b style="color:var(--ink)">No incluye:</b> taller ni personaje disfrazado, y la decoración es la básica (no la completa con globos). Niño adicional 7€ con catering · monitor extra 40€.</div>
-        <a href="https://wa.me/34637319226?text=Hola%2C%20quiero%20reservar%20el%20pack%20Premium%20%F0%9F%8E%82%0A%0AFecha%3A%20%0AEdad%20del%20peque%3A%20%0AN%C2%BA%20de%20ni%C3%B1os%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-pink" style="margin-top:18px;width:100%;justify-content:center">Reservar Premium</a>
+        <div class="phead"><svg viewBox="0 0 360 216" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><use href="#kk-arco"/></svg></div>
+        <h4>Premium</h4>
+        <p class="pk-frase">La sala entera, decorada y con la comida de los niños ya resuelta.</p>
+        <div class="pk-chips"><span class="pk-chip"><i>✓</i>Sala completa privada</span><span class="pk-chip"><i>✓</i>1 monitor</span><span class="pk-chip"><i>✓</i>Pastel para 20</span><span class="pk-chip"><i>✓</i>Decoración personalizada</span><span class="pk-chip"><i>✓</i>Catering 20 niños</span><span class="pk-chip"><i>✓</i>Limpieza incluida</span><span class="pk-chip"><i>✓</i>3 horas</span></div>
+        <div><span class="pk-ahorro">💶 De lunes a viernes 635€ · ahorras 160€</span></div>
+        <div class="pk-no"><b>No incluye:</b> taller ni personaje disfrazado, y la decoración es la básica (no la completa con globos). Niño adicional 7€ con catering · monitor extra 40€.</div>
+        <div class="pk-foot">
+          <div><div class="pk-big">795€</div><div class="pk-meta">3 h · 20 niños incluidos</div></div>
+          <a href="https://wa.me/34637319226?text=Hola%2C%20quiero%20reservar%20el%20pack%20Premium%20%F0%9F%8E%82%0A%0AFecha%3A%20%0AEdad%20del%20peque%3A%20%0AN%C2%BA%20de%20ni%C3%B1os%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-pink pk-cta">Reservar →</a>
+        </div>
       </div>
       <div class="pcard" data-rv="s" data-delay="3">
-        <h4>VIP</h4><div class="price">1.190€</div>
-        <div style="margin:-10px 0 16px;font-size:14px;font-weight:800;color:#B5641F">De lunes a viernes: 995€</div>
-        <ul><li>Sala exclusiva privada</li><li>Decoración completa temática y personalizada</li><li>Pastel temático para 20 porciones</li><li>2 monitores para juegos grupales</li><li>Taller, animación, personaje disfrazado o pintacaras para 20 niños</li><li>Catering infantil para 20 niños</li><li>Limpieza incluida · 3 horas</li></ul>
-        <div style="margin-top:14px;padding-top:13px;border-top:1px solid rgba(90,60,45,.12);font-size:13px;color:var(--muted);line-height:1.5"><b style="color:var(--ink)">Lo lleva todo.</b> Solo se añaden aparte los caprichos: muñecón adicional 100€/h, fotografía profesional desde 90€ o catering de adultos.</div>
-        <a href="https://wa.me/34637319226?text=Hola%2C%20quiero%20reservar%20el%20pack%20VIP%20%F0%9F%8E%82%0A%0AFecha%3A%20%0AEdad%20del%20peque%3A%20%0AN%C2%BA%20de%20ni%C3%B1os%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Reservar VIP</a>
+        <div class="phead"><svg viewBox="0 0 360 216" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><use href="#kk-arco"/></svg></div>
+        <div class="pk-kick">Todo incluido</div>
+        <h4>VIP</h4>
+        <p class="pk-frase">Decoración completa, dos monitores y animación con personaje. Vosotros solo disfrutáis.</p>
+        <div class="pk-chips"><span class="pk-chip"><i>✓</i>Sala exclusiva privada</span><span class="pk-chip"><i>✓</i>Decoración completa temática</span><span class="pk-chip"><i>✓</i>Pastel para 20</span><span class="pk-chip"><i>✓</i>2 monitores</span><span class="pk-chip"><i>✓</i>Taller o personaje</span><span class="pk-chip"><i>✓</i>Catering 20 niños</span><span class="pk-chip"><i>✓</i>Limpieza incluida</span></div>
+        <div><span class="pk-ahorro">💶 De lunes a viernes 995€ · ahorras 195€</span></div>
+        <div class="pk-no"><b>Lo lleva todo.</b> Aparte solo los caprichos: muñecón adicional 100€, fotografía profesional desde 90€ o catering de adultos.</div>
+        <div class="pk-foot">
+          <div><div class="pk-big">1.190€</div><div class="pk-meta">3 h · 20 niños incluidos</div></div>
+          <a href="https://wa.me/34637319226?text=Hola%2C%20quiero%20reservar%20el%20pack%20VIP%20%F0%9F%8E%82%0A%0AFecha%3A%20%0AEdad%20del%20peque%3A%20%0AN%C2%BA%20de%20ni%C3%B1os%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-ghost pk-cta">Reservar →</a>
+        </div>
       </div>
+    </div>
+
+    <div class="vet" data-rv>
+      <div class="vet-n">8</div>
+      <div class="vet-t"><b>años celebrando cumples</b><br>en Kids &amp; Kafé, Les Corts</div>
     </div>
 
     <div class="note" data-rv style="border-left-color:#B5641F"><b>¿Tienes bono del centro?</b> Los clientes con bono activo tienen un <b>10% de descuento sobre el total</b> de la celebración. Y celebrar <b>de lunes a viernes</b> sale entre 50€ y 195€ más barato que el fin de semana.</div>
