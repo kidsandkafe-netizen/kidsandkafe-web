@@ -89,6 +89,9 @@ body{font-family:'Nunito',system-ui,sans-serif;background:var(--cream);color:var
 /* etiquetas flotantes dentro del escenario */
 /* lienzo 3D real (WebGL). Si el movil no puede, se queda el dibujo plano debajo. */
 #gl{position:absolute;inset:0;width:100%;height:100%;display:none;z-index:3;touch-action:none}
+.vineta{display:none}
+.stage.is3d .vineta{display:block;position:absolute;inset:0;z-index:4;pointer-events:none;
+  background:radial-gradient(120% 95% at 50% 42%,rgba(0,0,0,0) 52%,rgba(6,14,30,.34) 100%)}
 .stage.is3d #gl{display:block}
 .stage.is3d .layer{display:none}
 .stage-tag{position:absolute;left:16px;bottom:16px;z-index:5;background:rgba(255,255,255,.92);
@@ -660,6 +663,9 @@ footer{padding:44px 20px 60px;text-align:center;color:var(--muted);font-size:13p
     </div>
     <div class="layer l-near" data-depth="46" id="near"></div>
     <canvas id="gl"></canvas>
+    <!-- Oscurecer las esquinas. Es lo que hace un objetivo de verdad, y por
+         eso el ojo lo lee como foto y no como dibujo de ordenador. -->
+    <div class="vineta"></div>
     <div class="stage-tag" id="tag">🦄 Unicornios</div>
     <div class="stage-hint" data-i18n="hint">✨ mueve para ver</div>
   </div>
@@ -2062,7 +2068,7 @@ const parquetTex = (() => {
          que el color de la madera, solo mas oscura. Asi el suelo se lee
          como un parquet nogal de verdad y no como tarima clarita.        */
       const tono = 0.58 + rnd()*0.42;                       /* cada lama, su tono */
-      x.fillStyle = `rgb(${Math.round(56*tono)},${Math.round(31*tono)},${Math.round(17*tono)})`;
+      x.fillStyle = `rgb(${Math.round(150*tono)},${Math.round(99*tono)},${Math.round(62*tono)})`;
       x.fillRect(X+1.5, Y+1.5, LARGO-3, ALTO-3);
       for(let v = 0; v < 10; v++){                          /* la veta */
         const vy = Y + 4 + rnd()*(ALTO-8);
@@ -2127,7 +2133,7 @@ scene.add(pared);
 /* niebla suave = profundidad de verdad, lo lejano se difumina.
    Ahora tira a marino para que el suelo se funda con la pared en vez de
    cortarse con una raya clara justo donde se juntan. */
-scene.fog = new THREE.Fog(MARINO, 12, 27);
+scene.fog = new THREE.Fog(MARINO, 9, 25);   /* lo lejano se funde antes = hay fondo */
 
 /* grupo que gira con el dedo */
 const world = new THREE.Group();
@@ -2194,10 +2200,35 @@ const arco = new THREE.CatmullRomCurve3([
 
 /* menos triangulos que el globo con hilo: de estos hay 70, no 3 */
 const globoGeo = new THREE.SphereGeometry(1, 20, 15);
-globoGeo.scale(1, 1.17, 1);
+globoGeo.scale(1, 1.20, 1);
+{ const p = globoGeo.attributes.position;
+  for(let i=0;i<p.count;i++){
+    const y = p.getY(i);
+    if(y < -0.95){ const k = (-y - 0.95) / 0.27;
+      p.setX(i, p.getX(i)*(1-k*0.66)); p.setZ(i, p.getZ(i)*(1-k*0.66)); }
+  }
+  globoGeo.computeVertexNormals(); }
 
 const racimo = [];
-const NRACIMO = 104;
+/* Mas globos: al agrupar en matas se abren huecos, y con 104 el brazo
+   izquierdo se quedaba en un agujero azul. */
+const NRACIMO = 150;
+
+/* Una guirnalda de verdad NO es azar repartido: son MATAS de 5-6 globos
+   pegados con huecos entre mata y mata. Repartidos por igual parecen
+   bolitas sueltas; agrupados parece montado por alguien.
+   Las matas se pegan al arco (desvio pequeno) para que no queden calvas. */
+const NMATA = 26;
+const matas = [];
+for(let k = 0; k < NMATA; k++){
+  const t = (k + 0.5) / NMATA;
+  const p = arco.getPoint(t);
+  const gr = 0.34 + Math.sin(t * Math.PI) * 0.52;
+  matas.push({p, gr,
+    dx:(Math.random()-0.5)*gr*0.85,
+    dy:(Math.random()-0.5)*gr*0.70,
+    dz:(Math.random()-0.5)*0.7});
+}
 for(let i = 0; i < NRACIMO; i++){
   const t = i / (NRACIMO - 1);
   const p = arco.getPoint(t);
@@ -2219,14 +2250,14 @@ for(let i = 0; i < NRACIMO; i++){
        Estaba en 0.32 = globo de plastico recien inflado, con un brillo
        blanco enorme que tapaba el color. A 0.88 es globo mate, el color
        se ve entero y no hay reflejo que lo blanquee.                    */
-    roughness: cromo ? 0.14 : 0.88,
+    roughness: cromo ? 0.14 : 0.72,
     metalness: cromo ? 0.70 : 0,
     /* Cuanta luz del entorno recogen. Los cromados necesitan MUCHA: un metal
        no tiene color propio, solo devuelve lo que le llega, y con poco se
        queda apagado como una lata vieja en vez de un globo plateado. */
-    envMapIntensity: cromo ? 2.6 : 0.30,
+    envMapIntensity: cromo ? 2.6 : 0.52,
     /* barniz y halo: FUERA en los mates. Eran las dos capas blancas. */
-    clearcoat: cromo ? 0.45 : 0, clearcoatRoughness: 0.22,
+    clearcoat: cromo ? 0.45 : 0.18, clearcoatRoughness: cromo ? 0.22 : 0.55,
     /* El "sheen" es un halo blanco de terciopelo por todo el globo. Con 0.55
        se comia el color: sobre pared marino todos salian blancos. Bajado a
        0.15 el globo sigue teniendo brillo, pero el color pastel se ve.    */
@@ -2236,12 +2267,31 @@ for(let i = 0; i < NRACIMO; i++){
   const g = new THREE.Mesh(globoGeo, mat);
   g.castShadow = true;
   g.scale.setScalar(r);
-  g.position.set(
-    p.x + (Math.random() - 0.5) * grosor * 1.7,
-    p.y + (Math.random() - 0.5) * grosor * 1.7,
-    p.z + (Math.random() - 0.5) * 0.9
-  );
-  g.rotation.set((Math.random()-0.5)*0.5, Math.random()*6.28, (Math.random()-0.5)*0.5);
+  /* cada globo se pega a SU mata; el desvio va en funcion de su radio,
+     asi se tocan de verdad en vez de quedar solo cerca */
+  const M = matas[Math.min(NMATA - 1, Math.floor(i / (NRACIMO / NMATA)))];
+  const cx = M.p.x + M.dx, cy = M.p.y + M.dy, cz = M.p.z + M.dz;
+  const a1 = Math.random() * 6.28, a2 = Math.random() * 6.28;
+  const sep = r * (0.9 + Math.random() * 1.15);
+  g.position.set(cx + Math.cos(a1) * sep,
+                 cy + Math.sin(a1) * sep * 0.95,
+                 cz + Math.cos(a2) * sep * 0.7);
+
+  /* EL TRUCO: el cuello apunta al centro de su mata, o sea hacia DENTRO,
+     donde lo tapan los vecinos — igual que grapados en la tira de verdad.
+     Girados al azar, los cuellos asomaban de lado y parecian conos.
+     Pero apuntando SOLO hacia dentro, los globos de abajo ensenaban el
+     cuello hacia arriba y parecian lagrimas. Asi que el cuello va sobre
+     todo hacia abajo y solo un poco hacia dentro: 2 partes de gravedad
+     por 1 de inclinacion. */
+  const haciaDentro = new THREE.Vector3(cx - g.position.x,
+                                        cy - g.position.y,
+                                        cz - g.position.z);
+  if(haciaDentro.lengthSq() < 1e-6) haciaDentro.set(0, -1, 0);
+  haciaDentro.normalize().multiplyScalar(0.34).add(new THREE.Vector3(0, -0.66, 0));
+  g.quaternion.setFromUnitVectors(new THREE.Vector3(0, -1, 0),
+                                  haciaDentro.normalize());
+  g.rotateY(Math.random() * 6.28);
   g.userData = {mat, base: g.position.clone(), phase: Math.random()*6.28, cromo};
   world.add(g);
   racimo.push(g);
@@ -2416,9 +2466,14 @@ const confetti = new THREE.InstancedMesh(confGeo, confMat, CONF);
 confetti.instanceColor = new THREE.InstancedBufferAttribute(new Float32Array(CONF*3), 3);
 const cData = [], dummy = new THREE.Object3D();
 for(let i=0;i<CONF;i++){
-  cData.push({x:(Math.random()-0.5)*15, y:Math.random()*9, z:(Math.random()-0.5)*11,
+  cData.push({x:(Math.random()-0.5)*13, y:Math.random()*9,
+              /* delante, no detras de la pared: el de atras no se veia y
+                 el que se veia parecia mota de polvo */
+              z:(Math.random()-0.5)*5.0 + 0.2,
               vy:0.006+Math.random()*0.016, rx:Math.random()*6, ry:Math.random()*6,
-              sx:(Math.random()-0.5)*0.02, sr:(Math.random()-0.5)*0.06});
+              sx:(Math.random()-0.5)*0.02, sr:(Math.random()-0.5)*0.06,
+              /* cada trozo de su tamano: todos iguales cantan a repetido */
+              s:0.55+Math.random()*0.70});
 }
 world.add(confetti);
 
@@ -2430,6 +2485,45 @@ world.add(confetti);
 const heroMat = new THREE.MeshBasicMaterial({transparent:true, toneMapped:false,
                                              fog:false, opacity:0});
 const hero = new THREE.Mesh(new THREE.PlaneGeometry(5.4, 3.21), heroMat);
+
+/* El cartel era un rectangulo flotando. Tus fondos de verdad son PANELES
+   de arco apoyados en el suelo. Se dibuja el contorno una vez, en medidas
+   de 1x1, y luego se estira al tamano de la lamina que toque. */
+const panelArco = (() => {
+  const s = new THREE.Shape();
+  const w = 0.5;
+  s.moveTo(-w, 0);
+  s.lineTo(-w, 1 - w);
+  s.absarc(0, 1 - w, w, Math.PI, 0, true);   /* la curva de arriba */
+  s.lineTo(w, 0);
+  s.lineTo(-w, 0);
+
+  const grupo = new THREE.Group();
+
+  /* EL FILO DORADO es un SEGUNDO arco identico un pelin mas grande, puesto
+     justo detras. Solo asoma el borde. Ese hilo de oro es lo que hace que
+     el arco se lea aunque el panel y la lamina sean los dos color crema:
+     antes era crema sobre crema y no se veia el arco, solo una neblina. */
+  const oro = new THREE.Mesh(
+    new THREE.ExtrudeGeometry(s, {depth:0.06, bevelEnabled:false}),
+    new THREE.MeshStandardMaterial({
+      color:0xB8923C, roughness:0.30, metalness:0.45, envMapIntensity:1.1}));
+  oro.position.z = -0.05;
+  grupo.add(oro);
+  grupo.userData.oro = oro;
+
+  /* Blanco roto, no blanco. Un pelin mas calido y mas oscuro que la lamina
+     para que el cartel siga siendo el que manda en la foto. */
+  const panel = new THREE.Mesh(
+    new THREE.ExtrudeGeometry(s, {depth:0.10, bevelEnabled:false}),
+    new THREE.MeshStandardMaterial({
+      color:0xF2EADC, roughness:0.80, metalness:0, envMapIntensity:0.25}));
+  panel.castShadow = true; panel.receiveShadow = true;
+  grupo.add(panel);
+  return grupo;
+})();
+panelArco.position.set(0, 0, -0.86);
+world.add(panelArco);
 hero.position.set(0, 1.95, -0.6);
 world.add(hero);
 
@@ -2441,9 +2535,25 @@ const shadowTex = (() => {
   const ctx = c.getContext('2d'); ctx.fillStyle = g; ctx.fillRect(0,0,128,128);
   return new THREE.CanvasTexture(c);
 })();
+/* Una cosa que no proyecta sombra parece pegada con celo. La sombra de
+   verdad del foco es dura y cara; esta va pintada y sale mas suave. */
+function sombraSuelo(x, z, ancho, fondo, fuerza){
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(ancho, fondo),
+    new THREE.MeshBasicMaterial({map:shadowTex, transparent:true,
+                                 depthWrite:false, opacity:fuerza}));
+  m.rotation.x = -Math.PI/2;
+  m.position.set(x, 0.009, z);
+  world.add(m);
+}
+sombraSuelo(-2.70, 0.62, 3.4, 2.6, 0.85);   /* mesa dulce */
+sombraSuelo( 2.85, 0.42, 3.0, 2.4, 0.80);   /* torre de peanas */
+sombraSuelo(-1.50, 1.78, 2.0, 1.7, 0.70);   /* regalos */
+sombraSuelo(-0.80, 2.36, 1.5, 1.3, 0.62);
+sombraSuelo( 1.60, 1.88, 1.9, 1.6, 0.70);
+
 const contact = new THREE.Mesh(new THREE.PlaneGeometry(7.5, 3.2),
   new THREE.MeshBasicMaterial({map:shadowTex, transparent:true, depthWrite:false}));
-contact.rotation.x = -Math.PI/2; contact.position.set(0, 0.012, 0.2);
+contact.rotation.x = -Math.PI/2; contact.position.set(0, 0.012, -0.35);
 world.add(contact);
 
 const texCache = new Map();
@@ -2757,8 +2867,17 @@ function aplicarCartel(key, conFundido){
       const im = tex.image, a = (im && im.width && im.height) ? im.width/im.height : 5.4/3.21;
       const H = a < 1 ? 4.4 : 3.8, W = H * a;
       hero.scale.set(W/5.4, H/3.21, 1);
-      window.KK3D_heroY = H/2 + 0.3;
+      window.KK3D_heroY = H/2 + 0.06;   /* apoyado, no flotando a 30 cm */
       contact.scale.set(Math.max(0.6, W/7.5), 1, 1);
+      /* el panel, un pelin mas grande que la lamina y pisando el suelo */
+      const sx = Math.max(W*1.13, H*0.60), sy = H*1.10;
+      panelArco.scale.set(sx, sy, 1);
+      /* El filo de oro tiene que medir IGUAL por los tres lados. Como el
+         grupo se estira distinto a lo ancho que a lo alto, el arco dorado
+         compensa dividiendo por cada estiramiento. Por abajo no asoma:
+         la forma arranca en y=0 y ahi pisa el suelo. */
+      const filo = 0.10;
+      panelArco.userData.oro.scale.set(1 + filo/sx, 1 + filo/sy, 1);
       heroW = W; heroH = H; frameHero();   /* la camara se recoloca sola */
     }
     if(conFundido) fading = false;
@@ -2874,9 +2993,10 @@ renderer.setAnimationLoop(() => {
   for(let i=0;i<CONF;i++){
     const c = cData[i];
     c.y -= c.vy; c.x += c.sx*0.3; c.rx += c.sr; c.ry += c.sr*0.7;
-    if(c.y < -0.4){ c.y = 8 + Math.random()*2; c.x = (Math.random()-0.5)*15; }
+    if(c.y < -0.4){ c.y = 8 + Math.random()*2; c.x = (Math.random()-0.5)*13; }
     dummy.position.set(c.x, c.y, c.z);
     dummy.rotation.set(c.rx, c.ry, c.rx*0.4);
+    dummy.scale.set(c.s, c.s, 1);
     dummy.updateMatrix();
     confetti.setMatrixAt(i, dummy.matrix);
   }
