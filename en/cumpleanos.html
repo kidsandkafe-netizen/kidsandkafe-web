@@ -311,7 +311,7 @@
     </div>
 
     <div class="vet" data-rv>
-      <div class="vet-n">8</div>
+      <div class="vet-n" data-desde="2018">8</div>
       <div class="vet-t"><b>years of birthday parties</b><br>at Kids &amp; Kafé, Les Corts</div>
     </div>
 
@@ -460,5 +460,18 @@
 <a href="https://wa.me/34637319226" class="wa-float" target="_blank" rel="noopener" aria-label="WhatsApp">💬</a>
 <div id="lightbox"><img src="" alt=""></div>
 <script src="../js/main.js"></script>
+<script>
+/* El numero de anos celebrando cumples se calcula solo. Escrito a mano se
+   queda viejo el 1 de enero y nadie se da cuenta. El 8 que hay en el HTML
+   es el respaldo por si el navegador no ejecuta este script. */
+(function(){
+  var n = document.querySelector('.vet-n[data-desde]');
+  if(!n) return;
+  var desde = parseInt(n.getAttribute('data-desde'), 10);
+  if(!desde) return;
+  var anos = new Date().getFullYear() - desde;
+  if(anos >= 1) n.textContent = String(anos);
+})();
+</script>
 </body>
 </html>
