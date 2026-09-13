@@ -1465,6 +1465,10 @@ function renderTotal(){
 /* ---------------- EL CARTEL ---------------- */
 function updatePoster(){
   renderTotal();
+  /* El cartel que se DESCARGA lleva fecha y marca; se pinta en otro bloque
+     de script que no ve `state`, asi que se los dejamos aqui a mano. */
+  window.KK_FECHA = state.fecha;
+  window.KK_LANG  = LANG;
   const t  = THEMES[state.theme];
   const nm = state.name.trim();
   const pk = PACKS.find(p => p.id === state.pack);
@@ -2492,16 +2496,96 @@ const tipoLista = (document.fonts && document.fonts.load)
 
 /* Pinta la lamina + el nombre del peque. Devuelve el lienzo, que sirve
    para el 3D y (mas adelante) para descargar/imprimir el cartel. */
-function componerCartel(im, info){
+/* ---- LO QUE SOLO LLEVA EL CARTEL QUE SE DESCARGA ----
+   La lamina que gira en 3D se queda LIMPIA: solo nombre y edad.
+   Pero el JPG que la madre manda al grupo de mamis es publicidad,
+   asi que ese si lleva la fecha y de donde sale. */
+const MARCA_CARTEL = 'KIDS & KAF\u00c9 \u00b7 LES CORTS, BARCELONA \u00b7 KIDSANDKAFE.ES';
+
+function fechaCartel(){
+  const iso = (window.KK_FECHA || '').trim();
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(iso)) return '';
+  /* a mediodia a proposito: a las 00:00 el cambio de horario puede
+     restar una hora y salir el dia de antes */
+  const d = new Date(iso + 'T12:00:00');
+  if(isNaN(d.getTime())) return '';
+  const loc = {es:'es-ES', ca:'ca-ES', en:'en-GB'}[window.KK_LANG] || 'es-ES';
+  let t;
+  try{ t = d.toLocaleDateString(loc, {weekday:'long', day:'numeric', month:'long'}); }
+  catch(e){ return ''; }
+  return t.charAt(0).toUpperCase() + t.slice(1);
+}
+
+/* El lienzo no entiende de letter-spacing, asi que la marca se pinta
+   letra a letra. Separada se lee mejor de lejos y parece de imprenta. */
+function textoEspaciado(x, txt, cx, cy, sep){
+  const ch = [...txt];
+  let ancho = -sep;
+  ch.forEach(c => ancho += x.measureText(c).width + sep);
+  let px = cx - ancho/2;
+  x.textAlign = 'left';
+  ch.forEach(c => { x.fillText(c, px, cy); px += x.measureText(c).width + sep; });
+  x.textAlign = 'center';
+}
+
+/* La franja NO se dibuja encima del dibujo: el lienzo se alarga y se
+   pinta debajo. Asi vale igual para las 20 laminas, tengan el hueco
+   crema alto o bajo, sin medirlas una a una. */
+/* Mide de verdad y encoge hasta que cabe. Sin esto la marca se salia del
+   cartel por la derecha y se comia el ".es"; y en catalan la fecha es mas
+   larga que en castellano, asi que le pasaria lo mismo. */
+function anchoEspaciado(x, txt, sep){
+  let a = -sep;
+  [...txt].forEach(c => a += x.measureText(c).width + sep);
+  return a;
+}
+function marcaQueQuepa(x, W, y, pxIni, sepIni){
+  let px = pxIni, sep = sepIni;
+  for(let i = 0; i < 14; i++){
+    x.font = `700 ${px}px ${TIPO}`;
+    if(anchoEspaciado(x, MARCA_CARTEL, sep) <= W*0.90) break;
+    px *= 0.94; sep *= 0.94;
+  }
+  textoEspaciado(x, MARCA_CARTEL, W/2, y, sep);
+}
+
+function bandaCompartir(x, info, W, Hart, banda, fecha){
+  x.fillStyle = info.col || '#8A5E86';
+  x.fillRect(0, Hart, W, banda);
+  x.textAlign = 'center'; x.textBaseline = 'middle';
+  x.fillStyle = '#FFFBF8';
+  if(fecha){
+    let pf = W*0.046;
+    x.font = `800 ${pf}px ${TIPO}`;
+    while(x.measureText(fecha).width > W*0.88 && pf > W*0.02){
+      pf *= 0.94; x.font = `800 ${pf}px ${TIPO}`;
+    }
+    x.fillText(fecha, W/2, Hart + banda*0.34);
+    x.globalAlpha = 0.82;
+    marcaQueQuepa(x, W, Hart + banda*0.70, W*0.0215, W*0.0034);
+    x.globalAlpha = 1;
+  } else {
+    /* sin fecha la marca se centra sola, para que no quede un hueco raro */
+    x.globalAlpha = 0.92;
+    marcaQueQuepa(x, W, Hart + banda*0.5, W*0.026, W*0.004);
+    x.globalAlpha = 1;
+  }
+}
+
+function componerCartel(im, info, compartir){
+  const Wc = im.naturalWidth, Hart = im.naturalHeight;
+  const fecha = compartir ? fechaCartel() : '';
+  const banda = compartir ? Wc * (fecha ? 0.145 : 0.082) : 0;
+
   const c = document.createElement('canvas');
-  c.width = im.naturalWidth; c.height = im.naturalHeight;
+  c.width = Wc; c.height = Hart + banda;
   const x = c.getContext('2d');
   x.drawImage(im, 0, 0);
 
   const nombre = (window.KK_NOMBRE || '').trim();
   const edad   = (window.KK_EDAD || '').toString().trim();
   if(nombre){
-    const W = c.width, H = c.height, cy = H * (info.ty || 0.68);
+    const W = Wc, H = Hart, cy = H * (info.ty || 0.68);
     x.textAlign = 'center'; x.textBaseline = 'middle';
 
     /* El nombre se encoge si es largo, para no salirse del hueco */
@@ -2521,6 +2605,7 @@ function componerCartel(im, info){
       x.globalAlpha = 1;
     }
   }
+  if(compartir) bandaCompartir(x, info, Wc, Hart, banda, fecha);
   return c;
 }
 
@@ -2702,7 +2787,7 @@ window.KK3D.guardarCartel = function(){
     tipoLista
   ]).then(([im]) => {
     if(!im) throw new Error('no-imagen');
-    const lienzo = componerCartel(im, info);
+    const lienzo = componerCartel(im, info, true);
     return new Promise((ok, mal) => lienzo.toBlob(
       b => b ? ok(b) : mal(new Error('no-blob')), 'image/jpeg', 0.92));
   });
