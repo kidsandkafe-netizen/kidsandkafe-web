@@ -1635,6 +1635,14 @@ const themesBox = $('#themes');
 function renderThemes(){
  clear(themesBox);
  Object.entries(THEMES).forEach(([k,t]) => {
+  /* "La inventamos" escondida a proposito: es la UNICA de las 21 sin lamina
+     pintada (no existe art-cumples/invent.jpg). Sin lamina el cartel salia
+     con el dibujo vectorial, fondo transparente y SIN el nombre del peque,
+     y el boton de descargar soltaba el aviso err_lamina = "no funciona".
+     Ojo: no se borra la entrada de THEMES, solo se esconde el boton, para
+     no romper nada que la mire. Vuelve SOLA el dia que se anada la lamina
+     a ART_PHOTO; no hay que acordarse de tocar esta linea.              */
+  if(k === 'invent' && !ART_PHOTO.invent) return;
   const b = el('button', 'th' + (k === 'invent' ? ' invent' : ''));
   b.dataset.k = k;
   b.setAttribute('aria-pressed','false');
