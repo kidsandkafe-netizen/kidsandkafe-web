@@ -99,6 +99,17 @@ body{font-family:'Nunito',system-ui,sans-serif;background:var(--cream);color:var
            box-shadow:0 8px 22px rgba(70,40,30,.18)}
 .stage-hint{position:absolute;right:16px;top:16px;z-index:5;background:rgba(46,37,33,.55);
             backdrop-filter:blur(6px);color:#fff;padding:8px 14px;border-radius:99px;font-size:12.5px;font-weight:700}
+/* Boton para acercarse a la tarta. Abajo a la derecha: la etiqueta de la
+   tematica ya ocupa abajo-izquierda y la pista de mover, arriba-derecha. */
+.stage-zoom{display:none}
+.stage.is3d .stage-zoom{display:block;position:absolute;right:16px;bottom:16px;z-index:6;
+            background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border:0;cursor:pointer;
+            padding:10px 17px;border-radius:99px;font-weight:800;font-size:14px;font-family:inherit;
+            color:inherit;box-shadow:0 8px 22px rgba(70,40,30,.18);transition:transform .16s,box-shadow .16s}
+.stage-zoom:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(70,40,30,.24)}
+.stage-zoom .z-on{display:none}
+.stage-zoom.on .z-off{display:none}
+.stage-zoom.on .z-on{display:inline}
 
 /* ---------- pasos ---------- */
 .step{margin-top:34px}
@@ -668,6 +679,10 @@ footer{padding:44px 20px 60px;text-align:center;color:var(--muted);font-size:13p
     <div class="vineta"></div>
     <div class="stage-tag" id="tag">🦄 Unicornios</div>
     <div class="stage-hint" data-i18n="hint">✨ mueve para ver</div>
+    <button class="stage-zoom" id="btnTarta" type="button">
+      <span class="z-off">🎂 <span data-i18n="ver_tarta">Ver la tarta</span></span>
+      <span class="z-on">↩︎ <span data-i18n="ver_todo">Ver toda la sala</span></span>
+    </button>
   </div>
 
   <!-- PASO 1 -->
@@ -783,6 +798,7 @@ es:{
   hero_pre:'Diseña el cumple de', hero_em:'tu peque', hero_post:'',
   hero_sub:'Elige la temática y mira cómo se transforma la sala. Mueve el ratón o inclina el móvil.',
   hint:'✨ mueve para ver',
+  ver_tarta:'Ver la tarta', ver_todo:'Ver toda la sala',
   p1:'¿Qué temática quiere?', p2:'¿Quién cumple años?', p3:'¿Cómo lo celebras?',
   p4:'Añade lo que quieras', p5:'Así sería su fiesta',
   l_name:'NOMBRE DEL PEQUE', l_age:'EDAD', l_kids:'Nº NIÑOS', l_ad:'Nº ADULTOS',
@@ -845,6 +861,7 @@ ca:{
   hero_pre:'Dissenya l\'aniversari de', hero_em:'el teu peque', hero_post:'',
   hero_sub:'Tria la temàtica i mira com es transforma la sala. Mou el ratolí o inclina el mòbil.',
   hint:'✨ mou per veure',
+  ver_tarta:'Veure el pastís', ver_todo:'Veure tota la sala',
   p1:'Quina temàtica vol?', p2:'Qui fa anys?', p3:'Com ho celebreu?',
   p4:'Afegeix el que vulguis', p5:'Així seria la seva festa',
   l_name:'NOM DEL PEQUE', l_age:'EDAT', l_kids:'Nº NENS', l_ad:'Nº ADULTS',
@@ -907,6 +924,7 @@ en:{
   hero_pre:'Design', hero_em:'your little one', hero_post:'\u2019s birthday party',
   hero_sub:'Pick a theme and watch the room transform. Move your mouse or tilt your phone.',
   hint:'✨ move to look around',
+  ver_tarta:'See the cake', ver_todo:'See the whole room',
   p1:'Which theme do they want?', p2:'Who\'s having a birthday?', p3:'How do you want to celebrate?',
   p4:'Add whatever you like', p5:'Here\'s their party',
   l_name:'CHILD\'S NAME', l_age:'AGE', l_kids:'HOW MANY KIDS', l_ad:'HOW MANY ADULTS',
@@ -2347,6 +2365,18 @@ function pieza(geo, mat, x, y, z){
   return m;
 }
 
+/* ---- El ADORNO TEMATICO de la tarta ----
+   Hasta ahora la tematica de la tarta era solo COLOR: el mismo pastel tenido
+   de otro tono. A partir de aqui, seis tematicas esculpen de verdad (cuerno,
+   corona, planeta, cresta, hocico, cola de sirena) y llevan cara pintada.
+   Las demas se quedan como estaban: si no hay entrada en ADORNOS, no pasa
+   nada, sale el pastel de siempre.                                       */
+let tartaDeco = null;        /* aqui se cuelga todo lo tematico */
+let bolasTopper = null;      /* las 3 bolitas de antes: estorban si hay cuerno */
+let velaGrupo = null;        /* la vela: va en el eje, y ahi va ahora el cuerno */
+const TARTA_EJE = {x:-0.34, z:-0.06};
+let TARTA_CIMA = 0, TARTA_R = 0.205;
+
 /* ---- MESA DULCE: la tarta manda, lo demas acompana ---- */
 function mesaDulce(){
   const g = new THREE.Group();
@@ -2386,15 +2416,28 @@ function mesaDulce(){
   /* el topper: tres bolitas del color de la tematica junto a la vela */
   const topper = new THREE.MeshStandardMaterial({color:0xffffff, roughness:0.36});
   tartas.push(topper);                                      /* -> tartas[1] */
+  /* Van en un grupo para poder APAGARLAS de golpe: donde hay cuerno, corona
+     o planeta, tres bolitas mas es ruido. */
+  bolasTopper = new THREE.Group();
   [[0.085,0.02],[-0.07,0.065],[0.015,-0.085]].forEach(([dx,dz]) =>
-    g.add(pieza(new THREE.SphereGeometry(0.038,12,10), topper,
+    bolasTopper.add(pieza(new THREE.SphereGeometry(0.038,12,10), topper,
                 -0.34+dx*1.35, base+0.575, -0.06+dz*1.35)));
-  /* la velita */
-  const vela = pieza(new THREE.CylinderGeometry(0.019,0.019,0.17,8), BLANCO(), -0.34, base+0.625,-0.06);
-  g.add(vela);
+  g.add(bolasTopper);
+  /* la velita. Tambien en grupo: estaba clavada en el EJE de la tarta, que
+     es justo donde va ahora el adorno. Con tematica se aparta a un lado. */
+  velaGrupo = new THREE.Group();
+  velaGrupo.add(pieza(new THREE.CylinderGeometry(0.019,0.019,0.17,8), BLANCO(), -0.34, base+0.625,-0.06));
   const llama = new THREE.Mesh(new THREE.SphereGeometry(0.035,10,8),
     new THREE.MeshBasicMaterial({color:0xFFD86B, toneMapped:false}));
-  llama.position.set(-0.34, base+0.725, -0.06); g.add(llama);
+  llama.position.set(-0.34, base+0.725, -0.06); velaGrupo.add(llama);
+  g.add(velaGrupo);
+
+  /* el grupo tematico: cuelga del EJE de la tarta para poder girarlo entero
+     y que la cara mire siempre a quien esta delante */
+  TARTA_CIMA = base + 0.54;            /* 0.30 del piso de abajo + 0.24 del de arriba */
+  tartaDeco = new THREE.Group();
+  tartaDeco.position.set(TARTA_EJE.x, 0, TARTA_EJE.z);
+  g.add(tartaDeco);
 
   /* cupcakes en la peana mediana y galletas en la baja. La cobertura de las
      magdalenas tambien se tine: asi la mesa entera va a juego con el cumple. */
@@ -2409,6 +2452,837 @@ function mesaDulce(){
   g.add(pieza(new THREE.CylinderGeometry(0.20,0.20,0.025,22), loza, 0.00, ALTO+0.23, 0.44));
 
   return g;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   TEMATICA DE LA TARTA — trasplantado del mockup TARTA-ideas.html
+   Hasta hoy la tematica de la tarta era solo COLOR. A partir de aqui
+   seis tematicas ESCULPEN (cuerno, corona, planeta, cresta, hocico,
+   cola de sirena) y llevan cara pintada en una funda cilindrica.
+   Las otras catorce no tienen entrada en ADORNOS y salen como siempre.
+   ══════════════════════════════════════════════════════════════════ */
+/* ═══════════════ PESTAÑAS (cara de unicornio) ═══════════════
+   Se pintan en una funda cilíndrica, igual que la edad: así se curvan con
+   la tarta en vez de quedarse pegadas como una calcomanía plana. */
+const cvPest = document.createElement('canvas'); cvPest.width = 2048; cvPest.height = 512;
+const texPest = new THREE.CanvasTexture(cvPest);
+texPest.colorSpace = THREE.SRGBColorSpace;
+texPest.anisotropy = 8;
+/* Una ÚNICA cara para todas las temáticas, cambiando sólo el color de línea,
+   el del moflete y si lleva pestañas. Que las seis tartas compartan expresión
+   es lo que las convierte en una COLECCIÓN y no en seis encargos sueltos. */
+function pintarPestanas(cfg){
+  cfg = cfg || {};
+  const LINEA   = cfg.linea   || '#4A3540';
+  const MOFLETE = cfg.moflete || '247,150,175';
+  const PESTANAS = cfg.pestanas !== false;
+  const x = cvPest.getContext('2d');
+  x.clearRect(0,0,2048,512);
+  const CY = 250, R = 78;
+  const OJOS = [1024 - 150, 1024 + 150];     /* juntos: si se separan mucho,
+                                                el cilindro se los lleva a los
+                                                lados y deja de leerse cara */
+
+  /* MOFLETES primero, para que las pestañas caigan encima */
+  OJOS.forEach((cx, k) => {
+    const mx = cx + (k ? 112 : -112);
+    const g = x.createRadialGradient(mx, CY + 74, 2, mx, CY + 74, 62);
+    g.addColorStop(0, 'rgba(' + MOFLETE + ',0.62)');
+    g.addColorStop(1, 'rgba(' + MOFLETE + ',0)');
+    x.fillStyle = g;
+    x.beginPath(); x.ellipse(mx, CY + 74, 62, 44, 0, 0, 6.3); x.fill();
+  });
+
+  x.strokeStyle = LINEA; x.lineCap = 'round'; x.lineJoin = 'round';
+  OJOS.forEach(cx => {
+    /* ojo cerrado y feliz: el arco mira hacia ARRIBA (⌒). Un ojo abierto
+       con pupila sale gracioso en 2D pero en una tarta parece un dibujo
+       pegado; el ojo cerrado es lo que hacen los toppers de verdad. */
+    x.lineWidth = 23;
+    x.beginPath(); x.arc(cx, CY, R, Math.PI*1.08, Math.PI*1.92); x.stroke();
+    x.lineWidth = 17;                        /* cuatro pestañas por ojo */
+    (PESTANAS ? [[1.05,-42,-0.60],[1.35,-52,-0.22],[1.65,-52,0.22],[1.95,-42,0.60]] : [])
+      .forEach(([a, l, dir]) => {
+        const ax = cx + Math.cos(Math.PI*a)*R, ay = CY + Math.sin(Math.PI*a)*R;
+        x.beginPath(); x.moveTo(ax, ay);
+        x.quadraticCurveTo(ax + Math.sin(dir)*16, ay + l*0.55,
+                           ax + Math.sin(dir)*40, ay + l);
+        x.stroke();
+      });
+  });
+
+  /* SONRISA: pequeña y centrada. Es lo que cambia "cara" por "cara CONTENTA" */
+  x.lineWidth = 14;
+  x.beginPath(); x.arc(1024, CY + 84, 46, Math.PI*0.18, Math.PI*0.82); x.stroke();
+
+  texPest.needsUpdate = true;
+}
+
+/* ═══════════════ ADORNO TEMÁTICO ═══════════════
+   Aquí es donde una temática deja de ser "un emoji y un color" y pasa a ser
+   LA FORMA de la tarta. */
+function adornoUnicornio(yCima, rCima){
+  const oroClaro = oroPan();
+  const oroHondo = new THREE.MeshStandardMaterial({
+    color:0xB8862C, roughness:0.28, metalness:1.0, envMapIntensity:2.2});
+  const blanco = fondant('#FFFDF8');
+  const rosa   = fondant('#F2C3D1');
+
+  /* ── CUERNO: cono dorado + espiral de cuentas ──
+     La espiral va en un oro MÁS OSCURO. Oro sobre oro del mismo tono no se
+     ve: es el mismo fallo del lazo invisible de ayer. */
+  const ALTO_C = 0.20, BASE_C = 0.027, Y0 = yCima + 0.030;
+  const cuerno = new THREE.Mesh(new THREE.ConeGeometry(BASE_C, ALTO_C, 22), oroClaro);
+  cuerno.position.set(0, Y0 + ALTO_C/2, 0);
+  cuerno.castShadow = true; tartaDeco.add(cuerno);
+  for(let i = 0; i < 28; i++){
+    const u = i/27;
+    const ang = u * Math.PI * 2 * 4.2;
+    const rad = BASE_C * (1 - u) * 0.92;
+    const c = new THREE.Mesh(
+      new THREE.SphereGeometry(0.0082 * (1 - u*0.5), 8, 8), oroHondo);
+    c.position.set(Math.cos(ang)*rad, Y0 + u*ALTO_C*0.97, Math.sin(ang)*rad);
+    tartaDeco.add(c);
+  }
+
+  /* ── OREJAS: cono aplastado, con el interior rosa ── */
+  [-1, 1].forEach(s => {
+    const o = new THREE.Mesh(new THREE.ConeGeometry(0.037, 0.098, 16), blanco);
+    o.position.set(s*0.088, yCima + 0.078, -0.016);
+    o.rotation.z = -s*0.32; o.scale.z = 0.45;
+    o.castShadow = true; tartaDeco.add(o);
+    const d = new THREE.Mesh(new THREE.ConeGeometry(0.022, 0.064, 14), rosa);
+    d.position.set(s*0.085, yCima + 0.074, 0.010);
+    d.rotation.z = -s*0.32; d.scale.z = 0.30;
+    tartaDeco.add(d);
+  });
+
+  /* ── MELENA: cascada de rizos que cae por un lado ──
+     Es lo que da la silueta de unicornio. Cinco tonos pastel alternos. */
+  /* SUBIDO DE COLOR a propósito: el pastel de la marca manda en la TARTA,
+     pero la melena es el sitio donde un niño espera arcoíris. Si aquí también
+     va lavado, la tarta es bonita para una madre y aburrida para un niño. */
+  const tonos = ['#FF9FC4','#C6A8EC','#8FD9E8','#FFD870','#9FE6B4'];
+  for(let i = 0; i < 24; i++){
+    const u = i/23;
+    const ang = 2.35 + (u - 0.5)*1.05 + ((i%3) - 1)*0.13;
+    const rad = rCima * (0.35 + 0.75*u);
+    const m = new THREE.Mesh(
+      new THREE.SphereGeometry(0.042 - u*0.013, 22, 18),
+      fondant(tonos[i % tonos.length]));
+    m.position.set(Math.cos(ang)*rad, yCima + 0.050 - 0.27*u*u, Math.sin(ang)*rad);
+    m.scale.set(1, 0.85, 1);
+    m.castShadow = true; tartaDeco.add(m);
+  }
+
+  /* ── ESTRELLITAS de oro flotando alrededor ── */
+  for(let i = 0; i < 7; i++){
+    const a = (i/7)*Math.PI*2 + 0.9;
+    const e = new THREE.Mesh(new THREE.OctahedronGeometry(0.019, 0), oroClaro);
+    e.position.set(Math.cos(a)*(rCima + 0.14), yCima + 0.10 + ((i%3)-1)*0.085,
+                   Math.sin(a)*(rCima + 0.14));
+    e.rotation.set(0.4*i, 0.7*i, 0.2*i);
+    tartaDeco.add(e);
+  }
+}
+
+/* ── AYUDAS compartidas por las seis temáticas ──
+   Una hoja de fondant NO se modela: es una esfera aplastada y estirada,
+   girada para apoyarse en el costado. Cuesta la veinteava parte y a este
+   tamaño el ojo no distingue la diferencia. */
+function hojaFondant(mat, x, y, z, giro, esc, tumbe){
+  const h = new THREE.Mesh(new THREE.SphereGeometry(0.05, 18, 14), mat);
+  h.position.set(x, y, z);
+  h.scale.set(1.55*esc, 0.32*esc, 0.85*esc);
+  h.rotation.set(tumbe || 0.2, giro, 0.34);
+  h.castShadow = true; tartaDeco.add(h);
+  return h;
+}
+/* trepan por el costado: rompen la silueta recta del cilindro, que es lo que
+   delataba la tarta como un bote. Sale de tu foto real de los dinos. */
+function trepadoras(mat, n, yBase, alto, radio, desde){
+  for(let i = 0; i < n; i++){
+    const u = i/(n-1 || 1);
+    const a = (desde || 0) + u*2.2 + ((i%2)-0.5)*0.22;
+    const rr = radio + 0.022;
+    hojaFondant(mat, Math.cos(a)*rr, yBase + alto*(0.12 + 0.76*u), Math.sin(a)*rr,
+                -a + Math.PI/2, 0.80 + (i%3)*0.16, 0.9);
+  }
+}
+function flotantes(yCima, rCima, n, geo, mat, alto, sep){
+  for(let i = 0; i < n; i++){
+    const a = (i/n)*Math.PI*2 + 0.9;
+    const rr = rCima + (sep === undefined ? 0.14 : sep);
+    const e = new THREE.Mesh(geo, mat);
+    e.position.set(Math.cos(a)*rr, yCima + (alto===undefined?0.10:alto) + ((i%3)-1)*0.085,
+                   Math.sin(a)*rr);
+    e.rotation.set(0.4*i, 0.7*i, 0.2*i);
+    tartaDeco.add(e);
+  }
+}
+
+/* ═════════ 🦕 DINOS ═════════ */
+function adornoDinos(yCima, rCima, ctx){
+  const lima  = fondant('#C3DE7E');
+  const musgo = fondant('#5F8F4C');
+  const hoja  = fondant('#7FB069');
+  const crema = fondant('#FFF3DC');
+
+  /* CRESTA de púas cruzando la cima por detrás de la cara */
+  const N = 9;
+  for(let i = 0; i < N; i++){
+    const u = i/(N-1);
+    const t = Math.sin(u*Math.PI);             /* grandes en el centro */
+    const h = 0.070 + 0.080*t;
+    const p = new THREE.Mesh(
+      new THREE.ConeGeometry(0.030*(0.45+0.55*t), h, 4), i%2 ? lima : musgo);
+    p.position.set((u-0.5)*rCima*1.85, yCima + 0.028 + h/2, -rCima*0.36);
+    p.rotation.y = Math.PI/4; p.scale.z = 0.42;
+    p.castShadow = true; tartaDeco.add(p);
+  }
+  /* HOJAS trepando por el piso de abajo */
+  trepadoras(hoja, 7, ctx.y0, ctx.pisos[0].h, ctx.pisos[0].r, 1.9);
+  trepadoras(musgo, 5, ctx.y0, ctx.pisos[0].h*0.8, ctx.pisos[0].r, 4.4);
+  /* HUEVOS moteados en la bandeja */
+  [[-0.24,0.14],[0.26,0.10],[0.05,0.27]].forEach(([hx,hz], k) => {
+    const h = new THREE.Mesh(new THREE.SphereGeometry(0.042, 20, 16), crema);
+    h.position.set(hx, ctx.y0 - 0.006 + 0.034, hz);
+    h.scale.set(0.82, 1.12, 0.82); h.rotation.z = 0.22*(k-1);
+    h.castShadow = true; tartaDeco.add(h);
+    for(let i = 0; i < 6; i++){                /* las motas */
+      const a = i*1.05, b = 0.6 + (i%3)*0.4;
+      const m = new THREE.Mesh(new THREE.SphereGeometry(0.0075, 8, 8), musgo);
+      m.position.set(h.position.x + Math.cos(a)*0.033*Math.sin(b),
+                     h.position.y + Math.cos(b)*0.040,
+                     h.position.z + Math.sin(a)*0.033*Math.sin(b));
+      tartaDeco.add(m);
+    }
+  });
+}
+
+/* ═════════ 👑 PRINCESAS ═════════ */
+function adornoPrincesas(yCima, rCima, ctx){
+  const oroClaro = oroPan();
+  const joyas = ['#F06292','#BA68C8','#4FC3F7','#FFD54F']
+    .map(h => new THREE.MeshStandardMaterial({
+      color:new THREE.Color(h), roughness:0.06, metalness:0.0,
+      envMapIntensity:2.4, transparent:true, opacity:0.88}));
+  const raso = fondant('#F7DCE2');
+
+  /* CORONA: aro + siete puntas + una joya en cada punta */
+  const RC = 0.082, YC = yCima + 0.052;
+  const aro = new THREE.Mesh(new THREE.TorusGeometry(RC, 0.010, 12, 40), oroClaro);
+  aro.rotation.x = Math.PI/2; aro.position.y = YC;
+  aro.castShadow = true; tartaDeco.add(aro);
+  for(let i = 0; i < 7; i++){
+    const a = (i/7)*Math.PI*2;
+    const alta = i === 0 || i === 3 || i === 4;   /* alternadas: no una valla */
+    const h = alta ? 0.090 : 0.060;
+    const p = new THREE.Mesh(new THREE.ConeGeometry(0.016, h, 4), oroClaro);
+    p.position.set(Math.cos(a)*RC, YC + h/2, Math.sin(a)*RC);
+    p.rotation.y = Math.PI/4; p.castShadow = true; tartaDeco.add(p);
+    const j = new THREE.Mesh(new THREE.OctahedronGeometry(0.016, 0), joyas[i%4]);
+    j.position.set(Math.cos(a)*RC, YC + h + 0.012, Math.sin(a)*RC);
+    tartaDeco.add(j);
+  }
+  /* DRAPEADO: pliegues verticales de raso por el piso de abajo */
+  const nP = 18, pB = ctx.pisos[0];
+  for(let i = 0; i < nP; i++){
+    const a = (i/nP)*Math.PI*2;
+    const pl = new THREE.Mesh(
+      new THREE.CapsuleGeometry(0.019, pB.h*0.72, 4, 12), raso);
+    pl.position.set(Math.cos(a)*(pB.r+0.011), ctx.y0 + pB.h*0.50, Math.sin(a)*(pB.r+0.011));
+    pl.scale.set(1, 1, 0.42);
+    pl.castShadow = true; tartaDeco.add(pl);
+  }
+  /* PERLAS bordeando el piso de abajo */
+  const perla = new THREE.MeshStandardMaterial({
+    color:0xFFF6F0, roughness:0.08, metalness:0.28, envMapIntensity:1.7});
+  const geoP = new THREE.SphereGeometry(0.014, 16, 12);
+  for(let i = 0; i < 40; i++){
+    const a = (i/40)*Math.PI*2;
+    const m = new THREE.Mesh(geoP, perla);
+    m.position.set(Math.cos(a)*(pB.r+0.020), ctx.y0 + 0.016, Math.sin(a)*(pB.r+0.020));
+    tartaDeco.add(m);
+  }
+  flotantes(yCima, rCima, 6, new THREE.OctahedronGeometry(0.017,0), joyas[1], 0.16);
+}
+
+/* ═════════ 🚀 ESPACIO ═════════ */
+function adornoEspacio(yCima, rCima, ctx){
+  const oroClaro = oroPan();
+  const planetaMat = fondant('#7B8FD4');
+  const lunaMat    = fondant('#E8E2D6');
+  const rojo       = fondant('#E4695E');
+  const metal = new THREE.MeshStandardMaterial({
+    color:0xD9DEE6, roughness:0.22, metalness:0.9, envMapIntensity:2.0});
+
+  /* PLANETA CON ANILLO: la silueta más reconocible del espacio de un tirón */
+  const P = new THREE.Mesh(new THREE.SphereGeometry(0.072, 30, 24), planetaMat);
+  P.position.set(0, yCima + 0.145, 0); P.castShadow = true; tartaDeco.add(P);
+  for(let i = 0; i < 5; i++){                  /* bandas del planeta */
+    const b = new THREE.Mesh(
+      new THREE.TorusGeometry(0.0715*Math.cos(((i-2)/5)*1.5), 0.0045, 8, 34),
+      fondant(i%2 ? '#5F73BC' : '#9BA9E0'));
+    b.rotation.x = Math.PI/2;
+    b.position.set(0, yCima + 0.145 + ((i-2)/5)*0.075*1.45, 0);
+    tartaDeco.add(b);
+  }
+  const anillo = new THREE.Mesh(new THREE.TorusGeometry(0.125, 0.0090, 10, 56), oroClaro);
+  anillo.rotation.set(Math.PI/2 - 0.36, 0, 0.20);
+  anillo.position.set(0, yCima + 0.145, 0);
+  anillo.castShadow = true; tartaDeco.add(anillo);
+
+  /* COHETE de pie en la cima, un poco inclinado */
+  const G = new THREE.Group();
+  G.add(new THREE.Mesh(new THREE.CylinderGeometry(0.026, 0.026, 0.095, 18), lunaMat));
+  const punta = new THREE.Mesh(new THREE.ConeGeometry(0.026, 0.050, 18), rojo);
+  punta.position.y = 0.0725; G.add(punta);
+  const ojoB = new THREE.Mesh(new THREE.SphereGeometry(0.014, 16, 12), metal);
+  ojoB.position.set(0, 0.012, 0.020); ojoB.scale.set(1,1,0.5); G.add(ojoB);
+  [-1,1].forEach(s => {
+    const al = new THREE.Mesh(new THREE.ConeGeometry(0.018, 0.048, 3), rojo);
+    al.position.set(s*0.028, -0.036, 0); al.rotation.z = -s*0.42; al.scale.z = 0.35;
+    G.add(al);
+  });
+  G.position.set(rCima*0.56, yCima + 0.098, rCima*0.18);
+  G.rotation.z = -0.22;
+  G.traverse(o => { if(o.isMesh) o.castShadow = true; });
+  tartaDeco.add(G);
+
+  /* LUNA en el otro lado + estrellas flotando */
+  const L = new THREE.Mesh(new THREE.SphereGeometry(0.034, 22, 18), lunaMat);
+  L.position.set(-rCima*0.70, yCima + 0.075, -rCima*0.30);
+  L.castShadow = true; tartaDeco.add(L);
+  flotantes(yCima, rCima, 9, new THREE.OctahedronGeometry(0.018,0), oroClaro, 0.14, 0.17);
+  trepadoras(fondant('#9BA9E0'), 5, ctx.y0, ctx.pisos[0].h*0.5, ctx.pisos[0].r, 3.6);
+}
+
+/* ═════════ 🐒 JUNGLA ═════════ */
+function adornoJungla(yCima, rCima, ctx){
+  const pelo   = fondant('#B68A63');
+  const hocico = fondant('#F2DCC0');
+  const hoja1  = fondant('#6FA24F');
+  const hoja2  = fondant('#9CC46B');
+  const flor   = ['#F4728C','#FFC246','#F49AC1'].map(h => fondant(h));
+  const altoC  = ctx.pisos[ctx.pisos.length-1].h;
+  const yCara  = yCima - altoC*0.41;           /* la altura a la que quedan los
+                                                  ojos pintados en la funda */
+
+  const oscuro = fondant('#6B4E33');
+
+  /* OREJAS: más grandes y ASOMADAS. Antes salían a rCima+0.012 con 18 mm de
+     grosor = medio enterradas en la tarta, se leían como dos manchas. */
+  [-1, 1].forEach(s => {
+    const o = new THREE.Mesh(new THREE.SphereGeometry(0.062, 24, 18), pelo);
+    o.position.set(s*(rCima + 0.014), yCara + 0.008, 0.010);
+    o.scale.set(0.38, 1, 1);
+    o.castShadow = true; tartaDeco.add(o);
+    const d = new THREE.Mesh(new THREE.SphereGeometry(0.042, 20, 16), hocico);
+    d.position.set(s*(rCima + 0.028), yCara + 0.008, 0.012);
+    d.scale.set(0.26, 1, 1); tartaDeco.add(d);
+  });
+
+  /* HOCICO: el fallo gordo. Estaba en z = rCima − 0.020 y aplastado a 0.42,
+     así que de sus 26 mm de fondo sólo asomaban 6: el morro quedaba DENTRO
+     de la tarta. Ahora sale hacia fuera de verdad. */
+  const zH = rCima + 0.012;
+  const h = new THREE.Mesh(new THREE.SphereGeometry(0.068, 26, 20), hocico);
+  h.position.set(0, yCara - altoC*0.150, zH);
+  h.scale.set(1.20, 0.74, 0.62);
+  h.castShadow = true; tartaDeco.add(h);
+  [-1, 1].forEach(s => {                       /* dos fosas nasales */
+    const n = new THREE.Mesh(new THREE.SphereGeometry(0.0075, 10, 8), oscuro);
+    n.position.set(s*0.017, yCara - altoC*0.120, zH + 0.038);
+    n.scale.set(1, 1.35, 0.6); tartaDeco.add(n);
+  });
+
+  /* PALMERAS trepando el piso de abajo */
+  trepadoras(hoja1, 8, ctx.y0, ctx.pisos[0].h, ctx.pisos[0].r, 2.1);
+  trepadoras(hoja2, 6, ctx.y0 + ctx.pisos[0].h*0.45, ctx.pisos[0].h*0.6, ctx.pisos[0].r, 4.7);
+  /* penacho en la cima: SÓLO por detrás-izquierda. Antes barría de 3.6 a 6.0
+     y se sentaba justo encima de las velas (que van en 4.4–5.7). */
+  for(let i = 0; i < 8; i++){
+    const a = 1.95 + (i/7)*1.85;
+    hojaFondant(i%2 ? hoja1 : hoja2,
+      Math.cos(a)*(rCima*0.88), yCima + 0.040 - (i%3)*0.012, Math.sin(a)*(rCima*0.88),
+      -a + Math.PI/2, 1.10, 1.05);
+  }
+
+  /* FLORES tropicales.
+     Otro fallo: los pétalos se colocaban con cuentas sueltas y salían en
+     fila, no en corro. Ahora cada flor es un GRUPO girado para mirar hacia
+     fuera, y los pétalos se dibujan en su plano local. */
+  const oroClaro = oroPan();
+  [[2.6, 0.62],[4.9, 0.85],[0.7, 0.45]].forEach(([a, u], k) => {
+    const F = new THREE.Group();
+    for(let p = 0; p < 5; p++){
+      const b = (p/5)*Math.PI*2;
+      const pe = new THREE.Mesh(new THREE.SphereGeometry(0.020, 16, 12), flor[k]);
+      pe.position.set(Math.cos(b)*0.021, Math.sin(b)*0.021, 0);
+      pe.scale.set(1, 1, 0.42);
+      F.add(pe);
+    }
+    const co = new THREE.Mesh(new THREE.SphereGeometry(0.012, 14, 12), oroClaro);
+    co.position.z = 0.006; F.add(co);
+    F.position.set(Math.cos(a)*(ctx.pisos[0].r + 0.024), ctx.y0 + ctx.pisos[0].h*u,
+                   Math.sin(a)*(ctx.pisos[0].r + 0.024));
+    F.rotation.y = Math.PI/2 - a;               /* la cara de la flor, hacia fuera */
+    F.traverse(o => { if(o.isMesh) o.castShadow = true; });
+    tartaDeco.add(F);
+  });
+
+  /* PLÁTANOS en la bandeja. Un toro cortado a 1,6 rad ES un plátano: curvo,
+     gordo en medio. Modelarlo habría costado veinte veces más. */
+  const amarillo = fondant('#FFD34E');
+  const geoB = new THREE.TorusGeometry(0.040, 0.0115, 8, 14, 1.55);
+  const B = new THREE.Group();
+  [[-0.020,0,-0.35],[0.004,0.013,0.05],[0.026,0.002,0.42],[0.010,0.026,-0.12]]
+    .forEach(([bx, by, gz]) => {
+      const b = new THREE.Mesh(geoB, amarillo);
+      b.position.set(bx, by, 0); b.rotation.set(0.30, gz, 2.05 + gz*0.3);
+      b.castShadow = true; B.add(b);
+    });
+  const rabo = new THREE.Mesh(new THREE.CylinderGeometry(0.006,0.008,0.030,8), oscuro);
+  rabo.position.set(0.004, 0.040, 0); rabo.rotation.z = 0.3; B.add(rabo);
+  B.position.set(-0.235, ctx.y0 - 0.006, 0.175);
+  B.rotation.y = 0.7;
+  tartaDeco.add(B);
+}
+
+/* ═════════ 🐟 MAR ═════════ */
+function adornoMar(yCima, rCima, ctx){
+  const oroClaro = oroPan();
+  const escama = new THREE.MeshStandardMaterial({
+    color:0x6FC8CE, roughness:0.16, metalness:0.35, envMapIntensity:1.8});
+  const escama2 = new THREE.MeshStandardMaterial({
+    color:0x9AD9DC, roughness:0.14, metalness:0.35, envMapIntensity:1.8});
+  const concha = fondant('#F7D9C4');
+  const coral  = fondant('#F08A7A');
+
+  /* COLA DE SIRENA saliendo de la cima: la silueta del mar para un niño */
+  const seg = 9;
+  for(let i = 0; i < seg; i++){
+    const u = i/(seg-1);
+    const s = new THREE.Mesh(new THREE.SphereGeometry(0.040 - u*0.016, 20, 16),
+                             i%2 ? escama : escama2);
+    s.position.set(Math.sin(u*1.5)*0.055, yCima + 0.030 + u*0.175, -u*0.030);
+    s.scale.set(1, 0.72, 0.62);
+    s.rotation.z = -u*0.5;
+    s.castShadow = true; tartaDeco.add(s);
+  }
+  [-1, 1].forEach(sd => {                      /* las dos aletas de la punta */
+    const al = new THREE.Mesh(new THREE.ConeGeometry(0.040, 0.105, 12), escama2);
+    al.position.set(Math.sin(1.5)*0.055 + sd*0.042, yCima + 0.245, -0.030 + sd*0.012);
+    al.rotation.set(0.25, 0, -0.5 + sd*0.85);
+    al.scale.set(1, 1, 0.34);
+    al.castShadow = true; tartaDeco.add(al);
+  });
+
+  /* BURBUJAS subiendo: translúcidas, es lo que dice "debajo del agua" */
+  const burbuja = new THREE.MeshStandardMaterial({
+    color:0xE8FAFB, roughness:0.02, metalness:0.0, envMapIntensity:2.2,
+    transparent:true, opacity:0.42});
+  for(let i = 0; i < 16; i++){
+    const a = (i/16)*Math.PI*2 + 0.4;
+    const b = new THREE.Mesh(new THREE.SphereGeometry(0.010 + (i%4)*0.006, 16, 12), burbuja);
+    b.position.set(Math.cos(a)*(rCima + 0.10 + (i%3)*0.045),
+                   yCima - 0.10 + ((i*7)%9)*0.048,
+                   Math.sin(a)*(rCima + 0.10 + (i%3)*0.045));
+    tartaDeco.add(b);
+  }
+  /* CONCHAS y ESTRELLA DE MAR apoyadas en el piso de abajo */
+  [[1.15, 0.30],[3.9, 0.55],[5.6, 0.22]].forEach(([a, u]) => {
+    const c = new THREE.Mesh(new THREE.SphereGeometry(0.036, 20, 14), concha);
+    c.position.set(Math.cos(a)*(ctx.pisos[0].r + 0.018), ctx.y0 + ctx.pisos[0].h*u,
+                   Math.sin(a)*(ctx.pisos[0].r + 0.018));
+    c.scale.set(1, 1, 0.34); c.rotation.y = Math.PI/2 - a;   /* de cara a fuera */
+    c.castShadow = true; tartaDeco.add(c);
+    for(let i = 0; i < 5; i++){                /* las nervaduras de la concha */
+      const b = (i/4 - 0.5)*1.5;
+      const n = new THREE.Mesh(new THREE.CapsuleGeometry(0.0030, 0.050, 3, 6), coral);
+      n.position.copy(c.position);
+      n.position.x += Math.cos(a)*0.012; n.position.z += Math.sin(a)*0.012;
+      n.rotation.set(0, Math.PI/2 - a, b);
+      tartaDeco.add(n);
+    }
+  });
+  const est = new THREE.Group();               /* estrella de mar de 5 brazos */
+  for(let i = 0; i < 5; i++){
+    const b = (i/5)*Math.PI*2;
+    const br = new THREE.Mesh(new THREE.CapsuleGeometry(0.014, 0.038, 4, 10), coral);
+    br.position.set(Math.cos(b)*0.028, Math.sin(b)*0.028, 0);
+    br.rotation.z = b - Math.PI/2; br.scale.set(1, 1, 0.42);
+    est.add(br);
+  }
+  est.position.set(Math.cos(2.5)*(ctx.pisos[0].r + 0.020), ctx.y0 + ctx.pisos[0].h*0.68,
+                   Math.sin(2.5)*(ctx.pisos[0].r + 0.020));
+  est.rotation.y = -2.5 + Math.PI/2;
+  est.traverse(o => { if(o.isMesh) o.castShadow = true; });
+  tartaDeco.add(est);
+  flotantes(yCima, rCima, 5, new THREE.OctahedronGeometry(0.015,0), oroClaro, 0.20, 0.20);
+}
+
+/* ═══════════════ REGISTRO DE TEMÁTICAS ═══════════════
+   Cada temática declara QUÉ se esculpe y QUÉ cara lleva. Todo lo demás
+   (velas, topper, edad, funda) se decide solo a partir de esta tabla: así
+   añadir una séptima temática es añadir una línea, no tocar construir(). */
+const ADORNOS = {
+  unicornios:{ build:adornoUnicornio,  cara:{linea:'#4A3540', moflete:'247,150,175'} },
+  dinos:     { build:adornoDinos,      cara:{linea:'#31502A', moflete:'244,160,120'} },
+  jungla:    { build:adornoJungla,     cara:{linea:'#4A3220', moflete:'236,150,120'} },
+  mar:       { build:adornoMar,        cara:{linea:'#2E5E63', moflete:'120,200,210',
+                                             pestanas:false} },
+  princesas: { build:adornoPrincesas,  cara:null },   /* la corona manda, la cifra
+                                                         se queda en la funda */
+  espacio:   { build:adornoEspacio,    cara:null },
+};
+
+/* El fondant NO es mate del todo: tiene un brillo suave y ancho, como la
+   piel de una manzana. A 0.92 parecía yeso. A 0.50 parece repostería. */
+function fondant(hex){
+  return new THREE.MeshStandardMaterial({
+    color:new THREE.Color(hex), roughness:0.55, metalness:0.0,
+    envMapIntensity:0.32});   /* 0.60 lavaba el color del fondant */
+}
+/* Pan de oro de verdad: metalness 1. Un solo metal en la escena cambia por
+   completo la lectura de "juguete" a "pastelería de encargo". */
+function oroPan(){
+  return new THREE.MeshStandardMaterial({
+    color:0xF0C765, roughness:0.16, metalness:1.0, envMapIntensity:2.6});
+    /* el oro salía MARRÓN: un metal solo devuelve lo que tiene alrededor, y
+       el estudio es gris. Se cura subiendo envMapIntensity y aclarando la
+       base, no "poniéndolo más amarillo". */
+}
+/* Glaseado del chorreón: muy pulido, casi espejo. */
+function glaseado(hex){
+  return new THREE.MeshStandardMaterial({
+    color:new THREE.Color(hex), roughness:0.14, metalness:0.0,
+    envMapIntensity:1.15});
+}
+function cil(rt, rb, h, mat, y, seg){
+  const m = new THREE.Mesh(new THREE.CylinderGeometry(rt, rb, h, seg||40), mat);
+  m.position.y = y; m.castShadow = true; m.receiveShadow = true;
+  return m;
+}
+
+/* Party Studio llama a las tematicas por otro nombre que el mockup.
+   Un alias cuesta una linea; renombrar por dentro se rompe. */
+ADORNOS.dinosaurios = ADORNOS.dinos;
+ADORNOS.sirenas     = ADORNOS.mar;
+ADORNOS.astronautas = ADORNOS.espacio;
+ADORNOS.selva       = ADORNOS.jungla;
+
+/* ══════════════════════════════════════════════════════════════════
+   TANDA 1 — seis tematicas mas, todas hechas con piezas que ya existen.
+   Una esfera aplastada vale como hoja, oreja, ala y nube. Un torus
+   recortado vale como platano, arco de arcoiris y aro. El trabajo caro
+   se hizo una vez; esto es recombinar.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* Nube de pastelero: tres bolas pegadas. Mas bolas no la mejoran, solo
+   la engordan; con tres ya se lee "nube" y no "racimo". */
+function nubeBolas(mat, x, y, z, esc){
+  const n = new THREE.Group();
+  [[0,0,0,1],[-0.046,-0.010,0,0.72],[0.048,-0.006,0,0.78]].forEach(([dx,dy,dz,s]) => {
+    const b = new THREE.Mesh(new THREE.SphereGeometry(0.038*s, 16, 12), mat);
+    b.position.set(dx, dy, dz); b.castShadow = true; n.add(b);
+  });
+  n.position.set(x, y, z); n.scale.setScalar(esc || 1);
+  tartaDeco.add(n); return n;
+}
+
+/* 🐱 MASCOTAS — orejas de CONO. Es la unica forma que se lee como oreja
+   de gato mires desde donde mires; con una esfera aplastada sale raton. */
+function adornoMascotas(yCima, rCima, ctx){
+  const pelo = fondant('#F6C08A'), rosa = fondant('#F296AE'), crema = fondant('#FFF3E2');
+  [-1, 1].forEach(s => {
+    const o = new THREE.Mesh(new THREE.ConeGeometry(0.052, 0.090, 4), pelo);
+    o.position.set(s*0.092, yCima + 0.044, 0.030);
+    o.rotation.set(0.16, Math.PI/4, s*0.26);
+    o.castShadow = true; tartaDeco.add(o);
+    const d = new THREE.Mesh(new THREE.ConeGeometry(0.029, 0.052, 4), rosa);
+    d.position.set(s*0.092, yCima + 0.038, 0.030 + 0.016);
+    d.rotation.copy(o.rotation); tartaDeco.add(d);
+  });
+  /* HOCICO: sale de verdad hacia fuera. Aplastar con scale NO recoloca —
+     eso es lo que dejo el hocico del mono dentro de la tarta. */
+  const zH = rCima + 0.012;
+  const h = new THREE.Mesh(new THREE.SphereGeometry(0.062, 24, 18), crema);
+  h.position.set(0, yCima - 0.108, zH);
+  h.scale.set(1.22, 0.70, 0.60); h.castShadow = true; tartaDeco.add(h);
+  const na = new THREE.Mesh(new THREE.ConeGeometry(0.019, 0.016, 3), rosa);
+  na.position.set(0, yCima - 0.088, zH + 0.030);
+  na.rotation.set(Math.PI/2, 0, Math.PI); tartaDeco.add(na);
+  /* BIGOTES: finos y largos. Es lo que convierte "bola" en "gato". */
+  [-1, 1].forEach(s => [0.012, -0.006, -0.024].forEach((dy, k) => {
+    const b = new THREE.Mesh(new THREE.CylinderGeometry(0.0022, 0.0022, 0.115, 5),
+                             fondant('#6B4B38'));
+    b.position.set(s*0.078, yCima - 0.104 + dy, zH + 0.014);
+    b.rotation.set(0, 0.5*s, s*(Math.PI/2 - 0.30 + k*0.12));
+    tartaDeco.add(b);
+  }));
+  /* HUELLAS trepando el piso de abajo: cuatro deditos y una almohadilla */
+  for(let i = 0; i < 4; i++){
+    const a = 2.15 + i*0.52;
+    const rr = ctx.pisos[0].r + 0.010;
+    const yy = ctx.y0 + ctx.pisos[0].h*(0.20 + 0.60*(i/3));
+    const g = new THREE.Group();
+    const pal = new THREE.Mesh(new THREE.SphereGeometry(0.019, 14, 10), rosa);
+    pal.scale.set(1, 1.1, 0.34); g.add(pal);
+    [-0.024, -0.008, 0.008, 0.024].forEach((dx, k) => {
+      const d = new THREE.Mesh(new THREE.SphereGeometry(0.0085, 10, 8), rosa);
+      d.position.set(dx, 0.024 + (k===0||k===3 ? -0.005 : 0.002), 0);
+      d.scale.z = 0.34; g.add(d);
+    });
+    g.position.set(Math.cos(a)*rr, yy, Math.sin(a)*rr);
+    g.rotation.y = Math.PI/2 - a;            /* mirar hacia FUERA del cilindro */
+    tartaDeco.add(g);
+  }
+}
+
+/* 🐄 GRANJA — la vaca. Orejas TUMBADAS a los lados (no de pie como el
+   gato) y morro ancho: ahi esta toda la diferencia entre las dos. */
+function adornoGranja(yCima, rCima, ctx){
+  const blanco = fondant('#FFFBF2'), negro = fondant('#3A3236'), rosa = fondant('#EFA2AE');
+  [-1, 1].forEach(s => {
+    const o = new THREE.Mesh(new THREE.SphereGeometry(0.052, 18, 14), blanco);
+    o.position.set(s*(rCima*0.72), yCima - 0.030, 0.022);
+    o.scale.set(1.35, 0.68, 0.40);
+    o.rotation.set(0, 0, s*0.34);
+    o.castShadow = true; tartaDeco.add(o);
+  });
+  /* CUERNITOS de oro: el tercer tono. Con solo los dos de la paleta el
+     adorno cae encima de su gemelo y desaparece. */
+  [-1, 1].forEach(s => {
+    const c = new THREE.Mesh(new THREE.ConeGeometry(0.017, 0.048, 10), oroPan());
+    c.position.set(s*0.052, yCima + 0.030, 0.006);
+    c.rotation.set(0.10, 0, s*0.52);
+    c.castShadow = true; tartaDeco.add(c);
+  });
+  const zH = rCima + 0.014;
+  const m = new THREE.Mesh(new THREE.SphereGeometry(0.070, 24, 18), rosa);
+  m.position.set(0, yCima - 0.112, zH);
+  m.scale.set(1.28, 0.82, 0.58); m.castShadow = true; tartaDeco.add(m);
+  [-1, 1].forEach(s => {
+    const f = new THREE.Mesh(new THREE.SphereGeometry(0.0125, 12, 10), fondant('#C9707E'));
+    f.position.set(s*0.028, yCima - 0.100, zH + 0.036);
+    f.scale.set(0.8, 1.2, 0.5); tartaDeco.add(f);
+  });
+  /* MANCHAS: esferas muy aplastadas pegadas al cilindro. Cada una girada
+     con PI/2 - a para quedar plana CONTRA la pared de la tarta. */
+  const manchas = [[2.05,0.30,1.0],[2.85,0.62,0.75],[3.75,0.24,0.9],[4.55,0.55,0.7],[1.15,0.48,0.62]];
+  manchas.forEach(([a, u, e]) => {
+    const rr = ctx.pisos[0].r + 0.007;
+    const mm = new THREE.Mesh(new THREE.SphereGeometry(0.044*e, 16, 12), negro);
+    mm.position.set(Math.cos(a)*rr, ctx.y0 + ctx.pisos[0].h*u, Math.sin(a)*rr);
+    mm.scale.set(1.25, 1.0, 0.16);
+    mm.rotation.y = Math.PI/2 - a;
+    tartaDeco.add(mm);
+  });
+}
+
+/* 🧚‍♀️ HADAS — las alas van DETRAS y translucidas. Si fueran opacas
+   taparian la cara; si fueran delante, no serian alas. */
+function adornoHadas(yCima, rCima, ctx){
+  const alaMat = new THREE.MeshStandardMaterial({
+    color:new THREE.Color('#D9C2F2'), roughness:0.22, metalness:0.0,
+    transparent:true, opacity:0.62, envMapIntensity:1.5, side:THREE.DoubleSide});
+  const oroClaro = oroPan();
+  [-1, 1].forEach(s => {
+    [[0.086, 1.0, 0.55], [0.062, 0.62, -0.30]].forEach(([r, e, incl]) => {
+      const al = new THREE.Mesh(new THREE.SphereGeometry(r, 20, 14), alaMat);
+      al.position.set(s*(0.052 + r*0.62), yCima + 0.030 + e*0.042, -rCima*0.52);
+      al.scale.set(0.62, 1.30*e + 0.30, 0.16);
+      al.rotation.set(0.20, 0, s*incl);
+      tartaDeco.add(al);
+    });
+  });
+  /* VARITA: palo + estrella. La estrella es un octaedro, que ya sale de
+     fabrica con las puntas hechas. */
+  const v = new THREE.Group();
+  v.add(new THREE.Mesh(new THREE.CylinderGeometry(0.0055, 0.0055, 0.150, 8), oroClaro));
+  const es = new THREE.Mesh(new THREE.OctahedronGeometry(0.030, 0), oroClaro);
+  es.position.y = 0.092; es.scale.set(1, 1.35, 0.5); v.add(es);
+  v.position.set(rCima*0.62, yCima + 0.086, rCima*0.30);
+  v.rotation.z = -0.34;
+  v.traverse(o => { if(o.isMesh) o.castShadow = true; });
+  tartaDeco.add(v);
+  /* FLORES pequeñas trepando, y polvo de hadas flotando alrededor */
+  const petalo = fondant('#FFD6E8'), hoja = fondant('#BFDCA8');
+  trepadoras(hoja, 6, ctx.y0, ctx.pisos[0].h, ctx.pisos[0].r, 2.2);
+  [[2.4, 0.66], [3.5, 0.34], [4.6, 0.52]].forEach(([a, u]) => {
+    const F = new THREE.Group();
+    for(let p = 0; p < 5; p++){
+      const pe = new THREE.Mesh(new THREE.SphereGeometry(0.016, 12, 10), petalo);
+      pe.position.set(Math.cos(p/5*6.283)*0.017, Math.sin(p/5*6.283)*0.017, 0);
+      pe.scale.set(1, 1, 0.42); F.add(pe);
+    }
+    const c = new THREE.Mesh(new THREE.SphereGeometry(0.010, 10, 8), oroClaro);
+    c.position.z = 0.006; F.add(c);
+    F.position.set(Math.cos(a)*(ctx.pisos[0].r + 0.022), ctx.y0 + ctx.pisos[0].h*u,
+                   Math.sin(a)*(ctx.pisos[0].r + 0.022));
+    F.rotation.y = Math.PI/2 - a;
+    tartaDeco.add(F);
+  });
+  flotantes(yCima, rCima, 7, new THREE.OctahedronGeometry(0.013, 0), oroClaro, 0.16, 0.16);
+}
+
+/* 🌈 ARCOIRIS — cinco arcos concentricos. El TorusGeometry recortado a
+   PI ya ES un arco: no hay que modelar nada, solo apilarlos. */
+function adornoArcoiris(yCima, rCima, ctx){
+  const COLORES = ['#FF8FA8', '#FFB067', '#FFDE72', '#8FD79B', '#8FBCEF'];
+  const A = new THREE.Group();
+  COLORES.forEach((hex, i) => {
+    const r = 0.176 - i*0.030;
+    const arc = new THREE.Mesh(new THREE.TorusGeometry(r, 0.0145, 10, 26, Math.PI),
+                               fondant(hex));
+    arc.castShadow = true; A.add(arc);
+  });
+  A.position.set(0, yCima + 0.010, -0.014);
+  A.rotation.y = 0.16;                     /* un pelin de tres cuartos: de
+                                              perfil clavado parece plano */
+  tartaDeco.add(A);
+  const nube = fondant('#FFFDF6');
+  nubeBolas(nube,  0.176, yCima + 0.020, -0.014, 1.0);
+  nubeBolas(nube, -0.176, yCima + 0.020, -0.014, 1.0);
+  /* Una olla de oro pequeña al pie de un extremo: el remate del cuento */
+  const olla = new THREE.Mesh(new THREE.CylinderGeometry(0.030, 0.024, 0.036, 16), oroPan());
+  olla.position.set(0.176, yCima - 0.030, 0.050); olla.castShadow = true;
+  tartaDeco.add(olla);
+  flotantes(yCima, rCima, 6, new THREE.OctahedronGeometry(0.013, 0), oroPan(), 0.20, 0.20);
+}
+
+/* 🪄 MAGIA — la chistera. Un cilindro sobre un disco ancho y ya esta:
+   no hay sombrero de copa que necesite mas. */
+function adornoMagia(yCima, rCima, ctx){
+  const negro = fondant('#2B2430'), cinta = fondant('#8E5BC7'), oroClaro = oroPan();
+  const S = new THREE.Group();
+  const ala = new THREE.Mesh(new THREE.CylinderGeometry(0.115, 0.122, 0.014, 30), negro);
+  S.add(ala);
+  const copa = new THREE.Mesh(new THREE.CylinderGeometry(0.072, 0.076, 0.135, 26), negro);
+  copa.position.y = 0.074; S.add(copa);
+  const ci = new THREE.Mesh(new THREE.CylinderGeometry(0.0785, 0.0805, 0.030, 26), cinta);
+  ci.position.y = 0.024; S.add(ci);
+  const hebilla = new THREE.Mesh(new THREE.TorusGeometry(0.017, 0.005, 8, 16), oroClaro);
+  hebilla.position.set(0, 0.024, 0.080); S.add(hebilla);
+  S.position.set(0, yCima + 0.014, -0.012);
+  S.rotation.set(0.14, 0, -0.10);          /* ladeado: un sombrero recto
+                                              parece un bote de galletas */
+  S.traverse(o => { if(o.isMesh) o.castShadow = true; });
+  tartaDeco.add(S);
+  /* VARITA cruzada delante del sombrero, con la punta clara */
+  const v = new THREE.Group();
+  v.add(new THREE.Mesh(new THREE.CylinderGeometry(0.0065, 0.0065, 0.165, 8), negro));
+  const p = new THREE.Mesh(new THREE.CylinderGeometry(0.0072, 0.0072, 0.034, 8), fondant('#FFF6E0'));
+  p.position.y = 0.082; v.add(p);
+  v.position.set(rCima*0.60, yCima + 0.062, rCima*0.42);
+  v.rotation.set(0.30, 0, -0.62);
+  v.traverse(o => { if(o.isMesh) o.castShadow = true; });
+  tartaDeco.add(v);
+  /* Estrellas saliendo de la chistera, como si el truco acabara de pasar */
+  flotantes(yCima, rCima, 8, new THREE.OctahedronGeometry(0.015, 0), oroClaro, 0.30, 0.19);
+  trepadoras(cinta, 4, ctx.y0, ctx.pisos[0].h*0.5, ctx.pisos[0].r, 3.5);
+}
+
+/* 🪩 DISCO — la bola de espejos. El truco NO es modelar 200 espejitos:
+   es un icosaedro subdividido con metalness 1. Las caras planas ya
+   devuelven la luz cada una por su lado, que es lo que hace el efecto. */
+function adornoDisco(yCima, rCima, ctx){
+  const espejo = new THREE.MeshStandardMaterial({
+    color:0xD8DEE6, roughness:0.10, metalness:1.0, envMapIntensity:2.4,
+    flatShading:true});
+  const bola = new THREE.Mesh(new THREE.IcosahedronGeometry(0.082, 2), espejo);
+  bola.position.set(0, yCima + 0.150, 0);
+  bola.castShadow = true; tartaDeco.add(bola);
+  /* el hilo del que cuelga: sin el, la bola flota y se lee como un globo */
+  const hilo = new THREE.Mesh(new THREE.CylinderGeometry(0.0022, 0.0022, 0.075, 6),
+                              fondant('#C9CDD4'));
+  hilo.position.set(0, yCima + 0.040, 0); tartaDeco.add(hilo);
+  /* base de la que sale: un pie corto de oro */
+  const pie = new THREE.Mesh(new THREE.CylinderGeometry(0.020, 0.030, 0.020, 16), oroPan());
+  pie.position.set(0, yCima + 0.010, 0); pie.castShadow = true; tartaDeco.add(pie);
+  /* DESTELLOS de colores alrededor: son los haces de luz que rebotan */
+  const tonos = ['#FF7FB8', '#7FD8FF', '#FFE07F', '#A98FFF'];
+  for(let i = 0; i < 10; i++){
+    const a = (i/10)*Math.PI*2 + 0.3;
+    const d = new THREE.Mesh(new THREE.OctahedronGeometry(0.016, 0),
+      new THREE.MeshStandardMaterial({color:new THREE.Color(tonos[i%4]),
+        roughness:0.20, metalness:0.3, emissive:new THREE.Color(tonos[i%4]),
+        emissiveIntensity:0.45}));
+    d.position.set(Math.cos(a)*(rCima + 0.10), yCima + 0.13 + ((i%3)-1)*0.075,
+                   Math.sin(a)*(rCima + 0.10));
+    d.rotation.set(i*0.5, i*0.8, i*0.3);
+    d.scale.set(1, 1.7, 1);
+    tartaDeco.add(d);
+  }
+  /* rayas de purpurina trepando el piso de abajo, en oro */
+  trepadoras(oroPan(), 6, ctx.y0, ctx.pisos[0].h, ctx.pisos[0].r, 2.0);
+}
+
+ADORNOS.mascotas = { build:adornoMascotas, cara:{linea:'#5A3A28', moflete:'250,175,140'} };
+ADORNOS.granja   = { build:adornoGranja,   cara:{linea:'#4A3A32', moflete:'246,168,150'} };
+ADORNOS.hadas    = { build:adornoHadas,    cara:{linea:'#6A4A70', moflete:'245,165,195'} };
+ADORNOS.arcoiris = { build:adornoArcoiris, cara:null };
+ADORNOS.magia    = { build:adornoMagia,    cara:null };
+ADORNOS.disco    = { build:adornoDisco,    cara:null };
+
+/* Las medidas de los dos pisos de ESTA tarta. Por pura suerte son casi
+   identicas a las del mockup (0.290/0.300 y 0.198/0.245), asi que los
+   adornos entran sin reescalar nada. */
+const TARTA_PISOS = [{r:0.30, h:0.30}, {r:0.205, h:0.24}];
+
+function vestirTarta(key){
+  if(!tartaDeco) return;
+  /* fuera lo de la tematica anterior */
+  while(tartaDeco.children.length){
+    const o = tartaDeco.children[0];
+    tartaDeco.remove(o);
+    o.traverse(n => { if(n.isMesh && n.geometry) n.geometry.dispose(); });
+  }
+  const A = ADORNOS[key];
+  /* Las 3 bolitas del topper viejo estorban si hay cuerno o corona. */
+  if(bolasTopper) bolasTopper.visible = !A;
+  /* La vela se aparta del eje en vez de apagarse: sin vela deja de leerse
+     cumpleanos, y el eje es justo donde va el cuerno. */
+  if(velaGrupo) velaGrupo.position.set(A ? 0.075 : 0, 0, A ? -0.115 : 0);
+  if(!A) return;
+
+  const y0 = TARTA_CIMA - (TARTA_PISOS[0].h + TARTA_PISOS[1].h);
+  A.build(TARTA_CIMA, TARTA_R, {y0:y0, pisos:TARTA_PISOS});
+
+  if(A.cara){
+    pintarPestanas(A.cara);
+    const alto = TARTA_PISOS[1].h;
+    const f = new THREE.Mesh(
+      new THREE.CylinderGeometry(TARTA_R+0.002, TARTA_R+0.002, alto, 44, 1, true),
+      new THREE.MeshStandardMaterial({map:texPest, transparent:true,
+                                      roughness:0.92, depthWrite:false}));
+    f.position.y = TARTA_CIMA - alto*0.42;
+    f.rotation.y = Math.PI;      /* la UV del cilindro pone el dibujo detras */
+    tartaDeco.add(f);
+  }
+}
+const _vTarta = new THREE.Vector3();
+const _pLejos = new THREE.Vector3(), _pCerca = new THREE.Vector3();
+const _mLejos = new THREE.Vector3(), _mCerca = new THREE.Vector3();
+
+/* EL BOTON "VER LA TARTA".
+   La tarta medida en pantalla ocupaba un 4,6% de alto: 24 pixeles. Todo el
+   trabajo de cuernos y caras era invisible. En vez de robarle la rueda del
+   raton al navegador (que ahi hace scroll y la gente se pierde), un boton
+   que se VE y que lleva al cliente justo a lo que le queremos ensenar.     */
+let zoomObj = 0, zoomTarta = 0;
+const btnTarta = document.getElementById('btnTarta');
+if(btnTarta){
+  /* el boton vive DENTRO del escenario, y el escenario arrastra con el dedo:
+     sin esto, pulsarlo empezaria tambien a girar la sala. */
+  btnTarta.addEventListener('pointerdown', e => e.stopPropagation());
+  btnTarta.addEventListener('click', () => {
+    zoomObj = zoomObj > 0.5 ? 0 : 1;
+    btnTarta.classList.toggle('on', zoomObj > 0.5);
+  });
 }
 
 /* ---- TORRE DE PEANAS (el otro lado) ----
@@ -2841,6 +3715,10 @@ window.KK3D = {
        entre el bizcocho (palido) y el topper (hondo): asi la mesa se lee
        como una escalera del mismo color y no como tres cosas sueltas.    */
     if(tartaTargets[2]) tartaTargets[2].copy(pal[0]).lerp(BLANCA, 0.06);
+    /* Y AQUI la tarta cambia de FORMA, no solo de color: seis tematicas
+       esculpen su bicho en el piso de arriba. Las otras catorce ni se
+       enteran, porque no tienen entrada en ADORNOS. */
+    vestirTarta(key);
     for(let i=0;i<CONF;i++){
       const c = pal[i % pal.length];
       confetti.instanceColor.setXYZ(i, c.r, c.g, c.b);
@@ -3002,8 +3880,16 @@ renderer.setAnimationLoop(() => {
   }
   confetti.instanceMatrix.needsUpdate = true;
 
-  /* el cartel respira y aparece */
-  heroMat.opacity += ((fading ? 0 : 1) - heroMat.opacity) * dt*6;
+  /* EL VUELO A LA TARTA.
+     zoomObj es el destino (0 lejos / 1 pegado) y zoomTarta es donde va la
+     camara ahora mismo. Interpolando entre los dos, el boton no da un salto
+     seco: la camara VIAJA, y ese viaje es el que hace que el cliente entienda
+     que lo de ahi arriba es SU tarta y no un adorno cualquiera. */
+  zoomTarta += (zoomObj - zoomTarta) * dt*2.6;
+  const z = zoomTarta*zoomTarta*(3 - 2*zoomTarta);   /* arranca y frena suave */
+
+  /* el cartel respira y aparece; y se aparta cuando nos acercamos a la tarta */
+  heroMat.opacity += (((fading ? 0 : 1) * (1 - z)) - heroMat.opacity) * dt*6;
   hero.position.y = (window.KK3D_heroY || 1.95) + Math.sin(t*0.8)*0.06;
 
   /* giro suave; si nadie toca, gira solo un poquito */
@@ -3013,8 +3899,38 @@ renderer.setAnimationLoop(() => {
   tiltX += (tiltTarget - tiltX) * dt*3.2;
   world.rotation.y = rotY;
   const mira = (window.KK3D_heroY || 1.95);
-  camera.position.set(Math.sin(rotY*0.35)*1.5, mira + 0.25 + tiltX*2.2, camDist);
-  camera.lookAt(0, mira - tiltX*0.6, 0);
+
+  /* Donde esta la tarta AHORA MISMO. Hay que preguntarlo cada frame porque
+     aqui no se mueve la camara: se mueve el MUNDO, asi que la tarta cambia
+     de sitio en cuanto el cliente arrastra. */
+  if(tartaDeco){ tartaDeco.updateWorldMatrix(true, false); tartaDeco.getWorldPosition(_vTarta); }
+
+  _pLejos.set(Math.sin(rotY*0.35)*1.5, mira + 0.25 + tiltX*2.2, camDist);
+  _mLejos.set(0, mira - tiltX*0.6, 0);
+  if(z > 0.0015 && tartaDeco){
+    const yC = TARTA_CIMA * dulce.scale.y;        /* la cima, ya en medidas del mundo */
+    _pCerca.set(_vTarta.x + 0.26, yC + 0.30, _vTarta.z + 0.76);
+    _mCerca.set(_vTarta.x,        yC + 0.02, _vTarta.z);
+    camera.position.lerpVectors(_pLejos, _pCerca, z);
+    _mLejos.lerp(_mCerca, z);
+  } else {
+    camera.position.copy(_pLejos);
+  }
+  camera.lookAt(_mLejos);
+
+  /* LA CARA DE LA TARTA, SIEMPRE DE FRENTE.
+     Aqui no orbita la camara: orbita el MUNDO (world.rotation.y = rotY), y
+     la mesa dulce ademas viene girada 0.34. Si dejaramos el cuerno quieto,
+     la cara pasaria la mayor parte del rato mirando a la pared de globos.
+     Asi que se calcula el angulo hacia la camara y se le RESTA todo lo que
+     ya gira por encima. El seno es un vaiven corto para que respire: de
+     frente clavado parece una pegatina, no una tarta. */
+  if(tartaDeco){
+    tartaDeco.rotation.y =
+      Math.atan2(camera.position.x - _vTarta.x, camera.position.z - _vTarta.z)
+      - (rotY + dulce.rotation.y)
+      + Math.sin(t*0.62)*0.26;
+  }
 
   renderer.render(scene, camera);
 });
