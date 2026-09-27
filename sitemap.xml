@@ -328,4 +328,12 @@
     <xhtml:link rel="alternate" hreflang="ca" href="https://www.kidsandkafe.es/ca/franquicia"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.kidsandkafe.es/franquicia"/>
   </url>
+  <!-- Party Studio: UNA sola URL para los 3 idiomas (cambia con ?lang=, no
+       con carpeta /en/ ni /ca/). Por eso aquí NO va bloque hreflang: no hay
+       /en/party-studio ni /ca/party-studio que enlazar. -->
+  <url>
+    <loc>https://www.kidsandkafe.es/party-studio</loc>
+    <lastmod>2026-09-27</lastmod>
+    <priority>0.7</priority>
+  </url>
 </urlset>
