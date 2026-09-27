@@ -232,6 +232,17 @@ input:focus{outline:0;border-color:var(--sage);box-shadow:0 0 0 4px rgba(107,130
 .ex[aria-pressed="true"] .tick{background:var(--sage);border-color:var(--sage)}
 .ex b{display:block;font-size:14.5px;font-weight:800;line-height:1.3}
 .ex small{color:var(--muted);font-size:12.5px;font-weight:700;display:block;margin-top:2px}
+/* Un extra que el pack YA lleva dentro: verde, con el tick puesto y sin
+   poder pulsarlo. Es lo que hace que un VIP se VEA VIP: la madre ve tres
+   cosas que ya tiene, en vez de una lista que parece pedirle mas dinero. */
+.ex.inc{border-color:var(--sage);background:#F3F8EE;cursor:default}
+.ex.inc .tick{background:var(--sage);border-color:var(--sage)}
+.ex.inc small{color:var(--sage-dark);font-weight:900}
+/* Un extra que en esta opcion no se puede dar: apagado, y dice por que.
+   Apagado y no escondido a proposito: si desaparece, la madre no sabe si
+   existe y lo acaba preguntando por WhatsApp.                           */
+.ex.na{opacity:.45;cursor:not-allowed;background:#FAF8F6}
+.ex.na .tick{visibility:hidden}
 
 /* catering a medida */
 .custom{margin-top:11px;border:2.5px dashed #E7D9B8;background:#FFFDF6;border-radius:17px;padding:15px}
@@ -842,6 +853,7 @@ es:{
   cat_med:'Catering a medida', div_med:'Diversión a medida', limpieza:'Limpieza',
   por_nino:'/niño', finde_l:' · V-D y festivos', diario_l:' · L-J',
   no_inc:'No incluye:', extra_nin:' niños extra · ',
+  ya_inc:'Ya incluido en el ', na_l:'No aplica en esta opción',
   r_c5:'¿Tienes bono del centro? Te hacemos un 10% de descuento sobre el total.',
   extra_per:' personas extra · ', cu:' c/u', a_consultar:'A consultar', pk_medida:'Presupuesto a medida',
   warn_casa:'El cumple a domicilio se presupuesta a medida según la distancia y lo que montemos. Escríbenos y te lo cerramos al momento.',
@@ -905,6 +917,7 @@ ca:{
   cat_med:'Càtering a mida', div_med:'Diversió a mida', limpieza:'Neteja',
   por_nino:'/nen', finde_l:' · Dv-Dg i festius', diario_l:' · Dl-Dj',
   no_inc:'No inclou:', extra_nin:' nens extra · ',
+  ya_inc:'Ja inclòs en el ', na_l:'No s\'aplica en aquesta opció',
   r_c5:'Tens bo del centre? Et fem un 10% de descompte sobre el total.',
   extra_per:' persones extra · ', cu:' c/u', a_consultar:'A consultar', pk_medida:'Pressupost a mida',
   warn_casa:'L\'aniversari a domicili es pressuposta a mida segons la distància i el que muntem. Escriu-nos i t\'ho tanquem al moment.',
@@ -968,6 +981,7 @@ en:{
   cat_med:'Custom catering', div_med:'Custom entertainment', limpieza:'Cleaning',
   por_nino:'/child', finde_l:' · Fri-Sun and holidays', diario_l:' · Mon-Thu',
   no_inc:'Not included:', extra_nin:' extra children · ',
+  ya_inc:'Already included in the ', na_l:'Not available with this option',
   r_c5:'Got a centre pass? We give you 10% off the total.',
   extra_per:' extra people · ', cu:' each', a_consultar:'On request', pk_medida:'Tailor-made quote',
   warn_casa:'At-home birthdays are quoted individually, based on the distance and what we set up. Message us and we\'ll close it right away.',
@@ -1097,7 +1111,21 @@ const MODOS = [
      limpieza   -> la limpieza va incluida (no se suman los 35€)
      no         -> lo que NO entra. Esto es lo que de verdad quita dudas:
                    quien alquila la sala a secas tiene que saber que no hay
-                   catering ANTES de hacerse la ilusion, no despues.      */
+                   catering ANTES de hacerse la ilusion, no despues.
+
+   Y lo que decide QUE EXTRAS se pueden marcar en cada opcion:
+     inc -> extras que el pack YA lleva dentro. Salen en verde, con el tick
+            puesto, y NO se cobran. Antes se cobraban: marcar "personaje"
+            en un VIP sumaba 125€ que el VIP ya incluye.
+     na  -> extras que en esta opcion no se pueden dar. Salen apagados.
+            Ahora mismo NINGUN pack usa esto: todos los extras se pueden
+            pedir en todas las opciones. Se deja montado para el dia que
+            haga falta apagar uno, sin volver a tocar la logica.
+   El "monitor extra" NUNCA va en inc: aunque el pack traiga monitor, el
+   de refuerzo a partir de 20 niños se cobra igual (40€).
+     precios -> el MISMO extra a otro precio en esta opcion. La hora
+                adicional son 100€ de sala, pero en el Family Lounge
+                son 90€. Cambia el presupuesto Y el texto del boton.    */
 const PACKS = [
   /* ---- los tres packs de fiesta · 3 horas ---- */
   {id:'standard', modo:'pack', tipo:'dia', n:'Standard', base:315, baseFinde:365,
@@ -1107,21 +1135,31 @@ const PACKS = [
    note:'3h · hasta 30 personas · niño extra 7€ · adulto extra 3€'},
   {id:'premium', modo:'pack', tipo:'dia', n:'Premium', base:635, baseFinde:795,
    aforo:0, incKids:20, pastel:true, cateringInc:true, limpieza:true,
+   inc:['catNinos'],
    d:'Sala completa privada · 1 monitor · pastel temático para 20 personas · decoración básica personalizada · catering para 20 niños · mobiliario completo · limpieza incluida.',
    no:'taller, animación ni personaje disfrazado (se añaden aparte).',
    note:'3h · 20 niños incluidos · niño extra 7€ con catering · monitor extra 40€ a partir de 20'},
   {id:'vip', modo:'pack', tipo:'dia', n:'VIP', base:995, baseFinde:1190,
    aforo:0, incKids:20, pastel:true, cateringInc:true, limpieza:true,
+   /* el VIP ya trae "taller, animacion, personaje o pintacaras" dentro */
+   inc:['catNinos','taller','personaje'],
    d:'Sala exclusiva privada · decoración completa temática y personalizada · pastel temático (20 porciones) · 2 monitores para juegos grupales · taller, animación, personaje disfrazado o pintacaras para 20 niños · catering infantil para 20 niños · limpieza incluida.',
    no:'nada, lo lleva todo. Aparte solo van los caprichos: magia, fotógrafo o un muñecón más.',
    note:'3h · 20 niños incluidos · niño extra 7€ con catering · monitor extra 40€ a partir de 20'},
 
   /* ---- celebración práctica · 2 horas ---- */
+  /* la merienda del Lounge NO es el pack de catering: el catering se deja
+     a mano a proposito, para poder vender la mejora. La limpieza va dentro
+     porque en el Lounge no se puede traer comida de fuera, y los 35€ son
+     justamente por eso. La hora adicional SI se cobra: son 2h, pero se
+     puede alargar.                                                      */
   {id:'lounge', modo:'sala', tipo:'porNino', n:'Family Lounge', base:25, aforo:0, pastel:false,
+   limpieza:true, precios:{horaExtra:90},
    d:'2 horas de juego · merienda incluida · sin sala privada, el centro sigue abierto.',
    no:'sala privada, decoración, monitor ni taller. El pastel se pide al centro.',
    note:'2h · 25€/niño · entrada de adulto 3€ · la cafetería se pide en el bar'},
   {id:'loungeTaller', modo:'sala', tipo:'porNino', n:'Family Lounge + taller', base:38, aforo:0, pastel:false,
+   inc:['taller'], limpieza:true, precios:{horaExtra:90},
    d:'2 horas de juego · merienda incluida · taller a elegir (slime, tote bag, science, art & plant…).',
    no:'sala privada ni decoración. El pastel se pide al centro.',
    note:'2h · 38€/niño · entrada de adulto 3€ · taller incluido'},
@@ -1394,6 +1432,15 @@ function paint(){
    prometer un precio que luego no es.                                      */
 const eur = n => n.toLocaleString(LANG === 'en' ? 'en-GB' : (LANG === 'ca' ? 'ca-ES' : 'es-ES')) + '€';
 
+/* Lo que cuesta un extra EN ESTA OPCION. Casi siempre es su precio de
+   siempre, pero un pack puede tener el suyo: la hora adicional son 100€
+   de sala y en el Family Lounge son 90€. Antes el precio era uno solo
+   para toda la pagina y no habia donde poner esa diferencia.          */
+function precioExtra(pk, e){
+  const p = (pk && pk.precios) ? pk.precios[e.id] : undefined;
+  return (p == null) ? e.precio : p;
+}
+
 function presupuesto(){
   const pk  = PACKS.find(p => p.id === state.pack);
   const kids= parseInt(state.kids,10)   || 0;
@@ -1456,14 +1503,25 @@ function presupuesto(){
                  pk.pastel ? T('incluido') : T('consultar')]);
   }
 
+  /* LO QUE EL PACK YA TRAE se lista SIEMPRE, marcado o no, como "incluido".
+     Dos motivos: (1) que se vea lo que ya tiene pagado — un VIP con tres
+     líneas en verde se justifica solo; (2) que no se pueda cobrar dos veces
+     (marcar "personaje" en un VIP sumaba 125€ que el VIP ya lleva).      */
+  (pk.inc || []).forEach(id => {
+    const e = EXTRAS.find(x => x.id === id);
+    if(e) lineas.push([e.n, T('incluido')]);
+  });
+
   state.extras.forEach(id => {
     const e = EXTRAS.find(x => x.id === id);
-    /* Premium y VIP ya traen el catering de los niños. Si lo marca igual,
-       se enseña como incluido pero NO se cobra dos veces.               */
-    if(id === 'catNinos' && pk.cateringInc){ lineas.push([e.n, T('incluido')]); return; }
-    if(e.tipo === 'porNino'  ){ const s = e.precio*kids; lineas.push([e.n+' ×'+kids, kids?eur(s):'—']); total += s; }
-    else if(e.tipo==='porAdulto'){ const s = e.precio*ad; lineas.push([e.n+' ×'+ad,  ad  ?eur(s):'—']); total += s; }
-    else if(e.tipo==='fijo'  ){ lineas.push([e.n, eur(e.precio)]); total += e.precio; }
+    /* ya salio arriba como incluido, o no se puede dar en esta opcion */
+    if((pk.inc || []).includes(id) || (pk.na || []).includes(id)) return;
+    /* el mismo extra puede costar distinto segun la opcion: la hora
+       adicional son 100€ de sala, pero en el Family Lounge son 90€.   */
+    const pr = precioExtra(pk, e);
+    if(e.tipo === 'porNino'  ){ const s = pr*kids; lineas.push([e.n+' ×'+kids, kids?eur(s):'—']); total += s; }
+    else if(e.tipo==='porAdulto'){ const s = pr*ad; lineas.push([e.n+' ×'+ad,  ad  ?eur(s):'—']); total += s; }
+    else if(e.tipo==='fijo'  ){ lineas.push([e.n, eur(pr)]); total += pr; }
     else                      { lineas.push([e.n, T('consultar')]); }
   });
 
@@ -1686,7 +1744,8 @@ function renderModos(){
     /* al cambiar de modo hay que saltar a una opcion de ESE modo, si no
        te quedas con "Premium" seleccionado dentro de "A domicilio"    */
     state.pack = PACKS.find(x => x.modo === m.id).id;
-    renderPacks(); paint();
+    /* los extras dependen del pack, asi que se repintan con el */
+    limpiarExtras(); renderPacks(); renderExtras(); paint();
   };
   modosBox.appendChild(b);
  });
@@ -1738,7 +1797,9 @@ function renderPacks(){
       nx.appendChild(document.createTextNode(' ' + p.no));
       b.appendChild(nx);
     }
-    b.onclick = () => { state.pack = p.id; paint(); };
+    /* renderExtras aqui y NO dentro de paint(): paint() corre con cada tecla
+       que escribes, y repintar la lista entera te robaria el foco del campo. */
+    b.onclick = () => { state.pack = p.id; limpiarExtras(); renderExtras(); paint(); };
     packsBox.appendChild(b);
   });
 
@@ -1768,24 +1829,57 @@ function renderPacks(){
 renderPacks();
 
 const extrasBox = $('#extras');
+
+/* Al cambiar de opcion, lo que ya no se puede pedir se DESMARCA solo. Sin
+   esto te llevabas el "personaje" marcado del Standard al VIP y se seguia
+   cobrando aparte una cosa que el VIP ya trae dentro.                   */
+function limpiarExtras(){
+  const pk = PACKS.find(p => p.id === state.pack) || {};
+  (pk.inc || []).concat(pk.na || []).forEach(id => state.extras.delete(id));
+}
+
+/* Los extras NO son los mismos en todas las opciones: un VIP lo lleva casi
+   todo dentro y un alquiler de sala a secas no lleva nada. Antes se pintaban
+   los 10 iguales para todo el mundo y solo se refrescaban al cambiar de
+   idioma, asi que la lista no reaccionaba NUNCA al pack elegido.         */
 function renderExtras(){
  clear(extrasBox);
+ const pk  = PACKS.find(p => p.id === state.pack) || {};
+ const inc = pk.inc || [];
+ const na  = pk.na  || [];
  EXTRAS.forEach(x => {
-  const b = el('button','ex');
+  const yaVa   = inc.includes(x.id);
+  const noAply = na.includes(x.id);
+  /* el texto del extra lleva el precio DENTRO ("100€ · sujeto a..."), asi
+     que si este pack tiene precio propio hay que cambiar tambien el numero
+     del texto, o la madre lee 100€ y el presupuesto le pone 90€. Cambio
+     solo el numero, no la frase: asi sigue bien en los 3 idiomas sin
+     tener que escribir la frase otras tres veces.                      */
+  const pr   = precioExtra(pk, x);
+  const sTxt = (pr === x.precio) ? x.s : x.s.replace(String(x.precio), String(pr));
+  const b = el('button', 'ex' + (yaVa ? ' inc' : noAply ? ' na' : ''));
   b.dataset.k = x.id;
   /* Lee del estado, no pone 'false' a pelo: al repintar por cambio de
      idioma los extras ya marcados tienen que seguir marcados.        */
-  b.setAttribute('aria-pressed', String(state.extras.has(x.id)));
+  b.setAttribute('aria-pressed', String(!yaVa && !noAply && state.extras.has(x.id)));
   b.appendChild(el('span','tick','✓'));
   const txt = el('span');
   txt.appendChild(el('b',null,x.i + ' ' + x.n));
-  txt.appendChild(el('small',null,x.s));
+  /* en vez del precio, lo incluido dice EN QUE pack lo tiene ya */
+  txt.appendChild(el('small',null,
+    yaVa   ? T('ya_inc') + pk.n :
+    noAply ? T('na_l')          : sTxt));
   b.appendChild(txt);
-  b.onclick = () => {
-    state.extras.has(x.id) ? state.extras.delete(x.id) : state.extras.add(x.id);
-    b.setAttribute('aria-pressed', state.extras.has(x.id));
-    updatePoster();
-  };
+  if(yaVa || noAply){
+    /* ni se pulsa ni se tabula: esto ya no es una opcion, es informacion */
+    b.disabled = true;
+  } else {
+    b.onclick = () => {
+      state.extras.has(x.id) ? state.extras.delete(x.id) : state.extras.add(x.id);
+      b.setAttribute('aria-pressed', state.extras.has(x.id));
+      updatePoster();
+    };
+  }
   extrasBox.appendChild(b);
  });
 }
