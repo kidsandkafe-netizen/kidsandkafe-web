@@ -2128,8 +2128,21 @@ document.querySelectorAll('.langbtn').forEach(b =>
 </script>
 
 <!-- ============ ESCENARIO 3D REAL (WebGL / three.js) ============ -->
+<!-- Los modulos de post-proceso (el desenfoque) se importan entre ellos con
+     el nombre pelado "three". El navegador no sabe que es eso, asi que hay
+     que decirselo aqui. Sin este mapa, BokehPass revienta al cargar. -->
+<script type="importmap">
+{ "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+} }
+</script>
 <script type="module">
-import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
+import * as THREE from 'three';
+import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
+import {RenderPass}     from 'three/addons/postprocessing/RenderPass.js';
+import {BokehPass}      from 'three/addons/postprocessing/BokehPass.js';
+import {OutputPass}     from 'three/addons/postprocessing/OutputPass.js';
 
 const canvas = document.getElementById('gl');
 const stage  = document.getElementById('stage');
@@ -2177,7 +2190,12 @@ const scene  = new THREE.Scene();
   pm.dispose(); tex.dispose();
 })();
 
-const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
+/* near/far APRETADOS (antes 0.1 / 100). El desenfoque lee la PROFUNDIDAD del
+   buffer, y ese buffer reparte su precision entre near y far: con 0.1-100 casi
+   toda la precision se gasta en el primer metro y el fondo sale a escalones.
+   Nada de la sala pasa de 25 de lejos ni se acerca a menos de 0.6, asi que
+   0.2-40 no recorta nada y multiplica la precision del desenfoque. */
+const camera = new THREE.PerspectiveCamera(38, 1, 0.2, 40);
 camera.position.set(0, 2.4, 6.6);
 camera.lookAt(0, 1.35, 0);
 
@@ -2223,12 +2241,57 @@ const parquetTex = (() => {
          del marron base. Ahora el tope es 1: la lama nunca sale mas clara
          que el color de la madera, solo mas oscura. Asi el suelo se lee
          como un parquet nogal de verdad y no como tarima clarita.        */
-      const tono = 0.58 + rnd()*0.42;                       /* cada lama, su tono */
-      x.fillStyle = `rgb(${Math.round(150*tono)},${Math.round(99*tono)},${Math.round(62*tono)})`;
+      /* SEGUNDA PASADA — Barbara: "el suelo lo quiero mas oscuro, marron
+         quemado oscuro". La madera base baja de 150,99,62 (nogal medio) a
+         118,66,36, que es nogal QUEMADO: mismo tono, menos luz y con el
+         verde bajando mas que el rojo, que es lo que hace que un marron se
+         lea "quemado" y no "gris". El tope de tono tambien baja de 1.00 a
+         0.94 para que ninguna lama vuelva a subir al marron claro.
+
+         TERCERA PASADA — Barbara: "mas oscuro". Otra vuelta de tuerca:
+         118,66,36 -> 92,50,26. Ojo a las proporciones: el rojo se queda
+         en 3,5 veces el azul igual que antes. Eso es lo que importa —
+         si bajase los tres canales por igual el marron se iria a BARRO
+         gris, que es el error tipico al oscurecer madera. Aqui bajo la
+         LUZ sin tocar el tono. Y el abanico de lamas se estrecha
+         (0.52-0.94 -> 0.50-0.90) para que ninguna se escape hacia
+         arriba: una sola lama clara en un suelo oscuro canta muchisimo
+         mas que en uno medio.
+
+         Pero al estrechar el abanico pasaba otra cosa: todas las lamas
+         quedaban casi del mismo tono y el suelo se leia como un AGUJERO
+         NEGRO, no como madera. En un parquet oscuro las lamas no se
+         distinguen por la junta (que tambien es casi negra y se funde con
+         ellas): se distinguen porque una es un poco mas clara que la de
+         al lado. Asi que el abanico se vuelve a abrir, pero SOLO HACIA
+         ABAJO: el techo se queda en 0.90 y el suelo del abanico baja a
+         0.38. Mismo tono maximo, mas diferencia entre vecinas.
+
+         CUARTA PASADA — Barbara: "ya demasiado oscuro, un poco mas claro".
+         Me pase. Vuelvo a subir un escalon, pero NO al de antes: 92,50,26
+         -> 105,58,31, que queda entre la segunda pasada y la tercera,
+         tirando a oscuro. Las proporciones entre canales se respetan otra
+         vez (el rojo sigue siendo 3,4 veces el azul) para que siga siendo
+         marron quemado y no se vaya a naranja al subirle la luz. El
+         abanico ancho se QUEDA: eso no era oscuridad, era lo que hace que
+         se distingan las lamas, y sirve igual de claro que de oscuro.     */
+      const tono = 0.42 + rnd()*0.50;                       /* cada lama, su tono */
+      x.fillStyle = `rgb(${Math.round(105*tono)},${Math.round(58*tono)},${Math.round(31*tono)})`;
       x.fillRect(X+1.5, Y+1.5, LARGO-3, ALTO-3);
       for(let v = 0; v < 10; v++){                          /* la veta */
         const vy = Y + 4 + rnd()*(ALTO-8);
-        x.strokeStyle = rnd() < 0.5 ? 'rgba(255,214,168,0.06)' : 'rgba(0,0,0,0.30)';
+        /* la veta clara se calienta y se baja: sobre madera quemada un
+           reflejo marfil canta, sobre nogal medio no se notaba.
+           Tercera pasada: la veta clara baja otra vez (0.05 -> 0.035) y la
+           oscura SUBE (0.34 -> 0.42). Al oscurecer la madera, la veta clara
+           se convierte en lo mas llamativo del suelo si no la sujetas; y la
+           oscura hay que subirla o el parquet se queda liso — en una madera
+           oscura la veta se ve por el HUECO, no por el brillo.
+           Cuarta pasada: al subir la madera un escalon, la veta acompana
+           en la misma proporcion (clara 0.035 -> 0.042, oscura 0.42 ->
+           0.39). Si la dejo como estaba, la veta pesaria de mas sobre una
+           madera mas clara y el suelo saldria rayado.                     */
+        x.strokeStyle = rnd() < 0.5 ? 'rgba(255,188,132,0.042)' : 'rgba(0,0,0,0.39)';
         x.lineWidth = 0.5 + rnd()*1.6;
         x.beginPath(); x.moveTo(X+3, vy);
         x.bezierCurveTo(X+LARGO*0.3, vy+(rnd()-0.5)*5,
@@ -2248,9 +2311,31 @@ parquetTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
    el cielo claro se reflejaba en todo el suelo y lo volvia gris. Y el
    envMap baja de 0.5 a 0.22 por lo mismo. Oscurecer solo la textura no
    servia de nada si luego la luz blanca la volvia a lavar por encima.
-   El color deja de ser blanco: multiplica y hunde el marron sin apagarlo. */
-const floorMat = new THREE.MeshStandardMaterial({map:parquetTex, color:0xC9A382,
-  roughness:0.62, metalness:0, envMapIntensity:0.22});
+   El color deja de ser blanco: multiplica y hunde el marron sin apagarlo.
+
+   SEGUNDA PASADA: el color multiplicador tambien baja, de 0xC9A382 a
+   0x9A6844. Hay que tocar LOS DOS — solo la textura no basta, porque este
+   color la multiplica por encima; si dejaba el claro me devolvia parte de
+   lo que acababa de quitar. Y el envMap baja otra vez (0.22 -> 0.15): con
+   un suelo oscuro, el poco cielo que rebota se nota el doble.
+
+   TERCERA PASADA: 0x9A6844 -> 0x7A5136, y la rugosidad sube a 0.72. Lo de
+   la rugosidad es lo importante y no es evidente: cuanto mas OSCURO pintas
+   un suelo, mas se le nota el reflejo, porque un reflejo claro sobre marron
+   medio se disimula y sobre marron casi negro es una mancha. Asi que al
+   bajar el color hay que subir la rugosidad en la misma jugada, o el suelo
+   se pone oscuro Y brillante a la vez, que es aspecto de plastico mojado.
+   El envMap baja por tercera vez, 0.15 -> 0.10.
+
+   CUARTA PASADA: al subir un escalon la madera, este color sube con ella
+   (0x7A5136 -> 0x8A5C3E) y la rugosidad afloja un poco (0.72 -> 0.70) por
+   el mismo motivo que antes subio, pero al reves: un suelo un pelin mas
+   claro aguanta un pelin mas de reflejo sin que se le note como mancha.
+   El envMap sube de 0.10 a 0.12. La regla es que estas tres cosas se
+   mueven SIEMPRE juntas y en el mismo sentido; tocar una sola es lo que
+   me hizo dar tres vueltas a esto.                                        */
+const floorMat = new THREE.MeshStandardMaterial({map:parquetTex, color:0x8A5C3E,
+  roughness:0.70, metalness:0, envMapIntensity:0.12});
 const floor = new THREE.Mesh(new THREE.CircleGeometry(13, 64), floorMat);
 floor.rotation.x = -Math.PI/2;
 floor.receiveShadow = true;
@@ -2365,10 +2450,95 @@ globoGeo.scale(1, 1.20, 1);
   }
   globoGeo.computeVertexNormals(); }
 
+/* ═══════════ LUJO · 1 · TEXTURA DE LATEX ═══════════
+   Un globo de verdad NO es una superficie perfecta. El latex tiene grano, y
+   al estirarse queda mas fino en unos sitios que en otros, asi que brilla a
+   parches. Sin eso, le pongas el color que le pongas, el ojo lee "bola de
+   ordenador" — que es exactamente lo que pasaba.
+   Un solo lienzo de ruido sirve para las dos cosas:
+     · bumpMap  -> relieve finisimo (mira las PENDIENTES del gris)
+     · roughnessMap -> brillo desigual (mira el VALOR del gris)
+   Por eso los grises van altos (~225) y no en medio: el roughnessMap
+   MULTIPLICA, y con grises del 50% los globos se volvian brillantes. */
+const texLatex = (() => {
+  const c = document.createElement('canvas'); c.width = c.height = 256;
+  const x = c.getContext('2d');
+  const im = x.createImageData(256, 256), d = im.data;
+  for(let py = 0; py < 256; py++) for(let px = 0; px < 256; px++){
+    const i = py*256 + px;
+    /* dos escalas mezcladas: una sola queda a papel de lija */
+    const n = Math.sin(px*0.55)*Math.sin(py*0.62)*3.2
+            + Math.sin(px*0.13+1.7)*Math.sin(py*0.11+0.4)*9.0
+            + (Math.random()-0.5)*6.0;
+    const v = 225 + n;
+    d[i*4] = d[i*4+1] = d[i*4+2] = v; d[i*4+3] = 255;
+  }
+  x.putImageData(im, 0, 0);
+  const t = new THREE.CanvasTexture(c);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(2.5, 2.5);
+  return t;
+})();
+
+/* ═══════════ LUJO · 6 · PIEL DE NATA Y PIEL DE TELA ═══════════
+   Mismo truco que con los globos, pero para lo que de verdad vendes.
+   La tarta tenia roughness 0.58 y NADA de relieve: eso es una lata de
+   pintura, no un bizcocho. Y el mantel era un cono liso.
+
+   NATA: cuando alguien alisa una tarta con la espatula quedan VUELTAS
+   horizontales, no una superficie perfecta. Asi que las bandas van en
+   horizontal (siguen el py) y ademas ondulan un poco, porque la mano
+   tampoco va recta. Los grises altos (232) porque el roughnessMap
+   MULTIPLICA y la nata tiene que quedar MATE, no de plastico.          */
+const texNata = (() => {
+  const c = document.createElement('canvas'); c.width = c.height = 256;
+  const x = c.getContext('2d');
+  const im = x.createImageData(256, 256), d = im.data;
+  for(let py = 0; py < 256; py++) for(let px = 0; px < 256; px++){
+    const i = py*256 + px;
+    /* la banda de la espatula: horizontal, y torcida por el seno de px */
+    const banda = Math.sin(py*0.62 + Math.sin(px*0.045)*2.4) * 15.0
+                + Math.sin(py*1.9  + Math.sin(px*0.09 )*1.1) * 5.5;
+    /* grano de azucar */
+    const grano = (Math.random()-0.5)*6.0 + Math.sin(px*0.7)*Math.sin(py*0.8)*3.0;
+    const v = 232 + banda + grano;
+    d[i*4] = d[i*4+1] = d[i*4+2] = v; d[i*4+3] = 255;
+  }
+  x.putImageData(im, 0, 0);
+  const t = new THREE.CanvasTexture(c);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(3, 2);
+  return t;
+})();
+
+/* TELA: trama fina cruzada. Sin esto el mantel es un plano de color, y un
+   plano de color a 3 metros se lee como carton. Con la trama, el mismo
+   color se lee como algodon. Va todavia mas alto (238) = mas mate aun,
+   que es lo que pides: mate.                                            */
+const texTela = (() => {
+  const c = document.createElement('canvas'); c.width = c.height = 256;
+  const x = c.getContext('2d');
+  const im = x.createImageData(256, 256), d = im.data;
+  for(let py = 0; py < 256; py++) for(let px = 0; px < 256; px++){
+    const i = py*256 + px;
+    const trama = Math.sin(px*1.57)*2.8 + Math.sin(py*1.57)*2.8
+                + Math.sin((px+py)*0.42)*1.4;
+    const v = 238 + trama + (Math.random()-0.5)*3.0;
+    d[i*4] = d[i*4+1] = d[i*4+2] = v; d[i*4+3] = 255;
+  }
+  x.putImageData(im, 0, 0);
+  const t = new THREE.CanvasTexture(c);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(9, 5);
+  return t;
+})();
+
 const racimo = [];
 /* Mas globos: al agrupar en matas se abren huecos, y con 104 el brazo
    izquierdo se quedaba en un agujero azul. */
-const NRACIMO = 150;
+/* mas globos que antes (150): al meter tamanos de verdad, los pequenitos
+   tienen que ser MUCHOS para rellenar los huecos entre los gordos.
+   Puesto al lado de la version de ahora se veia que la corona quedaba MAS
+   VACIA que la de la web, y eso se lee como "peor" aunque el resto mejore.
+   Los gordos abren hueco; hacen falta mas pequenos para cerrarlo. */
+const NRACIMO = 248;
 
 /* Una guirnalda de verdad NO es azar repartido: son MATAS de 5-6 globos
    pegados con huecos entre mata y mata. Repartidos por igual parecen
@@ -2389,9 +2559,17 @@ for(let i = 0; i < NRACIMO; i++){
   const t = i / (NRACIMO - 1);
   const p = arco.getPoint(t);
 
-  /* Tamanos mezclados: muchos pequenos y algunos gordos. El Math.pow hace
-     que salgan mas pequenos que grandes, que es como se montan de verdad. */
-  const r = 0.12 + Math.pow(Math.random(), 1.9) * 0.25;
+  /* ═══════════ LUJO · 2 · TAMANOS DE VERDAD ═══════════
+     Antes: 0.12 + pow(random,1.9)*0.25 -> del 0.12 al 0.37, y ese 1.9
+     empujaba a casi todos al minimo. Resultado: 150 globos casi iguales,
+     que de lejos se leen como una TEXTURA, no como globos.
+     En una guirnalda montada por un profesional hay globos GRANDES que
+     mandan y pequenitos rellenando los huecos. Asi que ahora son tres
+     familias explicitas, y el mayor es 5 veces el menor. */
+  const dado = Math.random();
+  const r = dado < 0.62 ? 0.105 + Math.random() * 0.085   /* relleno  62% */
+          : dado < 0.93 ? 0.20  + Math.random() * 0.11    /* medianos 31% */
+          :               0.31  + Math.random() * 0.13;   /* mandones  7% */
 
   /* El racimo engorda por el centro del arco y afina en las puntas */
   const grosor = 0.34 + Math.sin(t * Math.PI) * 0.52;
@@ -2414,11 +2592,24 @@ for(let i = 0; i < NRACIMO; i++){
     envMapIntensity: cromo ? 2.6 : 0.52,
     /* barniz y halo: FUERA en los mates. Eran las dos capas blancas. */
     clearcoat: cromo ? 0.45 : 0.18, clearcoatRoughness: cromo ? 0.22 : 0.55,
-    /* El "sheen" es un halo blanco de terciopelo por todo el globo. Con 0.55
-       se comia el color: sobre pared marino todos salian blancos. Bajado a
-       0.15 el globo sigue teniendo brillo, pero el color pastel se ve.    */
-    sheen: 0
+    /* ═══════════ LUJO · 1b · EL HALO, AHORA BIEN HECHO ═══════════
+       El "sheen" es el halo de terciopelo del borde. Estaba en 0 porque
+       antes se probo en BLANCO y se comia el color: todos salian blancos
+       sobre el marino. Pero el fallo no era el halo, era el color del halo.
+       Un globo de latex devuelve por el borde SU PROPIO color, no blanco.
+       Asi que sheenColor se copia del color del globo (se actualiza en el
+       bucle, porque el color cambia con la tematica) y ya se puede subir. */
+    sheen: cromo ? 0 : 0.45,
+    sheenRoughness: 0.62,
+    /* la textura de latex: relieve + brillo desigual. En los cromados no,
+       que un globo metalizado si es liso de verdad. */
+    bumpMap: cromo ? null : texLatex,
+    bumpScale: 0.012,
+    roughnessMap: cromo ? null : texLatex
   });
+  /* que no salgan los 150 con el mismo acabado exacto */
+  if(!cromo){ mat.roughness = 0.64 + Math.random()*0.14;
+              mat.clearcoat = 0.10 + Math.random()*0.16; }
 
   const g = new THREE.Mesh(globoGeo, mat);
   g.castShadow = true;
@@ -2428,7 +2619,15 @@ for(let i = 0; i < NRACIMO; i++){
   const M = matas[Math.min(NMATA - 1, Math.floor(i / (NRACIMO / NMATA)))];
   const cx = M.p.x + M.dx, cy = M.p.y + M.dy, cz = M.p.z + M.dz;
   const a1 = Math.random() * 6.28, a2 = Math.random() * 6.28;
-  const sep = r * (0.9 + Math.random() * 1.15);
+  /* ═══════════ LUJO · 2b · DONDE SE PONE CADA TAMANO ═══════════
+     Antes el desvio se calculaba con el radio DEL PROPIO globo: cuanto mas
+     gordo, mas lejos se iba de su mata. Al meter globos grandes (LUJO 2) eso
+     los mandaba a tomar viento y abria agujeros azules en la guirnalda.
+     Al reves: en un montaje de verdad los GORDOS van al nucleo, mandando, y
+     los pequenitos salen a rellenar los bordes. Asi que el desvio va con el
+     grosor de LA MATA, y los gordos se quedan cerca del centro. */
+  const sep = M.gr * 0.42 * (0.35 + Math.random() * 0.95)
+              * (r > 0.30 ? 0.5 : r > 0.19 ? 0.8 : 1.15);
   g.position.set(cx + Math.cos(a1) * sep,
                  cy + Math.sin(a1) * sep * 0.95,
                  cz + Math.cos(a2) * sep * 0.7);
@@ -2448,12 +2647,589 @@ for(let i = 0; i < NRACIMO; i++){
   g.quaternion.setFromUnitVectors(new THREE.Vector3(0, -1, 0),
                                   haciaDentro.normalize());
   g.rotateY(Math.random() * 6.28);
-  g.userData = {mat, base: g.position.clone(), phase: Math.random()*6.28, cromo};
+  g.userData = {mat, base: g.position.clone(), phase: Math.random()*6.28, cromo,
+                ao: 1};
   world.add(g);
   racimo.push(g);
 }
 
+/* ═══════════ LUJO · 3 · SOMBRA DE CONTACTO (oclusion) ═══════════
+   Esto es LO QUE MAS SE NOTA de todo. En la vida real, en el hueco donde se
+   tocan dos globos no llega luz, asi que se oscurece. Sin ese oscurecimiento
+   el ojo no ve objetos con volumen: ve circulos pegados en una pared, que es
+   justo lo que parecia.
+   Lo de verdad (SSAO) es post-proceso y cuesta caro. Aqui se hace a mano y
+   gratis: para cada globo cuento cuantos vecinos lo rodean y lo oscurezco en
+   proporcion. Se calcula UNA vez al montar, no cada fotograma.             */
+(() => {
+  const N = racimo.length;
+  for(let i = 0; i < N; i++){
+    const a = racimo[i], ra = a.scale.x;
+    let occ = 0;
+    for(let j = 0; j < N; j++){
+      if(j === i) continue;
+      const b = racimo[j], rb = b.scale.x;
+      const d = a.position.distanceTo(b.position);
+      const juntos = (ra + rb) * 1.45;
+      if(d < juntos){
+        /* pesa mas el vecino que esta pegado que el que esta cerca, y pesa
+           mas un vecino GORDO que uno pequenito (tapa mas cielo) */
+        occ += (1 - d / juntos) * Math.min(1.6, rb / ra);
+      }
+    }
+    /* techo: por muy enterrado que este, nunca a negro */
+    a.userData.ao = 1 - Math.min(0.42, occ * 0.085);
+  }
+})();
+
+/* ═══════════ LUJO · 4 · LO QUE NO ES UNA ESFERA ═══════════
+   Hasta aqui la sala entera son ESFERAS. Y eso, por muy bien iluminado que
+   este, el ojo lo lee como "hecho por ordenador": en la vida real no hay nada
+   que sea una bola perfecta repetida 200 veces.
+   Lo que separa "globos de cumple" de "decoracion de lujo" en las fotos de
+   las decoradoras buenas es SIEMPRE lo mismo, y no son los globos:
+     · verde metido entre los globos (eucalipto)
+     · cintas de raso colgando
+   Las dos cosas van en UNA sola malla instanciada cada una (1 draw call),
+   asi que 180 hojas cuestan lo mismo que una.                              */
+
+/* ---------- 4a · EUCALIPTO ---------- */
+(() => {
+  const NRAMA = 36, NHOJA = 9;
+
+  /* una hoja de eucalipto es un ovalo casi plano. Esfera achatada, no plano:
+     asi tiene canto y coge la luz por los dos lados sin DoubleSide.
+     TAMANO: la primera version iba a 0.050x0.070 y NO SE VEIA. Al lado hay
+     globos de 0.18 a 0.88 de ancho; una hoja de 7cm entre bolas de 60cm
+     desaparece. En una guirnalda de verdad la rama de eucalipto mide como
+     un globo mediano, no como una moneda. */
+  const hojaGeo = new THREE.SphereGeometry(1, 7, 5);
+  hojaGeo.scale(0.074, 0.011, 0.108);
+
+  /* el tallo mide 1 de largo con la base en el origen, y luego se estira */
+  const talloGeo = new THREE.CylinderGeometry(0.005, 0.011, 1, 5, 1);
+  talloGeo.translate(0, 0.5, 0);
+
+  /* Salvia, no verde hierba. El eucalipto es verde GRIS, y ese gris es
+     justo lo que lo hace caro al lado del pastel. */
+  /* Ni tan oscuro que se lea negro sobre el marino, ni tan claro que se
+     queme. La primera tanda iba a 0x93A98B y no se veia; la segunda subio a
+     0xCDD5C1 + halo 0.55 + entorno 0.72 y las hojas salieron BLANCAS: entre
+     el halo del borde y el reflejo del entorno, una hoja fina casi de canto
+     se quema entera y deja de ser verde. Punto medio, y halo a la mitad. */
+  const TONOS = [0x9CB294, 0xB0C0A6, 0x8A9F83, 0xBFC9B2, 0x94AB8D];
+
+  const hojaMat = new THREE.MeshPhysicalMaterial({
+    color:0xffffff, roughness:0.80, metalness:0,
+    /* el eucalipto es CEROSO: tiene un halo mate, no un brillo */
+    sheen:0.28, sheenRoughness:0.55, sheenColor:new THREE.Color(0xCDD8C4),
+    envMapIntensity:0.42 });
+  const talloMat = new THREE.MeshStandardMaterial({
+    color:0x6E7F68, roughness:0.90, metalness:0, envMapIntensity:0.35 });
+
+  const hojas  = new THREE.InstancedMesh(hojaGeo,  hojaMat,  NRAMA * (NHOJA + 2));
+  const tallos = new THREE.InstancedMesh(talloGeo, talloMat, NRAMA);
+  hojas.castShadow = tallos.castShadow = true;
+
+  const dRama = new THREE.Object3D();
+  const dHoja = new THREE.Object3D();
+  dHoja.rotation.order = 'YXZ';   /* Y = a que lado sale, X = cuanto cae */
+  const M = new THREE.Matrix4();
+  const col = new THREE.Color();
+  /* de aqui salen los "hacia fuera": esta bajo y al centro del arco, asi las
+     ramas de los lados salen de lado y las de arriba salen hacia arriba */
+  const NUCLEO = new THREE.Vector3(0, 0.2, -1.4);
+  let hi = 0;
+
+  for(let k = 0; k < NRAMA; k++){
+    const t = Math.min(0.985, Math.max(0.015,
+              (k + 0.5) / NRAMA + (Math.random() - 0.5) * 0.045));
+    const p = arco.getPoint(t);
+    const grosor = 0.34 + Math.sin(t * Math.PI) * 0.52;
+
+    const out = p.clone().sub(NUCLEO).normalize();
+    out.x += (Math.random() - 0.5) * 0.35;
+    out.y += (Math.random() - 0.5) * 0.30;
+    out.normalize();
+
+    /* La mata mide ~0.9 de gorda en la corona. Con un empujon de 0.42 la rama
+       nacia DENTRO del monton de globos y no se veia ni una hoja.
+       Tienen que salir POR DELANTE y recortarse contra los globos: es ahi
+       donde el verde hace su trabajo, rompiendo la pared de esferas. */
+    const base = p.clone().addScaledVector(out, grosor * 0.55);
+    base.z += 0.52 + Math.random() * 0.30;
+    base.x += (Math.random() - 0.5) * grosor * 0.6;
+    base.y += (Math.random() - 0.5) * grosor * 0.5;
+    out.z += 0.55; out.normalize();   /* y apuntando tambien hacia la camara */
+
+    const largo = 0.68 + Math.random() * 0.58;
+    const q = new THREE.Quaternion()
+      .setFromUnitVectors(new THREE.Vector3(0, 1, 0), out);
+
+    dRama.position.copy(base); dRama.quaternion.copy(q);
+    dRama.scale.set(1, largo, 1); dRama.updateMatrix();
+    tallos.setMatrixAt(k, dRama.matrix);
+
+    dRama.scale.set(1, 1, 1); dRama.updateMatrix();   /* las hojas sin estirar */
+
+    const giro = Math.random() * 6.28;
+    for(let j = 0; j < NHOJA + 2; j++){
+      const puntita = j >= NHOJA;
+      /* f = lo lejos del arranque. Las de la punta, mas pequenas y juntas */
+      const f = puntita ? 0.93 + (j - NHOJA) * 0.05
+                        : 0.16 + j * (0.76 / (NHOJA - 1));
+      /* cada hoja 137 grados girada respecto a la anterior: es como crecen
+         de verdad las hojas, y evita que se vea la fila */
+      const ang = giro + j * 2.39 + (Math.random() - 0.5) * 0.5;
+      const caida = -0.22 - f * 0.30 - Math.random() * 0.2;
+      const d = 0.072 + (puntita ? 0 : 0.020);
+
+      dHoja.position.set(Math.sin(ang) * d, f * largo - 0.006, Math.cos(ang) * d);
+      dHoja.rotation.set(caida, ang, (Math.random() - 0.5) * 0.7);
+      dHoja.scale.setScalar((puntita ? 0.52 : 1.16 - f * 0.42)
+                            * (0.86 + Math.random() * 0.3));
+      dHoja.updateMatrix();
+
+      hojas.setMatrixAt(hi, M.multiplyMatrices(dRama.matrix, dHoja.matrix));
+      hojas.setColorAt(hi, col.setHex(TONOS[(Math.random() * TONOS.length) | 0])
+                              .multiplyScalar(0.88 + Math.random() * 0.24));
+      hi++;
+    }
+  }
+  hojas.count = hi;
+  world.add(hojas); world.add(tallos);
+})();
+
+/* ---------- 4a-bis · FLORES ----------
+   ═══════════ LUJO · 18 · LAS FLORES ═══════════
+   Con globos y eucalipto ya no parece de ordenador... pero sigue pareciendo
+   un arco de globos normalito. Lo que de verdad separa en las fotos un
+   montaje normal de uno de LUJO es esto, y no son mas globos: son FLORES
+   metidas entre los globos.
+   Y nunca repartidas por todo el arco: van en MATAS, cuatro o cinco sitios
+   nada mas, y el resto del arco limpio. Repartidas por igual volverian a
+   cantar a ordenador.
+   Van en crema, champan y rosa empolvado A POSTA, igual que el goteo de la
+   tarta y las cintas: asi valen para las 21 tematicas sin repintar nada.
+   Si se tineran con el tema, en "Dinosaurios" saldrian flores verdes.
+   Todo va en DOS mallas instanciadas, asi que 16 rosas cuestan dos
+   dibujados, no treinta.                                                  */
+(() => {
+  /* UN PETALO: un ovalo finisimo. Lo dejo NACIENDO en el origen (el
+     translate en z) para que al girarlo se abra como una BISAGRA desde el
+     centro de la flor. Sin ese translate giraria sobre su propia tripa y se
+     despegaria del centro — el mismo fallo que tuvieron las lazadas del lazo. */
+  /* TAMANO: la primera tanda iba a 0.040x0.050 y NO SE VEIA NADA — volvi a
+     caer en el mismo agujero que el eucalipto, que ya lo avisa aqui arriba.
+     Los globos de la guirnalda miden de 0.21 a 0.88 de ancho; una rosa de
+     0.19 es mas pequena que el globo mas chico, o sea que desaparece.
+     Una rosa de floristeria en un arco de globos es del tamano de un globo
+     MEDIANO, asi que el petalo sube x2.1 y la flor acaba en 0.40 de ancho. */
+  /* CUANTOS TROZOS tiene el petalo: iba a 7x5, que de lejos sobra de sobra.
+     Pero el boton "Ver la tarta" acerca la camara un monton, y ahi, al lado
+     del pastel, se veian las CARAS del petalo: parecia papiroflexia, no una
+     flor. Y no es solo que tenga pocos trozos — al aplastar tanto la bola
+     (0.016 de alto contra 0.105 de largo) la luz le pega torcida y cada
+     cara se nota el doble. Sube a 11x7.
+     No cuesta casi nada, y la razon es la gracia del InstancedMesh: la
+     forma es UNA sola y la comparten los 400 petalos, asi que subir trozos
+     sube lo que se dibuja, pero NO multiplica por 400 la memoria.        */
+  const petaloGeo = new THREE.SphereGeometry(1, 11, 7);
+  petaloGeo.scale(0.084, 0.016, 0.105);
+  petaloGeo.translate(0, 0, 0.096);
+
+  /* La PANICULATA: esas nubes de puntitos blancos de las floristerias. Son
+     bolitas de nada, pero son las que rellenan el hueco entre rosa y globo;
+     sin ellas las rosas parecen pegadas de una en una. */
+  const puntoGeo = new THREE.SphereGeometry(0.020, 8, 6);
+
+  /* Petalo de raso: mate, pero con el halo de tela que tiene un petalo a
+     contraluz. Sin el sheen sale de plastico, como salian los globos antes. */
+  const petaloMat = new THREE.MeshPhysicalMaterial({
+    color:0xffffff, roughness:0.72, metalness:0,
+    sheen:0.55, sheenRoughness:0.42, sheenColor:new THREE.Color(0xFFF1E8),
+    envMapIntensity:0.55 });
+  const puntoMat = new THREE.MeshStandardMaterial({
+    color:0xFBF4EA, roughness:0.68, metalness:0, envMapIntensity:0.5 });
+
+  /* Primera tanda: casi todo crema. Se veian... pero no se NOTABAN, porque
+     al lado hay globos blancos y marfil y se confundian con ellos.
+     Ahora mandan los ROSA EMPOLVADO y el crema queda de acompanamiento: es
+     el unico tono que destaca sobre pastel sin gritar, y es exactamente el
+     de las rosas de las floristerias caras.
+
+     TERCERA PASADA — seguia habiendo una MANCHA BLANCA. Al mirar la foto
+     de cerca, la mata de la izquierda del cartel no se leia como flores:
+     se leia como papel arrugado. La cuenta: la corona de fuera multiplica
+     el tono por 0.56 + 3*0.15 + 0.07 = hasta 1.08. Con el crema 0xF7EFE3
+     (que ya es 0.97 de rojo) eso se pasa de 1 y sale BLANCO PURO — y el
+     cartel de detras es color hueso, asi que blanco contra hueso = mancha.
+     Dos arreglos a la vez: los dos cremas bajan a champan con cuerpo, y el
+     multiplicador se queda por debajo de 1 pase lo que pase (max 0.97).  */
+  const TONOS_F = [0xE8B9C2, 0xDCA3AE, 0xF2DCD8, 0xEADBCB, 0xE8C6B2];
+
+  /* Cada MATA: donde cae en el arco, cuantas rosas lleva y lo grande que es.
+     Eran CINCO matas de 2-5 rosas repartidas flojas, y el resultado era que
+     las rosas salian de una en una por todo el arco: parecian manchas
+     sueltas, no flores. En un montaje de verdad hay DOS O TRES ramos
+     GORDOS, con las flores pegadas unas a otras, y el resto del arco limpio.
+     Asi que: menos sitios, mas flores en cada uno y muy juntas.
+     DONDE van, que es lo que mas costo: el arco arranca en (-4.3, 0.05),
+     sube hasta y=5.45 arriba del todo y baja a (4.4, 0.15). La "t" de la
+     curva NO es el angulo, es el recorrido: t=0.47 suena a centro pero es
+     la cima, y la cima se sale por arriba del encuadre. Primera tanda en
+     t=0.13 / 0.47 / 0.845 = borde izquierdo, borde de arriba y borde
+     derecho: los TRES ramos fuera de la foto. Por eso no se veian.
+     Ahora van en los HOMBROS del arco (0.29 y 0.705), que es por donde la
+     guirnalda cruza en diagonal al lado del cartel — y es justo donde las
+     floristas ponen las flores — mas uno abajo (0.10) donde la guirnalda
+     toca el suelo, que ademas la ATA y deja de parecer que cuelga de nada.
+     Afinado: de 0.29/0.705 a 0.34/0.665. En 0.29 el ramo caia a media
+     altura por el lado, lejos del cartel y comiendose el borde de la foto;
+     en 0.34 cae a la altura de la ESQUINA de arriba del cartel, asi que en
+     vez de decorar el borde, enmarca lo que queremos vender.              */
+  const MATAS = [[0.100, 3, 0.95], [0.340, 6, 1.18], [0.665, 5, 1.10]];
+
+  /* Las coronas de petalos: [cuantos, cuanto abren, tamano]. La de dentro
+     casi cerrada y la de fuera casi tumbada: ESO es lo que hace que se lea
+     ROSA y no margarita.
+     Eran TRES coronas y 11 petalos. De lejos colaba, pero al acercar la
+     camara con "Ver la tarta" la flor se leia como un REPOLLO: 11 petalos
+     grandes abiertos mas o menos igual, y se veia cada hoja suelta. A una
+     rosa de verdad lo que la hace rosa es el COGOLLO — un puñado de
+     petalos chiquitines y casi cerrados enrollados en el centro, y de ahi
+     hacia fuera van creciendo y tumbandose.
+     Asi que meto una CUARTA corona, la de dentro del todo, diminuta
+     (tamano 0.42) y casi de pie (abre 0.12). Son 4 petalos mas por flor,
+     15 en total; con 400 y pico petalos en una sola malla instanciada eso
+     no se nota en el rendimiento, y es la diferencia entre repollo y rosa. */
+  const CORONAS = [[3, 0.12, 0.42], [3, 0.42, 0.66],
+                   [4, 0.85, 0.88], [5, 1.20, 1.02]];
+  /* mas paniculata por mata, que ahora solo hay tres sitios y tiene que
+     envolver el ramo entero, no salpicar */
+  const NPET = 15, NPUN = 38;
+
+  /* ═══ LOS RAMOS DEL SUELO ═══
+     Las matas del arco quedan ARRIBA, y arriba la foto va DESENFOCADA a
+     posta (la camara enfoca el cartel) y ademas compiten con 150 globos del
+     mismo tono pastel: se ven, pero no mandan.
+     Estos van a los PIES del cartel, que es donde la foto esta nitida y el
+     fondo es parque oscuro — ahi el crema y el rosa si destacan. Y es donde
+     van en los montajes de verdad: el arco siempre se remata abajo, nunca
+     se queda el panel apoyado en el suelo a pelo.
+     Primer intento: a ras de suelo (y=0.30) pegados al cartel. Tapados
+     ENTEROS por las cajas de regalo, que estan delante y son altas. Asi que
+     ahora TREPAN POR EL COSTADO del cartel (x = +-1.98, el panel mide 1.85
+     de medio ancho, o sea justo por fuera del filo de oro) y suben hasta
+     y=1.3, que es por encima de los regalos. Que es ademas como van en los
+     photocall de verdad: la flor sube por el lado del arco, no se queda en
+     un monton en el suelo.
+     [x, y, z, cuantas, tamano] */
+  const BASES = [[-1.98, 0.62, 0.02, 5, 1.15], [-2.06, 1.28, 0.00, 4, 1.00],
+                 [ 1.98, 0.58, 0.02, 5, 1.12], [ 2.06, 1.32, 0.00, 4, 0.98]];
+
+  /* ═══ LUJO · 19 · EL CENTRO DE LA PEANA ALTA ═══
+     El lado derecho estaba PELADO comparado con el izquierdo. A la
+     izquierda hay mesa con mantel, tarta, velas y peanas; a la derecha, la
+     torre de peanas (world 2.85, girada -0.38) son tres cilindros blancos y
+     ya. Y encima del alto hay un plato de loza con tres bolitas de 5 cm
+     que a esta distancia no se ven: ocupan 4 px.
+     Lo que va encima de una peana alta en un montaje de verdad es un CENTRO
+     DE FLORES. Asi que ahi va, y ademas resuelve dos cosas de una:
+       · equilibra la foto (tarta a un lado, flores al otro),
+       · y repite el rosa del arco abajo a la derecha, que es lo que ata
+         una decoracion y hace que parezca pensada y no un monton de cosas.
+     Va distinto a los demas ramos: los otros SALEN HACIA UN LADO (crecen
+     del arco hacia fuera); este es una CUPULA, las flores salen en todas
+     las direcciones hacia arriba, como un centro de mesa.
+     Coordenadas: la torre esta en world x=2.85 z=0.35 y el plato a y=1.20,
+     asi que el centro va justo encima, a y=1.34.
+     [x, y, z, cuantas, tamano] */
+  const COPAS = [[2.85, 1.34, 0.35, 8, 1.05]];
+
+  const totalRosas = MATAS.reduce((s, m) => s + m[1], 0)
+                   + BASES.reduce((s, b) => s + b[3], 0)
+                   + COPAS.reduce((s, c) => s + c[3], 0);
+  const petalos = new THREE.InstancedMesh(petaloGeo, petaloMat, totalRosas * NPET);
+  const puntos  = new THREE.InstancedMesh(puntoGeo,  puntoMat,
+                          (MATAS.length + BASES.length + COPAS.length) * NPUN);
+  petalos.castShadow = puntos.castShadow = true;
+
+  const dRosa = new THREE.Object3D();
+  const dPet  = new THREE.Object3D();
+  dPet.rotation.order = 'YXZ';      /* Y = a que lado sale, X = cuanto abre */
+  const dPun = new THREE.Object3D();
+  const M = new THREE.Matrix4(), col = new THREE.Color();
+  const ARR = new THREE.Vector3(0, 1, 0);
+  /* el mismo nucleo que el eucalipto: esta abajo y al centro del arco, asi
+     las de los lados salen de lado y las de arriba salen hacia arriba */
+  const NUCLEO_F = new THREE.Vector3(0, 0.2, -1.4);
+  let pi = 0, qi = 0;
+
+  /* UNA ROSA en un sitio y mirando a un lado. Va aparte porque la usan las
+     dos cosas: las matas del arco y los ramos del suelo. */
+  function ponRosa(base, out, escala){
+    dRosa.position.copy(base);
+    dRosa.quaternion.setFromUnitVectors(ARR, out);
+    dRosa.scale.setScalar(escala * (0.80 + Math.random() * 0.42));
+    dRosa.updateMatrix();
+
+    const tono = TONOS_F[(Math.random() * TONOS_F.length) | 0];
+    const giro0 = Math.random() * 6.28;
+    CORONAS.forEach(([n, abre, tam], c) => {
+      for(let k = 0; k < n; k++){
+        /* media vuelta de desfase por corona: asi los petalos se SOLAPAN
+           en vez de quedar alineados en radios, que es lo que delataria
+           que son copias del mismo trozo */
+        const ang = giro0 + (k + c * 0.5) * (6.2832 / n)
+                  + (Math.random() - 0.5) * 0.28;
+        dPet.rotation.set(-(1.5708 - abre - (Math.random() - 0.5) * 0.18),
+                          ang, (Math.random() - 0.5) * 0.30);
+        /* cada corona un pelin mas baja que la de dentro, asi el cogollo
+           ASOMA por encima en vez de quedar al ras */
+        dPet.position.set(0, 0.012 * (2.6 - c), 0);
+        dPet.scale.setScalar(tam * (0.88 + Math.random() * 0.24));
+        dPet.updateMatrix();
+        /* three.js no deja meter instancias dentro de instancias, asi que
+           compongo padre x hijo a mano: rosa por petalo. */
+        petalos.setMatrixAt(pi, M.multiplyMatrices(dRosa.matrix, dPet.matrix));
+        /* EL CENTRO, OSCURO. Es lo que convierte la flor en flor: en el
+           cogollo de una rosa no entra luz. Iba de 0.84 a 0.98 — casi
+           plano — y de lejos la rosa se leia como una BOLA BLANCA mas de
+           la guirnalda. De 0.58 a 1.00 ya tiene hondo y se ve el remolino.
+           OJO: el paso por corona depende de CUANTAS coronas hay. Con tres
+           iba de 0.21 en 0.21; al meter la cuarta habia que bajarlo a 0.15,
+           porque si no la de fuera se iba a 1.21 y se quemaba a blanco. */
+        petalos.setColorAt(pi, col.setHex(tono)
+                   .multiplyScalar(0.52 + c * 0.13 + Math.random() * 0.06));
+        pi++;
+      }
+    });
+  }
+
+  MATAS.forEach(([tc, nRosas, escala]) => {
+    for(let r = 0; r < nRosas; r++){
+      /* MUY poco corrida: las flores del ramo se TOCAN entre ellas */
+      const t = Math.min(0.99, Math.max(0.01, tc + (Math.random() - 0.5) * 0.030));
+      const p = arco.getPoint(t);
+      const out = p.clone().sub(NUCLEO_F).normalize();
+      out.x += (Math.random() - 0.5) * 0.30;
+      out.y += (Math.random() - 0.5) * 0.26;
+      out.normalize();
+
+      /* DELANTE de los globos, igual que el eucalipto: una flor enterrada
+         entre esferas no se ve, y es justo la que tiene que verse. */
+      const base = p.clone().addScaledVector(out, 0.42 + Math.random() * 0.22);
+      base.z += 0.62 + Math.random() * 0.26;
+      base.x += (Math.random() - 0.5) * 0.30;
+      base.y += (Math.random() - 0.5) * 0.26;
+      out.z += 0.70; out.normalize();          /* y la cara, hacia la camara */
+      ponRosa(base, out, escala);
+    }
+
+    /* la nube de paniculata de esta mata, mas abierta que las rosas */
+    for(let k = 0; k < NPUN; k++){
+      const t = Math.min(0.99, Math.max(0.01, tc + (Math.random() - 0.5) * 0.11));
+      const p = arco.getPoint(t);
+      const out = p.clone().sub(NUCLEO_F).normalize();
+      dPun.position.copy(p).addScaledVector(out, 0.40 + Math.random() * 0.34);
+      dPun.position.x += (Math.random() - 0.5) * 0.66;
+      dPun.position.y += (Math.random() - 0.5) * 0.58;
+      dPun.position.z += 0.70 + Math.random() * 0.34;
+      dPun.scale.setScalar(0.7 + Math.random() * 0.8);
+      dPun.updateMatrix();
+      puntos.setMatrixAt(qi++, dPun.matrix);
+    }
+  });
+
+  /* los ramos de los pies del cartel */
+  const _b = new THREE.Vector3(), _o = new THREE.Vector3();
+  BASES.forEach(([bx, by, bz, nRosas, escala]) => {
+    for(let r = 0; r < nRosas; r++){
+      _b.set(bx + (Math.random() - 0.5) * 0.46,
+             by + (Math.random() - 0.5) * 0.40,
+             bz + (Math.random() - 0.5) * 0.34);
+      /* un ramo del suelo mira hacia ARRIBA y hacia la camara, y cada flor
+         un poco a su aire: todas mirando igual pareceria un ramo de plastico */
+      _o.set((bx < 0 ? -0.35 : 0.35) + (Math.random() - 0.5) * 0.5,
+             0.80 + Math.random() * 0.35,
+             0.75 + Math.random() * 0.35).normalize();
+      ponRosa(_b, _o, escala);
+    }
+    for(let k = 0; k < NPUN; k++){
+      dPun.position.set(bx + (Math.random() - 0.5) * 0.80,
+                        by + (Math.random() - 0.5) * 0.66,
+                        bz + (Math.random() - 0.5) * 0.46);
+      dPun.scale.setScalar(0.7 + Math.random() * 0.8);
+      dPun.updateMatrix();
+      puntos.setMatrixAt(qi++, dPun.matrix);
+    }
+  });
+
+  /* el centro de la peana alta: CUPULA, no ramo de lado */
+  COPAS.forEach(([cx, cy, cz, nRosas, escala]) => {
+    for(let r = 0; r < nRosas; r++){
+      /* reparto en abanico por delante (de -1.4 a +1.4 rad, o sea mirando a
+         la camara y a los lados) y NO por detras, que no se ve y son
+         petalos tirados a la basura */
+      const a = -1.40 + (r + Math.random() * 0.7) * (2.80 / nRosas);
+      /* las de fuera caen mas (0.30 de alto), la del medio va erguida */
+      const cae = Math.abs(a) / 1.40;
+      _o.set(Math.sin(a) * (0.35 + cae * 0.45),
+             1.00 - cae * 0.55,
+             Math.cos(a) * (0.35 + cae * 0.45)).normalize();
+      /* la base sale del centro del plato empujada hacia donde mira */
+      _b.copy(_o).multiplyScalar(0.16 + Math.random() * 0.12);
+      _b.set(cx + _b.x, cy + _b.y * 0.55 - cae * 0.10, cz + _b.z);
+      ponRosa(_b, _o, escala);
+    }
+    for(let k = 0; k < NPUN; k++){    /* paniculata desbordando el plato */
+      dPun.position.set(cx + (Math.random() - 0.5) * 0.74,
+                        cy + (Math.random() - 0.5) * 0.44,
+                        cz + (Math.random() - 0.5) * 0.60);
+      dPun.scale.setScalar(0.7 + Math.random() * 0.8);
+      dPun.updateMatrix();
+      puntos.setMatrixAt(qi++, dPun.matrix);
+    }
+  });
+
+  petalos.count = pi; puntos.count = qi;
+  world.add(petalos); world.add(puntos);
+
+  /* ═══ PETALOS DEL SUELO · PROBADO Y TIRADO ═══
+     Lo dejo escrito para que nadie (yo el primero) lo vuelva a intentar
+     creyendo que es buena idea.
+
+     La idea: el suelo entre los regalos y el cartel es el trozo mas grande
+     de madera vacia de la foto, y en los montajes de verdad siempre hay
+     petalos echados ahi. Reutilizaban el mismo petalo de las rosas, o sea
+     que salian gratis. Sonaba perfecto. Tres intentos, tres fracasos:
+
+       1) 54 pequenos en crema por todo el ancho  -> ESCOMBROS. Cascara de
+          huevo. Y no era el color: era el CONTRASTE. El crema que al lado
+          de un globo marfil se lee suave, sobre nogal oscuro es casi blanco
+          puro contra casi negro, el salto mas bestia de la foto.
+       2) 30 apagados a 0.40 de brillo            -> PIEDRECITAS grises. Al
+          quitarles el blanco les quite tambien el color, y una mancha sin
+          color el ojo la lee como suciedad, sea clara o oscura.
+       3) 16 grandes y rosa de verdad             -> SERVILLETA ARRUGADA. Ya
+          se veia que eran rosas... y eran tan grandes que parecian papel.
+
+     El fondo del asunto es que la camara esta lejos y mirando casi de
+     frente: un petalo tumbado en el suelo se ve DE CANTO, o sea una raya
+     plana de 10-30 px. Pequeno = basura, grande = papel, y no hay termino
+     medio donde se lea "petalo". Con la camara a ras de suelo funcionaria;
+     con esta, no. Si algun dia hay que llenar ese suelo, que sea con algo
+     que tenga VOLUMEN y se vea de frente (un ramo bajo, una caja mas, un
+     farolillo), no con cosas tumbadas.
+     La regla de siempre: si el salto no se ve a la primera, se tira.      */
+})();
+
+/* ---------- 4b · CINTAS DE RASO ---------- */
+(() => {
+  /* Una cinta colgando no es un rectangulo recto: se ONDULA y se RETUERCE, y
+     al retorcerse le ves la cara y luego el revES. Ese cambio de cara es lo
+     que hace que el ojo lea TELA. Un plano recto se lee como cartulina. */
+  function cintaGeo(largo, ancho, vueltas, onda){
+    /* 48 tramos, no 28: con 4-5 vueltas, con pocos tramos el retorcido sale
+       a facetas y se ve el poligono en vez de la tela. */
+    const g = new THREE.PlaneGeometry(ancho, largo, 1, 48);
+    const p = g.attributes.position;
+    for(let i = 0; i < p.count; i++){
+      const y = p.getY(i);
+      const t = (largo / 2 - y) / largo;      /* 0 arriba, 1 abajo */
+      const a = t * vueltas * Math.PI;        /* el retorcido */
+      const x0 = p.getX(i);
+      /* x0*cos/sin = el ancho girando; el seno de t = la ondulacion del centro */
+      p.setX(i, x0 * Math.cos(a) + Math.sin(t * 3.1) * onda);
+      p.setZ(i, x0 * Math.sin(a) + Math.sin(t * 4.4 + 0.8) * onda * 0.55);
+    }
+    g.computeVertexNormals();
+    return g;
+  }
+
+  /* Raso = poco aspero + MUCHO halo. Es el unico sitio de la sala donde
+     interesa que brille: una cinta mate es una tira de fieltro. */
+  const raso = (hex) => new THREE.MeshPhysicalMaterial({
+    color:hex, side:THREE.DoubleSide, roughness:0.34, metalness:0,
+    sheen:1.0, sheenRoughness:0.26, sheenColor:new THREE.Color(0xFFF6E6),
+    clearcoat:0.45, clearcoatRoughness:0.30, envMapIntensity:0.85 });
+
+  /* Crema y champan, NO el color de la tematica: asi valen para las 8
+     tematicas sin repintarlas, y ademas es lo que las hace de boda buena.
+     ANCHO y VUELTAS, corregido: la primera version iba de 0.115 a 0.170 de
+     ancho con 1.4-2.6 medias vueltas, y en pantalla el retorcido salia de
+     tres pixeles. Resultado: se leian como TIRAS DE PLASTICO planas.
+     Una cinta se lee como cinta porque es ESTRECHA y se retuerce MUCHO —
+     ves cara, canto, reves, cara. Asi que: mas finas y mas vueltas.
+     Fuera los blancos casi puros (0xFBF6EE): sobre marino saltaban como
+     papel. Se quedan crema y champan.
+     [t en el arco, largo, ancho, vueltas, onda, color] */
+  const CINTAS = [
+    [0.120, 1.75, 0.085, 3.4, 0.10, 0xF0E3CE],
+    [0.158, 2.45, 0.068, 4.6, 0.08, 0xE2CDA6],
+    [0.208, 2.00, 0.098, 2.9, 0.12, 0xEFE0C6],
+    [0.255, 1.40, 0.062, 4.0, 0.07, 0xD9BE86],
+    [0.755, 1.50, 0.066, 4.2, 0.08, 0xD9BE86],
+    [0.805, 2.20, 0.092, 3.1, 0.11, 0xEFE0C6],
+    [0.858, 2.65, 0.072, 5.0, 0.09, 0xE2CDA6],
+    [0.892, 1.80, 0.088, 3.6, 0.10, 0xF0E3CE]
+  ];
+
+  CINTAS.forEach(([t, largo, ancho, vueltas, onda, hex]) => {
+    const p = arco.getPoint(t);
+    const m = new THREE.Mesh(cintaGeo(largo, ancho, vueltas, onda), raso(hex));
+    /* delante de la guirnalda (+z), si no se quedan enterradas entre globos */
+    m.position.set(p.x + (Math.random() - 0.5) * 0.3,
+                   p.y - largo / 2 - 0.10,
+                   p.z + 0.40 + Math.random() * 0.18);
+    m.rotation.y = (Math.random() - 0.5) * 0.8;
+    m.castShadow = true;
+    world.add(m);
+  });
+})();
+
 /* ================= REGALOS ================= */
+/* Una lazada = un aro aplastado que sale del nudo. Va dentro de un grupo
+   "pivote" a posta: si girara el aro por su cuenta, giraria sobre SU centro
+   y se despegaria del nudo. El pivote esta EN el nudo, asi que las cuatro
+   lazadas abren en abanico desde el mismo sitio, como una cinta atada. */
+/* tubo fino (0.075, no 0.115): una cinta es PLANA. Con el tubo gordo las
+   lazadas salian como un lazo de pan, no como raso. */
+const _lazadaGeo = new THREE.TorusGeometry(0.5, 0.075, 8, 24);
+const _colaGeo   = new THREE.BoxGeometry(1, 1, 1);
+function lazo(s, mat, y){
+  const g = new THREE.Group();
+  g.position.y = y;
+  [[ 1, 0.00, 1.00], [-1, 0.00, 1.00],     /* las dos grandes, a los lados */
+   [ 1, 0.85, 0.68], [-1, 0.85, 0.68]]     /* dos mas cortas, detras */
+   .forEach(([sg, abanico, k]) => {
+    const piv = new THREE.Group();
+    const A = s*2.00*k, B = s*1.18*k, C = s*0.90*k;
+    const m = new THREE.Mesh(_lazadaGeo, mat);
+    m.scale.set(A, B, C);
+    m.position.x = sg * A * 0.5;            /* el borde de dentro, en el nudo */
+    m.castShadow = true;
+    piv.add(m);
+    piv.rotation.z = sg * 0.30;             /* la punta de fuera, hacia arriba */
+    piv.rotation.y = sg * abanico;
+    g.add(piv);
+  });
+  /* las dos colas, cayendo por delante de la caja */
+  [[-1, -0.34], [1, 0.24]].forEach(([sg, giro]) => {
+    const c = new THREE.Mesh(_colaGeo, mat);
+    c.scale.set(s*0.42, s*1.65, s*0.13);
+    c.position.set(sg*s*0.30, -s*0.80, s*0.34);
+    c.rotation.set(0.26, 0, giro);
+    c.castShadow = true;
+    g.add(c);
+  });
+  const nudo = new THREE.Mesh(new THREE.SphereGeometry(s*0.60, 12, 10), mat);
+  nudo.scale.z = 0.8; nudo.castShadow = true;
+  g.add(nudo);
+  return g;
+}
+
 const gifts = [];
 function makeGift(w,h,d){
   const g = new THREE.Group();
@@ -2466,8 +3242,11 @@ function makeGift(w,h,d){
   r1.position.y = h/2; g.add(r1);
   const r2 = new THREE.Mesh(new THREE.BoxGeometry(w*1.02, h*1.02, d*0.16), rmat);
   r2.position.y = h/2; g.add(r2);
-  const bow = new THREE.Mesh(new THREE.TorusGeometry(w*0.22, w*0.07, 10, 22), rmat);
-  bow.position.y = h + w*0.12; bow.rotation.x = Math.PI/2; bow.castShadow = true; g.add(bow);
+  /* ═══════════ LUJO · 14 · EL LAZO ═══════════
+     Antes era un TORO tumbado: visto desde delante se leia como un DONUT
+     dorado encima de la caja, no como un lazo. Un lazo de verdad son
+     cuatro lazadas que salen de un nudo, con dos colas cayendo. */
+  g.add(lazo(w*0.21, rmat, h + w*0.015));
   g.userData = {box: box.material};
   gifts.push(g);
   return g;
@@ -2494,6 +3273,18 @@ const manteles = [];                 /* materiales que se tinen */
    y el topper se pierden y el pastel deja de leerse como pastel.        */
 const tartas = [];
 const BLANCO  = () => new THREE.MeshStandardMaterial({color:0xFFFFFF, roughness:0.45});
+/* ═══════════ LUJO · 11 · LAS PEANAS ═══════════
+   Blanco puro + roughness 0.45 = plastico de juguete. Las peanas de
+   alquiler son madera LACADA: no son blanco papel (tiran a hueso) y tienen
+   un barniz por encima. El clearcoat es justo eso — una capa de barniz
+   aparte del color, que coge un reflejo largo y suave en el canto.      */
+const PEANA   = () => new THREE.MeshPhysicalMaterial({
+  color:0xF7F4EF, roughness:0.42, metalness:0,
+  clearcoat:0.55, clearcoatRoughness:0.38, envMapIntensity:0.6 });
+/* peana con el canto de arriba romo: mismo perfil girado que la tarta */
+function peanaGeo(rTop, rBot, alto){
+  return tartaPiso(rTop, alto, Math.min(0.022, rTop*0.12), 0.006, 40);
+}
 const LOZA    = () => new THREE.MeshStandardMaterial({color:0xFDFCFA, roughness:0.28});
 
 function pieza(geo, mat, x, y, z){
@@ -2510,10 +3301,206 @@ function pieza(geo, mat, x, y, z){
    Las demas se quedan como estaban: si no hay entrada en ADORNOS, no pasa
    nada, sale el pastel de siempre.                                       */
 let tartaDeco = null;        /* aqui se cuelga todo lo tematico */
+let ramoAlto  = null;        /* el trozo alto de la cascada de rosas: se
+                                apaga en las tematicas que llevan cara */
 let bolasTopper = null;      /* las 3 bolitas de antes: estorban si hay cuerno */
 let velaGrupo = null;        /* la vela: va en el eje, y ahi va ahora el cuerno */
 const TARTA_EJE = {x:-0.34, z:-0.06};
 let TARTA_CIMA = 0, TARTA_R = 0.205;
+
+/* ═══════════ LUJO · 7 · LA TELA SE PLIEGA ═══════════
+   El mantel era un cono liso de 40 lados. Un cono liso NO es tela: la tela
+   se arruga. Y se arruga de una forma concreta — arriba va TIRANTE porque
+   el canto de la mesa la estira, y de ahi para abajo se va abriendo en
+   pliegues que son mas anchos en el bajo.
+   Asi que empujo cada punto hacia dentro/fuera segun el ANGULO (eso hace
+   los pliegues) multiplicado por la ALTURA (eso hace que nazcan del canto
+   y crezcan al caer). Tres frecuencias porque una sola sale a acordeon.
+   Los numeros de las frecuencias son ENTEROS para que el pliegue cierre
+   bien la vuelta: con 11.5 se veria la costura.                          */
+function mantelGeo(rTop, rBot, alto){
+  const g = new THREE.CylinderGeometry(rTop, rBot, alto, 96, 26);
+  const p = g.attributes.position;
+  const v = new THREE.Vector3();
+  for(let i = 0; i < p.count; i++){
+    v.fromBufferAttribute(p, i);
+    const rad = Math.hypot(v.x, v.z);
+    if(rad < 0.0001) continue;                  /* el centro de la tapa */
+    const t = 1 - (v.y + alto/2) / alto;        /* 0 = canto, 1 = el bajo */
+    const a = Math.atan2(v.z, v.x);
+    const pliegue = Math.sin(a*11 + 0.7)*0.66
+                  + Math.sin(a*7  - 1.3)*0.30
+                  + Math.sin(a*19 + 2.2)*0.13;
+    const amp = 0.055 * Math.pow(t, 1.35);      /* nace en el canto, crece */
+    const k = (rad + amp * pliegue) / rad;
+    p.setX(i, v.x * k); p.setZ(i, v.z * k);
+    /* el BAJO no es un circulo perfecto: sube y baja con el pliegue. Un
+       bajo recto como cortado a laser es otra cosa que delata el 3D. */
+    if(t > 0.72){
+      const f = (t - 0.72) / 0.28;
+      p.setY(i, v.y + Math.sin(a*11 + 0.7) * 0.026 * f*f);
+    }
+  }
+  g.computeVertexNormals();
+  return g;
+}
+
+/* ═══════════ LUJO · 8 · LA TARTA PIERDE EL CANTO DE LATA ═══════════
+   Los dos pisos eran CylinderGeometry: canto de 90 grados clavado arriba.
+   Ninguna tarta del mundo tiene ese canto — la nata se redondea siempre un
+   poco al alisarla. Ese filo recto es LA pista que hace que el ojo diga
+   "esto es de ordenador", igual que pasaba con los globos.
+   Aqui dibujo el PERFIL de medio piso (de dentro hacia fuera y hacia
+   arriba, con su curvita en el canto) y lo hago girar. Misma tecnica que
+   usamos para la silueta de los globos, que esa si te valio.             */
+function tartaPiso(R, H, filArriba, filAbajo, seg, rizo = 0, vueltas = 5){
+  const N = 5, p = [];
+  p.push(new THREE.Vector2(0, 0));
+  p.push(new THREE.Vector2(R - filAbajo, 0));
+  for(let i = 1; i <= N; i++){                  /* canto de abajo, suave */
+    const a = -Math.PI/2 + (i/N)*(Math.PI/2);
+    p.push(new THREE.Vector2(R - filAbajo + Math.cos(a)*filAbajo,
+                             filAbajo + Math.sin(a)*filAbajo));
+  }
+  /* ── LAS VUELTAS DE LA ESPATULA ──
+     Aqui estaba la trampa: le puse una textura de relieve a la tarta y NO
+     SE VEIA. Y no se veia por un motivo que tiene sentido — el relieve de
+     textura se nota por el BRILLO, y tu tarta es MATE a proposito. En mate
+     no hay brillo que deformar, asi que el relieve pintado no existe.
+     Solucion: que las vueltas sean BULTO DE VERDAD. Al ser un perfil que
+     gira, salen anillos perfectos... que es exactamente lo que deja la
+     espatula al girar la tarta. Y al ser geometria, se ve en la SILUETA,
+     que es donde el ojo mira primero.                                    */
+  const yIni = filAbajo, yFin = H - filArriba, tramo = yFin - yIni;
+  const NP = rizo > 0 ? 26 : 1;
+  for(let i = 1; i <= NP; i++){
+    const u = i/NP;
+    const y = yIni + tramo * u;
+    /* el rizo se apaga al llegar a los cantos, que es donde la espatula
+       levanta; si no, choca con la curvita y se ve un escaloncito */
+    const suave = Math.pow(Math.sin(u * Math.PI), 0.45);
+    const r = R + rizo * suave * Math.sin(u * vueltas * Math.PI*2 + 0.6);
+    p.push(new THREE.Vector2(r, y));
+  }
+  for(let i = 1; i <= N; i++){                  /* canto de arriba: el que canta */
+    const a = (i/N)*(Math.PI/2);
+    p.push(new THREE.Vector2(R - filArriba + Math.cos(a)*filArriba,
+                             H - filArriba + Math.sin(a)*filArriba));
+  }
+  p.push(new THREE.Vector2(0, H));
+  const g = new THREE.LatheGeometry(p, seg);
+
+  /* ── OJO, ESTO ERA UN FALLO DE VERDAD ──
+     LatheGeometry reparte la textura por NUMERO DE PUNTO, no por lo que
+     mide cada tramo. Como las dos curvitas del canto se llevan 10 de los
+     14 puntos del perfil (y casi no ocupan superficie), a la PARED del
+     piso — que es casi toda la tarta — le tocaba un 8% de la textura.
+     O sea: la piel de nata estaba puesta, pero estirada doce veces y por
+     eso no se veia NADA. Aqui la reparto por LONGITUD REAL del perfil. */
+  let total = 0; const acum = [0];
+  for(let i = 1; i < p.length; i++){ total += p[i].distanceTo(p[i-1]); acum.push(total); }
+  const uv = g.attributes.uv;
+  for(let i = 0; i < uv.count; i++){
+    uv.setY(i, acum[i % p.length] / total);
+  }
+  uv.needsUpdate = true;
+  return g;
+}
+
+/* ═══════════ LUJO · 9 · EL GOTEO ═══════════
+   Esto es lo que hace que una tarta se lea como REPOSTERIA y no como
+   maqueta: el chorreon de cobertura que se derrama por el canto. Y la
+   gracia esta en que cada goterón cae DISTINTO — si todos midieran lo
+   mismo pareceria un flequillo de plastico.
+   Es una funda finisima pegada al canto: el borde de arriba se queda
+   quieto y el de abajo lo subo una cantidad distinta en cada columna.
+   Otra vez frecuencias ENTERAS del angulo, para que cierre la vuelta.   */
+function goteoGeo(R, alto, seg){
+  const HS = 5;
+  const g = new THREE.CylinderGeometry(R, R, alto, seg, HS, true);
+  const p = g.attributes.position;
+  const largos = [];
+  for(let i = 0; i <= seg; i++){
+    const a = i/seg * Math.PI*2;
+    /* Frecuencias BAJAS (5/11/19) = goterones anchos y pocos, que es lo que
+       se ve de verdad. Con 7/13/23 salian muchos y finos y el conjunto se
+       leia como una puntilla, no como un chorreon.
+       Y el recorrido es a proposito exagerado (0.46 +- 0.64): asi muchos
+       tramos se quedan clavados en el minimo — o sea, NO gotean — y unos
+       pocos bajan del todo. Esa diferencia es la que hace que parezca
+       vertido y no dibujado.                                             */
+    let L = 0.46 + Math.sin(a*5  + 0.4)*0.32
+                 + Math.sin(a*11 + 1.9)*0.20
+                 + Math.sin(a*19 + 3.1)*0.12;
+    largos.push(Math.min(1, Math.max(0.06, L)));
+  }
+  const v = new THREE.Vector3();
+  for(let j = 0; j <= HS; j++) for(let i = 0; i <= seg; i++){
+    const idx = j*(seg+1) + i;
+    v.fromBufferAttribute(p, idx);
+    const f = j/HS;                             /* 0 arriba, 1 la punta */
+    const L = largos[i];
+    p.setY(idx, alto/2 - f*alto*L);
+    /* la punta engorda un pelin (la gota se acumula) y se cierra al final */
+    const k = 1 + 0.030*Math.sin(f*Math.PI) - (f > 0.9 ? (f-0.9)*1.4 : 0);
+    p.setX(idx, v.x*k); p.setZ(idx, v.z*k);
+  }
+  g.computeVertexNormals();
+  return {geo:g, largos};
+}
+
+/* ═══════════ LUJO · 10 · LA MAGDALENA ═══════════
+   La capsula de papel va PLISADA: son pliegues verticales, muy juntos. Es
+   un detalle diminuto pero es LO que distingue "magdalena" de "vasito".  */
+function capsulaCupcake(rTop, rBot, alto){
+  const g = new THREE.CylinderGeometry(rTop, rBot, alto, 64, 8, true);
+  const p = g.attributes.position, v = new THREE.Vector3();
+  for(let i = 0; i < p.count; i++){
+    v.fromBufferAttribute(p, i);
+    const rad = Math.hypot(v.x, v.z);
+    if(rad < 0.0001) continue;
+    const a = Math.atan2(v.z, v.x);
+    const k = 1 + 0.055 * Math.sin(a * 17);      /* 17 pliegues, entero */
+    p.setX(i, v.x*k); p.setZ(i, v.z*k);
+  }
+  g.computeVertexNormals();
+  return g;
+}
+
+/* El REMOLINO de manga. Una bola encima es lo que hace que parezca de
+   juguete. Lo que se ve de verdad es una cuerda de crema ENROLLADA que
+   sube haciendo caracol.
+   Truco: un cono normal al que le empujo el radio con un seno cuya FASE
+   depende del angulo Y de la altura a la vez. Una fase que gira al subir
+   es exactamente la forma de un muelle — o sea, de la cuerda enrollada.
+
+   SEGUNDA PASADA — estaba ENTERRADO. La capsula mide 12,5 cm y su borde
+   de arriba cae en y0+0.1205; el remolino estaba centrado en y0+0.121 con
+   10,5 cm de alto, asi que su base quedaba en y0+0.0685: POR DEBAJO del
+   borde. De los 10,5 cm solo asomaban 5. Y encima era mas ESTRECHO que la
+   capsula (6,3 contra 6,8), asi que lo poco que se veia era un conito
+   metido dentro del vaso. Un remolino de verdad DESBORDA el papel.
+   Ahora: mas ancho que la capsula, mas bajo, menos vueltas pero mas
+   hondas, y la punta roma — una manga no deja una aguja, deja un pico
+   gordito.                                                                */
+function remolinoCupcake(rBase, alto){
+  const VUELTAS = 2.3;
+  const g = new THREE.CylinderGeometry(0.014, rBase, alto, 72, 30, true);
+  const p = g.attributes.position, v = new THREE.Vector3();
+  for(let i = 0; i < p.count; i++){
+    v.fromBufferAttribute(p, i);
+    const rad = Math.hypot(v.x, v.z);
+    if(rad < 0.0001) continue;
+    const f = 1 - (v.y + alto/2) / alto;         /* 0 punta, 1 base */
+    const a = Math.atan2(v.z, v.x);
+    const fase = a - f * VUELTAS * Math.PI * 2;
+    /* el surco entre vuelta y vuelta; se afina al llegar a la punta */
+    const k = 1 + 0.30 * Math.sin(fase) * (0.35 + f*0.65);
+    p.setX(i, v.x*k); p.setZ(i, v.z*k);
+  }
+  g.computeVertexNormals();
+  return g;
+}
 
 /* ---- MESA DULCE: la tarta manda, lo demas acompana ---- */
 function mesaDulce(){
@@ -2521,35 +3508,455 @@ function mesaDulce(){
 
   /* El mantel cae hasta el suelo y se abre un poco abajo: por eso el
      cilindro es mas estrecho arriba que abajo. La tapa de arriba hace
-     de superficie de la mesa, asi nos ahorramos un tablero aparte. */
-  const matMantel = new THREE.MeshStandardMaterial({color:0xffffff, roughness:0.86});
-  g.add(pieza(new THREE.CylinderGeometry(1.02, 1.20, 1.04, 40), matMantel, 0, 0.52, 0));
+     de superficie de la mesa, asi nos ahorramos un tablero aparte.
+     Ahora con PLIEGUES y con trama de algodon (LUJO 7). Sigue siendo
+     MeshPhysical solo por el "sheen": la pelusilla del borde es lo que
+     separa una tela de un plastico pintado del mismo color.             */
+  const matMantel = new THREE.MeshPhysicalMaterial({
+    color:0xffffff, roughness:0.92, metalness:0,
+    bumpMap:texTela, bumpScale:0.016,
+    roughnessMap:texTela,
+    sheen:0.55, sheenRoughness:0.85,
+    sheenColor:new THREE.Color(0xFFFFFF),
+    envMapIntensity:0.35 });
+  g.add(pieza(mantelGeo(1.02, 1.20, 1.04), matMantel, 0, 0.52, 0));
   manteles.push(matMantel);
 
-  const blanco = BLANCO();
+  const blanco = PEANA();
   const ALTO = 1.04;
 
-  /* tres peanas a distinta altura = escalera para la vista */
-  const p1 = pieza(new THREE.CylinderGeometry(0.27,0.29,0.60,26), blanco, -0.34, ALTO+0.30, -0.06);
-  const p2 = pieza(new THREE.CylinderGeometry(0.23,0.25,0.38,26), blanco,  0.32, ALTO+0.19,  0.10);
-  const p3 = pieza(new THREE.CylinderGeometry(0.30,0.32,0.22,26), blanco,  0.00, ALTO+0.11,  0.44);
+  /* tres peanas a distinta altura = escalera para la vista.
+     Ya no son cilindros pelados: el canto de arriba va redondeado (LUJO 11),
+     que es como son las de alquiler de verdad — lacadas y con el canto
+     romo. Un canto de 90 grados en blanco puro es lo que las hacia parecer
+     cubos de fregona.                                                    */
+  const p1 = pieza(peanaGeo(0.27,0.29,0.60), blanco, -0.34, ALTO,      -0.06);
+  const p2 = pieza(peanaGeo(0.23,0.25,0.38), blanco,  0.32, ALTO,       0.10);
+  const p3 = pieza(peanaGeo(0.30,0.32,0.22), blanco,  0.00, ALTO,       0.44);
   g.add(p1, p2, p3);
 
-  /* LA TARTA, dos pisos. El de abajo cambia con cada tematica. */
-  const bizcocho = new THREE.MeshStandardMaterial({color:0xffffff, roughness:0.58});
-  tartas.push(bizcocho);                                    /* -> tartas[0] */
+  /* LA TARTA, dos pisos. El de abajo cambia con cada tematica.
+     El roughness sube de 0.58 a 0.86: 0.58 es plastico brillante. Y los dos
+     pisos llevan la piel de nata (bump + roughness), que es lo que hace que
+     la luz no resbale igual por toda la tarta.                           */
   const base = ALTO + 0.60;
-  g.add(pieza(new THREE.CylinderGeometry(0.30,0.30,0.30,30), bizcocho, -0.34, base+0.15, -0.06));
-  g.add(pieza(new THREE.CylinderGeometry(0.205,0.205,0.24,30), BLANCO(), -0.34, base+0.42,-0.06));
+  const PISO_BAJO = {R:0.30,  H:0.30}, PISO_ALTO = {R:0.205, H:0.24};
 
-  /* lacitos de nata en el borde del piso de abajo: un cilindro liso parece
-     una lata de pintura, con la puntilla parece tarta de pasteleria.     */
-  const nata = new THREE.MeshStandardMaterial({color:0xFFFCF6, roughness:0.5});
-  for(let i = 0; i < 12; i++){
-    const a = i/12 * Math.PI*2;
-    g.add(pieza(new THREE.SphereGeometry(0.034,10,8), nata,
-                -0.34 + Math.cos(a)*0.298, base+0.300, -0.06 + Math.sin(a)*0.298));
+  const bizcocho = new THREE.MeshStandardMaterial({
+    color:0xffffff, roughness:0.86, metalness:0,
+    bumpMap:texNata, bumpScale:0.045, roughnessMap:texNata,
+    envMapIntensity:0.55 });
+  tartas.push(bizcocho);                                    /* -> tartas[0] */
+  /* el de arriba se queda crema a proposito (ver comentario de tartas[]) */
+  const cremaAlto = new THREE.MeshStandardMaterial({
+    color:0xFFFDF8, roughness:0.84, metalness:0,
+    bumpMap:texNata, bumpScale:0.040, roughnessMap:texNata,
+    envMapIntensity:0.55 });
+
+  /* Los pisos, ya sin el canto de lata (LUJO 8). El de abajo lleva el canto
+     de arriba MAS redondeado (0.030) porque es el que se ve a la altura de
+     los ojos y es donde se apoya el goteo.                               */
+  /* El piso de ABAJO lleva las vueltas de espatula. El de ARRIBA NO, y es a
+     posta: encima del piso de arriba va la CARA de la tematica, y la cara
+     se pinta sobre la superficie — con las vueltas puestas, las pestanas
+     salian torcidas. En una tarta de verdad pasa igual: la parte donde va
+     el dibujo se alisa a conciencia.                                     */
+  g.add(pieza(tartaPiso(PISO_BAJO.R, PISO_BAJO.H, 0.030, 0.014, 56, 0.0020, 5),
+              bizcocho,  -0.34, base,            -0.06));
+  g.add(pieza(tartaPiso(PISO_ALTO.R, PISO_ALTO.H, 0.024, 0.011, 48, 0, 0),
+              cremaAlto, -0.34, base+PISO_BAJO.H,-0.06));
+
+  /* EL GOTEO (LUJO 9). Va en CREMA fija, no con la tematica: una cobertura
+     de chocolate blanco vale para las 8 salas sin repintar nada, y encima
+     hace de contraste contra el piso tenido. Mismo criterio que las cintas.
+     Dos piezas: el charco de arriba (por donde se ha vertido) y la funda
+     de goterones cayendo por el canto.                                   */
+  const matGoteo = new THREE.MeshPhysicalMaterial({
+    color:0xFFF8EC, roughness:0.40, metalness:0,
+    clearcoat:0.35, clearcoatRoughness:0.45,
+    side:THREE.DoubleSide, envMapIntensity:0.8 });
+  const gt = goteoGeo(PISO_BAJO.R + 0.004, 0.115, 84);
+  g.add(pieza(gt.geo, matGoteo, -0.34, base + PISO_BAJO.H - 0.052, -0.06));
+  /* el charco: un disco finito que tapa la costura y explica el chorreon */
+  g.add(pieza(new THREE.CylinderGeometry(PISO_BAJO.R-0.004, PISO_BAJO.R-0.004, 0.012, 56),
+              matGoteo, -0.34, base + PISO_BAJO.H + 0.004, -0.06));
+  /* la PUNTA REDONDA de cada goteron. El borde de la funda queda cortado a
+     cuchillo y eso se ve; una bolita en la punta de los mas largos lo cura.
+     Solo los largos: en los cortos no hay gota que acumular.             */
+  for(let i = 0; i < 84; i++){
+    const L = gt.largos[i];
+    if(L < 0.40) continue;
+    const a = i/84 * Math.PI*2;
+    const r = (PISO_BAJO.R + 0.004) * 1.012;
+    g.add(pieza(new THREE.SphereGeometry(0.0105 + L*0.005, 9, 7), matGoteo,
+                -0.34 + Math.cos(a)*r,
+                base + PISO_BAJO.H - 0.052 + 0.0575 - 0.115*L,
+                -0.06 + Math.sin(a)*r));
   }
+
+  /* ═══ LA PUNTILLA DE MANGA ═══
+     Antes: 12 bolas de radio 0.034 y 10x8 caras, sueltas y separadas, en el
+     canto de arriba. Doce bolas separadas no son una puntilla, son doce
+     bolas. Una puntilla de verdad son CONCHAS pegadas una contra otra, y
+     van donde se apoya el peso: en la BASE de cada piso, tapando la junta.
+     Cada concha es una esfera estirada hacia fuera y ladeada. Una sola
+     malla instanciada para las dos vueltas = un solo dibujado.           */
+  const matNata = new THREE.MeshStandardMaterial({
+    color:0xFFFCF6, roughness:0.82, metalness:0,
+    bumpMap:texNata, bumpScale:0.006, roughnessMap:texNata,
+    envMapIntensity:0.5 });
+  const VUELTAS = [
+    {n:34, r:PISO_BAJO.R + 0.004, y:base + 0.014,              s:1.00},
+    {n:26, r:PISO_ALTO.R + 0.004, y:base + PISO_BAJO.H + 0.012, s:0.82}
+  ];
+  const conchaGeo = new THREE.SphereGeometry(1, 9, 7);
+  const conchas = new THREE.InstancedMesh(conchaGeo, matNata,
+                    VUELTAS.reduce((s,v) => s + v.n, 0));
+  conchas.castShadow = conchas.receiveShadow = true;
+  const dC = new THREE.Object3D(); let ci = 0;
+  VUELTAS.forEach(v => {
+    for(let i = 0; i < v.n; i++){
+      const a = i / v.n * Math.PI*2;
+      dC.position.set(-0.34 + Math.cos(a)*v.r, v.y, -0.06 + Math.sin(a)*v.r);
+      dC.rotation.set(0, -a, 0);
+      /* estirada hacia FUERA (z local) = la conchita apunta al que mira,
+         y un pelin mas alta que ancha para que se note el relieve */
+      dC.scale.set(0.030*v.s, 0.026*v.s, 0.040*v.s);
+      dC.updateMatrix();
+      conchas.setMatrixAt(ci++, dC.matrix);
+    }
+  });
+  g.add(conchas);
+
+  /* ═══════════ LUJO · 15 · LA BANDEJA ═══════════
+     Una tarta apoyada a pelo sobre la peana parece que ha salido del horno
+     y la han dejado ahi. Las de pasteleria van sobre BANDEJA: un disco un
+     dedo mas ancho que el piso de abajo, con el canto dorado. Ademas ese
+     dedo de sombra por debajo es lo que la separa de la peana.           */
+  const matBandeja = new THREE.MeshPhysicalMaterial({
+    color:0xFBF7F0, roughness:0.28, metalness:0,
+    clearcoat:0.7, clearcoatRoughness:0.22, envMapIntensity:0.9 });
+  const matOroFino = new THREE.MeshStandardMaterial({
+    color:0xC9A24E, roughness:0.28, metalness:0.7, envMapIntensity:1.2 });
+  const RB = PISO_BAJO.R + 0.038;
+  g.add(pieza(new THREE.CylinderGeometry(RB, RB*0.985, 0.020, 64),
+              matBandeja, -0.34, base - 0.010, -0.06));
+  const filoB = pieza(new THREE.TorusGeometry(RB, 0.0075, 8, 64),
+                      matOroFino, -0.34, base - 0.004, -0.06);
+  filoB.rotation.x = Math.PI/2;
+  g.add(filoB);
+
+  /* ═══════════ LUJO · 16 · LOS FIDEOS DE AZUCAR ═══════════
+     El detalle mas barato y el que mas dice "esto se come". Van en CREMA y
+     ORO a posta, como el goteo y las cintas: asi valen para las 21
+     tematicas sin repintar nada. Unos tumbados en la corona de arriba y
+     otros pegados al goteo, como cuando se tiran sobre la cobertura
+     todavia blanda y se quedan donde caen.                               */
+  const fideoGeo = new THREE.CylinderGeometry(0.0040, 0.0040, 0.018, 5);
+  [[0xFFF1D8, 0.30, 0.0, 34], [0xD4AE5C, 0.26, 0.62, 18]]
+    .forEach(([col, rug, met, NF]) => {
+    const mf = new THREE.MeshStandardMaterial({
+      color:col, roughness:rug, metalness:met, envMapIntensity:met ? 1.1 : 0.7 });
+    const im = new THREE.InstancedMesh(fideoGeo, mf, NF);
+    im.castShadow = true;
+    const d = new THREE.Object3D();
+    for(let i = 0; i < NF; i++){
+      const a = Math.random() * Math.PI*2;
+      const arriba = Math.random() < 0.62;
+      if(arriba){
+        /* la corona que deja libre el piso de arriba */
+        const r = PISO_ALTO.R + 0.016 + Math.random()*(PISO_BAJO.R - PISO_ALTO.R - 0.026);
+        d.position.set(-0.34 + Math.cos(a)*r, base + PISO_BAJO.H + 0.014, -0.06 + Math.sin(a)*r);
+        d.rotation.set(Math.PI/2, 0, Math.random()*Math.PI);
+      } else {
+        /* clavados en el goteo, siguiendo la pared */
+        const r = PISO_BAJO.R + 0.016;
+        d.position.set(-0.34 + Math.cos(a)*r,
+                       base + PISO_BAJO.H - 0.022 - Math.random()*0.048,
+                       -0.06 + Math.sin(a)*r);
+        d.rotation.set((Math.random()-0.5)*1.4, -a, (Math.random()-0.5)*1.0);
+      }
+      d.updateMatrix();
+      im.setMatrixAt(i, d.matrix);
+    }
+    g.add(im);
+  });
+
+  /* ═══════════ LUJO · 20 · EL PISO DE ARRIBA ESTABA DESNUDO ═══════════
+     Al acercar la camara se ve el problema de golpe: el piso de ABAJO va
+     lleno (vueltas de espatula, goteo, conchas, fideos) y el de ARRIBA es
+     una PARED BLANCA LISA. Ocupa casi la mitad de lo que se ve y no tiene
+     nada de nada.
+     No se arregla poniendole las vueltas de espatula, porque encima de ese
+     piso va la CARA de las tematicas que la llevan. Lo que si cabe son
+     detalles de CANTO — arriba del todo y en la junta — que es justo donde
+     la cara no pinta nada, mas un ramo subiendo por UN costado.          */
+
+  /* ── EL COLLAR DE PERLAS ──
+     Pegado justo debajo del filo de arriba. Alternando gorda-chica, que es
+     como se enfila un collar de verdad; todas iguales se lee como una
+     tuerca. Nacaradas (clearcoat alto) y en crema fijo, no con la
+     tematica.                                                            */
+  const matPerla = new THREE.MeshPhysicalMaterial({
+    color:0xFFF7EC, roughness:0.20, metalness:0,
+    clearcoat:0.90, clearcoatRoughness:0.10, envMapIntensity:1.15 });
+  const NPERL = 56;
+  const perlas = new THREE.InstancedMesh(new THREE.SphereGeometry(1, 10, 8),
+                                         matPerla, NPERL);
+  perlas.castShadow = true;
+  const dPl = new THREE.Object3D();
+  for(let i = 0; i < NPERL; i++){
+    const a = i / NPERL * Math.PI * 2;
+    dPl.position.set(-0.34 + Math.cos(a) * (PISO_ALTO.R + 0.003),
+                     base + PISO_BAJO.H + PISO_ALTO.H - 0.032,
+                     -0.06 + Math.sin(a) * (PISO_ALTO.R + 0.003));
+    dPl.scale.setScalar((i % 2) ? 0.0098 : 0.0142);
+    dPl.updateMatrix();
+    perlas.setMatrixAt(i, dPl.matrix);
+  }
+  g.add(perlas);
+
+  /* ── EL HILO DE ORO DE LA JUNTA ──
+     Al bajar el ramo, el piso de arriba se queda con el collar de perlas
+     arriba y NADA abajo: un tubo blanco colgando. Un hilo de oro finisimo
+     ceniendo la junta lo cierra por abajo, y entonces la pared blanca deja
+     de leerse como "se me olvido" y pasa a leerse como un PANEL enmarcado
+     — que es justo donde va la cara, o el cuerpo del adorno.
+     ALTURA: el primer intento lo puse en la junta exacta (base+0.312) y
+     desaparecio — ahi mismo va la vuelta de conchas de manga, que sobresale
+     3 cm, asi que el hilo quedaba ENTERRADO detras. Sube justo por encima
+     de las conchas, a base+0.346, que es donde se ata de verdad una cinta.
+     Sigue sin poder tocar la cara: lo mas bajo que pinta la cara es la
+     sonrisa, en base+0.381.                                              */
+  const hiloJunta = pieza(
+    new THREE.TorusGeometry(PISO_ALTO.R + 0.0035, 0.0042, 8, 56), matOroFino,
+    -0.34, base + PISO_BAJO.H + 0.046, -0.06);
+  hiloJunta.rotation.x = Math.PI / 2;
+  g.add(hiloJunta);
+
+  /* ── EL PAN DE ORO ──
+     Laminas finisimas de oro pegadas en la pared. Es la firma de la
+     pasteleria cara y aqui ademas resuelve un problema de esta sala: hay
+     globos claros arriba y pared marino detras, y el oro es el unico
+     acabado que se recorta contra las DOS.
+     Van solo en el piso de abajo: en el de arriba se pisarian con la cara.
+     Y van en MANCHAS, no repartidas — el pan de oro se rompe y se pega a
+     pegotes; repartido por igual volveria a cantar a ordenador.          */
+  const hojaGeo = new THREE.PlaneGeometry(1, 1);
+  const NORO = 26;
+  const panOro = new THREE.InstancedMesh(hojaGeo, new THREE.MeshStandardMaterial({
+    color:0xD8B45E, roughness:0.22, metalness:0.85,
+    side:THREE.DoubleSide, envMapIntensity:1.3 }), NORO);
+  const dO = new THREE.Object3D();
+  /* Tres pegotes, y dentro de cada pegote las laminas muy juntas.
+     Van a 2.88 / 0.72 / 0.18 = filo izquierdo, delante-derecha y filo
+     derecho: A PROPOSITO fuera de la diagonal 1.40-2.26 por donde sube el
+     ramo de rosas. Antes estaban los dos encima y se comian entre ellos. */
+  const PEGOTES = [2.88, 0.72, 0.18];
+  for(let i = 0; i < NORO; i++){
+    const a = PEGOTES[i % 3] + (Math.random() - 0.5) * 0.52;
+    const y = base + 0.055 + Math.random() * 0.175;
+    const r = PISO_BAJO.R + 0.0035;
+    dO.position.set(-0.34 + Math.cos(a) * r, y, -0.06 + Math.sin(a) * r);
+    /* de cara a la pared de la tarta, y ladeada al azar: una lamina de oro
+       pegada a mano nunca queda recta */
+    dO.rotation.set(0, -a + Math.PI / 2, (Math.random() - 0.5) * 1.5);
+    dO.scale.set(0.014 + Math.random() * 0.026, 0.012 + Math.random() * 0.022, 1);
+    dO.updateMatrix();
+    panOro.setMatrixAt(i, dO.matrix);
+  }
+  g.add(panOro);
+
+  /* ── LA CASCADA DE ROSAS DE AZUCAR ──
+     Esto es lo que de verdad cambia la foto. Las tartas de pasteleria cara
+     no llevan flores repartidas: llevan un ramo que SUBE EN DIAGONAL por un
+     costado y deja el resto limpio.
+     Va por delante-izquierda, que es el lado que la vela deja libre (con
+     adorno la vela se corre a la derecha y hacia atras). Asi tampoco tapa
+     la cara, que mira de frente.
+     Mismo truco que las rosas del arco: un petalo ovalado finisimo NACIDO
+     en el origen, para que al girarlo se abra como una bisagra desde el
+     centro de la flor, y cuatro coronas — la de dentro chiquitina y casi
+     cerrada (el cogollo) y las de fuera grandes y tumbadas. Sin cogollo la
+     flor se lee como un repollo.
+     Crema / champan / rosa empolvado A POSTA: si se tineran con la
+     tematica, en "Dinosaurios" saldrian rosas verdes.
+     Las HOJAS salen de la misma malla instanciada, solo que estiradas y en
+     verde — asi las 7 rosas y las 16 hojas cuestan UN dibujado.          */
+  /* TAMANO: la primera tanda iba a 0.019x0.024 y las rosas se leian como
+     manchurrones palidos. Es el mismo agujero en el que cai con las rosas
+     del arco. El piso de arriba mide 0.41 de ancho; una rosa de pasteleria
+     pegada a una tarta de dos pisos es del tamano de un huevo, o sea 0.09
+     de ancho largo. Sube el petalo un tercio.                            */
+  const petGeo = new THREE.SphereGeometry(1, 10, 7);
+  petGeo.scale(0.025, 0.0044, 0.032);
+  petGeo.translate(0, 0, 0.029);
+  const matPet = new THREE.MeshPhysicalMaterial({
+    color:0xffffff, roughness:0.70, metalness:0,
+    sheen:0.55, sheenRoughness:0.42, sheenColor:new THREE.Color(0xFFF1E8),
+    envMapIntensity:0.55 });
+  const CORO_T = [[3, 0.12, 0.44], [3, 0.44, 0.68], [4, 0.86, 0.90], [5, 1.22, 1.04]];
+  const NPET_T = 15;                       /* 3+3+4+5, los petalos de una flor */
+  /* [angulo, altura sobre la base, radio, tamano] — la diagonal que sube.
+     DONDE, en horizontal: la primera tanda iba de 2.10 a 2.95 rad, que es el
+     costado izquierdo de la tarta, y el ramo salia medio fuera del encuadre.
+     La camara mira la tarta de frente, asi que el costado se ve de canto.
+     Ahora va de 1.40 a 2.26 = delante-izquierda, que ademas es el lado que
+     la vela deja libre (con adorno la vela se corre a la derecha y atras).
+
+     DONDE, en vertical — SEGUNDO FALLO, y este era gordo: el ramo subia de
+     0.33 a 0.48, o sea PEGADO A LA PARED DEL PISO DE ARRIBA. Con temas sin
+     cara quedaba bien, pero en "Dulces" (y en unicornios, mascotas, granja,
+     hadas, dinos, jungla, mar) el piso de arriba lleva la CARA pintada, y
+     las rosas le caian justo encima de la boca. Lo vi al mirar la foto.
+     Midiendo el dibujo contra la geometria: la sonrisa acaba en base+0.381
+     y los mofletes en base+0.387; la junta entre pisos esta en base+0.30.
+     Queda una franja limpia de 7,5 cm donde la cara no pinta NUNCA.
+     Asi que el ramo baja ahi: trepa por el piso de ABAJO y se asoma por
+     encima de la junta sin llegar a 0.35. Ademas es mas correcto — una
+     cascada de pasteleria CAE por el piso de abajo, no se pega al de
+     arriba como una pegatina.                                            */
+  const RAMO = [
+    [1.98, 0.312, 0.228, 0.92], [1.72, 0.300, 0.236, 0.80],
+    [1.92, 0.262, 0.303, 1.22], [1.55, 0.212, 0.308, 1.02],
+    [2.26, 0.238, 0.300, 1.04], [1.80, 0.126, 0.310, 0.94],
+    [2.10, 0.068, 0.306, 0.80], [1.40, 0.108, 0.306, 0.76]
+  ];
+  /* Primera tanda: casi todas crema y marfil. Y no se veian — exactamente
+     el mismo agujero que las rosas del arco. Ahi el problema era que al
+     lado habia globos blancos; aqui es peor todavia, porque la rosa esta
+     PEGADA a una tarta blanca. Rosa palo sobre blanco es invisible.
+     Asi que mandan los ROSA EMPOLVADO y el crema queda de acompanamiento.
+     Sigue sin tenirse con la tematica: en "Dinosaurios" saldrian verdes. */
+  const TONOS_T = [0xDCA3AE, 0xE8B9C2, 0xD79AA8, 0xEFC6C0, 0xF2DCD8];
+  const NHOJA = 16;
+  const flores = new THREE.InstancedMesh(petGeo, matPet,
+                                         RAMO.length * NPET_T + NHOJA);
+  flores.castShadow = true;
+  const dR = new THREE.Object3D(), dPt = new THREE.Object3D();
+  dPt.rotation.order = 'YXZ';              /* Y = a que lado sale, X = cuanto abre */
+  const MT = new THREE.Matrix4(), colT = new THREE.Color();
+  const ARRT = new THREE.Vector3(0, 1, 0), outT = new THREE.Vector3();
+  let fi = 0;
+  RAMO.forEach(([a, dy, r, esc]) => {
+    dR.position.set(-0.34 + Math.cos(a) * r, base + dy, -0.06 + Math.sin(a) * r);
+    /* mirando hacia fuera y hacia arriba: una rosa clavada en el lateral de
+       una tarta no mira al techo, mira al que esta delante */
+    outT.set(Math.cos(a) * 0.62, 0.78, Math.sin(a) * 0.62).normalize();
+    dR.quaternion.setFromUnitVectors(ARRT, outT);
+    dR.scale.setScalar(esc);
+    dR.updateMatrix();
+    const tono = TONOS_T[(Math.random() * TONOS_T.length) | 0];
+    const giro0 = Math.random() * 6.28;
+    CORO_T.forEach(([n, abre, tam], c) => {
+      for(let k = 0; k < n; k++){
+        const ang = giro0 + (k + c * 0.5) * (6.2832 / n)
+                  + (Math.random() - 0.5) * 0.28;
+        dPt.rotation.set(-(1.5708 - abre - (Math.random() - 0.5) * 0.18),
+                         ang, (Math.random() - 0.5) * 0.30);
+        dPt.position.set(0, 0.0032 * (2.6 - c), 0);
+        dPt.scale.setScalar(tam * (0.88 + Math.random() * 0.24));
+        dPt.updateMatrix();
+        flores.setMatrixAt(fi, MT.multiplyMatrices(dR.matrix, dPt.matrix));
+        /* el centro OSCURO: en el cogollo de una rosa no entra luz. Es lo
+           que la separa de una bola blanca. */
+        flores.setColorAt(fi, colT.setHex(tono)
+                  .multiplyScalar(0.56 + c * 0.15 + Math.random() * 0.07));
+        fi++;
+      }
+    });
+  });
+  /* las hojas: el mismo petalo estrechado, en verde apagado. Rellenan los
+     huecos entre flor y flor; sin ellas el ramo parece rosas pegadas de una
+     en una.
+     PRIMER INTENTO FALLIDO, y vale la pena dejarlo escrito: iban largas
+     (z x1.85) y casi DE PIE (giro en X de -0.95 a -1.50). Salian unas
+     cuchillas verdes tiesas asomando por encima de las flores: parecia un
+     CACTUS plantado en la tarta, no follaje.
+     El fallo era el angulo, no el color. El follaje de un ramo no se
+     levanta, se TUMBA hacia fuera por debajo de las flores. Con el giro en
+     X entre -0.20 y -0.62 (casi horizontal) y la hoja mas corta ya hace lo
+     que tiene que hacer: rellenar sin que la mires.                      */
+  for(let i = 0; i < NHOJA; i++){
+    const a = 1.34 + Math.random() * 1.02;
+    const dy = 0.055 + Math.random() * 0.265;
+    /* la hoja se pega a la pared del piso que le toque: por debajo de la
+       junta manda el radio de abajo, por encima el de arriba */
+    const r = (dy > 0.295 ? PISO_ALTO.R : PISO_BAJO.R)
+              + 0.012 + Math.random() * 0.036;
+    dPt.rotation.set(-0.20 - Math.random() * 0.42, a + (Math.random() - 0.5) * 1.5,
+                     (Math.random() - 0.5) * 0.8);
+    dPt.position.set(-0.34 + Math.cos(a) * r, base + dy, -0.06 + Math.sin(a) * r);
+    dPt.scale.set(0.46, 1.0, 1.25);
+    dPt.updateMatrix();
+    flores.setMatrixAt(fi, dPt.matrix);
+    flores.setColorAt(fi, colT.setHex(0x8FA17A)
+                              .multiplyScalar(0.62 + Math.random() * 0.20));
+    fi++;
+  }
+  g.add(flores);
+
+  /* ── LA CONTINUACION DEL RAMO (solo en las tematicas SIN cara) ──
+     Aqui hay un choque que no se puede esquivar: la franja alta del piso de
+     arriba la necesita la CARA en siete tematicas (unicornios, dinos,
+     jungla, mar, mascotas, granja, hadas) y la necesita la DECORACION en las
+     otras catorce, donde sin ramo se queda una pared blanca lisa — que es
+     exactamente de lo que se quejaba la foto.
+     No hay un sitio que sirva para las dos, asi que la cascada tiene DOS
+     alturas y se elige por tematica: este trozo de arriba se enciende y se
+     apaga solo en montarAdorno segun la temAtica lleve cara o no.
+     Se busca por nombre en vez de por variable para no tener que sacar el
+     dato de esta funcion: es una vez por cambio de tematica, no por
+     fotograma.                                                           */
+  const RAMO_ALTO = [
+    [1.80, 0.406, 0.214, 0.94], [2.12, 0.478, 0.210, 0.82],
+    [1.38, 0.388, 0.222, 0.76]
+  ];
+  const NHOJA_A = 6;
+  const floresAlto = new THREE.InstancedMesh(petGeo, matPet,
+                                        RAMO_ALTO.length * NPET_T + NHOJA_A);
+  floresAlto.castShadow = true;
+  floresAlto.name = 'ramoAlto';
+  let ai = 0;
+  RAMO_ALTO.forEach(([a, dy, r, esc]) => {
+    dR.position.set(-0.34 + Math.cos(a) * r, base + dy, -0.06 + Math.sin(a) * r);
+    outT.set(Math.cos(a) * 0.62, 0.78, Math.sin(a) * 0.62).normalize();
+    dR.quaternion.setFromUnitVectors(ARRT, outT);
+    dR.scale.setScalar(esc);
+    dR.updateMatrix();
+    const tono = TONOS_T[(Math.random() * TONOS_T.length) | 0];
+    const giro0 = Math.random() * 6.28;
+    CORO_T.forEach(([n, abre, tam], c) => {
+      for(let k = 0; k < n; k++){
+        const ang = giro0 + (k + c * 0.5) * (6.2832 / n)
+                  + (Math.random() - 0.5) * 0.28;
+        dPt.rotation.set(-(1.5708 - abre - (Math.random() - 0.5) * 0.18),
+                         ang, (Math.random() - 0.5) * 0.30);
+        dPt.position.set(0, 0.0032 * (2.6 - c), 0);
+        dPt.scale.setScalar(tam * (0.88 + Math.random() * 0.24));
+        dPt.updateMatrix();
+        floresAlto.setMatrixAt(ai, MT.multiplyMatrices(dR.matrix, dPt.matrix));
+        floresAlto.setColorAt(ai, colT.setHex(tono)
+                  .multiplyScalar(0.56 + c * 0.15 + Math.random() * 0.07));
+        ai++;
+      }
+    });
+  });
+  for(let i = 0; i < NHOJA_A; i++){
+    const a = 1.34 + Math.random() * 1.02;
+    const dy = 0.350 + Math.random() * 0.140;
+    const r = PISO_ALTO.R + 0.012 + Math.random() * 0.036;
+    dPt.rotation.set(-0.20 - Math.random() * 0.42, a + (Math.random() - 0.5) * 1.5,
+                     (Math.random() - 0.5) * 0.8);
+    dPt.position.set(-0.34 + Math.cos(a) * r, base + dy, -0.06 + Math.sin(a) * r);
+    dPt.scale.set(0.46, 1.0, 1.25);
+    dPt.updateMatrix();
+    floresAlto.setMatrixAt(ai, dPt.matrix);
+    floresAlto.setColorAt(ai, colT.setHex(0x8FA17A)
+                              .multiplyScalar(0.62 + Math.random() * 0.20));
+    ai++;
+  }
+  g.add(floresAlto);
 
   /* el topper: tres bolitas del color de la tematica junto a la vela */
   const topper = new THREE.MeshStandardMaterial({color:0xffffff, roughness:0.36});
@@ -2564,10 +3971,28 @@ function mesaDulce(){
   /* la velita. Tambien en grupo: estaba clavada en el EJE de la tarta, que
      es justo donde va ahora el adorno. Con tematica se aparta a un lado. */
   velaGrupo = new THREE.Group();
-  velaGrupo.add(pieza(new THREE.CylinderGeometry(0.019,0.019,0.17,8), BLANCO(), -0.34, base+0.625,-0.06));
-  const llama = new THREE.Mesh(new THREE.SphereGeometry(0.035,10,8),
-    new THREE.MeshBasicMaterial({color:0xFFD86B, toneMapped:false}));
-  llama.position.set(-0.34, base+0.725, -0.06); velaGrupo.add(llama);
+  /* ═══ LUJO · 17 · LA VELA ═══
+     Era un cilindro de 1,9 cm de radio con una BOLA de 3,5 cm de llama
+     encima: la llama era el doble de gorda que la vela. Las velas de las
+     tartas bonitas son finas y altas, con la llama en gota.              */
+  const matVela = new THREE.MeshStandardMaterial({
+    color:0xFDF6EA, roughness:0.50, metalness:0, envMapIntensity:0.5 });
+  velaGrupo.add(pieza(new THREE.CylinderGeometry(0.0085,0.0105,0.23,10),
+                      matVela, -0.34, base+0.655,-0.06));
+  /* el pabilo: sin el, la llama sale flotando un dedo por encima */
+  velaGrupo.add(pieza(new THREE.CylinderGeometry(0.0013,0.0013,0.016,4),
+                      new THREE.MeshStandardMaterial({color:0x4A3B2E, roughness:0.9}),
+                      -0.34, base+0.778,-0.06));
+  const llama = new THREE.Mesh(new THREE.SphereGeometry(0.014,10,10),
+    new THREE.MeshBasicMaterial({color:0xFFD060, toneMapped:false}));
+  llama.scale.set(0.72, 1.85, 0.72);              /* la gota */
+  llama.position.set(-0.34, base+0.800, -0.06); velaGrupo.add(llama);
+  /* el resplandor: una bola grande casi transparente. Sin esto la llama es
+     una pepita amarilla; con esto, la vela ILUMINA. */
+  const halo = new THREE.Mesh(new THREE.SphereGeometry(0.048,10,8),
+    new THREE.MeshBasicMaterial({color:0xFFC65A, toneMapped:false,
+                                 transparent:true, opacity:0.16, depthWrite:false}));
+  halo.position.copy(llama.position); velaGrupo.add(halo);
   g.add(velaGrupo);
 
   /* el grupo tematico: cuelga del EJE de la tarta para poder girarlo entero
@@ -2578,16 +4003,151 @@ function mesaDulce(){
   g.add(tartaDeco);
 
   /* cupcakes en la peana mediana y galletas en la baja. La cobertura de las
-     magdalenas tambien se tine: asi la mesa entera va a juego con el cumple. */
+     magdalenas tambien se tine: asi la mesa entera va a juego con el cumple.
+     Antes: un cilindro liso + una BOLA encima. Eso no es una magdalena, es
+     una seta. Ahora la capsula va PLISADA (las de papel tienen sus pliegues)
+     y la cobertura es un REMOLINO de manga, no una bola (LUJO 10).       */
   const loza = LOZA();
-  const cobertura = new THREE.MeshStandardMaterial({color:0xffffff, roughness:0.44});
+  const cobertura = new THREE.MeshStandardMaterial({
+    color:0xffffff, roughness:0.80, metalness:0,
+    bumpMap:texNata, bumpScale:0.008, roughnessMap:texNata,
+    envMapIntensity:0.5 });
   tartas.push(cobertura);                                   /* -> tartas[2] */
-  [[-0.14,0.02],[0.32,-0.16],[0.50,0.10]].forEach(([dx,dz]) => {
-    const X = 0.32 + dx*0.42, Z = 0.10 + dz;
-    g.add(pieza(new THREE.CylinderGeometry(0.075,0.06,0.13,14), loza, X, ALTO+0.44, Z));
-    g.add(pieza(new THREE.SphereGeometry(0.072,14,12), cobertura, X, ALTO+0.525, Z));
+
+  /* ═══════════ LUJO · 21 · LA TORRE DE CUPCAKES ═══════════
+     Habia TRES magdalenas sueltas encima de una peana blanca de 46 cm de
+     ancha. Tres cosas blancas pequenas repartidas en una superficie blanca
+     grande no se leen como nada: en la foto de lejos ni se ven, y de cerca
+     se quedan fuera del encuadre.
+     En una mesa dulce de verdad los cupcakes no van sueltos, van en TORRE.
+     La torre hace tres cosas a la vez: los junta en un bulto que si se ve,
+     los SUBE hasta la altura de la tarta (asi entran en la foto cuando te
+     acercas) y da el segundo escalon de altura que le faltaba a la mesa.
+     Van OCHO: cinco abajo y tres arriba.                                 */
+
+  /* Los platos, a juego con la bandeja de la tarta: porcelana con aro de
+     oro. El eje es de oro tambien — en blanco desaparecia contra la peana. */
+  const P_BAJO = ALTO + 0.404, P_ALTO = ALTO + 0.633;   /* cara de cada plato */
+  [[0.215, P_BAJO - 0.009], [0.132, P_ALTO - 0.008]].forEach(([r, y]) => {
+    g.add(pieza(new THREE.CylinderGeometry(r, r*0.97, 0.018, 40), matBandeja,
+                0.32, y, 0.10));
+    const aro = pieza(new THREE.TorusGeometry(r, 0.0062, 8, 40), matOroFino,
+                      0.32, y + 0.004, 0.10);
+    aro.rotation.x = Math.PI/2;
+    g.add(aro);
   });
-  g.add(pieza(new THREE.CylinderGeometry(0.20,0.20,0.025,22), loza, 0.00, ALTO+0.23, 0.44));
+  g.add(pieza(new THREE.CylinderGeometry(0.011, 0.011, 0.222, 12), matOroFino,
+              0.32, (P_BAJO + P_ALTO)/2, 0.10));
+
+  /* DONDE cae cada uno: [radio, angulo, en que plato]. Los de abajo van a
+     0.150 a posta — mas adentro se los comia el plato de arriba.         */
+  const CUPS = [
+    [0.150, 0.35, 0], [0.150, 1.61, 0], [0.150, 2.87, 0],
+    [0.150, 4.13, 0], [0.150, 5.39, 0],
+    [0.068, 0.90, 1], [0.068, 3.00, 1], [0.068, 5.10, 1]
+  ];
+  /* La CAPSULA en papel de ORO. Iba en porcelana blanca, y una magdalena
+     blanca sobre plato blanco sobre peana blanca es una mancha. El papel
+     dorado es lo que se usa de verdad en las torres de cumple caras, y
+     ademas es el unico acabado que se recorta igual contra los globos
+     claros que contra la pared marino.                                   */
+  const matFoil = new THREE.MeshStandardMaterial({
+    color:0xC6A055, roughness:0.36, metalness:0.78, envMapIntensity:1.25 });
+  const matCereza = new THREE.MeshPhysicalMaterial({
+    color:0xB8303F, roughness:0.16, metalness:0,
+    clearcoat:0.9, clearcoatRoughness:0.10, envMapIntensity:1.1 });
+  /* Todo instanciado: las ocho capsulas son UN dibujado, los ocho
+     remolinos otro y las ocho cerezas otro. Ocho magdalenas cuestan tres
+     dibujados, no veinticuatro.                                          */
+  const iCap = new THREE.InstancedMesh(capsulaCupcake(0.068, 0.054, 0.125),
+                                       matFoil, CUPS.length);
+  /* 0.076 de radio contra los 0.068 de la capsula: el remolino DESBORDA el
+     papel por todo el contorno, que es lo que hace un copete de manga. */
+  const iRem = new THREE.InstancedMesh(remolinoCupcake(0.076, 0.098),
+                                       cobertura, CUPS.length);
+  const iCer = new THREE.InstancedMesh(new THREE.SphereGeometry(0.019, 12, 10),
+                                       matCereza, CUPS.length);
+  iCap.castShadow = iRem.castShadow = iCer.castShadow = true;
+  iRem.receiveShadow = true;
+  const dCup = new THREE.Object3D();
+  CUPS.forEach(([r, a, piso], i) => {
+    const X = 0.32 + Math.cos(a)*r, Z = 0.10 + Math.sin(a)*r;
+    const y0 = piso ? P_ALTO : P_BAJO;
+    dCup.rotation.set(0, 0, 0);
+    dCup.position.set(X, y0 + 0.058, Z); dCup.updateMatrix();
+    iCap.setMatrixAt(i, dCup.matrix);
+    /* cada remolino girado distinto: ocho iguales cantan a copiar-pegar.
+       ALTURA: centro en y0+0.148 => base en y0+0.099 (se mete 2 cm dentro
+       de la capsula, justo lo que hace falta para que no se vea la junta)
+       y punta en y0+0.197. Asoman 7,6 cm en vez de los 5 de antes.      */
+    dCup.rotation.set(0, i * 2.1, 0);
+    dCup.position.set(X, y0 + 0.148, Z); dCup.updateMatrix();
+    iRem.setMatrixAt(i, dCup.matrix);
+    dCup.rotation.set(0, 0, 0);
+    dCup.position.set(X, y0 + 0.204, Z); dCup.updateMatrix();
+    iCer.setMatrixAt(i, dCup.matrix);
+  });
+  g.add(iCap); g.add(iRem); g.add(iCer);
+
+  /* ═══════════ LUJO · 22 · EL PLATO DE ABAJO ESTABA VACIO ═══════════
+     Esto no era una decision, era un OLVIDO: el comentario de aqui arriba
+     decia "y galletas en la baja" y en el plato no habia absolutamente
+     nada. Un plato de porcelana vacio en primer plano de la mesa dulce.
+     En vez de galletas van MACARONS, que es lo que se pone en una mesa
+     dulce cara y ademas se lee a la primera por la forma: dos cupulas y
+     el relleno asomando en medio. En crema, champan y rosa empolvado, como
+     el goteo y las flores, asi valen para las 21 tematicas.              */
+  g.add(pieza(new THREE.CylinderGeometry(0.20, 0.194, 0.025, 40), matBandeja,
+              0.00, ALTO+0.23, 0.44));
+  const aroP = pieza(new THREE.TorusGeometry(0.20, 0.0062, 8, 44), matOroFino,
+                     0.00, ALTO+0.238, 0.44);
+  aroP.rotation.x = Math.PI/2;
+  g.add(aroP);
+
+  /* media bola: plana por abajo y cupula por arriba, que es un macaron */
+  const tapaGeo = new THREE.SphereGeometry(1, 16, 8, 0, Math.PI*2, 0, Math.PI/2);
+  tapaGeo.scale(0.036, 0.015, 0.036);
+  const rellGeo = new THREE.CylinderGeometry(0.0325, 0.0325, 0.011, 16);
+  const matTapa = new THREE.MeshStandardMaterial({
+    color:0xffffff, roughness:0.62, metalness:0, envMapIntensity:0.6 });
+  const matRell = new THREE.MeshStandardMaterial({
+    color:0xF3E2CE, roughness:0.78, metalness:0, envMapIntensity:0.4 });
+  /* [x, z, giro, tumbado] — los dos ultimos van DE CANTO apoyados en los
+     otros, que es como acaban siempre en un plato de verdad */
+  const MACS = [
+    [-0.085, -0.055, 0.4, 0], [ 0.010, -0.085, 1.9, 0], [ 0.098, -0.030, 3.1, 0],
+    [ 0.075,  0.068, 5.0, 0], [-0.040,  0.080, 2.2, 0],
+    [-0.108,  0.048, 0.9, 1], [ 0.030,  0.012, 4.2, 1]
+  ];
+  /* Los TONOS. Primera tanda todos crema palidisimo — y otra vez el mismo
+     fallo: macaron color hueso sobre plato de porcelana blanca no se ve.
+     Los macarons de verdad van de colores, que es parte de lo que los hace
+     reconocibles. No es tenir con la tematica: es que un macaron ES asi.  */
+  const TONOS_M = [0xE8A6B0, 0xD9A56B, 0xC2CCA0, 0xF0E0C6, 0xDE8F9C];
+  const iTapa = new THREE.InstancedMesh(tapaGeo, matTapa, MACS.length * 2);
+  const iRell = new THREE.InstancedMesh(rellGeo, matRell, MACS.length);
+  iTapa.castShadow = iRell.castShadow = true;
+  const dMac = new THREE.Object3D(), dPza = new THREE.Object3D();
+  const MM = new THREE.Matrix4(), colM = new THREE.Color();
+  MACS.forEach(([mx, mz, giro, canto], i) => {
+    /* de canto se apoya en el borde, asi que sube medio macaron */
+    dMac.position.set(0.00 + mx, ALTO + 0.2425 + (canto ? 0.037 : 0), 0.44 + mz);
+    dMac.rotation.set(canto ? 1.5708 : (Math.random()-0.5)*0.12, giro,
+                      canto ? (Math.random()-0.5)*0.5 : (Math.random()-0.5)*0.12);
+    dMac.updateMatrix();
+    const tono = TONOS_M[i % TONOS_M.length];
+    /* la tapa de abajo va del reves: cupula hacia el plato */
+    dPza.rotation.set(Math.PI, 0, 0); dPza.position.set(0, 0.015, 0);
+    dPza.scale.setScalar(1); dPza.updateMatrix();
+    iTapa.setMatrixAt(i*2, MM.multiplyMatrices(dMac.matrix, dPza.matrix));
+    iTapa.setColorAt(i*2, colM.setHex(tono));
+    dPza.rotation.set(0, 0, 0); dPza.position.set(0, 0.026, 0); dPza.updateMatrix();
+    iTapa.setMatrixAt(i*2+1, MM.multiplyMatrices(dMac.matrix, dPza.matrix));
+    iTapa.setColorAt(i*2+1, colM.setHex(tono));
+    dPza.position.set(0, 0.0205, 0); dPza.updateMatrix();
+    iRell.setMatrixAt(i, MM.multiplyMatrices(dMac.matrix, dPza.matrix));
+  });
+  g.add(iTapa); g.add(iRell);
 
   return g;
 }
@@ -3366,6 +4926,518 @@ ADORNOS.arcoiris = { build:adornoArcoiris, cara:null };
 ADORNOS.magia    = { build:adornoMagia,    cara:null };
 ADORNOS.disco    = { build:adornoDisco,    cara:null };
 
+/* ══════════════════════════════════════════════════════════════════
+   TANDA 2 — las OCHO que faltaban.
+   Auditoria: hay 20 tematicas vivas y solo 12 tenian adorno. Las otras
+   ocho caian en el topper de reserva (tres bolitas) y se veian todas
+   iguales: la tarta de Piratas era la de Futbol pintada de otro color.
+   Mismo metodo que la tanda 1: nada de modelar: una caja girada es un
+   rayo, un icosaedro plano ES un balon, y tres cajas en zigzag tambien.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* Fondant de DOS CARAS, para las telas (capa, bandera). Una tela vista
+   por dentro con material normal desaparece: three solo pinta la cara
+   de fuera salvo que se le diga lo contrario. */
+function tela(hex){
+  const m = fondant(hex); m.side = THREE.DoubleSide; return m;
+}
+
+/* 🏴‍☠️ PIRATAS — calavera. Lo que la hace calavera y no huevo son dos
+   cosas: los ojos HUNDIDOS (bolas negras metidas, no puntos pintados) y
+   la mandibula como pieza aparte mas abajo. */
+function adornoPiratas(yCima, rCima, ctx){
+  const hueso = fondant('#FFF6E4'), negro = fondant('#2A2530'),
+        rojo  = fondant('#C4485A'), oro = oroPan();
+  /* Todo el pirata cuelga de esta altura. Iba a +0.092 y el canto de
+     delante del piso le cortaba la MANDIBULA: quedaba una calavera
+     asomando por detras de la tarta. La camara mira un pelin desde
+     arriba, asi que el borde tapa todo lo que este a menos de ~5cm de
+     la superficie, y la mandibula cae 6cm por debajo del centro del
+     craneo. Subiendo el conjunto entero se arregla de una vez.        */
+  const yc = yCima + 0.148;
+  const cr = new THREE.Mesh(new THREE.SphereGeometry(0.086, 22, 16), hueso);
+  cr.position.set(0, yc, 0.006); cr.scale.set(1, 0.94, 0.92);
+  cr.castShadow = true; tartaDeco.add(cr);
+  const mx = new THREE.Mesh(new THREE.SphereGeometry(0.054, 18, 14), hueso);
+  mx.position.set(0, yc - 0.062, 0.024); mx.scale.set(1, 0.60, 0.84);
+  mx.castShadow = true; tartaDeco.add(mx);
+  [-1, 1].forEach(s => {
+    const o = new THREE.Mesh(new THREE.SphereGeometry(0.025, 14, 12), negro);
+    o.position.set(s*0.034, yc + 0.008, 0.066);
+    o.scale.set(1, 1.15, 0.55); tartaDeco.add(o);
+  });
+  const na = new THREE.Mesh(new THREE.ConeGeometry(0.015, 0.022, 3), negro);
+  na.position.set(0, yc - 0.030, 0.074);
+  na.rotation.set(Math.PI/2, 0, Math.PI); tartaDeco.add(na);
+  /* PAÑUELO: media esfera calada por arriba (phiLength completo, thetaLength
+     corto) = un casquete. Mas dos puntas cayendo por un lado, que es lo que
+     dice "pañuelo" y no "gorro de baño". */
+  const pa = new THREE.Mesh(
+    new THREE.SphereGeometry(0.090, 22, 14, 0, 6.283, 0, 1.15), rojo);
+  pa.position.set(0, yc, 0.006); pa.castShadow = true; tartaDeco.add(pa);
+  [[0.60, -0.10], [0.42, -0.34]].forEach(([r, incl]) => {
+    const p = new THREE.Mesh(new THREE.ConeGeometry(0.020, 0.088, 6), rojo);
+    p.position.set(-0.082, yc + 0.010 + incl*0.10, -0.030);
+    p.rotation.set(0.2, 0, Math.PI/2 + r); tartaDeco.add(p);
+  });
+  /* HUESOS cruzados detras: un palo con una bola en cada punta.
+     Median 0.215 y ladeados 0.72 rad eso deja las puntas a 0.071 del
+     centro... pero el craneo mide 0.086 de radio, o sea que los huesos
+     quedaban DENTRO de la calavera y solo se les veian los topes. Para
+     que una cruz se lea tiene que sobresalir, asi que 0.340.           */
+  [-1, 1].forEach(s => {
+    const H = new THREE.Group();
+    H.add(new THREE.Mesh(new THREE.CylinderGeometry(0.013, 0.013, 0.340, 8), hueso));
+    [-1, 1].forEach(e => [-1, 1].forEach(d => {
+      const b = new THREE.Mesh(new THREE.SphereGeometry(0.019, 12, 10), hueso);
+      b.position.set(d*0.016, e*0.166, 0); H.add(b);
+    }));
+    H.position.set(0, yc - 0.010, -0.070);
+    H.rotation.z = s*0.72;
+    H.traverse(o => { if(o.isMesh) o.castShadow = true; });
+    tartaDeco.add(H);
+  });
+  /* MONEDAS desparramadas en la bandeja: discos de oro tumbados. Es lo
+     mas barato que hay y lo que mas dice "tesoro". */
+  for(let i = 0; i < 9; i++){
+    const a = i*0.84 + 0.3, rr = 0.26 + (i%3)*0.045;
+    const m = new THREE.Mesh(new THREE.CylinderGeometry(0.030, 0.030, 0.007, 14), oro);
+    m.position.set(Math.cos(a)*rr, ctx.y0 - 0.004 + (i%2)*0.007, Math.sin(a)*rr);
+    m.rotation.set(0.12*(i%3 - 1), a, 0.14*((i+1)%3 - 1));
+    m.castShadow = true; tartaDeco.add(m);
+  }
+}
+
+/* 🦸 SUPERHEROES — el escudo. Un disco con aro de oro y un RAYO encima
+   hecho de tres cajas en zigzag: de lejos es exactamente la silueta que
+   el ojo espera, y no hay que modelar ningun poligono raro. */
+function adornoSuperheroes(yCima, rCima, ctx){
+  const azul = fondant('#3D6ED8'), oro = oroPan();
+  const E = new THREE.Group();
+  const disco = new THREE.Mesh(new THREE.CylinderGeometry(0.100, 0.100, 0.022, 32), azul);
+  disco.rotation.x = Math.PI/2; disco.castShadow = true; E.add(disco);
+  E.add(new THREE.Mesh(new THREE.TorusGeometry(0.100, 0.012, 10, 34), oro));
+  /* EL RAYO · TERCER INTENTO, Y EL BUENO.
+     Primero fueron tres tablillas iguales: salia una Z de rotulador.
+     Luego las adelgace y alargue la de en medio: SEGUIA siendo una Z.
+     El fallo no estaba en las proporciones, estaba en que una caja
+     tiene los extremos CUADRADOS, y lo que hace que un rayo se lea
+     como rayo son las PUNTAS AFILADAS. Con cajas no se llega nunca.
+     Asi que se dibuja el poligono de verdad y se le da grosor: un
+     THREE.Shape recorta la silueta exacta y ExtrudeGeometry la saca
+     hacia delante. Una sola malla en vez de tres, y ahora si.         */
+  const sc = 0.118;
+  const P = [[ 0.29, 0.50], [-0.35, 0.02], [-0.03, 0.02],
+             [-0.26,-0.50], [ 0.38, 0.00], [ 0.06, 0.00]];
+  const sh = new THREE.Shape();
+  P.forEach(([px, py], i) => i ? sh.lineTo(px*sc, py*sc)
+                               : sh.moveTo(px*sc, py*sc));
+  sh.closePath();
+  const R = new THREE.Mesh(
+    new THREE.ExtrudeGeometry(sh, {depth:0.013, bevelEnabled:false}), oro);
+  R.position.z = 0.013; R.rotation.z = -0.12; E.add(R);
+  E.position.set(0, yCima + 0.100, 0.004);
+  E.rotation.set(-0.16, 0.22, 0);
+  tartaDeco.add(E);
+  /* ── LA CAPA · PROBADA Y TIRADA ──
+     Puse detras un trozo de cilindro abierto haciendo de capa roja. En
+     pantalla no se leia como tela: se leia como una PLANCHA roja plana
+     apoyada detras de la tarta, porque desde esta camara la curva no se
+     aprecia y lo unico que se ve es el recorte recto de los bordes.
+     Y encima competia con el escudo, que es lo que de verdad dice
+     "superheroe". Fuera. El escudo solo se sostiene mejor.             */
+  flotantes(yCima, rCima, 7, new THREE.OctahedronGeometry(0.016, 0), oro, 0.20, 0.19);
+  trepadoras(fondant('#D6413F'), 5, ctx.y0, ctx.pisos[0].h*0.7, ctx.pisos[0].r, 2.4);
+}
+
+/* 🍦 DULCES — el cucurucho. Cono del reves + dos bolas + la cereza. Es
+   de los pocos adornos que ya viene con su propia silueta de fabrica. */
+function adornoDulces(yCima, rCima, ctx){
+  const barq = fondant('#E0B071'), rosa = fondant('#F9A8BE'),
+        nata = fondant('#FFF6EA'), cere = fondant('#D24A5E'), oro = oroPan();
+  const C = new THREE.Group();
+  const co = new THREE.Mesh(new THREE.ConeGeometry(0.058, 0.150, 18), barq);
+  co.position.y = -0.030; C.add(co);
+  const b1 = new THREE.Mesh(new THREE.SphereGeometry(0.060, 20, 16), rosa);
+  b1.position.set(-0.016, 0.062, 0.006); C.add(b1);
+  const b2 = new THREE.Mesh(new THREE.SphereGeometry(0.052, 20, 16), nata);
+  b2.position.set(0.026, 0.110, -0.006); C.add(b2);
+  const ce = new THREE.Mesh(new THREE.SphereGeometry(0.023, 14, 12), cere);
+  ce.position.set(0.026, 0.168, -0.006); C.add(ce);
+  const ra = new THREE.Mesh(new THREE.CylinderGeometry(0.0035, 0.0035, 0.036, 6),
+                            fondant('#5F8F4C'));
+  ra.position.set(0.030, 0.194, -0.010); ra.rotation.z = -0.3; C.add(ra);
+  C.position.set(0, yCima + 0.078, 0.010);
+  C.rotation.z = 0.12;                     /* un pelin torcido: recto parece
+                                              un cohete, torcido parece helado */
+  C.traverse(o => { if(o.isMesh) o.castShadow = true; });
+  tartaDeco.add(C);
+  /* PIRULETAS clavadas a los lados: palo fino + disco de dos colores */
+  [[-1, 0.42], [1, -0.36]].forEach(([s, gz]) => {
+    const P = new THREE.Group();
+    P.add(new THREE.Mesh(new THREE.CylinderGeometry(0.0045, 0.0045, 0.130, 6), nata));
+    const d = new THREE.Mesh(new THREE.CylinderGeometry(0.044, 0.044, 0.014, 20), rosa);
+    d.position.y = 0.074; d.rotation.x = Math.PI/2; P.add(d);
+    const e = new THREE.Mesh(new THREE.TorusGeometry(0.044, 0.008, 8, 22), nata);
+    e.position.y = 0.074; P.add(e);
+    P.position.set(s*(rCima*0.78), yCima + 0.048, rCima*0.30);
+    P.rotation.z = gz;
+    P.traverse(o => { if(o.isMesh) o.castShadow = true; });
+    tartaDeco.add(P);
+  });
+  /* GOMINOLAS de aro por el piso de abajo, y caramelos en la bandeja */
+  const tonos = ['#F9A8BE', '#FFD98A', '#A8DCC4', '#C9A8E8'];
+  for(let i = 0; i < 7; i++){
+    const a = 2.0 + i*0.42, rr = ctx.pisos[0].r + 0.016;
+    const g = new THREE.Mesh(new THREE.TorusGeometry(0.030, 0.012, 8, 18),
+                             fondant(tonos[i%4]));
+    g.position.set(Math.cos(a)*rr, ctx.y0 + ctx.pisos[0].h*(0.16 + 0.68*(i/6)),
+                   Math.sin(a)*rr);
+    g.rotation.y = Math.PI/2 - a; g.castShadow = true; tartaDeco.add(g);
+  }
+  for(let i = 0; i < 8; i++){
+    const a = i*0.90 + 0.5;
+    const c = new THREE.Mesh(new THREE.SphereGeometry(0.024, 12, 10),
+                             fondant(tonos[(i+1)%4]));
+    c.position.set(Math.cos(a)*(0.27 + (i%2)*0.05), ctx.y0 + 0.016,
+                   Math.sin(a)*(0.27 + (i%2)*0.05));
+    c.scale.set(1.2, 0.8, 1); c.castShadow = true; tartaDeco.add(c);
+  }
+  flotantes(yCima, rCima, 5, new THREE.OctahedronGeometry(0.012, 0), oro, 0.26, 0.22);
+}
+
+/* ⚽ FUTBOL — el balon. El truco: IcosahedronGeometry con detalle 1 y
+   flatShading YA tiene las caras planas de un balon cosido; no hay que
+   dibujar los pentagonos. Los negros se pegan encima con el mismo apaño
+   que las manchas de la vaca: esfera aplastada mirando al centro. */
+function adornoFutbol(yCima, rCima, ctx){
+  const cuero = new THREE.MeshStandardMaterial({
+    color:0xFFFBF2, roughness:0.48, metalness:0.0,
+    envMapIntensity:0.32, flatShading:true});
+  const negro = fondant('#2E2A2E'), hierba = fondant('#6FAF57'), oro = oroPan();
+  const cen = new THREE.Vector3(0, yCima + 0.106, 0.006);
+  const bola = new THREE.Mesh(new THREE.IcosahedronGeometry(0.098, 1), cuero);
+  bola.position.copy(cen); bola.castShadow = true; tartaDeco.add(bola);
+  [[0,1,0.05],[0.92,0.26,0.30],[-0.88,0.30,0.36],[0.18,0.06,1],
+   [0.34,-0.78,0.42],[-0.42,-0.64,-0.68]].forEach(d => {
+    const v = new THREE.Vector3(d[0], d[1], d[2]).normalize();
+    const p = new THREE.Mesh(new THREE.SphereGeometry(0.031, 14, 10), negro);
+    p.position.copy(v).multiplyScalar(0.093).add(cen);
+    p.lookAt(cen);                          /* +z apunta al centro, asi que
+                                               aplastar en z lo pega a la bola */
+    p.scale.set(1, 1, 0.16); tartaDeco.add(p);
+  });
+  /* PORTERIA detras: dos palos y un larguero. Con eso basta; una red de
+     verdad a este tamaño es una mancha gris. */
+  const blanco = fondant('#FFFDF7');
+  const G = new THREE.Group();
+  [-1, 1].forEach(s => {
+    const po = new THREE.Mesh(new THREE.CylinderGeometry(0.009, 0.009, 0.210, 8), blanco);
+    po.position.set(s*0.150, 0.105, 0); G.add(po);
+  });
+  const lg = new THREE.Mesh(new THREE.CylinderGeometry(0.009, 0.009, 0.318, 8), blanco);
+  lg.position.y = 0.210; lg.rotation.z = Math.PI/2; G.add(lg);
+  G.position.set(0, yCima + 0.006, -rCima*0.70);
+  G.rotation.y = 0.18;
+  G.traverse(o => { if(o.isMesh) o.castShadow = true; });
+  tartaDeco.add(G);
+  trepadoras(hierba, 7, ctx.y0, ctx.pisos[0].h*0.85, ctx.pisos[0].r, 2.1);
+  flotantes(yCima, rCima, 5, new THREE.OctahedronGeometry(0.014, 0), oro, 0.24, 0.24);
+}
+
+/* 🎮 VIDEOJUEGOS — el marcianito. Aqui NO hay que modelar: se escribe el
+   dibujo con una rejilla de texto y se pone un cubito donde hay '#'. Es
+   literalmente como se hacian los sprites, asi que sale bien por
+   construccion: cuadrado y pixelado es EL acabado de la tematica, no un
+   defecto. Cambiar el bicho = cambiar las lineas de texto. */
+function adornoVideojuegos(yCima, rCima, ctx){
+  const SPRITE = ['..#.....#..',
+                  '...#...#...',
+                  '..#######..',
+                  '.##.###.##.',
+                  '###########',
+                  '#.#######.#',
+                  '#.#.....#.#',
+                  '...##.##...'];
+  const verde = fondant('#7ED957'), lila = fondant('#A98FFF'), oro = oroPan();
+  const P = 0.0225;                        /* lado del pixel */
+  const M = new THREE.Group();
+  const cubo = new THREE.BoxGeometry(P*0.96, P*0.96, P*0.96);
+  SPRITE.forEach((fila, y) => [...fila].forEach((ch, x) => {
+    if(ch !== '#') return;
+    const c = new THREE.Mesh(cubo, (y < 4) ? verde : lila);
+    c.position.set((x - 5)*P, (3.5 - y)*P, 0);
+    c.castShadow = true; M.add(c);
+  }));
+  /* ALTURA: iba a +0.108 y el canto de la tarta le comia las patas. La
+     camara mira un pelin desde arriba, asi que el borde de delante del
+     piso tapa todo lo que este a menos de ~5 cm de la superficie: ese es
+     el suelo real para cualquier topper, no la y de la cima.            */
+  M.position.set(0, yCima + 0.150, 0.004);
+  M.rotation.y = 0.14;
+  tartaDeco.add(M);
+  /* OJOS: dos cubos negros metidos en la fila 3, que es donde el sprite
+     tiene el hueco. Sin ellos es una mancha; con ellos, un bicho. */
+  [-1, 1].forEach(s => {
+    const o = new THREE.Mesh(new THREE.BoxGeometry(P*0.96, P*0.96, P*1.3),
+                             fondant('#241E2E'));
+    o.position.set(s*2*P, 0.5*P, 0.004); M.add(o);
+  });
+  /* PIXELES sueltos flotando, como cuando el bicho explota */
+  for(let i = 0; i < 9; i++){
+    const a = (i/9)*Math.PI*2 + 0.4;
+    const c = new THREE.Mesh(cubo, i%2 ? verde : lila);
+    c.position.set(Math.cos(a)*(rCima + 0.15), yCima + 0.16 + ((i%3)-1)*0.085,
+                   Math.sin(a)*(rCima + 0.15));
+    c.rotation.set(i*0.5, i*0.7, i*0.3);
+    c.scale.setScalar(0.9 + (i%3)*0.35);
+    tartaDeco.add(c);
+  }
+  /* BARRA DE VIDA trepando el piso de abajo: cubitos en fila */
+  for(let i = 0; i < 8; i++){
+    const a = 2.25 + i*0.20, rr = ctx.pisos[0].r + 0.012;
+    const c = new THREE.Mesh(cubo, i < 5 ? verde : fondant('#E4576B'));
+    c.position.set(Math.cos(a)*rr, ctx.y0 + ctx.pisos[0].h*0.62, Math.sin(a)*rr);
+    c.rotation.y = Math.PI/2 - a; c.scale.set(1, 1.7, 0.5);
+    c.castShadow = true; tartaDeco.add(c);
+  }
+  flotantes(yCima, rCima, 4, new THREE.OctahedronGeometry(0.013, 0), oro, 0.30, 0.26);
+}
+
+/* 🔬 CIENCIA — el atomo.
+   ── EL MATRAZ · PROBADO Y TIRADO ──
+   Lo primero que puse fue un matraz de laboratorio: cono de cristal con
+   cuello y liquido verde dentro. Dos intentos y los dos malos.
+     1) Cristal a 0.42 de opacidad -> INVISIBLE. Detras del topper hay
+        globos claros; un vidrio casi transparente sobre fondo claro no
+        tiene contra que recortarse y salia un triangulo gris.
+     2) Cristal a 0.66 y el liquido calcando el interior -> ya se veia,
+        pero se leia como un GORRO DE FIESTA. Y es que el problema no era
+        el material: era la SILUETA. Un cono apoyado encima de una tarta
+        es un gorro de cumple, digas lo que digas con el color.
+   El atomo, en cambio, funciona a la primera y a cualquier tamaño: son
+   tres aros de ORO, y el oro es lo unico de esta escena que se recorta
+   igual de bien contra un globo claro que contra la pared azul. Asi que
+   el matraz fuera y el atomo pasa a ser el protagonista, centrado y mas
+   grande. Menos piezas y se entiende antes.                            */
+function adornoCiencia(yCima, rCima, ctx){
+  const oro = oroPan();
+  const nucleo = new THREE.MeshStandardMaterial({
+    color:new THREE.Color('#2FC79A'), roughness:0.18, metalness:0.0,
+    emissive:new THREE.Color('#1E8A6E'), emissiveIntensity:0.55,
+    envMapIntensity:1.2});
+  /* EL ATOMO: tres aros cruzados y un nucleo. Un torus girado tres veces
+     ya es el simbolo entero; no hay nada que inventar. */
+  const A = new THREE.Group();
+  [[0, 0, 0], [1.05, 0, 0.7], [-1.05, 0, -0.7]].forEach(([rx, ry, rz]) => {
+    const ar = new THREE.Mesh(new THREE.TorusGeometry(0.105, 0.0080, 8, 34), oro);
+    ar.rotation.set(rx, ry, rz); A.add(ar);
+  });
+  A.add(new THREE.Mesh(new THREE.SphereGeometry(0.030, 18, 14), nucleo));
+  /* LOS ELECTRONES: una bolita en cada aro. Sin ellas los aros se leen
+     como una pelota de mimbre; con ellas, como un atomo. */
+  [[0.105, 0, 0], [-0.052, 0.091, 0.030], [0.030, -0.082, -0.066]].forEach(p => {
+    const e = new THREE.Mesh(new THREE.SphereGeometry(0.017, 14, 12), nucleo);
+    e.position.set(p[0], p[1], p[2]); A.add(e);
+  });
+  A.position.set(0, yCima + 0.150, 0.006);
+  A.rotation.y = 0.30;
+  A.traverse(o => { if(o.isMesh) o.castShadow = true; });
+  tartaDeco.add(A);
+  /* BURBUJAS subiendo alrededor: dicen "algo esta reaccionando" y de paso
+     rellenan el hueco que dejo el matraz. */
+  for(let i = 0; i < 9; i++){
+    const a = i*0.78 + 0.4;
+    const b = new THREE.Mesh(new THREE.SphereGeometry(0.011 + (i%3)*0.006, 12, 10),
+                             nucleo);
+    b.position.set(Math.cos(a)*(rCima*0.62 + (i%2)*0.06), yCima + 0.055 + i*0.034,
+                   Math.sin(a)*(rCima*0.62 + (i%2)*0.06));
+    tartaDeco.add(b);
+  }
+  /* MOLECULAS trepando el piso de abajo: dos bolas y un palito */
+  for(let i = 0; i < 5; i++){
+    const a = 2.20 + i*0.32, rr = ctx.pisos[0].r + 0.014;
+    const M = new THREE.Group();
+    M.add(new THREE.Mesh(new THREE.CylinderGeometry(0.004, 0.004, 0.058, 6), oro));
+    [-1, 1].forEach(s => {
+      const b = new THREE.Mesh(new THREE.SphereGeometry(0.019, 12, 10), nucleo);
+      b.position.y = s*0.030; M.add(b);
+    });
+    M.position.set(Math.cos(a)*rr, ctx.y0 + ctx.pisos[0].h*(0.22 + 0.54*(i/4)),
+                   Math.sin(a)*rr);
+    M.rotation.set(0, Math.PI/2 - a, 0.55 + (i%2)*0.5);
+    M.traverse(o => { if(o.isMesh) o.castShadow = true; });
+    tartaDeco.add(M);
+  }
+}
+
+/* 🏎️ COCHES — el bolido. Un coche de carreras es literalmente dos cajas
+   y cuatro ruedas; lo que lo hace rapido es que la de arriba va CORRIDA
+   hacia atras y el morro sale en punta. */
+function adornoCoches(yCima, rCima, ctx){
+  const rojo = fondant('#E0722A'), gris = fondant('#3A3640'),
+        crist = fondant('#9FC4E8'), oro = oroPan();
+  const C = new THREE.Group();
+  const ch = new THREE.Mesh(new THREE.BoxGeometry(0.230, 0.048, 0.098), rojo);
+  ch.position.y = 0.036; C.add(ch);
+  const mo = new THREE.Mesh(new THREE.ConeGeometry(0.040, 0.075, 4), rojo);
+  mo.position.set(0.148, 0.034, 0); mo.rotation.set(0, Math.PI/4, -Math.PI/2);
+  mo.scale.set(1, 1, 0.62); C.add(mo);
+  const ca = new THREE.Mesh(new THREE.BoxGeometry(0.086, 0.042, 0.082), crist);
+  ca.position.set(-0.030, 0.078, 0); C.add(ca);
+  const al = new THREE.Mesh(new THREE.BoxGeometry(0.020, 0.036, 0.110), gris);
+  al.position.set(-0.118, 0.082, 0); al.rotation.z = 0.22; C.add(al);
+  [[0.082, 0.056], [-0.082, 0.056]].forEach(([wx, wr]) => [-1, 1].forEach(s => {
+    const r = new THREE.Mesh(new THREE.CylinderGeometry(wr, wr, 0.030, 18), gris);
+    r.position.set(wx, wr*0.62, s*0.060); r.rotation.x = Math.PI/2; C.add(r);
+    const t = new THREE.Mesh(new THREE.CylinderGeometry(wr*0.42, wr*0.42, 0.034, 14), oro);
+    t.position.copy(r.position); t.rotation.x = Math.PI/2; C.add(t);
+  }));
+  C.position.set(0, yCima + 0.052, 0.006);
+  C.rotation.y = -0.42;                 /* de tres cuartos: de perfil
+                                              clavado parece una plancha */
+  C.traverse(o => { if(o.isMesh) o.castShadow = true; });
+  tartaDeco.add(C);
+  /* BANDERA A CUADROS: 5x3 casillas alternas. Un tablero de ajedrez es
+     de las poquisimas texturas que se leen bien a 30 pixeles. */
+  const B = new THREE.Group();
+  const cel = 0.026;
+  for(let x = 0; x < 5; x++) for(let y = 0; y < 3; y++){
+    const q = new THREE.Mesh(new THREE.BoxGeometry(cel, cel, 0.004),
+                (x + y) % 2 ? tela('#2E2A32') : tela('#FFFDF7'));
+    q.position.set((x - 2)*cel, (y - 1)*cel, x*0.004);
+    B.add(q);
+  }
+  B.position.set(rCima*0.85 + 0.055, yCima + 0.175, -rCima*0.42);
+  B.rotation.set(0, -0.35, 0.16);
+  /* EL MASTIL. Iba en gris oscuro y sobre la pared marino no se veia:
+     la bandera salia colgada del aire. Y encima arrancaba en +0.015,
+     o sea por DEBAJO del canto de delante del piso, que tapa todo lo
+     que este a menos de ~5cm de la superficie. Asi que ahora es de ORO
+     (lo unico que se recorta igual contra globo claro que contra la
+     pared) y su base empieza justo donde la tarta deja de taparla.
+     Ademas va mas a la derecha y mas atras: donde estaba, el MORRO del
+     coche (que apunta hacia la camara) se le ponia justo delante. */
+  const mast = new THREE.Mesh(new THREE.CylinderGeometry(0.005, 0.005, 0.150, 8),
+                              oroPan());
+  mast.position.set(rCima*0.85, yCima + 0.128, -rCima*0.42);
+  mast.castShadow = true; tartaDeco.add(mast);
+  B.traverse(o => { if(o.isMesh) o.castShadow = true; });
+  tartaDeco.add(B);
+  /* HUELLA DE NEUMATICO trepando el piso: rayas oscuras muy juntas */
+  for(let i = 0; i < 9; i++){
+    const a = 2.10 + i*0.13, rr = ctx.pisos[0].r + 0.008;
+    const m = new THREE.Mesh(new THREE.BoxGeometry(0.030, 0.011, 0.006), gris);
+    m.position.set(Math.cos(a)*rr, ctx.y0 + ctx.pisos[0].h*(0.22 + 0.52*(i/8)),
+                   Math.sin(a)*rr);
+    m.rotation.set(0, Math.PI/2 - a, 0.42);
+    tartaDeco.add(m);
+  }
+}
+
+/* 🚓 POLICIA — la gorra. Corona + visera + placa de oro. La visera es
+   una esfera muy aplastada sacada HACIA DELANTE: si se aplasta con
+   scale sin moverla se queda dentro de la corona y no se ve. */
+function adornoPolicia(yCima, rCima, ctx){
+  /* SEGUNDA PASADA — la gorra se CAMUFLABA. La pared de la sala es
+     marino #1B3358 y la cinta y la visera iban en #1B2E52: el mismo
+     color, practicamente. La gorra solo se leia por la placa de oro y
+     por el trozo de visera que cae sobre la tarta blanca; la mitad que
+     queda recortada contra la pared se borraba.
+     Dos arreglos: la copa sube un punto de luz (#2B4E8C -> #33589B) para
+     despegarse del marino, y la CINTA pasa a plata clara. Lo de la cinta
+     no es capricho: una raya horizontal clara a media altura parte la
+     silueta en dos y es lo que hace que una gorra se lea como gorra de
+     lejos — y ademas es lo que llevan las gorras de verdad. La visera se
+     queda oscura a posta: cae sobre la tarta BLANCA, asi que ahi el
+     oscuro si tiene contra que recortarse.                              */
+  const azul = fondant('#33589B'), oscuro = fondant('#1B2E52'),
+        plata = fondant('#DCE0E8'), oro = oroPan();
+  const G = new THREE.Group();
+  const co = new THREE.Mesh(new THREE.CylinderGeometry(0.098, 0.088, 0.072, 28), azul);
+  co.position.y = 0.036; G.add(co);
+  const tapa = new THREE.Mesh(new THREE.CylinderGeometry(0.104, 0.104, 0.012, 28), azul);
+  tapa.position.y = 0.076; G.add(tapa);
+  const cinta = new THREE.Mesh(new THREE.CylinderGeometry(0.0925, 0.0925, 0.026, 28), plata);
+  cinta.position.y = 0.010; G.add(cinta);
+  /* LA VISERA. Empece con media esfera (phiLength = PI) y no se veia:
+     ese corte parte la bola por un plano VERTICAL, o sea que la mitad
+     buena puede acabar mirando de lado segun como se gire, y ahi la
+     gorra parecia un cubo de playa. Con una esfera ENTERA aplastada y
+     empujada hacia delante no hay nada que se pueda girar mal: la mitad
+     de atras se queda escondida dentro de la corona, que es justo donde
+     va una visera de verdad. Mismo apaño que el hocico de Mascotas. */
+  const vis = new THREE.Mesh(new THREE.SphereGeometry(0.086, 24, 16), oscuro);
+  vis.position.set(0, 0.002, 0.052);
+  vis.scale.set(1.20, 0.21, 1.15);
+  vis.rotation.set(-0.16, 0, 0); G.add(vis);
+  /* LA PLACA: un octaedro aplastado = estrella de cinco puntas vista de
+     lejos, y sale de fabrica con las puntas hechas. */
+  const pl = new THREE.Mesh(new THREE.OctahedronGeometry(0.036, 0), oro);
+  pl.position.set(0, 0.040, 0.089);
+  pl.scale.set(1, 1.15, 0.34); pl.rotation.z = 0.2; G.add(pl);
+  /* Iba apoyada a +0.014 y el canto de delante del piso le comia la
+     mitad de abajo: se veia la copa pero la VISERA y la placa, que son
+     justo lo que dice "gorra de policia", quedaban debajo del borde.
+     El suelo util de esta camara esta a ~5cm de la superficie.        */
+  G.position.set(0, yCima + 0.072, 0.004);
+  G.rotation.set(0.10, 0.20, -0.06);
+  G.traverse(o => { if(o.isMesh) o.castShadow = true; });
+  tartaDeco.add(G);
+  /* LA SIRENA: barra con dos cupulas encendidas. El emissive es lo que
+     hace que se lean como LUCES y no como dos caramelos. */
+  const S = new THREE.Group();
+  /* LA BARRA en gris claro, no en el azul oscuro de la gorra. Iba en
+     #1B2E52, que es PRACTICAMENTE el color de la pared: la barra se
+     borraba y quedaban dos bolitas de colores sueltas en el aire, que
+     parecian globos. Sin barra no hay sirena.                        */
+  S.add(new THREE.Mesh(new THREE.BoxGeometry(0.170, 0.026, 0.050),
+                       fondant('#DCE0E8')));
+  /* SEGUNDA PASADA — las luces salian ROSA CHICLE y AZUL BEBE, no rojo y
+     azul. Dos causas sumadas, y la segunda es la que no se ve venir:
+
+     1) Iban a opacity 0.90 sobre una barra GRIS CLARA. Un 10% de gris
+        claro por debajo de un rojo ya lo sube medio tono hacia el rosa.
+        La transparencia no pintaba nada aqui — fuera.
+
+     2) El emissive SE SUMA por encima del color ya iluminado, y luego el
+        tono ACES apaga y DESATIVA todo lo que se pasa de brillo. O sea
+        que subir el emissive sobre un color vivo no lo hace mas vivo: lo
+        hace mas BLANCO. Es el mismo error que la mancha blanca de las
+        rosas, pero por el otro camino.
+     El arreglo es al reves de lo que pide el cuerpo: color base mas
+     HONDO (#B01E28 y #17509E, vino y azul de verdad) y el emissive
+     bajando de 0.75 a 0.55. Asi la suma cae en la zona media, que es
+     donde ACES todavia respeta el color, en vez de clavarse arriba.
+     Y un pelin mas grandes, que a esta distancia eran dos lentejas.   */
+  [[-1, '#B01E28'], [1, '#17509E']].forEach(([s, hex]) => {
+    const l = new THREE.Mesh(new THREE.SphereGeometry(0.042, 18, 12, 0, 6.283, 0, 1.57),
+      new THREE.MeshStandardMaterial({color:new THREE.Color(hex), roughness:0.18,
+        metalness:0.0, emissive:new THREE.Color(hex), emissiveIntensity:0.55}));
+    l.position.set(s*0.044, 0.010, 0); S.add(l);
+  });
+  /* apoyada EN la tarta, no suspendida al lado. Y cambiada al lado
+     DERECHO: a la izquierda la tenia contra los globos azules y las
+     dos luces (roja y azul) se perdian; contra la pared marino el
+     emissive se recorta y por fin parecen luces encendidas.          */
+  S.position.set(rCima*0.78, yCima + 0.062, rCima*0.42);
+  S.rotation.y = -0.40;
+  S.traverse(o => { if(o.isMesh) o.castShadow = true; });
+  tartaDeco.add(S);
+  flotantes(yCima, rCima, 6, new THREE.OctahedronGeometry(0.015, 0), oro, 0.26, 0.22);
+  trepadoras(azul, 5, ctx.y0, ctx.pisos[0].h*0.7, ctx.pisos[0].r, 2.5);
+}
+
+ADORNOS.videojuegos  = { build:adornoVideojuegos,  cara:null };
+ADORNOS.ciencia      = { build:adornoCiencia,      cara:null };
+ADORNOS.coches       = { build:adornoCoches,       cara:null };
+ADORNOS.policia      = { build:adornoPolicia,      cara:null };
+ADORNOS.piratas      = { build:adornoPiratas,      cara:null };
+ADORNOS.superheroes  = { build:adornoSuperheroes,  cara:null };
+ADORNOS.dulces       = { build:adornoDulces,
+                         cara:{linea:'#8C2C48', moflete:'250,170,190'} };
+ADORNOS.futbol       = { build:adornoFutbol,       cara:null };
+
 /* Las medidas de los dos pisos de ESTA tarta. Por pura suerte son casi
    identicas a las del mockup (0.290/0.300 y 0.198/0.245), asi que los
    adornos entran sin reescalar nada. */
@@ -3385,6 +5457,13 @@ function vestirTarta(key){
   /* La vela se aparta del eje en vez de apagarse: sin vela deja de leerse
      cumpleanos, y el eje es justo donde va el cuerno. */
   if(velaGrupo) velaGrupo.position.set(A ? 0.075 : 0, 0, A ? -0.115 : 0);
+  /* El trozo ALTO de la cascada de rosas solo cabe si el piso de arriba no
+     lleva cara: si la lleva, las rosas le caen encima de la boca. Va antes
+     del return de abajo a posta, porque "La inventamos" no trae adorno pero
+     tampoco trae cara, asi que le toca ramo entero.                      */
+  if(!ramoAlto && tartaDeco.parent)
+    ramoAlto = tartaDeco.parent.getObjectByName('ramoAlto');
+  if(ramoAlto) ramoAlto.visible = !(A && A.cara);
   if(!A) return;
 
   const y0 = TARTA_CIMA - (TARTA_PISOS[0].h + TARTA_PISOS[1].h);
@@ -3405,6 +5484,7 @@ function vestirTarta(key){
 const _vTarta = new THREE.Vector3();
 const _pLejos = new THREE.Vector3(), _pCerca = new THREE.Vector3();
 const _mLejos = new THREE.Vector3(), _mCerca = new THREE.Vector3();
+const _vFoco  = new THREE.Vector3();   /* a donde enfoca la camara */
 
 /* EL BOTON "VER LA TARTA".
    La tarta medida en pantalla ocupaba un 4,6% de alto: 24 pixeles. Todo el
@@ -3429,7 +5509,7 @@ if(btnTarta){
    alquiler, a tres alturas, con bolas y un plato alto encima.            */
 function peanas(){
   const g = new THREE.Group();
-  const blanco = BLANCO();
+  const blanco = PEANA();
 
   /* Tres alturas MUY distintas (1.05 / 0.72 / 0.44). Si fueran parecidas
      pareceria un error de medida; separadas, parece decoracion pensada. */
@@ -3437,7 +5517,7 @@ function peanas(){
              [-0.62, 0.72, 0.26, 0.16],
              [ 0.55, 0.44, 0.23,-0.12]];
   T.forEach(([x,h,r,z]) =>
-    g.add(pieza(new THREE.CylinderGeometry(r, r*1.06, h, 26), blanco, x, h/2, z)));
+    g.add(pieza(peanaGeo(r, r*1.06, h), blanco, x, 0, z)));
 
   /* bolas de decoracion: se tinen con la tematica */
   const bolaA = new THREE.MeshStandardMaterial({color:0xffffff, roughness:0.38});
@@ -3496,12 +5576,14 @@ world.add(confetti);
    al cartel le quitaba el color y salia lavado. El cartel va a color pleno. */
 const heroMat = new THREE.MeshBasicMaterial({transparent:true, toneMapped:false,
                                              fog:false, opacity:0});
-const hero = new THREE.Mesh(new THREE.PlaneGeometry(5.4, 3.21), heroMat);
-
-/* El cartel era un rectangulo flotando. Tus fondos de verdad son PANELES
-   de arco apoyados en el suelo. Se dibuja el contorno una vez, en medidas
-   de 1x1, y luego se estira al tamano de la lamina que toque. */
-const panelArco = (() => {
+/* ═══════════ LUJO · 12 · EL CARTEL DEJA DE SER UN RECTANGULO ═══════════
+   El panel de atras YA era un arco... pero la lamina que va encima seguia
+   siendo un RECTANGULO. Sus dos esquinas de arriba se salian del arco y
+   quedaban flotando sobre el azul: por eso el cartel parecia una pegatina
+   pegada delante del panel, y no un panel impreso.
+   Ahora la lamina se recorta CON LA MISMA FORMA, asi que el filo de oro
+   la rodea entera y el arco se lee de una pieza.                        */
+const formaArco = (() => {
   const s = new THREE.Shape();
   const w = 0.5;
   s.moveTo(-w, 0);
@@ -3509,6 +5591,26 @@ const panelArco = (() => {
   s.absarc(0, 1 - w, w, Math.PI, 0, true);   /* la curva de arriba */
   s.lineTo(w, 0);
   s.lineTo(-w, 0);
+  return s;
+})();
+
+/* OJO: ShapeGeometry reparte la textura en MEDIDAS DEL MUNDO, no de 0 a 1.
+   Como la forma va de -0.5 a 0.5, media lamina caeria fuera de la textura.
+   Por eso se vuelve a mapear a mano. */
+const heroGeo = (() => {
+  const g = new THREE.ShapeGeometry(formaArco, 96);
+  const p = g.attributes.position, uv = g.attributes.uv;
+  for(let i = 0; i < p.count; i++) uv.setXY(i, p.getX(i) + 0.5, p.getY(i));
+  uv.needsUpdate = true;
+  return g;
+})();
+const hero = new THREE.Mesh(heroGeo, heroMat);
+
+/* El cartel era un rectangulo flotando. Tus fondos de verdad son PANELES
+   de arco apoyados en el suelo. Se dibuja el contorno una vez, en medidas
+   de 1x1, y luego se estira al tamano de la lamina que toque. */
+const panelArco = (() => {
+  const s = formaArco;
 
   const grupo = new THREE.Group();
 
@@ -3536,7 +5638,7 @@ const panelArco = (() => {
 })();
 panelArco.position.set(0, 0, -0.86);
 world.add(panelArco);
-hero.position.set(0, 1.95, -0.6);
+hero.position.set(0, 0.05, -0.6);
 world.add(hero);
 
 /* sombra de contacto pintada (mas suave y barata que una sombra real) */
@@ -3706,10 +5808,10 @@ function componerCartel(im, info, compartir){
 
   const nombre = (window.KK_NOMBRE || '').trim();
   const edad   = (window.KK_EDAD || '').toString().trim();
-  if(nombre){
-    const W = Wc, H = Hart, cy = H * (info.ty || 0.68);
-    x.textAlign = 'center'; x.textBaseline = 'middle';
+  const W = Wc, H = Hart, cy = H * (info.ty || 0.68);
+  x.textAlign = 'center'; x.textBaseline = 'middle';
 
+  if(nombre){
     /* El nombre se encoge si es largo, para no salirse del hueco */
     let px = W * 0.155;
     x.font = `900 ${px}px ${TIPO}`;
@@ -3725,6 +5827,48 @@ function componerCartel(im, info, compartir){
       x.globalAlpha = 0.85;
       x.fillText(edad + window.KK_T(edad === '1' ? 'anio' : 'anios'), W/2, cy + px*0.72);
       x.globalAlpha = 1;
+    }
+  } else if(!compartir){
+    /* ═══════════ LUJO · 13 · EL HUECO YA NO SE QUEDA VACIO ═══════════
+       La lamina trae un marco crema enorme para escribir el nombre. Pero
+       en la web casi nadie lo ha escrito todavia, asi que LA MITAD DE
+       ABAJO del cartel era un vacio color hueso: la pieza mas grande de
+       toda la foto, y no decia nada.
+       Mientras no hay nombre, ahi va la TEMATICA. El dia que la clienta
+       escribe el nombre, el nombre manda y esto desaparece solo.
+       Ojo: solo en el cartel de la PANTALLA. El que se descarga para
+       imprimir sigue con el hueco en blanco, que es para escribirlo. */
+    const titulo = (window.KK_TPAL && window.KK_TPAL.n) || '';
+    if(titulo){
+      let px = W * 0.118;
+      x.font = `900 ${px}px ${TIPO}`;
+      while(x.measureText(titulo).width > W*0.60 && px > W*0.045){
+        px *= 0.94; x.font = `900 ${px}px ${TIPO}`;
+      }
+      const anc = x.measureText(titulo).width;
+      /* un pelin mas abajo que el nombre: el hueco crema no esta centrado
+         en ty, ty es donde cae la primera linea del nombre */
+      const ty2 = cy + H*0.035;
+      x.fillStyle = info.col || '#8A5E86';
+      x.globalAlpha = 0.92;
+      x.fillText(titulo, W/2, ty2);
+      x.globalAlpha = 1;
+
+      /* Dos filetes de oro con su punto, uno a cada lado, como en una
+         invitacion de verdad. Si la palabra es larga no caben: entonces
+         no se pintan, antes que salirse del marco. */
+      const hueco = W*0.040, largo = W*0.075, punto = W*0.0072;
+      if(anc/2 + hueco + largo + punto < W*0.415){
+        x.strokeStyle = '#C6A24A'; x.fillStyle = '#C6A24A';
+        x.lineWidth = Math.max(1.5, W*0.0030);
+        x.globalAlpha = 0.85;
+        [-1, 1].forEach(s => {
+          const x0 = W/2 + s*(anc/2 + hueco);
+          x.beginPath(); x.moveTo(x0, ty2); x.lineTo(x0 + s*largo, ty2); x.stroke();
+          x.beginPath(); x.arc(x0 + s*(largo + punto*1.4), ty2, punto, 0, Math.PI*2); x.fill();
+        });
+        x.globalAlpha = 1;
+      }
     }
   }
   if(compartir) bandaCompartir(x, info, Wc, Hart, banda, fecha);
@@ -3882,11 +6026,17 @@ function aplicarCartel(key, conFundido){
          vertical, deja de ser apaisado solo. Alto fijo, ancho el que toque. */
       const im = tex.image, a = (im && im.width && im.height) ? im.width/im.height : 5.4/3.21;
       const H = a < 1 ? 4.4 : 3.8, W = H * a;
-      hero.scale.set(W/5.4, H/3.21, 1);
-      window.KK3D_heroY = H/2 + 0.06;   /* apoyado, no flotando a 30 cm */
+      /* La lamina ya es un ARCO: se estira desde el suelo (la forma va de
+         y=0 a y=1), no desde el centro como el rectangulo de antes. */
+      hero.scale.set(W, H, 1);
+      window.KK3D_heroY = 0.05;         /* apoyado en el suelo, no flotando */
+      window.KK3D_miraY = H * 0.52;     /* a donde mira la camara */
       contact.scale.set(Math.max(0.6, W/7.5), 1, 1);
-      /* el panel, un pelin mas grande que la lamina y pisando el suelo */
-      const sx = Math.max(W*1.13, H*0.60), sy = H*1.10;
+      /* El panel es el MISMO arco, un dedo mas grande por los tres lados.
+         Antes se multiplicaba (x1.13, x1.10): con laminas de distinta forma
+         el marco salia gordo por un lado y fino por otro. Sumando sale
+         igual de ancho siempre. */
+      const sx = W + 0.42, sy = H + 0.21;
       panelArco.scale.set(sx, sy, 1);
       /* El filo de oro tiene que medir IGUAL por los tres lados. Como el
          grupo se estira distinto a lo ancho que a lo alto, el arco dorado
@@ -3968,10 +6118,63 @@ function frameHero(){
   window.__dbg = {heroW, heroH, camDist:+camDist.toFixed(2), aspect:+camera.aspect.toFixed(2)};
 }
 
+/* ═══════════ LUJO · 5 · PROFUNDIDAD DE CAMPO ═══════════
+   Esto es lo que mas se nota de las cinco cosas.
+   Una camara de verdad NO puede tener enfocado a la vez un globo que esta a
+   medio metro y el cartel que esta a siete. Enfoca UNA distancia y el resto
+   cae suave. El ojo conoce ese efecto de toda la vida: cuando TODO esta
+   igual de nitido, el cerebro dice "esto es un videojuego" aunque no sepa
+   explicar por que. Con el desenfoque dice "esto es una foto".
+   Ademas hace trabajo de venta: enfoca el CARTEL, que es lo que compra la
+   clienta, y manda los globos de delante a acompanar.                     */
+/* EL PRECIO DEL ENFOQUE, Y POR QUE EN EL MOVIL VA APAGADO.
+   Este efecto obliga a pintar la sala DOS VECES por fotograma: una en una
+   textura escondida y otra ya desenfocada en pantalla. En un ordenador ni
+   se nota; en un movil es justo lo que hace que la escena vaya a tirones,
+   y un cumpleanos a tirones vende menos que uno nitido.
+   Asi que en pantallas de dedo y estrechas arranca APAGADO. No es una
+   version peor: es la misma sala, con todo el detalle, sin el desenfoque.
+   'pointer:coarse' es "se maneja con el dedo" (movil o tablet) y el ancho
+   descarta las tablets grandes y los portatiles tactiles, que si pueden.
+   ?dof=1 lo enciende a mano y ?dof=0 lo apaga, para poder comparar.      */
+const _dofQ = new URLSearchParams(location.search).get('dof');
+const _movil = matchMedia('(pointer:coarse)').matches && innerWidth < 900;
+const DOF = _dofQ === '1' ? true : _dofQ === '0' ? false : !_movil;
+
+/* y si va apagado, ni se construye: el composer reserva una textura del
+   tamano de la pantalla en cuanto nace, y esa memoria en un movil cuenta. */
+const composer = DOF ? new EffectComposer(renderer) : null;
+/* OJO: 'bokeh' se declara AQUI FUERA a proposito. Si lo dejaba con const
+   dentro del if, se quedaba encerrado en ese bloque y el bucle de dibujo
+   de mas abajo —que le recalcula el foco en cada fotograma— no lo veia.
+   Es el fallo clasico al meter codigo suelto dentro de un if.          */
+let bokeh = null;
+if(DOF){
+composer.setPixelRatio(Math.min(devicePixelRatio, 2));
+composer.addPass(new RenderPass(scene, camera));
+
+bokeh = new BokehPass(scene, camera, {
+  focus: 7.4,        /* se recalcula cada frame: siempre al cartel */
+  /* OJO con la apertura. A 0.00042 quedaba de cine... pero la TARTA salia
+     hecha un borron, y la tarta es lo que se vende. La gracia no es que
+     haya mucho desenfoque: es que haya el justo para que el ojo lea "foto"
+     y siga viendo el producto. 0.00016 deja nitidos cartel Y mesa dulce, y
+     solo funde los regalos de primer plano y los globos mas cercanos. */
+  aperture: 0.00016,
+  maxblur: 0.0070    /* el techo. Mas que esto y parece vaselina, no foto */
+});
+composer.addPass(bokeh);
+/* El tono ACES y el paso a sRGB los hacia el renderer al pintar en pantalla.
+   Al pintar en una textura intermedia ya NO los hace, asi que si falta este
+   paso la sala sale lavada y gris. */
+composer.addPass(new OutputPass());
+}   /* fin del if(DOF) */
+
 function resize(){
   const r = stage.getBoundingClientRect();
   if(!r.width) return;
   renderer.setSize(r.width, r.height, false);
+  if(composer) composer.setSize(r.width, r.height);
   camera.aspect = r.width / r.height;
   camera.updateProjectionMatrix();
   frameHero();
@@ -3985,11 +6188,11 @@ renderer.setAnimationLoop(() => {
   const dt = Math.min(clock.getDelta(), 0.05), t = clock.elapsedTime;
 
   /* colores suaves */
-  cur.fog.lerp(tgt.fog, dt*2.4);     scene.fog.color.copy(cur.fog);
+  cur.fog.lerp(tgt.fog, 1.0);     scene.fog.color.copy(cur.fog);
 
   /* globos: flotan y giran despacio */
   balloons.forEach((b,i) => {
-    b.userData.mat.color.lerp(balloonTargets[i], dt*2.4);
+    b.userData.mat.color.lerp(balloonTargets[i], 1.0);
     b.position.y += Math.sin(t*0.9 + b.userData.phase) * dt * 0.22;
     b.rotation.y += b.userData.spin * dt;
     b.rotation.z  = Math.sin(t*0.7 + b.userData.phase) * 0.07;
@@ -3997,13 +6200,18 @@ renderer.setAnimationLoop(() => {
   /* la guirnalda NO flota: esta grapada. Solo respira un pelin. */
   racimo.forEach((g,i) => {
     const u = g.userData;
-    u.mat.color.lerp(racimoTargets[i], dt*2.4);
+    /* el color va a su destino, y ENCIMA se le aplica lo enterrado que esta
+       (LUJO 3). Tiene que ir aqui y no al montar, porque el color se repinta
+       cada fotograma cuando cambias de tematica y borraria la oclusion. */
+    u.mat.color.lerp(racimoTargets[i], 1.0).multiplyScalar(u.ao);
+    /* el halo del borde, del color del globo (LUJO 1b) */
+    if(!u.cromo) u.mat.sheenColor.copy(u.mat.color);
     g.position.y = u.base.y + Math.sin(t*0.9 + u.phase) * 0.035;
     g.position.x = u.base.x + Math.cos(t*0.7 + u.phase) * 0.022;
   });
-  gifts.forEach((g,i) => g.userData.box.color.lerp(giftTargets[i], dt*2.4));
-  manteles.forEach((m,i) => m.color.lerp(mantelTargets[i], dt*2.4));
-  tartas.forEach((m,i) => m.color.lerp(tartaTargets[i], dt*2.4));
+  gifts.forEach((g,i) => g.userData.box.color.lerp(giftTargets[i], 1.0));
+  manteles.forEach((m,i) => m.color.lerp(mantelTargets[i], 1.0));
+  tartas.forEach((m,i) => m.color.lerp(tartaTargets[i], 1.0));
 
   /* confeti cayendo y volteando */
   for(let i=0;i<CONF;i++){
@@ -4028,7 +6236,9 @@ renderer.setAnimationLoop(() => {
 
   /* el cartel respira y aparece; y se aparta cuando nos acercamos a la tarta */
   heroMat.opacity += (((fading ? 0 : 1) * (1 - z)) - heroMat.opacity) * dt*6;
-  hero.position.y = (window.KK3D_heroY || 1.95) + Math.sin(t*0.8)*0.06;
+  /* Ya no flota ni respira: esta APOYADO en el suelo, pegado a su panel.
+     Un panel que sube y baja solo delataba que era un dibujo flotando. */
+  hero.position.y = (window.KK3D_heroY || 0.05);
 
   /* giro suave; si nadie toca, gira solo un poquito */
   idle += dt;
@@ -4036,7 +6246,7 @@ renderer.setAnimationLoop(() => {
   rotY  += (rotTarget  - rotY ) * dt*3.2;
   tiltX += (tiltTarget - tiltX) * dt*3.2;
   world.rotation.y = rotY;
-  const mira = (window.KK3D_heroY || 1.95);
+  const mira = (window.KK3D_miraY || 1.95);
 
   /* Donde esta la tarta AHORA MISMO. Hay que preguntarlo cada frame porque
      aqui no se mueve la camara: se mueve el MUNDO, asi que la tarta cambia
@@ -4070,7 +6280,22 @@ renderer.setAnimationLoop(() => {
       + Math.sin(t*0.62)*0.26;
   }
 
-  renderer.render(scene, camera);
+  /* A que distancia esta AHORA el cartel. No vale un numero fijo: la camara
+     se aleja o se acerca segun el ancho de pantalla (frameHero) y ademas
+     hace el viaje a la tarta. Si el foco no la sigue, al acercarse a la
+     tarta la tarta saldria borrosa — justo lo contrario de lo que toca. */
+  if(bokeh){
+    _vFoco.set(0, mira, z > 0.0015 ? _vTarta.z : -0.86);
+    if(z > 0.0015) _vFoco.copy(_vTarta);
+    bokeh.uniforms.focus.value = camera.position.distanceTo(_vFoco);
+    /* de cerca la tarta manda y el fondo se va del todo; de lejos, suave */
+    bokeh.uniforms.maxblur.value = 0.0070 + z * 0.007;
+  }
+
+  /* sin enfoque se pinta por la via de siempre, en UNA pasada. Es el camino
+     que van a seguir los moviles, y tambien sirve para comprobar que el
+     post-proceso NO me esta cambiando los colores. */
+  if(DOF) composer.render(); else renderer.render(scene, camera);
 });
 
 /* si WebGL va, encendemos el 3D; si no, se queda el dibujo plano */
