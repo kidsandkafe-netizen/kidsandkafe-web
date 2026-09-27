@@ -41,14 +41,31 @@ body{font-family:'Nunito',system-ui,sans-serif;background:var(--cream);color:var
    Va arriba del todo y pegada (sticky) para que se vea tambien despues de
    bajar: si una madre catalana llega al paso 4 y sigue en castellano, ya
    no va a subir hasta arriba a buscar el boton.                          */
-.langbar{position:sticky;top:0;z-index:60;display:flex;gap:6px;justify-content:center;
-         padding:8px 12px;background:rgba(255,251,246,.92);backdrop-filter:blur(8px);
-         border-bottom:1px solid rgba(0,0,0,.05)}
-.langbtn{border:1.5px solid #E7DDD1;background:#fff;color:var(--muted);cursor:pointer;
-         border-radius:999px;padding:5px 14px;font:800 12px/1 inherit;letter-spacing:1px;
-         transition:.15s}
-.langbtn:hover{border-color:var(--sage)}
-.langbtn.on{background:var(--sage-dark);border-color:var(--sage-dark);color:#fff}
+.langbar{position:sticky;top:0;z-index:60;display:flex;gap:8px;justify-content:center;
+         flex-wrap:wrap;padding:11px 12px;background:rgba(255,251,246,.94);
+         backdrop-filter:blur(8px);border-bottom:1px solid rgba(0,0,0,.06)}
+/* Con el NOMBRE del idioma escrito, no solo "ES/CA/EN". Tres letras sueltas y
+   grises parecian el pie de pagina: la madre no veia que eran botones. Poner
+   "Castellano · Català · English" se entiende sin explicar nada, y el codigo
+   de dos letras se queda al lado para quien ya lo busca por ahi.
+   Los nombres NO se traducen a proposito (endonimos): "Català" se escribe
+   igual desde el castellano y desde el ingles, asi que no hay que meterlos
+   en el diccionario ni mantenerlos por triplicado.                        */
+.langbtn{border:2px solid #DED2C4;background:#fff;color:#6b5f58;cursor:pointer;
+         border-radius:999px;padding:9px 18px;font:900 13px/1 inherit;
+         display:flex;align-items:center;gap:7px;transition:.15s}
+.langbtn b{font-size:12px;letter-spacing:1px;color:var(--muted);font-weight:900}
+.langbtn:hover{border-color:var(--sage);color:var(--sage-dark)}
+.langbtn.on{background:var(--sage-dark);border-color:var(--sage-dark);color:#fff;
+            box-shadow:0 6px 14px -6px rgba(78,97,78,.8)}
+.langbtn.on b{color:rgba(255,255,255,.75)}
+/* movil estrecho: se quita el codigo de 2 letras antes que el nombre, que es
+   lo que de verdad se lee, para que las tres quepan en una linea.         */
+@media(max-width:400px){
+  .langbar{gap:6px;padding:9px 8px}
+  .langbtn{padding:8px 12px;font-size:12px;gap:0}
+  .langbtn b{display:none}
+}
 
 /* ---------- cabecera ---------- */
 .head{text-align:center;padding:38px 0 22px}
@@ -294,9 +311,9 @@ footer{padding:44px 20px 60px;text-align:center;color:var(--muted);font-size:13p
 <body>
 
 <div class="langbar">
-  <button class="langbtn on" data-l="es" type="button">ES</button>
-  <button class="langbtn"    data-l="ca" type="button">CA</button>
-  <button class="langbtn"    data-l="en" type="button">EN</button>
+  <button class="langbtn on" data-l="es" type="button" lang="es">Castellano <b>ES</b></button>
+  <button class="langbtn"    data-l="ca" type="button" lang="ca">Català <b>CA</b></button>
+  <button class="langbtn"    data-l="en" type="button" lang="en">English <b>EN</b></button>
 </div>
 
 <div class="wrap">
@@ -1156,12 +1173,12 @@ const PACKS = [
   {id:'lounge', modo:'sala', tipo:'porNino', n:'Family Lounge', base:25, aforo:0, pastel:false,
    limpieza:true, precios:{horaExtra:90},
    d:'2 horas de juego · merienda incluida · sin sala privada, el centro sigue abierto.',
-   no:'sala privada, decoración, monitor ni taller. El pastel se pide al centro.',
+   no:'sala privada, decoración, monitor ni taller. El pastel se pide al centro y no se puede traer comida de fuera.',
    note:'2h · 25€/niño · entrada de adulto 3€ · la cafetería se pide en el bar'},
   {id:'loungeTaller', modo:'sala', tipo:'porNino', n:'Family Lounge + taller', base:38, aforo:0, pastel:false,
    inc:['taller'], limpieza:true, precios:{horaExtra:90},
    d:'2 horas de juego · merienda incluida · taller a elegir (slime, tote bag, science, art & plant…).',
-   no:'sala privada ni decoración. El pastel se pide al centro.',
+   no:'sala privada ni decoración. El pastel se pide al centro y no se puede traer comida de fuera.',
    note:'2h · 38€/niño · entrada de adulto 3€ · taller incluido'},
 
   /* ---- alquiler de sala · 3 horas ---- */
@@ -1224,11 +1241,11 @@ const DATOS = {
               no:'res, ho porta tot. A part només hi van els capricis: màgia, fotògraf o un ninot més.',
               note:'3h · 20 nens inclosos · nen extra 7€ amb càtering · monitor extra 40€ a partir de 20'},
       lounge:{d:'2 hores de joc · berenar inclòs · sense sala privada, el centre segueix obert.',
-              no:'sala privada, decoració, monitor ni taller. El pastís es demana al centre.',
+              no:'sala privada, decoració, monitor ni taller. El pastís es demana al centre i no es pot portar menjar de fora.',
               note:'2h · 25€/nen · entrada d\'adult 3€ · la cafeteria es demana a la barra'},
       loungeTaller:{n:'Family Lounge + taller',
               d:'2 hores de joc · berenar inclòs · taller a triar (slime, tote bag, science, art & plant…).',
-              no:'sala privada ni decoració. El pastís es demana al centre.',
+              no:'sala privada ni decoració. El pastís es demana al centre i no es pot portar menjar de fora.',
               note:'2h · 38€/nen · entrada d\'adult 3€ · taller inclòs'},
       completa:{n:'Sala completa · 3h',
               d:'1 monitor inclòs · 200 m² de racons temàtics · 100 m² de ball i psicomotricitat · mobiliari per a esdeveniments.',
@@ -1283,11 +1300,11 @@ const DATOS = {
               note:'3h · 20 children included · extra child 7€ with catering · extra host 40€ over 20'},
       lounge:{n:'Family Lounge',
               d:'2 hours of play · afternoon snack included · no private room, the centre stays open.',
-              no:'private room, decoration, host or workshop. The cake is ordered from us.',
+              no:'private room, decoration, host or workshop. The cake is ordered from us and no outside food is allowed.',
               note:'2h · 25€/child · adult entry 3€ · café orders go through the bar'},
       loungeTaller:{n:'Family Lounge + workshop',
               d:'2 hours of play · afternoon snack included · workshop of your choice (slime, tote bag, science, art & plant…).',
-              no:'private room or decoration. The cake is ordered from us.',
+              no:'private room or decoration. The cake is ordered from us and no outside food is allowed.',
               note:'2h · 38€/child · adult entry 3€ · workshop included'},
       completa:{n:'Whole room · 3h',
               d:'1 host included · 200 m² of themed corners · 100 m² for dancing and movement · event furniture.',
@@ -2075,13 +2092,16 @@ document.querySelectorAll('.langbtn').forEach(b =>
 
 /* ?lang=ca / ?lang=en. Mismo sistema que casal-inscripcion y
    extraescolar-inscripcion: UNA sola pagina, sin copias en /ca y /en.
-   Si no viene nada, se mira el idioma del navegador: una madre catalana
-   que entra desde Google no tiene por que saber que hay un boton CA.   */
+
+   Si no viene nada, CASTELLANO. Antes se miraba el idioma del navegador y
+   eso abria la pagina en INGLES a cualquiera con el movil o el Mac puesto
+   en ingles, que en Barcelona es muchisima gente que NO quiere la pagina
+   en ingles. El idioma del sistema no dice en que idioma quieres leer.
+   El que si vale es ?lang=, que es el que mandan los enlaces de /ca y /en,
+   y los tres botones de arriba para cambiar a mano.                      */
 (function(){
   const q = new URLSearchParams(location.search).get('lang');
-  if(q && TXT[q]) return setLang(q);
-  const nav = (navigator.language || 'es').slice(0,2).toLowerCase();
-  setLang(TXT[nav] ? nav : 'es');
+  setLang(q && TXT[q] ? q : 'es');
 })();
 
 /* ?n=Martina&e=5  → rellena nombre y edad.
