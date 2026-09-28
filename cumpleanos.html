@@ -71,6 +71,36 @@
 .vet-t b{color:var(--ink)}
 @media(prefers-reduced-motion:reduce){.kk-spk{animation:none}}
 @media(max-width:560px){.phead{height:128px}.pk-big{font-size:34px}}
+/* ── OTRAS OPCIONES: el escalon de abajo ───────────────────────────────
+   Antes eran .pcard igual que los packs pero sin cabecera dibujada y sin
+   chips: 472 px de alto contra 740. Mismo molde con menos dentro parece
+   una tarjeta a medio hacer. Aqui cambia la FORMA, no solo el tamano:
+   fila baja y ancha, precio a la derecha, y los mismos chips que los
+   packs para que se vea que son de la misma casa.                       */
+.optsep{text-align:center;margin-top:46px;padding-top:34px;border-top:1px solid rgba(90,60,45,.12)}
+h2.title.optitle{font-size:clamp(23px,3.2vw,31px);margin:6px 0 10px;letter-spacing:-.6px}
+.center h2.title.optitle::after,h2.title.optitle::after{display:none}
+.optlead{margin:0 auto;font-size:15px}
+.optcards{display:grid;gap:12px;margin-top:22px}
+.optcard{display:grid;grid-template-columns:1fr auto;align-items:center;gap:22px;
+         background:#fff;border:1px solid rgba(220,242,230,.9);border-radius:18px;
+         padding:18px 22px;box-shadow:0 10px 26px -20px rgba(90,60,45,.32);
+         transition:transform .3s,box-shadow .3s}
+.optcard:hover{transform:translateY(-3px);box-shadow:0 18px 34px -22px rgba(160,192,121,.55)}
+.optcard h4{font-family:'Nunito',serif;font-size:19px;font-weight:600;margin:0}
+.opt-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.opt-chips span{background:var(--pink-bg);border:1px solid var(--pink-soft);color:var(--ink);
+                padding:5px 9px;border-radius:9px;font-size:11.5px;font-weight:600;line-height:1.2}
+.opt-fin{display:flex;flex-direction:column;align-items:flex-end;gap:10px;flex-shrink:0}
+.opt-precio{font-family:'Nunito',serif;font-size:27px;font-weight:600;color:var(--pink);
+            letter-spacing:-.6px;line-height:1;white-space:nowrap}
+.opt-uni{font-size:13px;color:var(--muted)}
+.opt-cta{padding:10px 20px;font-size:13.5px;white-space:nowrap}
+@media(max-width:620px){
+  .optcard{grid-template-columns:1fr;gap:14px}
+  .opt-fin{flex-direction:row;align-items:center;justify-content:space-between;width:100%}
+  .opt-cta{flex:1;justify-content:center}
+}
 </style>
 <script type="application/ld+json">
 {
@@ -310,6 +340,48 @@
       </div>
     </div>
 
+    <!-- OTRAS OPCIONES — subidas aqui a proposito: la madre que ve 365/795/1.190
+         tiene que ver EN LA MISMA PANTALLA que hay un escalon mas barato, sin
+         irse a buscarlo 1.400 px mas abajo. Forma distinta (fila baja y ancha)
+         para que se lean como "ademas de", no como packs a medio hacer. -->
+    <div class="optsep" data-rv>
+      <div class="eyebrow c" style="margin-bottom:10px">Otras opciones</div>
+      <h2 class="title optitle" data-rv data-delay="1">Alquiler y Family Lounge</h2>
+      <p class="lead optlead" data-rv data-delay="2">Sin pack cerrado: t&uacute; pones la fiesta y nosotros el espacio.</p>
+    </div>
+    <div class="optcards">
+      <div class="optcard" data-rv="s" data-delay="1">
+        <div class="opt-txt">
+          <h4>Family Lounge</h4>
+          <div class="opt-chips"><span>2 horas de juego</span><span>Merienda incluida</span><span>Entrada de adultos 3&euro;</span><span>Con taller incluido: 38&euro;/ni&ntilde;o</span><span>El pastel se pide al centro</span></div>
+        </div>
+        <div class="opt-fin">
+          <div class="opt-precio">25&euro;<span class="opt-uni"> /ni&ntilde;o</span></div>
+          <a href="https://wa.me/34637319226?text=Hola%2C%20me%20interesa%20celebrar%20en%20el%20Family%20Lounge%20%F0%9F%8E%82%0A%0AFecha%3A%20%0AEdad%20del%20peque%3A%20%0AN%C2%BA%20de%20ni%C3%B1os%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-ghost opt-cta">Consultar</a>
+        </div>
+      </div>
+      <div class="optcard" data-rv="s" data-delay="2">
+        <div class="opt-txt">
+          <h4>Sala completa &middot; 3h</h4>
+          <div class="opt-chips"><span>1 monitor incluido</span><span>200 m&sup2; de rincones tem&aacute;ticos</span><span>100 m&sup2; de baile y psicomotricidad</span><span>Mobiliario para eventos</span><span>L-J 350&euro; &middot; V-D y festivos 550&euro;</span></div>
+        </div>
+        <div class="opt-fin">
+          <div class="opt-precio">350-550&euro;</div>
+          <a href="https://wa.me/34637319226?text=Hola%2C%20quiero%20alquilar%20la%20sala%20completa%20%F0%9F%8E%82%0A%0AFecha%3A%20%0AEdad%20del%20peque%3A%20%0AN%C2%BA%20de%20ni%C3%B1os%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-ghost opt-cta">Consultar</a>
+        </div>
+      </div>
+      <div class="optcard" data-rv="s" data-delay="3">
+        <div class="opt-txt">
+          <h4>Media sala &middot; 3h</h4>
+          <div class="opt-chips"><span>1 monitor incluido</span><span>Aforo hasta 25 personas (+7&euro; extra)</span><span>Rincones tem&aacute;ticos + sala de baile</span><span>Mobiliario para eventos</span><span>L-J 230&euro; &middot; V-D y festivos 310&euro;</span></div>
+        </div>
+        <div class="opt-fin">
+          <div class="opt-precio">230-310&euro;</div>
+          <a href="https://wa.me/34637319226?text=Hola%2C%20quiero%20alquilar%20media%20sala%20%F0%9F%8E%82%0A%0AFecha%3A%20%0AEdad%20del%20peque%3A%20%0AN%C2%BA%20de%20ni%C3%B1os%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-ghost opt-cta">Consultar</a>
+        </div>
+      </div>
+    </div>
+
     <div class="vet" data-rv>
       <div class="vet-n" data-desde="2018">8</div>
       <div class="vet-t"><b>años celebrando cumples</b><br>en Kids &amp; Kafé, Les Corts</div>
@@ -341,29 +413,7 @@
   </div></div>
 </section>
 
-<!-- OTRAS OPCIONES -->
-<section>
-  <div class="wrap">
-    <div class="center"><div class="eyebrow c" data-rv>Otras opciones</div><h2 class="title" data-rv data-delay="1">Alquiler y Family Lounge</h2></div>
-    <div class="cards">
-      <div class="pcard" data-rv="s" data-delay="1">
-        <h4>Family Lounge</h4><div class="price">25€<span> /niño</span></div>
-        <ul><li>2 horas de juego</li><li>Merienda incluida</li><li>Entrada de adultos 3€</li><li><b>Con taller incluido: 38€/niño</b></li><li>El pastel se pide al centro</li></ul>
-        <a href="https://wa.me/34637319226?text=Hola%2C%20me%20interesa%20celebrar%20en%20el%20Family%20Lounge%20%F0%9F%8E%82%0A%0AFecha%3A%20%0AEdad%20del%20peque%3A%20%0AN%C2%BA%20de%20ni%C3%B1os%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Consultar Family Lounge</a>
-      </div>
-      <div class="pcard" data-rv="s" data-delay="2">
-        <h4>Sala completa · 3h</h4><div class="price">350-550€</div>
-        <ul><li>1 monitor incluido</li><li>200 m² de rincones temáticos</li><li>100 m² de baile y psicomotricidad</li><li>Mobiliario para eventos</li><li>L-J 350€ · V-D y festivos 550€</li></ul>
-        <a href="https://wa.me/34637319226?text=Hola%2C%20quiero%20alquilar%20la%20sala%20completa%20%F0%9F%8E%82%0A%0AFecha%3A%20%0AEdad%20del%20peque%3A%20%0AN%C2%BA%20de%20ni%C3%B1os%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Consultar sala completa</a>
-      </div>
-      <div class="pcard" data-rv="s" data-delay="3">
-        <h4>Media sala · 3h</h4><div class="price">230-310€</div>
-        <ul><li>1 monitor incluido</li><li>Aforo hasta 25 personas (+7€ extra)</li><li>Rincones temáticos + sala de baile</li><li>Mobiliario para eventos</li><li>L-J 230€ · V-D y festivos 310€</li></ul>
-        <a href="https://wa.me/34637319226?text=Hola%2C%20quiero%20alquilar%20media%20sala%20%F0%9F%8E%82%0A%0AFecha%3A%20%0AEdad%20del%20peque%3A%20%0AN%C2%BA%20de%20ni%C3%B1os%20aprox.%3A%20" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Consultar media sala</a>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- OTRAS OPCIONES: movido ARRIBA, justo detras de los 3 packs (ver #paquetes) -->
 
 <!-- CATERING -->
 <section style="background:var(--pink-bg)">
