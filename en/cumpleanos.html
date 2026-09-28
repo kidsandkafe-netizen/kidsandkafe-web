@@ -71,6 +71,35 @@
 .vet-t b{color:var(--ink)}
 @media(prefers-reduced-motion:reduce){.kk-spk{animation:none}}
 @media(max-width:560px){.phead{height:128px}.pk-big{font-size:34px}}
+/* ── OTRAS OPCIONES: el escalon de abajo ───────────────────────────────
+   Antes eran .pcard igual que los packs pero sin cabecera dibujada y sin
+   chips: mismo molde con menos dentro parece una tarjeta a medio hacer.
+   Aqui cambia la FORMA, no solo el tamano: fila baja y ancha, precio a la
+   derecha, y los mismos chips que los packs.                            */
+.optsep{text-align:center;margin-top:46px;padding-top:34px;border-top:1px solid rgba(90,60,45,.12)}
+h2.title.optitle{font-size:clamp(23px,3.2vw,31px);margin:6px 0 10px;letter-spacing:-.6px}
+.center h2.title.optitle::after,h2.title.optitle::after{display:none}
+.optlead{margin:0 auto;font-size:15px}
+.optcards{display:grid;gap:12px;margin-top:22px}
+.optcard{display:grid;grid-template-columns:1fr auto;align-items:center;gap:22px;
+         background:#fff;border:1px solid rgba(220,242,230,.9);border-radius:18px;
+         padding:18px 22px;box-shadow:0 10px 26px -20px rgba(90,60,45,.32);
+         transition:transform .3s,box-shadow .3s}
+.optcard:hover{transform:translateY(-3px);box-shadow:0 18px 34px -22px rgba(160,192,121,.55)}
+.optcard h4{font-family:'Nunito',serif;font-size:19px;font-weight:600;margin:0}
+.opt-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.opt-chips span{background:var(--pink-bg);border:1px solid var(--pink-soft);color:var(--ink);
+                padding:5px 9px;border-radius:9px;font-size:11.5px;font-weight:600;line-height:1.2}
+.opt-fin{display:flex;flex-direction:column;align-items:flex-end;gap:10px;flex-shrink:0}
+.opt-precio{font-family:'Nunito',serif;font-size:27px;font-weight:600;color:var(--pink);
+            letter-spacing:-.6px;line-height:1;white-space:nowrap}
+.opt-uni{font-size:13px;color:var(--muted)}
+.opt-cta{padding:10px 20px;font-size:13.5px;white-space:nowrap}
+@media(max-width:620px){
+  .optcard{grid-template-columns:1fr;gap:14px}
+  .opt-fin{flex-direction:row;align-items:center;justify-content:space-between;width:100%}
+  .opt-cta{flex:1;justify-content:center}
+}
 </style>
 <script type="application/ld+json">
 {
@@ -310,6 +339,47 @@
       </div>
     </div>
 
+    <!-- OTRAS OPCIONES: subidas aqui a proposito, justo detras de los 3 packs,
+         para que el escalon mas barato se vea en la MISMA pantalla. Forma
+         distinta (fila baja y ancha) para que se lean como "ademas de". -->
+    <div class="optsep" data-rv>
+      <div class="eyebrow c" style="margin-bottom:10px">Other options</div>
+      <h2 class="title optitle" data-rv data-delay="1">Room hire and Family Lounge</h2>
+      <p class="lead optlead" data-rv data-delay="2">No fixed pack: you bring the party, we provide the space.</p>
+    </div>
+    <div class="optcards">
+      <div class="optcard" data-rv="s" data-delay="1">
+        <div class="opt-txt">
+          <h4>Family Lounge</h4>
+          <div class="opt-chips"><span>2 hours of play</span><span>Afternoon snack included</span><span>Adult entry €3</span><span>With workshop included: €38/child</span><span>The cake is ordered from the centre</span></div>
+        </div>
+        <div class="opt-fin">
+          <div class="opt-precio">€25<span class="opt-uni"> /child</span></div>
+          <a href="https://wa.me/34637319226?text=Hi%2C%20I%27m%20interested%20in%20the%20Family%20Lounge%20%F0%9F%8E%82%0A%0ADate%3A%20%0AChild%27s%20age%3A%20%0AApprox.%20no.%20of%20children%3A%20" target="_blank" rel="noopener" class="btn btn-ghost opt-cta">Ask</a>
+        </div>
+      </div>
+      <div class="optcard" data-rv="s" data-delay="2">
+        <div class="opt-txt">
+          <h4>Full room · 3h</h4>
+          <div class="opt-chips"><span>1 monitor included</span><span>200 m² of themed corners</span><span>100 m² of dance and movement</span><span>Furniture for events</span><span>Mon-Thu €350 · Fri-Sun and holidays €550</span></div>
+        </div>
+        <div class="opt-fin">
+          <div class="opt-precio">€350-550</div>
+          <a href="https://wa.me/34637319226?text=Hi%2C%20I%27d%20like%20to%20rent%20the%20full%20room%20%F0%9F%8E%82%0A%0ADate%3A%20%0AChild%27s%20age%3A%20%0AApprox.%20no.%20of%20children%3A%20" target="_blank" rel="noopener" class="btn btn-ghost opt-cta">Ask</a>
+        </div>
+      </div>
+      <div class="optcard" data-rv="s" data-delay="3">
+        <div class="opt-txt">
+          <h4>Half room · 3h</h4>
+          <div class="opt-chips"><span>1 monitor included</span><span>Capacity up to 25 people (+€7 extra)</span><span>Themed corners + dance room</span><span>Furniture for events</span><span>Mon-Thu €230 · Fri-Sun and holidays €310</span></div>
+        </div>
+        <div class="opt-fin">
+          <div class="opt-precio">€230-310</div>
+          <a href="https://wa.me/34637319226?text=Hi%2C%20I%27d%20like%20to%20rent%20the%20half%20room%20%F0%9F%8E%82%0A%0ADate%3A%20%0AChild%27s%20age%3A%20%0AApprox.%20no.%20of%20children%3A%20" target="_blank" rel="noopener" class="btn btn-ghost opt-cta">Ask</a>
+        </div>
+      </div>
+    </div>
+
     <div class="vet" data-rv>
       <div class="vet-n" data-desde="2018">8</div>
       <div class="vet-t"><b>years of birthday parties</b><br>at Kids &amp; Kafé, Les Corts</div>
@@ -341,29 +411,7 @@
   </div></div>
 </section>
 
-<!-- OTRAS OPCIONES -->
-<section>
-  <div class="wrap">
-    <div class="center"><div class="eyebrow c" data-rv>Other options</div><h2 class="title" data-rv data-delay="1">Room hire and Family Lounge</h2></div>
-    <div class="cards">
-      <div class="pcard" data-rv="s" data-delay="1">
-        <h4>Family Lounge</h4><div class="price">€25<span> /child</span></div>
-        <ul><li>2 hours of play</li><li>Afternoon snack included</li><li>Adult entry €3</li><li><b>With workshop included: €38/child</b></li><li>The cake is ordered from the centre</li></ul>
-        <a href="https://wa.me/34637319226?text=Hi%2C%20I%27m%20interested%20in%20the%20Family%20Lounge%20%F0%9F%8E%82%0A%0ADate%3A%20%0AChild%27s%20age%3A%20%0AApprox.%20no.%20of%20children%3A%20" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Ask about Family Lounge</a>
-      </div>
-      <div class="pcard" data-rv="s" data-delay="2">
-        <h4>Full room · 3h</h4><div class="price">€350-550</div>
-        <ul><li>1 monitor included</li><li>200 m² of themed corners</li><li>100 m² of dance and movement</li><li>Furniture for events</li><li>Mon-Thu €350 · Fri-Sun and holidays €550</li></ul>
-        <a href="https://wa.me/34637319226?text=Hi%2C%20I%27d%20like%20to%20rent%20the%20full%20room%20%F0%9F%8E%82%0A%0ADate%3A%20%0AChild%27s%20age%3A%20%0AApprox.%20no.%20of%20children%3A%20" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Ask about the full room</a>
-      </div>
-      <div class="pcard" data-rv="s" data-delay="3">
-        <h4>Half room · 3h</h4><div class="price">€230-310</div>
-        <ul><li>1 monitor included</li><li>Capacity up to 25 people (+€7 extra)</li><li>Themed corners + dance room</li><li>Furniture for events</li><li>Mon-Thu €230 · Fri-Sun and holidays €310</li></ul>
-        <a href="https://wa.me/34637319226?text=Hi%2C%20I%27d%20like%20to%20rent%20the%20half%20room%20%F0%9F%8E%82%0A%0ADate%3A%20%0AChild%27s%20age%3A%20%0AApprox.%20no.%20of%20children%3A%20" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px;width:100%;justify-content:center">Ask about the half room</a>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- OTRAS OPCIONES: movido ARRIBA, justo detras de los 3 packs -->
 
 <!-- CATERING -->
 <section style="background:var(--pink-bg)">
