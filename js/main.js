@@ -118,9 +118,65 @@ function suscribirBoletin(e){e.preventDefault();var em=document.getElementById('
   var rf=document.createElement('a');
   rf.href = (location.pathname.indexOf('contacto')>-1) ? '#app' : 'contacto.html#app';
   rf.className='reserve-float';
-  rf.innerHTML='📅 Reservar';
+  rf.textContent='📅 Reservar';
   rf.setAttribute('aria-label','Reservar');
   document.body.appendChild(rf);
+
+  /* El botón se aparta solo cuando tapa algo importante.
+     Es fixed: flota por encima y no ocupa sitio, así que no hay margen que
+     lo esquive. La única cura es que mire lo que tiene debajo.
+     Al apartarse se pone pointer-events:none (ver .reserve-float.tapado en
+     style.css): así el navegador deja de contarlo al preguntar "¿quién hay
+     en este punto?" y en la vuelta siguiente ve lo de debajo y sabe cuándo
+     puede volver. Si se apartara moviéndose, preguntaría por el sitio
+     equivocado; por eso solo se desvanece, no se mueve. */
+  var ESTORBA='a,button,.btn,h1,h2,h3,h4,.pk-big,.price,.opt-precio';
+  /* Solo se aparta de cosas del TAMAÑO de un botón o un título.
+     Medido: sin este límite el botón se escondía el 49% del recorrido en la
+     portada, porque ahí hay tarjetas enteras que son un enlace gigante y
+     contaban como estorbo. Tapar la esquina de una tarjeta de 700x400 no
+     molesta a nadie; tapar un botón de "Consultar" sí. Con el límite baja
+     al 32% en la portada y se queda en el 27% de cumpleaños. */
+  var MAX_AREA=60000;
+  var pedido=null;
+
+  function tapaAlgo(){
+    var c=rf.getBoundingClientRect();
+    if(!c.width) return false;
+    var pts=[[c.left+6,c.top+4],[c.left+6,c.bottom-4],
+             [c.left+c.width/2,c.top+c.height/2],
+             [c.right-6,c.top+4],[c.right-6,c.bottom-4],
+             [c.left+c.width/2,c.top+2]];
+    for(var i=0;i<pts.length;i++){
+      var bajo=document.elementsFromPoint(pts[i][0],pts[i][1]);
+      for(var j=0;j<bajo.length;j++){
+        var e=bajo[j];
+        if(e===rf||e===document.body||e===document.documentElement) continue;
+        if(!e.closest) continue;
+        if(e.closest('.reserve-float,.wa-float,header')) continue;
+        var m=e.closest(ESTORBA);
+        if(!m) continue;
+        var r=m.getBoundingClientRect();
+        if(r.width*r.height>MAX_AREA) continue;
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function repasa(){
+    pedido=null;
+    rf.classList.toggle('tapado', tapaAlgo());
+  }
+  /* Se agrupan los avisos de scroll cada 60 ms con un temporizador normal.
+     Se probó con requestAnimationFrame y es más fino, pero el navegador lo
+     congela cuando la pestaña no está pintando y el botón se quedaba sin
+     enterarse. Un temporizador siempre corre. */
+  function pide(){ if(!pedido) pedido=setTimeout(repasa,60); }
+
+  addEventListener('scroll',pide,{passive:true});
+  addEventListener('resize',pide);
+  setTimeout(repasa,300);
 })();
 
 // El globo del hero reacciona al ratón (parallax suave)
