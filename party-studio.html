@@ -23,17 +23,46 @@
 <link rel="canonical" href="https://www.kidsandkafe.es/party-studio">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<!-- Fraunces (serif) para los titulos y los numeros grandes; Nunito sigue
+     siendo la letra de leer. Es lo que separa "pagina de app" de "papeleria
+     buena": los titulos en serif y el cuerpo en palo. -->
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --cream:#FFFBF8; --gold:#E7B24C; --ink:#2E2521; --muted:#9A8A80;
-  --sage:#6B8268; --sage-dark:#4E614E; --green:#A0C079;
-  --r:26px; --shadow:0 24px 60px -24px rgba(90,60,45,.5);
-  /* las cambia el JS segun la tematica */
+  /* ═══ PALETA "MARINO + PAPEL" ═══════════════════════════════════════
+     Dos ideas, y las dos vienen de un fallo que se vio mirando la
+     pantalla, no leyendo el codigo:
+
+     1) PAPEL. Antes la pagina era casi blanca (#FFFBF8) y las tarjetas
+        tambien (#fff): 4 puntos de diferencia sobre 255, un 2%. No se
+        veian. La cura NO es oscurecer la tarjeta (eso ya se probo y
+        seguia sin verse): es OSCURECER LA PAGINA y dejar la tarjeta
+        blanca. Asi la tarjeta es lo mas claro de la pantalla y se
+        recorta sola, sin bordes ni sombras raras.
+
+     2) MARINO. El elegido se rellena del azul de la pared del 3D. Un
+        color que ya esta en la escena, no uno inventado.              */
+  --papel:#F0E8DC;      /* la pagina */
+  --crema:#FFFDFA;      /* la tarjeta en reposo — blanca, encima del papel */
+  --marino:#16294A;     /* el elegido */
+  --oro:#C9A24A;        /* oro sobre claro */
+  --oro2:#E7B24C;       /* oro sobre marino (mas vivo, si no se apaga) */
+  --azulito:#BFCBDC;    /* texto secundario DENTRO del marino */
+  /* la raya tuvo que bajar de tono: sobre el papel nuevo, un gris claro
+     era el mismo color y desaparecia */
+  --linea:#DCCFBC;
+
+  /* nombres viejos, conservados para no romper nada que los use */
+  --cream:#FFFDFA; --gold:#C9A24A; --ink:#241E1A; --muted:#9A8A80;
+  --sage:#16294A; --sage-dark:#16294A; --green:#A0C079;
+  /* el radio baja de 26px a 3px: 26 lee "app de movil", 3 lee "papel
+     impreso". Es el cambio mas pequeño y el que mas se nota. */
+  --r:3px; --shadow:0 30px 60px -34px rgba(90,60,45,.55);
+  /* las cambia el JS segun la tematica — NO TOCAR, son del 3D */
   --sky1:#FFE9F3; --sky2:#E8D9FF; --far:#F3D9EC; --ground:#E9D5F5; --accent:#C77DC0;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Nunito',system-ui,sans-serif;background:var(--cream);color:var(--ink);
+body{font-family:'Nunito',system-ui,sans-serif;background:var(--papel);color:var(--ink);
      -webkit-font-smoothing:antialiased;overflow-x:hidden}
 .wrap{max-width:980px;margin:0 auto;padding:0 20px}
 
@@ -42,8 +71,8 @@ body{font-family:'Nunito',system-ui,sans-serif;background:var(--cream);color:var
    bajar: si una madre catalana llega al paso 4 y sigue en castellano, ya
    no va a subir hasta arriba a buscar el boton.                          */
 .langbar{position:sticky;top:0;z-index:60;display:flex;gap:8px;justify-content:center;
-         flex-wrap:wrap;padding:11px 12px;background:rgba(255,251,246,.94);
-         backdrop-filter:blur(8px);border-bottom:1px solid rgba(0,0,0,.06)}
+         flex-wrap:wrap;padding:11px 12px;background:rgba(240,232,220,.94);
+         backdrop-filter:blur(8px);border-bottom:1px solid var(--linea)}
 /* Con el NOMBRE del idioma escrito, no solo "ES/CA/EN". Tres letras sueltas y
    grises parecian el pie de pagina: la madre no veia que eran botones. Poner
    "Castellano · Català · English" se entiende sin explicar nada, y el codigo
@@ -51,14 +80,17 @@ body{font-family:'Nunito',system-ui,sans-serif;background:var(--cream);color:var
    Los nombres NO se traducen a proposito (endonimos): "Català" se escribe
    igual desde el castellano y desde el ingles, asi que no hay que meterlos
    en el diccionario ni mantenerlos por triplicado.                        */
-.langbtn{border:2px solid #DED2C4;background:#fff;color:#6b5f58;cursor:pointer;
-         border-radius:999px;padding:9px 18px;font:900 13px/1 inherit;
-         display:flex;align-items:center;gap:7px;transition:.15s}
-.langbtn b{font-size:12px;letter-spacing:1px;color:var(--muted);font-weight:900}
-.langbtn:hover{border-color:var(--sage);color:var(--sage-dark)}
-.langbtn.on{background:var(--sage-dark);border-color:var(--sage-dark);color:#fff;
-            box-shadow:0 6px 14px -6px rgba(78,97,78,.8)}
-.langbtn.on b{color:rgba(255,255,255,.75)}
+.langbtn{border:0;background:var(--crema);color:#6b5f58;cursor:pointer;
+         border-radius:3px;padding:9px 18px;font:800 12.5px/1 inherit;
+         display:flex;align-items:center;gap:7px;transition:.15s;
+         box-shadow:0 1px 2px rgba(90,60,45,.06)}
+.langbtn b{font-size:11px;letter-spacing:1px;color:var(--muted);font-weight:800}
+.langbtn:hover{box-shadow:inset 0 0 0 1px var(--linea)}
+/* el idioma activo se rellena de marino, igual que cualquier otra cosa
+   elegida en la pagina: una sola, azul. La regla no cambia arriba. */
+.langbtn.on{background:var(--marino);color:#F1EBE2;
+            box-shadow:0 10px 20px -12px rgba(22,41,74,.8)}
+.langbtn.on b{color:var(--azulito)}
 /* movil estrecho: se quita el codigo de 2 letras antes que el nombre, que es
    lo que de verdad se lee, para que las tres quepan en una linea.         */
 @media(max-width:400px){
@@ -68,14 +100,18 @@ body{font-family:'Nunito',system-ui,sans-serif;background:var(--cream);color:var
 }
 
 /* ---------- cabecera ---------- */
-.head{text-align:center;padding:38px 0 22px}
-.eyebrow{display:inline-block;font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
-         color:var(--sage);background:#EEF3E7;padding:7px 15px;border-radius:99px}
-.head h1{font-size:clamp(30px,6.5vw,50px);line-height:1.08;margin:15px 0 10px;font-weight:900;letter-spacing:-.5px}
+.head{text-align:center;padding:48px 0 24px}
+/* la pildora verde se va: un rotulo en oro espaciado dice lo mismo y no
+   mete otra forma redonda en una pagina que ahora es toda de esquinas */
+.eyebrow{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:2.6px;
+         text-transform:uppercase;color:var(--oro);background:none;padding:0}
+.head h1{font:400 clamp(30px,6.5vw,50px)/1.08 'Fraunces';margin:16px 0 12px;letter-spacing:-.6px}
+/* el nombre del peque sigue cambiando de color con la tematica: es la
+   unica cosa de la cabecera que reacciona, y por eso funciona */
 .head h1 em{font-style:normal;background:linear-gradient(90deg,var(--accent),var(--gold));
             -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
             transition:background .6s ease}
-.head p{color:var(--muted);font-size:16.5px;max-width:520px;margin:0 auto;line-height:1.55}
+.head p{color:var(--muted);font-size:15px;max-width:520px;margin:0 auto;line-height:1.6}
 
 /* ---------- EL ESCENARIO (el truco esta aqui) ---------- */
 .stage{position:relative;height:min(76vh,620px);border-radius:var(--r);overflow:hidden;
@@ -125,7 +161,27 @@ body{font-family:'Nunito',system-ui,sans-serif;background:var(--cream);color:var
 .vineta{display:none}
 .stage.is3d .vineta{display:block;position:absolute;inset:0;z-index:4;pointer-events:none;
   background:radial-gradient(120% 95% at 50% 42%,rgba(0,0,0,0) 52%,rgba(6,14,30,.34) 100%)}
-.stage.is3d #gl{display:block}
+/* El escenario se monta en DOS pasos: primero el 3D (globos, mesa, tarta,
+   regalos) y DESPUES llega la lamina pintada, que hay que descargarla.
+   Mientras no llega, el arco esta sin estirar (1x1, un arquito gris) y la
+   camara mira a otra altura. Al llegar la lamina, el arco pega un estiron
+   y la camara salta de golpe: parece que el estudio cambia de escena solo.
+   Solucion: el lienzo espera escondido y aparece YA MONTADO, de una pieza. */
+.stage.is3d #gl{display:block;opacity:0;transition:opacity .55s ease}
+.stage.is3d.listo #gl{opacity:1}
+/* La vineta y el boton de la tarta tampoco asoman sobre un escenario vacio */
+.stage.is3d .vineta,.stage.is3d .stage-zoom{opacity:0;transition:opacity .55s ease}
+.stage.is3d.listo .vineta,.stage.is3d.listo .stage-zoom{opacity:1}
+/* ── ARRANQUE: el escenario NACE vacio y marino ─────────────────────────
+   Al abrir la pagina se veia un instante el dibujo plano — fondo rosa y la
+   lamina sola, cuadrada y grande — y justo despues el 3D la tapaba con la
+   version del arco. Parecia que el estudio empezaba con un unicornio y lo
+   cambiaba por otro.
+   El dibujo plano NO se borra: sigue siendo el paracaidas de los moviles
+   que no pueden con 3D. Solo se queda esperando callado. Y la caja arranca
+   del mismo marino que el 3D, asi que no hay salto de color.              */
+.stage.montando,.stage.is3d:not(.listo){background:#1B3358}
+.stage.montando .layer,.stage.montando .stage-zoom{opacity:0}
 .stage.is3d .layer{display:none}
 .stage-tag{position:absolute;left:16px;bottom:16px;z-index:5;background:rgba(255,255,255,.92);
            backdrop-filter:blur(8px);padding:10px 16px;border-radius:99px;font-weight:800;font-size:14px;
@@ -145,52 +201,90 @@ body{font-family:'Nunito',system-ui,sans-serif;background:var(--cream);color:var
 .stage-zoom.on .z-on{display:inline}
 
 /* ---------- pasos ---------- */
-.step{margin-top:34px}
-.step-n{display:flex;align-items:center;gap:11px;margin-bottom:15px}
-.step-n b{width:29px;height:29px;border-radius:50%;background:var(--sage);color:#fff;display:grid;
-          place-items:center;font-size:14.5px;flex:none}
-.step-n h2{font-size:20.5px;font-weight:800;letter-spacing:-.2px}
+.step{margin-top:58px}
+/* El numero pasa de ser un circulito verde de 29px a un numeral GRANDE y
+   palido en serif. Es el truco de revista: el numero ordena sin gritar,
+   porque es grande pero casi del color del papel.                      */
+.step-n{display:flex;align-items:baseline;gap:16px;margin-bottom:24px}
+.step-n b{width:auto;height:auto;border-radius:0;background:none;
+          font:300 50px/0.8 'Fraunces';color:#E0D5C6;flex:none}
+.step-n h2{font:400 27px/1.12 'Fraunces';letter-spacing:-.3px}
+@media(max-width:560px){.step-n b{font-size:36px}.step-n h2{font-size:22px}}
 
-/* selector de tematica */
-.themes{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:11px}
-.th{border:2.5px solid #EFE6DF;background:#fff;border-radius:19px;padding:13px 7px 11px;text-align:center;
-    cursor:pointer;transition:.22s;font-family:inherit;font-size:13px;font-weight:800;color:var(--ink)}
-.th:hover{transform:translateY(-3px);border-color:#E0D3C8;box-shadow:0 12px 24px -14px rgba(90,60,45,.5)}
-.th .ico{font-size:31px;display:block;margin-bottom:6px;line-height:1}
-.th[aria-pressed="true"]{border-color:var(--accent);background:#FFF8FC;
-                         box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 16%,transparent)}
-.th.invent{border-style:dashed;background:#FFFDF6}
+/* ---------- PASO 1 · selector de tematica ----------
+   Antes cada tematica era un emoji de 31px. Dos problemas: el emoji lo
+   dibuja Apple o Google, asi que se ve distinto en cada movil y no es
+   tuyo; y sobre todo, TUS LAMINAS PINTADAS ya existen en /art-cumples y
+   no se estaban enseñando en ningun sitio de la pagina. Ahora el boton
+   ES la lamina. La madre elige mirando el dibujo, no un icono.       */
+.themes{display:grid;grid-template-columns:repeat(5,1fr);gap:13px}
+@media(max-width:820px){.themes{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:520px){.themes{grid-template-columns:repeat(2,1fr)}}
+.th{border:0;background:none;padding:0;text-align:center;cursor:pointer;
+    transition:.22s;font-family:inherit;font-size:13px;font-weight:800;color:var(--ink);
+    -webkit-tap-highlight-color:transparent}
+/* las laminas son carteles VERTICALES con el dibujo en la mitad de
+   arriba, por eso se recortan a 4/3 pegadas al borde superior */
+.th .lam{width:100%;aspect-ratio:4/3;display:block;border-radius:3px;background:#E6DED4;
+         object-fit:cover;object-position:50% 0%;filter:contrast(1.07) saturate(1.06);
+         box-shadow:0 0 0 1px rgba(36,30,26,.09);transition:box-shadow .22s,transform .22s}
+.th .ico{display:none}                 /* el emoji se queda, pero no se ve */
+.th .nom{display:block;margin-top:9px;font:700 10px/1.3 'Nunito';letter-spacing:1.3px;
+         text-transform:uppercase;color:var(--muted);transition:.2s}
+.th:hover .lam{transform:translateY(-2px)}
+.th[aria-pressed="true"] .lam{box-shadow:0 0 0 2.5px var(--marino),
+                              0 18px 32px -18px rgba(22,41,74,.7);transform:translateY(-3px)}
+.th[aria-pressed="true"] .nom{color:var(--marino);font-weight:800}
+/* "La inventamos" no tiene lamina pintada. Hoy el boton ni se enseña
+   (lo esconde renderThemes), pero si algun dia se añade art-cumples/
+   invent.jpg vuelve sola y este hueco de papel la sostiene.          */
+.th.invent .lam{background:var(--crema);box-shadow:inset 0 0 0 1.5px var(--linea)}
 
 /* campos */
 /* "Nº ADULTOS" no cabia en 78px, partia en dos lineas y empujaba su caja
    un renglon mas abajo que las otras tres. Dos arreglos, no uno:
    columnas mas anchas para que el rotulo quepa entero, y align-items:end
    para que las cajas se alineen POR ABAJO pase lo que pase con el texto. */
-.fields{display:grid;grid-template-columns:1fr 78px 88px 98px;gap:11px;align-items:end}
+/* Cada dato es una TARJETA BLANCA sobre el papel, igual que los packs.
+   Misma regla en toda la pagina: blanco = superficie, papel = fondo.
+   Antes la caja era blanca sobre pagina blanca y no se veia donde
+   habia que escribir — el numero de niños se perdia del todo.       */
+.fields{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:13px;align-items:stretch}
 .fields .lab{white-space:nowrap}
-@media(max-width:620px){.fields{grid-template-columns:1fr 1fr 1fr}.fields label:first-child{grid-column:1/-1}}
+@media(max-width:620px){.fields{grid-template-columns:1fr 1fr}.fields label:first-child{grid-column:1/-1}}
 label{display:block}
-.lab{font-size:12.5px;font-weight:800;color:var(--muted);margin-bottom:6px;letter-spacing:.2px}
-input{width:100%;font-family:inherit;font-size:16px;font-weight:700;color:var(--ink);
-      border:2.5px solid #EFE6DF;background:#fff;border-radius:15px;padding:13px 15px;transition:.2s}
-input:focus{outline:0;border-color:var(--sage);box-shadow:0 0 0 4px rgba(107,130,104,.14)}
+.fields label,.fecha label,.tel-box label{background:var(--crema);border-radius:3px;
+  padding:14px 16px;box-shadow:0 1px 2px rgba(90,60,45,.06);transition:box-shadow .2s}
+.fields label:focus-within,.fecha label:focus-within,.tel-box label:focus-within{
+  box-shadow:inset 0 0 0 1.5px var(--marino),0 10px 22px -16px rgba(22,41,74,.5)}
+.lab{font:700 9.5px/1 'Nunito';letter-spacing:1.6px;text-transform:uppercase;
+     color:var(--muted);margin-bottom:9px}
+/* el dato escrito va en serif y GRANDE: es lo unico que pone la madre,
+   y verlo grande da la sensacion de que cuenta                        */
+input{width:100%;font:300 23px/1.1 'Fraunces';color:var(--ink);
+      border:0;background:none;border-radius:0;padding:0;transition:.2s}
+input::placeholder{color:#CEC2B4}
+input:focus{outline:0}
 
 /* La fecha va SUELTA debajo, no metida en la fila de cuatro cajitas:
    ahi no cabe sin volver a descuadrar los rotulos como paso con
    "Nº ADULTOS". Y ademas es la pregunta mas importante del formulario,
    asi que merece su propio renglon. */
-.fecha{margin-top:14px}
+.fecha{margin-top:13px;max-width:360px}
 /* El rotulo se ponia AL LADO de la caja en vez de encima. Motivo: en la
    fila de cuatro, la caja mide el 100% y empuja el rotulo arriba sola;
    aqui la caja solo mide 240px, asi que cabian los dos en el mismo
    renglon. Se lo digo explicito y ya se comporta como las otras.     */
 .fecha .lab{display:block}
-.fecha input{max-width:240px}
-.fecha-msg{margin-top:10px;font-size:12.5px;line-height:1.5;color:var(--muted);
-           border-radius:13px;padding:10px 13px;display:none}
+.fecha input{max-width:none;font-size:19px}
+.fecha-msg{margin-top:11px;font-size:12.5px;line-height:1.55;color:var(--muted);
+           border-radius:3px;padding:11px 14px;display:none}
 .fecha-msg.on{display:block}
-.fecha-msg.ok{background:#F7FAF4;border:1.5px dashed #DBE7D2;color:var(--sage-dark)}
-.fecha-msg.aviso{background:#FFF6EE;border:1.5px dashed #F0D6BE;color:#A85E2B}
+/* los dos avisos de fecha: uno dice "libre", el otro "ojo". Se
+   distinguen por una raya de color a la izquierda, no por el fondo:
+   sobre papel, dos fondos casi iguales vuelven a no verse.          */
+.fecha-msg.ok{background:var(--crema);border-left:3px solid var(--marino);color:#4A4038}
+.fecha-msg.aviso{background:var(--crema);border-left:3px solid #C9762B;color:#A85E2B}
 
 /* Telefono OPCIONAL del paso 5. Va debajo del cartel y encima de los
    botones a proposito: en ese punto ya ha visto el precio y no se
@@ -198,20 +292,25 @@ input:focus{outline:0;border-color:var(--sage);box-shadow:0 0 0 4px rgba(107,130
    nada y a cambio Barbara puede llamar a quien no escriba. */
 .tel-box{margin:18px auto 0;max-width:340px;text-align:center}
 .tel-box .lab{display:block}
-.tel-box input{text-align:center}
+.tel-box input{text-align:center;font-size:19px}
 .tel-ayuda{margin-top:9px;font-size:12.5px;line-height:1.5;color:var(--muted)}
 
 /* packs */
 /* Los tres MODOS de celebrar. Van mas gordos que los packs a proposito:
-   es la primera decision y tiene que verse que manda sobre lo de abajo. */
-.modos{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-bottom:15px}
-.modo{border:2.5px solid #EFE6DF;background:#fff;border-radius:19px;padding:15px 13px;cursor:pointer;
-      text-align:left;transition:.16s;font:inherit}
-.modo:hover{transform:translateY(-3px);box-shadow:0 12px 24px -14px rgba(90,60,45,.5)}
-.modo[aria-pressed="true"]{border-color:var(--accent);background:#FFF8FC}
-.modo .mi{font-size:22px;display:block;margin-bottom:5px}
-.modo b{display:block;font-size:15px;font-weight:900;margin-bottom:2px}
-.modo small{color:var(--muted);font-size:12.5px;line-height:1.35;display:block}
+   es la primera decision y tiene que verse que manda sobre lo de abajo.
+   REGLA DE COLOR DE TODA LA PAGINA: se ELIGE UNA -> se rellena de MARINO.
+   Se pueden elegir VARIAS (los extras) -> raya fina y tick, nunca relleno. */
+.modos{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.modo{border:0;background:var(--crema);border-radius:3px;padding:16px 15px;cursor:pointer;
+      text-align:left;transition:.18s;font:inherit;color:var(--ink);
+      box-shadow:0 1px 2px rgba(90,60,45,.06)}
+.modo:hover{transform:translateY(-2px);box-shadow:0 12px 24px -16px rgba(90,60,45,.45)}
+.modo[aria-pressed="true"]{background:var(--marino);color:#F1EBE2;transform:translateY(-2px);
+      box-shadow:0 18px 34px -20px rgba(22,41,74,.85)}
+.modo .mi{font-size:20px;display:block;margin-bottom:6px}
+.modo b{display:block;font:400 19px/1.15 'Fraunces';margin-bottom:4px;letter-spacing:-.2px}
+.modo small{color:var(--muted);font-size:12.5px;line-height:1.4;display:block}
+.modo[aria-pressed="true"] small{color:var(--azulito)}
 /* El dia solo sale en alquiler: el finde cuesta 200€ mas y esconderlo
    seria venderle una cifra que luego no es.                            */
 .dias{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:14px}
@@ -219,93 +318,157 @@ input:focus{outline:0;border-color:var(--sage);box-shadow:0 0 0 4px rgba(107,130
    selector de dia sale SIEMPRE, hasta en el Family Lounge.          */
 .dias[hidden]{display:none}
 .dias .lab{margin:0}
-.dia{border:2px solid #EFE6DF;background:#fff;border-radius:13px;padding:8px 14px;cursor:pointer;
-     font:inherit;font-size:13px;font-weight:800;color:var(--muted);transition:.16s}
-.dia[aria-pressed="true"]{border-color:var(--sage);background:#F7FAF4;color:var(--sage-dark)}
-.note-res{margin-top:13px;font-size:12.5px;line-height:1.55;color:var(--muted);
-          background:#FFFBF5;border:1.5px dashed #EADFD3;border-radius:14px;padding:12px 14px}
+.dia{border:0;background:var(--crema);border-radius:3px;padding:10px 16px;cursor:pointer;
+     font:700 10px/1 'Nunito';letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);
+     transition:.16s;box-shadow:inset 0 0 0 1px var(--linea)}
+.dia[aria-pressed="true"]{background:var(--marino);color:#F1EBE2;box-shadow:none}
+.note-res{margin-top:14px;font-size:12.5px;line-height:1.55;color:var(--muted);
+          background:var(--crema);border-left:3px solid var(--oro);border-radius:3px;padding:12px 15px}
 .note-res b{color:var(--ink)}
 @media(max-width:620px){.modos{grid-template-columns:1fr}}
-.packs{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
+/* --cols lo pone el JS segun cuantas opciones tenga ese modo (1, 2, 3 o 4).
+   En el movil manda la de abajo: una debajo de otra y se leen enteras.  */
+.packs{display:grid;grid-template-columns:repeat(var(--cols,3),1fr);gap:12px}
 @media(max-width:560px){.packs{grid-template-columns:1fr}}
-.pk{border:2.5px solid #EFE6DF;background:#fff;border-radius:19px;padding:16px;cursor:pointer;
-    transition:.22s;text-align:left;font-family:inherit;
+.pk{border:0;background:var(--crema);border-radius:3px;padding:18px;cursor:pointer;
+    transition:.22s;text-align:left;font-family:inherit;color:var(--ink);
+    box-shadow:0 1px 2px rgba(90,60,45,.06);
     display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start}
-.pk:hover{transform:translateY(-3px);box-shadow:0 12px 24px -14px rgba(90,60,45,.5)}
-.pk[aria-pressed="true"]{border-color:var(--sage);background:#F7FAF4}
-.pk b{display:block;font-size:16px;font-weight:900;margin-bottom:3px}
-.pk small{color:var(--muted);font-size:13px;line-height:1.4;display:block}
-.pk .price{margin-top:9px;font-weight:900;color:var(--sage-dark);font-size:15px}
-.pk .note{margin-top:5px;font-size:11.5px;color:var(--muted);font-weight:700;display:block}
+.pk:hover{transform:translateY(-2px);box-shadow:0 12px 24px -16px rgba(90,60,45,.45)}
+.pk[aria-pressed="true"]{background:var(--marino);color:#F1EBE2;transform:translateY(-2px);
+    box-shadow:0 18px 34px -20px rgba(22,41,74,.85)}
+.pk b{display:block;font:400 21px/1.15 'Fraunces';margin-bottom:5px;letter-spacing:-.2px}
+.pk small{color:var(--muted);font-size:13px;line-height:1.45;display:block}
+.pk[aria-pressed="true"] small{color:var(--azulito)}
+/* El precio en Fraunces: es la cifra, tiene que leerse como un numero
+   impreso, no como una etiqueta de oferta.                            */
+.pk .price{margin-top:11px;font:400 25px/1 'Fraunces';color:var(--marino);letter-spacing:-.4px}
+.pk[aria-pressed="true"] .price{color:var(--oro2)}
+.pk .note{margin-top:6px;font:700 9.5px/1.3 'Nunito';letter-spacing:1.1px;text-transform:uppercase;
+          color:var(--muted);display:block}
+.pk[aria-pressed="true"] .note{color:var(--azulito)}
+/* Lo que el pack NO lleva. Tiene que leerse, pero sin parecer un aviso
+   de error: es informacion honesta, no una alarma.                    */
+.pk .noinc{display:block;margin-top:10px;padding-top:9px;font-size:11.5px;line-height:1.45;
+           border-top:1px solid var(--linea);color:var(--muted)}
+.pk .noinc b{display:inline;font-size:11.5px;font-weight:900;color:#9A6A2E}
+.pk[aria-pressed="true"] .noinc{border-top-color:rgba(255,255,255,.22);color:var(--azulito)}
+.pk[aria-pressed="true"] .noinc b{color:var(--oro2)}
 
 /* extras */
+/* Aqui se pueden marcar VARIOS, asi que NO se rellenan de marino: seis
+   tarjetas azul marino seguidas serian un muro. Raya fina + tick.     */
 .extras{display:grid;grid-template-columns:repeat(auto-fill,minmax(216px,1fr));gap:11px}
-.ex{border:2.5px solid #EFE6DF;background:#fff;border-radius:17px;padding:14px 15px;cursor:pointer;
-    transition:.2s;text-align:left;font-family:inherit;display:flex;gap:11px;align-items:flex-start}
-.ex:hover{border-color:#E0D3C8}
-.ex[aria-pressed="true"]{border-color:var(--sage);background:#F7FAF4}
-.ex .tick{width:22px;height:22px;border-radius:7px;border:2.5px solid #DCCFC4;flex:none;margin-top:1px;
-          display:grid;place-items:center;font-size:13px;color:#fff;transition:.2s}
-.ex[aria-pressed="true"] .tick{background:var(--sage);border-color:var(--sage)}
+.ex{border:0;background:var(--crema);border-radius:3px;padding:15px 16px;cursor:pointer;
+    transition:.2s;text-align:left;font-family:inherit;color:var(--ink);
+    box-shadow:0 1px 2px rgba(90,60,45,.06);display:flex;gap:12px;align-items:flex-start}
+.ex:hover{box-shadow:inset 0 0 0 1px var(--linea)}
+.ex[aria-pressed="true"]{box-shadow:inset 0 0 0 1.5px var(--marino)}
+.ex .tick{width:20px;height:20px;border-radius:2px;box-shadow:inset 0 0 0 1.5px #D4C6B6;
+          background:#fff;flex:none;margin-top:2px;
+          display:grid;place-items:center;font-size:12px;color:#fff;transition:.2s}
+.ex[aria-pressed="true"] .tick{background:var(--marino);box-shadow:none}
 .ex b{display:block;font-size:14.5px;font-weight:800;line-height:1.3}
-.ex small{color:var(--muted);font-size:12.5px;font-weight:700;display:block;margin-top:2px}
-/* Un extra que el pack YA lleva dentro: verde, con el tick puesto y sin
-   poder pulsarlo. Es lo que hace que un VIP se VEA VIP: la madre ve tres
-   cosas que ya tiene, en vez de una lista que parece pedirle mas dinero. */
-.ex.inc{border-color:var(--sage);background:#F3F8EE;cursor:default}
-.ex.inc .tick{background:var(--sage);border-color:var(--sage)}
-.ex.inc small{color:var(--sage-dark);font-weight:900}
+.ex small{color:var(--muted);font-size:12.5px;font-weight:700;display:block;margin-top:3px}
+/* Un extra que el pack YA lleva dentro: ORO, con el tick puesto y sin
+   poder pulsarlo. Oro y no marino a proposito: marino = "lo he elegido
+   yo", oro = "esto ya viene con tu pack". Son dos cosas distintas y no
+   pueden tener el mismo color. Es lo que hace que un VIP se VEA VIP.   */
+.ex.inc{box-shadow:inset 0 0 0 1.5px var(--oro);background:#FDF8EE;cursor:default}
+.ex.inc .tick{background:var(--oro);box-shadow:none}
+.ex.inc small{color:#8A6B23;font-weight:800}
 /* Un extra que en esta opcion no se puede dar: apagado, y dice por que.
    Apagado y no escondido a proposito: si desaparece, la madre no sabe si
    existe y lo acaba preguntando por WhatsApp.                           */
-.ex.na{opacity:.45;cursor:not-allowed;background:#FAF8F6}
+.ex.na{opacity:.42;cursor:not-allowed;background:#EDE6DB;box-shadow:none}
 .ex.na .tick{visibility:hidden}
 
 /* catering a medida */
-.custom{margin-top:11px;border:2.5px dashed #E7D9B8;background:#FFFDF6;border-radius:17px;padding:15px}
-.custom b{font-size:14.5px;display:block;margin-bottom:3px}
-.custom small{color:var(--muted);font-size:12.5px;font-weight:700;display:block;margin-bottom:9px}
-.custom textarea{width:100%;font-family:inherit;font-size:15px;font-weight:600;color:var(--ink);
-                 border:2.5px solid #EFE6DF;background:#fff;border-radius:13px;padding:11px 13px;
-                 resize:vertical;min-height:64px}
-.custom textarea:focus{outline:0;border-color:var(--gold);box-shadow:0 0 0 4px rgba(231,178,76,.16)}
+.custom{margin-top:12px;border-radius:3px;background:var(--crema);padding:16px;
+        box-shadow:inset 0 0 0 1px var(--linea)}
+.custom b{font:400 18px/1.2 'Fraunces';display:block;margin-bottom:4px}
+.custom small{color:var(--muted);font-size:12.5px;font-weight:700;display:block;margin-bottom:10px}
+.custom textarea{width:100%;font-family:inherit;font-size:14.5px;font-weight:600;color:var(--ink);
+                 border:0;background:var(--papel);border-radius:3px;padding:12px 14px;
+                 resize:vertical;min-height:64px;box-shadow:inset 0 0 0 1px var(--linea)}
+.custom textarea:focus{outline:0;box-shadow:inset 0 0 0 1.5px var(--marino)}
 
 /* total en vivo */
-.total{margin-top:16px;background:#fff;border:2.5px solid #EFE6DF;border-radius:19px;padding:17px 19px}
-.total .row{display:flex;justify-content:space-between;gap:14px;font-size:14px;font-weight:700;
-            padding:6px 0;color:var(--muted)}
+.total{margin-top:18px;background:var(--crema);border:0;border-radius:3px;padding:19px 21px;
+       box-shadow:0 1px 2px rgba(90,60,45,.06)}
+.total .row{display:flex;justify-content:space-between;gap:14px;font-size:13.5px;font-weight:700;
+            padding:7px 0;color:var(--muted)}
 .total .row b{color:var(--ink);font-weight:800;white-space:nowrap}
 .total .sum{display:flex;justify-content:space-between;align-items:baseline;gap:14px;
-            border-top:2.5px dashed #EFE6DF;margin-top:9px;padding-top:13px}
-.total .sum span{font-size:15px;font-weight:800}
-.total .sum strong{font-size:27px;font-weight:900;color:var(--sage-dark);letter-spacing:-.5px}
-.total .warn{margin-top:9px;font-size:12px;color:var(--muted);font-weight:700;line-height:1.45}
+            border-top:1px solid var(--linea);margin-top:11px;padding-top:15px}
+.total .sum span{font:700 10px/1 'Nunito';letter-spacing:1.6px;text-transform:uppercase;
+                 color:var(--muted)}
+.total .sum strong{font:400 40px/1 'Fraunces';color:var(--marino);letter-spacing:-1px}
+.total .warn{margin-top:11px;font-size:12px;color:var(--muted);font-weight:700;line-height:1.45}
 
 /* ---------- EL CARTEL FINAL (lo que se comparte) ---------- */
-.poster{margin:34px 0 0;border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);
-        background:linear-gradient(170deg,var(--sky1),var(--sky2));transition:background .7s ease;
-        padding:32px 24px 26px;text-align:center;position:relative}
-.poster .pico{font-size:60px;line-height:1;filter:drop-shadow(0 10px 16px rgba(70,40,30,.22))}
-.poster .pk-eyebrow{font-size:11.5px;font-weight:900;letter-spacing:2.4px;text-transform:uppercase;
-                    color:var(--ink);opacity:.5;margin:14px 0 6px}
-.poster h3{font-size:clamp(25px,5.6vw,36px);font-weight:900;line-height:1.12;letter-spacing:-.5px}
-.poster .meta{margin-top:12px;display:flex;flex-wrap:wrap;gap:7px;justify-content:center}
-.poster .chip{background:rgba(255,255,255,.85);padding:7px 14px;border-radius:99px;
-              font-size:13px;font-weight:800;backdrop-filter:blur(6px)}
-.poster .foot{margin-top:18px;font-size:12.5px;font-weight:800;opacity:.55;letter-spacing:.6px}
+/* Cartel 01 "La lamina": la ilustracion de verdad de la tematica arriba y
+   los datos sobre papel abajo. Las laminas viven en art-cumples/ y son
+   verticales con el dibujo en la mitad de arriba -> se recortan 16/10
+   por arriba (object-position 50% 0%) para no comerse la cabeza.       */
+.poster{margin:34px 0 0;position:relative;border-radius:3px;overflow:hidden;
+        background:var(--crema);box-shadow:0 30px 60px -34px rgba(90,60,45,.6)}
+.poster img{width:100%;display:block;aspect-ratio:16/10;object-fit:cover;
+            object-position:50% 0%;filter:contrast(1.05) saturate(1.05)}
+.poster .panel{position:absolute;left:0;right:0;bottom:0;padding:34px 30px 24px;
+               text-align:center;color:var(--marino);
+               background:linear-gradient(to top,
+                 rgba(255,253,250,.99) 76%,
+                 rgba(255,253,250,.93) 88%,
+                 rgba(255,253,250,0) 100%)}
+/* el emoji gigante se queda en el HTML pero ya no pinta: ahora el dibujo
+   de verdad hace ese trabajo. No lo borro para no tocar el JS.         */
+.poster .pico{display:none}
+.poster .pk-eyebrow{font:800 9.5px/1 'Nunito';letter-spacing:2.2px;text-transform:uppercase;
+                    color:var(--oro);margin:0}
+.poster h3{font:400 clamp(27px,5.6vw,40px)/1.1 'Fraunces';margin:13px 0 17px;letter-spacing:-.5px}
+.poster .meta{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:0 0 18px}
+.poster .chip{background:rgba(22,41,74,.07);padding:7px 14px;border-radius:3px;
+              font-size:12.2px;font-weight:700;color:var(--marino);backdrop-filter:none}
+/* el precio es lo unico que se rellena de marino: sobre papel casi
+   blanco el oro se apaga, y el precio no puede apagarse.            */
+.poster .chip.oro{background:var(--marino);color:var(--oro2)}
+.poster .foot{margin:0;font:800 9px/1 'Nunito';letter-spacing:2.2px;text-transform:uppercase;
+              color:#9C8A74;opacity:1}
+/* "La inventamos contigo" es la unica tematica sin lamina pintada. Si dejo
+   el hueco reservado sale un cuadro blanco vacio de 370px (lo probe: la
+   comprobacion decia visibility:hidden ✓ y la foto salia fatal). Aqui el
+   cartel se ENCOGE de verdad: display:none + panel en el flujo.        */
+.poster.sin-lam img{display:none}
+.poster.sin-lam .panel{position:static;background:none;padding:44px 30px 34px}
+.poster.sin-lam::after{content:'';position:absolute;inset:10px;border-radius:2px;
+        box-shadow:inset 0 0 0 1px rgba(201,162,74,.5);pointer-events:none}
 
 /* botones */
-.cta{display:flex;gap:11px;flex-wrap:wrap;justify-content:center;margin-top:20px}
-.btn{font-family:inherit;font-size:15.5px;font-weight:800;border:0;border-radius:99px;
-     padding:15px 26px;cursor:pointer;transition:.2s;text-decoration:none;display:inline-block}
-.btn-wa{background:#25D366;color:#fff;box-shadow:0 12px 26px -12px rgba(37,211,102,.9)}
-.btn-wa:hover{transform:translateY(-2px)}
-.btn-ghost{background:#fff;color:var(--ink);border:2.5px solid #EFE6DF}
-.btn-ghost:hover{border-color:#DCCFC4}
+.cta{display:flex;gap:11px;flex-wrap:wrap;justify-content:center;margin-top:22px}
+.btn{font-family:inherit;font-size:14px;font-weight:800;border:0;border-radius:3px;
+     letter-spacing:.8px;padding:16px 28px;cursor:pointer;transition:.2s;
+     text-decoration:none;display:inline-block}
+/* El de WhatsApp se queda VERDE WhatsApp a proposito, aunque rompa la
+   paleta: es el boton que da dinero y ese verde se reconoce sin leerlo.
+   Un boton marino elegante que nadie asocia a WhatsApp vende menos.
 
-.scarcity{margin-top:16px;text-align:center;font-size:14px;color:var(--sage-dark);
-          background:#F1F6EC;border-radius:15px;padding:13px 18px;font-weight:700;line-height:1.5}
-footer{padding:44px 20px 60px;text-align:center;color:var(--muted);font-size:13px}
+   Verde MATE: el verde baja un punto (#25D366 -> #1E9E52), pero lo que
+   de verdad le quita el brillo de plastico es la SOMBRA. Antes era
+   verde encendida (rgba(37,211,102,.85)) = un halo de color debajo del
+   boton. Ahora es gris tierra, la misma que llevan las tarjetas, asi
+   que el boton se APOYA en el papel en vez de brillar sobre el.
+   Se sigue reconociendo como WhatsApp a la primera.                   */
+.btn-wa{background:#1E9E52;color:#fff;box-shadow:0 10px 20px -14px rgba(60,45,30,.5)}
+.btn-wa:hover{transform:translateY(-2px)}
+.btn-ghost{background:var(--crema);color:var(--ink);border:0;box-shadow:inset 0 0 0 1.5px var(--linea)}
+.btn-ghost:hover{box-shadow:inset 0 0 0 1.5px var(--marino)}
+
+.scarcity{margin-top:18px;text-align:center;font-size:13.5px;color:#4A4038;
+          background:var(--crema);border-left:3px solid var(--oro);border-radius:3px;
+          padding:13px 18px;font-weight:700;line-height:1.55}
+footer{padding:48px 20px 60px;text-align:center;color:var(--muted);font-size:12.5px;
+       border-top:1px solid var(--linea);margin-top:56px}
 </style>
 </head>
 <body>
@@ -325,7 +488,7 @@ footer{padding:44px 20px 60px;text-align:center;color:var(--muted);font-size:13p
   </div>
 
   <!-- ESCENARIO -->
-  <div class="stage" id="stage">
+  <div class="stage montando" id="stage">
     <div class="layer l-far"  data-depth="6"><div class="hill"></div></div>
     <div class="layer l-ground" data-depth="12"><div class="floor"></div></div>
     <div class="layer l-props" data-depth="26" id="props">
@@ -793,12 +956,22 @@ footer{padding:44px 20px 60px;text-align:center;color:var(--muted);font-size:13p
   <!-- CARTEL -->
   <div class="step">
     <div class="step-n"><b>5</b><h2 data-i18n="p5">Así sería su fiesta</h2></div>
+    <!-- El cartel = la LAMINA de la tematica arriba + los datos sobre papel
+         abajo. Antes era un degradado con un emoji gigante y parecia el
+         resguardo de una notaria; ahora es la lamina que de verdad se
+         imprime, asi que lo que ve aqui es lo que se lleva.
+         El .pico se queda en el HTML (el JS le escribe el emoji en
+         pintarEscenario) pero el CSS lo esconde: asi no hay que tocar
+         esa funcion, que es la que habla con el 3D.                    -->
     <div class="poster" id="poster">
-      <div class="pico" id="pIco">🦄</div>
-      <div class="pk-eyebrow" data-i18n="cartel_sub">Kids &amp; Kafé · Les Corts, Barcelona</div>
-      <h3 id="pTitle">El cumple de tu peque</h3>
-      <div class="meta" id="pMeta"></div>
-      <div class="foot" data-i18n="cartel_pie">🎂 DISEÑADO EN EL PARTY STUDIO</div>
+      <img id="pLam" alt="">
+      <div class="panel">
+        <div class="pico" id="pIco">🦄</div>
+        <div class="pk-eyebrow" data-i18n="cartel_sub">Kids &amp; Kafé · Les Corts, Barcelona</div>
+        <h3 id="pTitle">El cumple de tu peque</h3>
+        <div class="meta" id="pMeta"></div>
+        <div class="foot" data-i18n="cartel_pie">🎂 DISEÑADO EN EL PARTY STUDIO</div>
+      </div>
     </div>
 
     <div class="tel-box">
@@ -1425,6 +1598,18 @@ function paint(){
   $('#tag').textContent  = t.i + ' ' + t.n;
   $('#pIco').textContent = t.i;
 
+  /* La lamina del CARTEL (la de abajo, la que se comparte). Es otra img
+     distinta de #photoArt: esa cuelga DENTRO del escenario 3D y no se
+     toca. Si algun dia hay una tematica sin lamina, el cartel se encoge
+     con .sin-lam en vez de dejar un cuadro blanco vacio.              */
+  const pl = $('#pLam');
+  if(pl){
+    const art = ART_PHOTO[state.theme];
+    $('#poster').classList.toggle('sin-lam', !art);
+    if(art){ pl.src = art.src; pl.alt = t.n; }
+    else { pl.removeAttribute('src'); pl.alt = ''; }
+  }
+
   document.querySelectorAll('.th').forEach(b =>
     b.setAttribute('aria-pressed', b.dataset.k === state.theme));
   document.querySelectorAll('.pk').forEach(b =>
@@ -1600,10 +1785,14 @@ function updatePoster(){
   if(state.adults) chips.push('👩 ' + state.adults + T('adultos_c'));
   if(state.fecha) chips.push('📅 ' + fechaBonita());
   chips.push('🎉 ' + pk.n);
-  chips.push('💛 ' + (total > 0 ? eur(total) : 'a consultar'));
 
   const meta = $('#pMeta'); clear(meta);
   chips.forEach(c => meta.appendChild(el('span','chip',c)));
+  /* El PRECIO va aparte y relleno de marino con la cifra en oro: es el
+     unico dato del cartel que no se puede perder entre los demas. Sobre
+     papel casi blanco el oro solo se ve si tiene el marino debajo.    */
+  meta.appendChild(el('span','chip oro',
+    '💛 ' + (total > 0 ? eur(total) : 'a consultar')));
 
   const desglose = lineas.map(([k,v]) => '· ' + k + ': ' + v).join('\n');
 
@@ -1737,8 +1926,22 @@ function renderThemes(){
   const b = el('button', 'th' + (k === 'invent' ? ' invent' : ''));
   b.dataset.k = k;
   b.setAttribute('aria-pressed','false');
+  /* El boton ahora ENSENA LA LAMINA de verdad en vez de un emoji. Es el
+     dibujo que la madre se va a llevar impreso, asi que elegir tematica
+     deja de ser "elegir una palabra" y pasa a ser "elegir un dibujo".
+     La lamina siempre existe: la unica sin ella (invent) esta filtrada
+     tres lineas arriba, asi que aqui nunca entra sin src.              */
+  const ph = ART_PHOTO[k];
+  if(ph){
+    const img = el('img','lam');
+    img.src = ph.src;
+    img.alt = t.n;          /* el nombre ya va escrito debajo, pero el alt
+                               es lo que lee Google y un lector de pantalla */
+    img.loading = 'lazy';   /* 20 jpgs: sin esto la pagina arranca pesada */
+    b.appendChild(img);
+  }
   b.appendChild(el('span','ico',t.i));
-  b.appendChild(document.createTextNode(t.n));
+  b.appendChild(el('span','nom',t.n));
   b.onclick = () => { state.theme = k; paint(); };
   themesBox.appendChild(b);
  });
@@ -1787,7 +1990,14 @@ function renderPacks(){
   /* con 1 sola opcion (domicilio) la rejilla de 3 deja dos huecos feos,
      y con 4 (el alquiler) la de 3 deja una tarjeta huerfana abajo.     */
   const cols = lista.length === 4 ? 2 : Math.min(lista.length, 3);
-  packsBox.style.gridTemplateColumns = 'repeat(' + cols + ',1fr)';
+  /* OJO: antes esto escribia grid-template-columns DIRECTAMENTE aqui. Un
+     estilo escrito desde JS le gana SIEMPRE al CSS, asi que en el movil
+     la regla de "una sola columna" no llegaba a aplicarse nunca y las
+     tarjetas de precio se quedaban en 3 columnas de ~108px: se salian de
+     la pantalla y la pagina se iba de lado. Ahora el JS solo deja dicho
+     CUANTAS columnas quiere en una variable, y el CSS decide si le hace
+     caso o si manda la del movil.                                      */
+  packsBox.style.setProperty('--cols', cols);
 
   lista.forEach(p => {
     const b = el('button','pk');
@@ -1806,11 +2016,13 @@ function renderPacks(){
        quien alquila la sala a secas tiene que enterarse de que no hay
        catering ANTES de hacerse la ilusion, no cuando ya ha escrito.   */
     if(p.no){
-      const nx = el('small');
-      nx.style.cssText = 'margin-top:8px;padding-top:8px;border-top:1px solid rgba(90,60,45,.14);font-size:11.5px;line-height:1.4';
-      const nb = el('b', null, T('no_inc'));
-      nb.style.cssText = 'display:inline;font-size:11.5px;font-weight:900;color:#B5641F';
-      nx.appendChild(nb);
+      /* Antes esto iba con estilos escritos a mano aqui dentro (color fijo
+         naranja y una raya marron). Sobre la tarjeta blanca se veia, pero
+         cuando la tarjeta se elige y se pone MARINO, ese naranja quedaba
+         como si fuese un error y la raya desaparecia. Ahora es una clase
+         y el CSS le cambia el color solo segun este elegida o no.       */
+      const nx = el('small','noinc');
+      nx.appendChild(el('b', null, T('no_inc')));
       nx.appendChild(document.createTextNode(' ' + p.no));
       b.appendChild(nx);
     }
@@ -2002,6 +2214,12 @@ function tilt(nx, ny){                       // nx, ny van de -1 a 1
   });
 }
 const stage = $('#stage');
+/* Si el 3D NO arranca (movil viejo, WebGL apagado, script caido) el dibujo
+   plano no puede quedarse callado para siempre: a los 2,6s se le quita la
+   mordaza y sale, que para eso esta. Si el 3D ya arranco, no toca nada.   */
+setTimeout(function(){
+  if(!stage.classList.contains('is3d')) stage.classList.remove('montando');
+}, 2600);
 stage.addEventListener('mousemove', e => {
   const r = stage.getBoundingClientRect();
   tilt((e.clientX-r.left)/r.width*2-1, (e.clientY-r.top)/r.height*2-1);
@@ -6012,8 +6230,22 @@ window.KK3D = {
   }
 };
 
+/* Enseña el escenario. Se llama UNA vez: cuando el primer cartel ya esta
+   colocado y la camara encuadrada. A partir de ahi la clase ya esta puesta
+   y volver a llamarla no hace nada.                                       */
+let tRedEscenario = 0;
+function mostrarEscenario(){
+  clearTimeout(tRedEscenario);
+  stage.classList.add('listo');
+}
+
 function aplicarCartel(key, conFundido){
   if(conFundido) fading = true;
+  /* Red de seguridad: si la lamina no llegara NUNCA (movil sin cobertura,
+     archivo caido), el escenario NO puede quedarse escondido para siempre.
+     A los 4 segundos se enseña igual, aunque sea sin cartel.              */
+  clearTimeout(tRedEscenario);
+  tRedEscenario = setTimeout(mostrarEscenario, 4000);
   heroTexture(key).then(tex => {
     if(tex){
       const viejo = heroMat.map;
@@ -6047,6 +6279,8 @@ function aplicarCartel(key, conFundido){
       heroW = W; heroH = H; frameHero();   /* la camara se recoloca sola */
     }
     if(conFundido) fading = false;
+    /* Ya esta todo en su sitio: ahora si se puede enseñar. */
+    mostrarEscenario();
   });
 }
 
@@ -6300,6 +6534,7 @@ renderer.setAnimationLoop(() => {
 
 /* si WebGL va, encendemos el 3D; si no, se queda el dibujo plano */
 stage.classList.add('is3d');
+stage.classList.remove('montando');  /* ya tapa el 3D: la mordaza sobra */
 /* La tematica de arranque la dice la pagina, no el dibujo: hay tematicas
    que solo tienen lamina pintada y ningun SVG (policia, por ejemplo). */
 if(window.KK3D && window.KK_THEME)
