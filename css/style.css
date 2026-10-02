@@ -899,3 +899,21 @@ h2.title{letter-spacing:-.4px;text-wrap:balance}
 .nv-soon h4{font-family:'Nunito',-apple-system,system-ui,sans-serif;font-size:21px;font-weight:900;color:#3f3a34;margin-bottom:6px}
 .nv-soon p{font-size:13.5px;color:#9a9186;max-width:220px;line-height:1.5}
 @media (max-width:560px){.nv-title{font-size:23px}.nv-head{height:200px}}
+
+/* ── Baby Explorer: línea-gancho rosa + chips de datos bajo el hero ──
+   .kkhook  = frase pequeña bajo el H1 (ahí vive la palabra clave)
+   .kkchips = fila de datos rápidos (horario, comida, monitora…)
+   Clases nuevas, no pisan nada. Solo se usan en baby-explorer (ES/EN/CA). */
+.kkhook{display:inline-block;font-family:'Inter',-apple-system,system-ui,sans-serif;
+  font-size:14.5px;font-weight:700;color:#8a5a72;background:rgba(255,255,255,.75);
+  border:1px solid rgba(233,168,192,.5);padding:7px 17px;border-radius:99px;
+  margin:0 0 6px;position:relative;z-index:2}
+.kkchips{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;
+  margin:20px 0 0;position:relative;z-index:2}
+.kkchips span{font-family:'Inter',-apple-system,system-ui,sans-serif;font-size:13px;
+  font-weight:700;color:#5c4a55;background:rgba(255,255,255,.82);
+  border:1px solid rgba(233,168,192,.45);padding:7px 14px;border-radius:99px}
+@media (max-width:560px){
+  .kkhook{font-size:13px;padding:6px 14px}
+  .kkchips{gap:7px}.kkchips span{font-size:12px;padding:6px 11px}
+}
