@@ -917,3 +917,7 @@ h2.title{letter-spacing:-.4px;text-wrap:balance}
   .kkhook{font-size:13px;padding:6px 14px}
   .kkchips{gap:7px}.kkchips span{font-size:12px;padding:6px 11px}
 }
+/* ═══ FIX CONTRASTE 2 (2026-10-10, opción B): gris textos + botones + precio — WCAG AA ═══ */
+:root{--muted:#756558} /* antes #9A8A80 (3.2:1) -> 5.4:1 sobre crema */
+.btn-pink{background:linear-gradient(135deg,#5A7C3B,#4E6B33)} /* blanco encima 4.8-6.0 (antes 1.9-2.8); .lg y héroe portada NO cambian */
+.pcard .price{color:#5E8240} /* 4.4:1 (antes #A0C079, 2.0); su span usa --muted y hereda el gris nuevo */
