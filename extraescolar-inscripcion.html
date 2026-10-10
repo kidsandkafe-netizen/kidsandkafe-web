@@ -24,7 +24,7 @@
   .sec{font-family:'Nunito',serif;font-size:16px;font-weight:600;color:#2E6FB0;display:flex;align-items:center;gap:8px;margin-bottom:14px}
   label{display:block;font-size:12px;font-weight:800;color:#3A5A76;margin:12px 0 5px}
   label:first-of-type{margin-top:0}
-  input,select,textarea{width:100%;border:1.5px solid #C3D8EE;border-radius:11px;padding:11px 12px;font-size:14px;font-family:inherit;color:#26384A;background:#FBFDFF;outline:none}
+  input,select,textarea{width:100%;border:1.5px solid #C3D8EE;border-radius:11px;padding:11px 12px;font-size:16px;font-family:inherit;color:#26384A;background:#FBFDFF;outline:none}
   input:focus,select:focus,textarea:focus{border-color:#4A90D9;background:#fff}
   .req{color:#E0662A}
   .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
@@ -108,24 +108,24 @@
 
   <div class="card">
     <div class="sec" data-i18n="sec_peque">👦 Datos del niño/a</div>
-    <label><span data-i18n="lbl_nino">Nombre y apellidos del peque</span> <span class="req">*</span></label>
+    <label for="f-nino"><span data-i18n="lbl_nino">Nombre y apellidos del peque</span> <span class="req">*</span></label>
     <input id="f-nino" type="text" data-i18n-ph="ph_nino" placeholder="Ej. Sofía García López">
-    <label><span data-i18n="lbl_nac">Fecha de nacimiento</span> <span class="req">*</span></label>
+    <label for="f-nac"><span data-i18n="lbl_nac">Fecha de nacimiento</span> <span class="req">*</span></label>
     <input id="f-nac" type="date">
-    <label data-i18n="lbl_curso">Curso / Edad</label>
+    <label for="f-curso" data-i18n="lbl_curso">Curso / Edad</label>
     <input id="f-curso" type="text" data-i18n-ph="ph_curso" placeholder="Ej. P4 · 4 años">
-    <label data-i18n="lbl_colegio">Nombre del colegio o guardería</label>
+    <label for="f-colegio" data-i18n="lbl_colegio">Nombre del colegio o guardería</label>
     <input id="f-colegio" type="text" data-i18n-ph="ph_colegio" placeholder="Ej. Escola Les Corts">
   </div>
 
   <div class="card">
     <div class="sec" data-i18n="sec_contacto">👨‍👩‍👧 Datos del padre, madre o tutor/a</div>
-    <label><span data-i18n="lbl_madre">Nombre y apellidos</span> <span class="req">*</span></label>
-    <input id="f-madre" type="text" data-i18n-ph="ph_madre" placeholder="Ej. Ana García López">
-    <label><span data-i18n="lbl_tel">Teléfono</span> <span class="req">*</span></label>
-    <input id="f-tel" type="tel" data-i18n-ph="ph_tel" placeholder="Ej. 637 000 000">
-    <label><span data-i18n="lbl_email">Email</span> <span class="req">*</span></label>
-    <input id="f-email" type="email" data-i18n-ph="ph_email" placeholder="tucorreo@email.com">
+    <label for="f-madre"><span data-i18n="lbl_madre">Nombre y apellidos</span> <span class="req">*</span></label>
+    <input id="f-madre" type="text" autocomplete="name" data-i18n-ph="ph_madre" placeholder="Ej. Ana García López">
+    <label for="f-tel"><span data-i18n="lbl_tel">Teléfono</span> <span class="req">*</span></label>
+    <input id="f-tel" type="tel" autocomplete="tel" data-i18n-ph="ph_tel" placeholder="Ej. 637 000 000">
+    <label for="f-email"><span data-i18n="lbl_email">Email</span> <span class="req">*</span></label>
+    <input id="f-email" type="email" autocomplete="email" data-i18n-ph="ph_email" placeholder="tucorreo@email.com">
   </div>
 
   <div class="card">
@@ -168,9 +168,9 @@
     <div class="info lang-block" data-lang="en" style="display:none;margin-bottom:10px">
       The <b>€49/month</b> fee is charged by <b>direct debit</b> (monthly). Please give us the IBAN of the account we'll charge.
     </div>
-    <label><span data-i18n="lbl_iban">IBAN</span> <span class="req">*</span></label>
-    <input id="f-iban" type="text" inputmode="latin" autocomplete="off" data-i18n-ph="ph_iban" placeholder="ES00 0000 0000 0000 0000 0000">
-    <label data-i18n="lbl_titular">Titular de la cuenta (si es distinto del tutor)</label>
+    <label for="f-iban"><span data-i18n="lbl_iban">IBAN</span> <span class="req">*</span></label>
+    <input id="f-iban" type="text" autocomplete="off" data-i18n-ph="ph_iban" placeholder="ES00 0000 0000 0000 0000 0000">
+    <label for="f-titular" data-i18n="lbl_titular">Titular de la cuenta (si es distinto del tutor)</label>
     <input id="f-titular" type="text" data-i18n-ph="ph_titular" placeholder="Ej. Ana García López">
   </div>
 
