@@ -3,16 +3,8 @@ Allow: /
 Content-Signal: search=yes, ai-input=yes, ai-train=yes
 
 # Páginas de trabajo / mockups — no indexar
-Disallow: /_mockup-tarjetas.html
-Disallow: /_tarjeta-hoteles-PRINT.html
-Disallow: /mockup-cumple-cards.html
-Disallow: /mockup-cumple-v2.html
-Disallow: /mockup-hero-v2.html
-Disallow: /mockup-home-lite.html
-Disallow: /mockup-iconos-v3.html
-Disallow: /mockup-kidsdrop.html
-Disallow: /mockup-premium.html
-Disallow: /mockup-promos.html
-Disallow: /mockup-toque-cielo.html
+Disallow: /mockup-
+Disallow: /_mockup-
+Disallow: /_tarjeta-
 
 Sitemap: https://www.kidsandkafe.es/sitemap.xml
