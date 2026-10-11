@@ -1075,6 +1075,7 @@ es:{
   ent_ad:'Entrada adultos ×', mon_obl:'Monitor extra (obligatorio a partir de 20 niños)',
   pastel_l:'Pastel temático (se pide al centro)',
   cat_med:'Catering a medida', div_med:'Diversión a medida', limpieza:'Limpieza',
+  lim_no:'No se cobra',   /* comida nuestra -> la limpieza no suma */
   por_nino:'/niño', finde_l:' · V-D y festivos', diario_l:' · L-J',
   no_inc:'No incluye:', extra_nin:' niños extra · ',
   ya_inc:'Ya incluido en el ', na_l:'No aplica en esta opción',
@@ -1139,6 +1140,7 @@ ca:{
   ent_ad:'Entrada adults ×', mon_obl:'Monitor extra (obligatori a partir de 20 nens)',
   pastel_l:'Pastís temàtic (es demana al centre)',
   cat_med:'Càtering a mida', div_med:'Diversió a mida', limpieza:'Neteja',
+  lim_no:'No es cobra',
   por_nino:'/nen', finde_l:' · Dv-Dg i festius', diario_l:' · Dl-Dj',
   no_inc:'No inclou:', extra_nin:' nens extra · ',
   ya_inc:'Ja inclòs en el ', na_l:'No s\'aplica en aquesta opció',
@@ -1203,6 +1205,7 @@ en:{
   ent_ad:'Adult entry ×', mon_obl:'Extra host (required from 20 children)',
   pastel_l:'Themed cake (ordered through us)',
   cat_med:'Custom catering', div_med:'Custom entertainment', limpieza:'Cleaning',
+  lim_no:'Not charged',
   por_nino:'/child', finde_l:' · Fri-Sun and holidays', diario_l:' · Mon-Thu',
   no_inc:'Not included:', extra_nin:' extra children · ',
   ya_inc:'Already included in the ', na_l:'Not available with this option',
@@ -1355,7 +1358,7 @@ const PACKS = [
   {id:'standard', modo:'pack', tipo:'dia', n:'Standard', base:315, baseFinde:365,
    aforo:30, pastel:true,
    d:'Media sala privada · 1 monitor · pastel temático para 20 personas · mobiliario.',
-   no:'catering, decoración ni limpieza.',
+   no:'catering, decoración ni limpieza (35€ si traes catering de fuera).',
    note:'3h · hasta 30 personas · niño extra 7€ · adulto extra 3€'},
   {id:'premium', modo:'pack', tipo:'dia', n:'Premium', base:635, baseFinde:795,
    aforo:0, incKids:20, pastel:true, cateringInc:true, limpieza:true,
@@ -1439,7 +1442,7 @@ const DATOS = {
     },
     PACKS:{
       standard:{d:'Mitja sala privada · 1 monitor · pastís temàtic per a 20 persones · mobiliari.',
-              no:'càtering, decoració ni neteja.',
+              no:'càtering, decoració ni neteja (35€ si portes càtering de fora).',
               note:'3h · fins a 30 persones · nen extra 7€ · adult extra 3€'},
       premium:{d:'Sala completa privada · 1 monitor · pastís temàtic per a 20 persones · decoració bàsica personalitzada · càtering per a 20 nens · mobiliari complet · neteja inclosa.',
               no:'taller, animació ni personatge disfressat (s\'afegeixen a part).',
@@ -1497,7 +1500,7 @@ const DATOS = {
     },
     PACKS:{
       standard:{d:'Half the room, private · 1 host · themed cake for 20 people · furniture.',
-              no:'catering, decoration or cleaning.',
+              no:'catering, decoration or cleaning (35€ if you bring outside catering).',
               note:'3h · up to 30 people · extra child 7€ · extra adult 3€'},
       premium:{d:'Whole room, private · 1 host · themed cake for 20 people · basic personalised decoration · catering for 20 children · full furniture · cleaning included.',
               no:'workshop, entertainment or costumed character (added separately).',
@@ -1569,6 +1572,9 @@ function aplicarIdiomaDatos(l){
 }
 
 const LIMPIEZA = 35;   // limpieza si traes catering de fuera (dossier 2026-27)
+/* Los 3 extras que son COMIDA NUESTRA. Si marcan cualquiera de los tres, la
+   comida no viene de fuera y la limpieza no se cobra. El orden da igual. */
+const COMIDA   = ['catNinos','catAdult','bandejas'];
 const SENAL    = 100;  // paga y señal para bloquear fecha
 const P_EXTRA  = 7;    // +7€ por persona cuando se pasa del aforo
 const E_ADULTO = 3;    // entrada de adulto en el Family Lounge
@@ -1768,7 +1774,22 @@ function presupuesto(){
      presupuesto justo en los packs buenos.                               */
   if(pk.modo !== 'casa'){
     if(pk.limpieza){ lineas.push([T('limpieza'), T('incluido')]); }
-    else           { lineas.push([T('limpieza'), eur(LIMPIEZA)]); total += LIMPIEZA; }
+    else {
+      /* Los 35€ son por traer comida de FUERA, no por usar la sala. Si la
+         comida es nuestra no hay nada que cobrar. Antes se sumaban SIEMPRE,
+         y el texto del propio pack ya decia "35€ si traes catering de fuera":
+         el texto estaba bien y la suma no.
+         Cuenta como comida NUESTRA: haber escrito en el cuadro de catering a
+         medida ("cuentanoslo y te lo preparamos" = se lo haces tu), marcar uno
+         de los 3 extras de comida, o que el pack ya los traiga dentro (mirar
+         pk.inc hace falta porque al elegir pack el codigo BORRA de
+         state.extras los extras que ese pack ya incluye).                */
+      const nuestra = state.catering.trim() !== '' ||
+                      COMIDA.some(id => state.extras.has(id) ||
+                                        (pk.inc || []).includes(id));
+      if(nuestra){ lineas.push([T('limpieza'), T('lim_no')]); }
+      else       { lineas.push([T('limpieza'), eur(LIMPIEZA)]); total += LIMPIEZA; }
+    }
   }
 
   return {lineas, total, pk};
