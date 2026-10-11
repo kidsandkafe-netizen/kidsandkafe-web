@@ -27,6 +27,8 @@
      siendo la letra de leer. Es lo que separa "pagina de app" de "papeleria
      buena": los titulos en serif y el cuerpo en palo. -->
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<!-- el 3D (three.js) se baja de unpkg: avisar al navegador antes ahorra ~300ms -->
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
 <style>
 :root{
   /* ═══ PALETA "MARINO + PAPEL" ═══════════════════════════════════════
@@ -485,6 +487,22 @@ input:focus{outline:0}
           padding:13px 18px;font-weight:700;line-height:1.55}
 footer{padding:48px 20px 60px;text-align:center;color:var(--muted);font-size:12.5px;
        border-top:1px solid var(--linea);margin-top:56px}
+/* ═══ FIX MOVIL + CONTRASTE (2026-10-11) ════════════════════════════════
+   Va al final a proposito: no modifica ni una regla de arriba, y para
+   deshacerlo basta borrar este bloque entero.
+   El gris #756558 es EL MISMO que ya decidiste en octubre en css/style.css.
+   Esta pagina se habia quedado con el viejo #9A8A80 porque lleva su propio
+   :root aqui dentro y el arreglo de la web no le llegaba.               */
+:root{--muted:#756558}                        /* 2.73:1 -> 4.60:1 sobre papel */
+#gl{touch-action:pan-y}                       /* el dedo baja la pagina; girar el 3D de lado sigue igual */
+.eyebrow,.poster .pk-eyebrow{color:#7E601C}   /* oro COMO TEXTO: 1.97:1 -> 4.83:1 (el oro de bordes y adornos no se toca) */
+.poster .foot{color:#756558}                  /* 3.28:1 -> 5.50:1 */
+.btn-wa{background:#157F41}                   /* blanco encima: 3.46:1 -> 5.07:1 */
+@media (max-width:560px){
+  /* 620px de escenario en un movil de 844px se comia la pantalla entera:
+     cambiabas de tematica y no veias ni la rejilla ni el precio.        */
+  .stage{height:min(52vh,380px)}
+}
 </style>
 </head>
 <body>
@@ -1950,7 +1968,10 @@ function renderThemes(){
   const ph = ART_PHOTO[k];
   if(ph){
     const img = el('img','lam');
-    img.src = ph.src;
+    /* La rejilla pide la copia PEQUEÑA (-sm.jpg, 224px de ancho, lo que mide
+       de verdad el hueco). El jpg grande de 821x1100 sigue existiendo y lo
+       sigue usando el 3D para la lamina del arco: ahi si hace falta.      */
+    img.src = ph.src.replace('.jpg','-sm.jpg');
     img.alt = t.n;          /* el nombre ya va escrito debajo, pero el alt
                                es lo que lee Google y un lector de pantalla */
     img.loading = 'lazy';   /* 20 jpgs: sin esto la pagina arranca pesada */
