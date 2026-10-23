@@ -2585,8 +2585,8 @@ const parquetTex = (() => {
          marron quemado y no se vaya a naranja al subirle la luz. El
          abanico ancho se QUEDA: eso no era oscuridad, era lo que hace que
          se distingan las lamas, y sirve igual de claro que de oscuro.     */
-      const tono = 0.42 + rnd()*0.50;                       /* cada lama, su tono */
-      x.fillStyle = `rgb(${Math.round(105*tono)},${Math.round(58*tono)},${Math.round(31*tono)})`;
+      const tono = 0.52 + rnd()*0.48; /* MADERA 2026-10-23 */                       /* cada lama, su tono */
+      x.fillStyle = `rgb(${Math.round(134*tono)},${Math.round(78*tono)},${Math.round(43*tono)})`; /* MADERA 2026-10-23 */
       x.fillRect(X+1.5, Y+1.5, LARGO-3, ALTO-3);
       for(let v = 0; v < 10; v++){                          /* la veta */
         const vy = Y + 4 + rnd()*(ALTO-8);
@@ -2601,7 +2601,7 @@ const parquetTex = (() => {
            en la misma proporcion (clara 0.035 -> 0.042, oscura 0.42 ->
            0.39). Si la dejo como estaba, la veta pesaria de mas sobre una
            madera mas clara y el suelo saldria rayado.                     */
-        x.strokeStyle = rnd() < 0.5 ? 'rgba(255,188,132,0.042)' : 'rgba(0,0,0,0.39)';
+        x.strokeStyle = rnd() < 0.5 ? 'rgba(255,188,132,0.075)' : 'rgba(0,0,0,0.36)'; /* MADERA 2026-10-23 */
         x.lineWidth = 0.5 + rnd()*1.6;
         x.beginPath(); x.moveTo(X+3, vy);
         x.bezierCurveTo(X+LARGO*0.3, vy+(rnd()-0.5)*5,
@@ -2644,8 +2644,9 @@ parquetTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
    El envMap sube de 0.10 a 0.12. La regla es que estas tres cosas se
    mueven SIEMPRE juntas y en el mismo sentido; tocar una sola es lo que
    me hizo dar tres vueltas a esto.                                        */
-const floorMat = new THREE.MeshStandardMaterial({map:parquetTex, color:0x8A5C3E,
-  roughness:0.70, metalness:0, envMapIntensity:0.12});
+const floorMat = new THREE.MeshPhysicalMaterial({map:parquetTex, color:0xA06C48,
+  bumpMap:parquetTex, bumpScale:0.012, clearcoat:0.22, clearcoatRoughness:0.36,
+  roughness:0.58, metalness:0, envMapIntensity:0.30}); /* MADERA 2026-10-23 */
 const floor = new THREE.Mesh(new THREE.CircleGeometry(13, 64), floorMat);
 floor.rotation.x = -Math.PI/2;
 floor.receiveShadow = true;
@@ -3588,9 +3589,35 @@ const BLANCO  = () => new THREE.MeshStandardMaterial({color:0xFFFFFF, roughness:
    alquiler son madera LACADA: no son blanco papel (tiran a hueso) y tienen
    un barniz por encima. El clearcoat es justo eso — una capa de barniz
    aparte del color, que coge un reflejo largo y suave en el canto.      */
+/* ═══ MADERA 2026-10-23: peanas de madera natural barnizada ═══
+   Veta VERTICAL (las peanas son cilindros: la veta sube), roble claro para
+   que se recorten contra el parquet oscuro. El mismo canvas hace de color y
+   de relieve (bump), y el clearcoat es el barniz.                        */
+const maderaTex = (() => {
+  const c = document.createElement('canvas'); c.width = c.height = 512;
+  const x = c.getContext('2d');
+  let sem = 11; const rnd = () => (sem = (sem*16807) % 2147483647) / 2147483647;
+  x.fillStyle = '#C9A071'; x.fillRect(0,0,512,512);
+  for(let i = 0; i < 90; i++){                       /* vetas finas verticales */
+    const X = rnd()*512, w = 1 + rnd()*5, t = 0.78 + rnd()*0.3;
+    x.fillStyle = `rgba(${Math.round(176*t)},${Math.round(128*t)},${Math.round(82*t)},${0.25+rnd()*0.45})`;
+    x.fillRect(X, 0, w, 512);
+  }
+  for(let i = 0; i < 26; i++){                       /* vetas oscuras onduladas */
+    const X = rnd()*512; x.strokeStyle = `rgba(90,56,30,${0.18+rnd()*0.22})`;
+    x.lineWidth = 0.6 + rnd()*1.4; x.beginPath(); x.moveTo(X, 0);
+    x.bezierCurveTo(X+(rnd()-0.5)*18, 170, X+(rnd()-0.5)*18, 340, X+(rnd()-0.5)*10, 512);
+    x.stroke();
+  }
+  const t = new THREE.CanvasTexture(c);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(2, 1);
+  t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  return t;
+})();
 const PEANA   = () => new THREE.MeshPhysicalMaterial({
-  color:0xF7F4EF, roughness:0.42, metalness:0,
-  clearcoat:0.55, clearcoatRoughness:0.38, envMapIntensity:0.6 });
+  map:maderaTex, bumpMap:maderaTex, bumpScale:0.018,
+  color:0xEAD6B8, roughness:0.46, metalness:0,
+  clearcoat:0.38, clearcoatRoughness:0.32, envMapIntensity:0.6 });
 /* peana con el canto de arriba romo: mismo perfil girado que la tarta */
 function peanaGeo(rTop, rBot, alto){
   return tartaPiso(rTop, alto, Math.min(0.022, rTop*0.12), 0.006, 40);
