@@ -11,8 +11,12 @@
 //    INVENTA_KV     (binding)  KV opcional para el tope diario
 //    INVENTA_MAX    (variable) tope de imágenes/día, por defecto 120
 //
-//  Sin FAL_KEY la función responde 503 con un mensaje claro: la página lo
+//  Sin FAL_KEY la función responde 500 con un mensaje claro: la página lo
 //  enseña y no se queda colgada.
+//
+//  ⚠️ Los errores van SIEMPRE con estado 500, nunca 502/503/504: Cloudflare
+//  sustituye esos tres por su propia página ("error code: 502") y se pierde
+//  el JSON con el motivo (comprobado en vivo el 2026-10-30).
 // ═══════════════════════════════════════════════════════════════════════
 
 const PLANTILLA =
@@ -45,7 +49,7 @@ export async function onRequestPost(context){
     new Response(JSON.stringify(obj), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
 
   if(!env.FAL_KEY){
-    return json({ error: 'sin_clave', mensaje: 'Falta FAL_KEY en Cloudflare: el dibujo automático está apagado.' }, 503);
+    return json({ error: 'sin_clave', mensaje: 'Falta FAL_KEY en Cloudflare: el dibujo automático está apagado.' }, 500);
   }
 
   let body = {};
@@ -67,7 +71,7 @@ export async function onRequestPost(context){
   //    "Authorization: Key $FAL_KEY" · host queue.fal.run · schnell tarda ~2-4 s.
   const H = { 'Authorization': 'Key ' + env.FAL_KEY, 'Content-Type': 'application/json' };
   const prompt = PLANTILLA.replace('{IDEA}', idea);
-  const fail = (code, mensaje, detalle) => json({ error: code, mensaje, detalle: (detalle || '').slice(0, 200) }, 502);
+  const fail = (code, mensaje, detalle) => json({ error: code, mensaje, detalle: (detalle || '').slice(0, 200) }, 500);
   let sub;
   try {
     sub = await fetch('https://queue.fal.run/fal-ai/flux/schnell', {
@@ -103,7 +107,7 @@ export async function onRequestPost(context){
 
   // ── La imagen vuelve por AQUÍ (mismo origen) para que el <canvas> del cartel pueda usarla ──
   const img = await fetch(url);
-  if(!img.ok) return json({ error: 'descarga', mensaje: 'No se ha podido descargar el dibujo.' }, 502);
+  if(!img.ok) return json({ error: 'descarga', mensaje: 'No se ha podido descargar el dibujo.' }, 500);
   const tipo = img.headers.get('content-type') || 'image/jpeg';
   return new Response(img.body, {
     status: 200,
