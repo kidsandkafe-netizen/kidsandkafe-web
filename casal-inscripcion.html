@@ -24,7 +24,7 @@
   .sec{font-family:'Nunito',serif;font-size:16px;font-weight:600;color:#B96A20;display:flex;align-items:center;gap:8px;margin-bottom:14px}
   label{display:block;font-size:12px;font-weight:800;color:#7A5A30;margin:12px 0 5px}
   label:first-of-type{margin-top:0}
-  input,select,textarea{width:100%;border:1.5px solid #EAD7B8;border-radius:11px;padding:11px 12px;font-size:14px;font-family:inherit;color:#4A3A22;background:#FFFDF9;outline:none}
+  input,select,textarea{width:100%;border:1.5px solid #EAD7B8;border-radius:11px;padding:11px 12px;font-size:16px;font-family:inherit;color:#4A3A22;background:#FFFDF9;outline:none}
   input:focus,select:focus,textarea:focus{border-color:#FF9A3D;background:#fff}
   .req{color:#E0662A}
   .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
@@ -98,7 +98,7 @@
       • <b>Agosto:</b> +10% de suplemento<br>
       • 10% dto cliente con bono (desde 2ª semana) · 10% dto hermanos · 15% dto desde 4ª semana consecutiva con pago anticipado de 5 semanas<br>
       • Día no asistido no se acumula ni se reembolsa · pago completo 1 semana antes por transferencia o se pierde la plaza<br>
-      • <b>Reserva 50€</b> · Transferencia <b>ES93 2100 3683 5322 0012 8922</b> · KIDS AND KAFE INVERSIÓN S.L.
+      • <b>Reserva 50€</b> · por Bizum o transferencia · te enviamos los datos por WhatsApp
     </div>
     <div class="info lang-block" data-lang="ca" style="display:none">
       • Horari de tarda <b>14:00–18:00 → 110€/setmana</b><br>
@@ -107,7 +107,7 @@
       • <b>Agost:</b> +10% de suplement<br>
       • 10% dte client amb bo (des de la 2a setmana) · 10% dte germans · 15% dte des de la 4a setmana consecutiva amb pagament anticipat de 5 setmanes<br>
       • Dia no assistit no s'acumula ni es reemborsa · pagament complet 1 setmana abans per transferència o es perd la plaça<br>
-      • <b>Reserva 50€</b> · Transferència <b>ES93 2100 3683 5322 0012 8922</b> · KIDS AND KAFE INVERSIÓN S.L.
+      • <b>Reserva 50€</b> · per Bizum o transferència · t'enviem les dades per WhatsApp
     </div>
     <div class="info lang-block" data-lang="en" style="display:none">
       • Afternoon schedule <b>14:00–18:00 → €110/week</b><br>
@@ -116,7 +116,7 @@
       • <b>August:</b> +10% surcharge<br>
       • 10% off with voucher (from 2nd week) · 10% sibling discount · 15% off from the 4th consecutive week with advance payment of 5 weeks<br>
       • Missed days are not carried over or refunded · full payment 1 week in advance by transfer or the place is lost<br>
-      • <b>€50 deposit</b> · Transfer <b>ES93 2100 3683 5322 0012 8922</b> · KIDS AND KAFE INVERSIÓN S.L.
+      • <b>€50 deposit</b> · by Bizum or bank transfer · we'll send you the details on WhatsApp
     </div>
   </div>
 
@@ -183,21 +183,21 @@
 
   <div class="card">
     <div class="sec" data-i18n="sec_peque">👦 Datos del peque</div>
-    <label><span data-i18n="lbl_nino">Nombre y apellidos del peque</span> <span class="req">*</span></label>
+    <label for="f-nino"><span data-i18n="lbl_nino">Nombre y apellidos del peque</span> <span class="req">*</span></label>
     <input id="f-nino" type="text" data-i18n-ph="ph_nino" placeholder="Ej. Sofía García López">
-    <label><span data-i18n="lbl_nac">Fecha de nacimiento</span> <span class="req">*</span></label>
+    <label for="f-nac"><span data-i18n="lbl_nac">Fecha de nacimiento</span> <span class="req">*</span></label>
     <input id="f-nac" type="date">
     <div class="info" data-i18n="nota_edad" style="margin-top:8px">ℹ️ El casal es para peques de hasta 7 años.</div>
   </div>
 
   <div class="card">
     <div class="sec" data-i18n="sec_contacto">👨‍👩‍👧 Datos de contacto</div>
-    <label><span data-i18n="lbl_madre">Nombre y apellido de la madre / teléfono</span> <span class="req">*</span></label>
+    <label for="f-madre"><span data-i18n="lbl_madre">Nombre y apellido de la madre / teléfono</span> <span class="req">*</span></label>
     <input id="f-madre" type="text" data-i18n-ph="ph_madre" placeholder="Ej. Ana García · 637 000 000">
-    <label data-i18n="lbl_padre">Nombre y apellido del padre / teléfono</label>
+    <label for="f-padre" data-i18n="lbl_padre">Nombre y apellido del padre / teléfono</label>
     <input id="f-padre" type="text" data-i18n-ph="ph_padre" placeholder="Ej. Juan López · 637 000 000">
-    <label><span data-i18n="lbl_email">Correo electrónico</span> <span class="req">*</span></label>
-    <input id="f-email" type="email" data-i18n-ph="ph_email" placeholder="tucorreo@email.com">
+    <label for="f-email"><span data-i18n="lbl_email">Correo electrónico</span> <span class="req">*</span></label>
+    <input id="f-email" type="email" autocomplete="email" data-i18n-ph="ph_email" placeholder="tucorreo@email.com">
   </div>
 
   <div class="card">
@@ -235,7 +235,7 @@
 
   <div class="card">
     <div class="sec" data-i18n="sec_salud">🩺 Salud del peque</div>
-    <label data-i18n="lbl_alergias">¿El niño/a tiene alguna alergia? Si es SÍ, indica ¿a qué?</label>
+    <label for="f-alergias" data-i18n="lbl_alergias">¿El niño/a tiene alguna alergia? Si es SÍ, indica ¿a qué?</label>
     <input id="f-alergias" type="text" data-i18n-ph="ph_alergias" placeholder="Ej. frutos secos, lactosa… (o escribe 'ninguna')">
     <label style="margin-top:14px" data-i18n="lbl_flags">Solo para los más peques — marca lo que corresponda</label>
     <div class="chips" id="f-flags">
@@ -259,18 +259,18 @@
   <div class="card">
     <div class="sec" data-i18n="sec_pago">💳 Reserva y pago</div>
     <div class="info lang-block" data-lang="es">
-      La plaza se reserva con <b>50€</b> por transferencia a<br>
-      <b>ES93 2100 3683 5322 0012 8922</b> · KIDS AND KAFE INVERSIÓN S.L.<br><br>
+      La plaza se reserva con <b>50€</b> por Bizum o transferencia.<br>
+      <b>Te enviamos los datos de pago por WhatsApp.</b><br><br>
       Cuando envíes este formulario, te aparecerá un botón para <b>mandarnos el comprobante por WhatsApp</b>. 📲
     </div>
     <div class="info lang-block" data-lang="ca" style="display:none">
-      La plaça es reserva amb <b>50€</b> per transferència a<br>
-      <b>ES93 2100 3683 5322 0012 8922</b> · KIDS AND KAFE INVERSIÓN S.L.<br><br>
+      La plaça es reserva amb <b>50€</b> per Bizum o transferència.<br>
+      <b>T'enviem les dades de pagament per WhatsApp.</b><br><br>
       Quan enviïs aquest formulari, t'apareixerà un botó per <b>enviar-nos el comprovant per WhatsApp</b>. 📲
     </div>
     <div class="info lang-block" data-lang="en" style="display:none">
-      The place is booked with a <b>€50</b> transfer to<br>
-      <b>ES93 2100 3683 5322 0012 8922</b> · KIDS AND KAFE INVERSIÓN S.L.<br><br>
+      The place is booked with a <b>€50</b> deposit by Bizum or bank transfer.<br>
+      <b>We'll send you the payment details on WhatsApp.</b><br><br>
       When you submit this form, a button will appear to <b>send us the receipt via WhatsApp</b>. 📲
     </div>
   </div>
