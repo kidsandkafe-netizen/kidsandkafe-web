@@ -1113,7 +1113,7 @@ es:{
   tel_ayuda:'Si lo dejas, te escribimos nosotros y te guardamos la fecha. Si no, tranquila: no hace falta.',
   aviso1:'🗓️ Cuando hay cumple ', aviso2:'cerramos el centro entero para vosotros',
   aviso3:', así que solo hay ', aviso4:'una fiesta por sábado', aviso5:'. Las fechas vuelan.',
-  inv_t:'✏️ Cuéntanos tu idea', inv_s:'Escribe lo que le gusta a tu peque. La sala cambia sola con tus palabras y, si quieres, te la dibujamos.', inv_ph:'Ej: dragones y fuego en un castillo', inv_btn:'🎨 Dibújamelo', inv_wait:'🎨 Dibujando tu fiesta… unos segundos', inv_ok:'✨ ¡Listo! Tu fiesta ya está dibujada en el arco y en el cartel.', inv_err:'😕 No se ha podido dibujar. Prueba otra vez o escríbenos por WhatsApp.', inv_empty:'Escribe tu idea primero ✏️',
+  inv_t:'✏️ Cuéntanos tu idea', inv_s:'Escribe lo que le gusta a tu peque. La sala cambia sola con tus palabras.', inv_ph:'Ej: dragones y fuego en un castillo', inv_btn:'🎨 Dibújamelo', inv_wait:'🎨 Dibujando tu fiesta… unos segundos', inv_ok:'✨ ¡Listo! Tu fiesta ya está dibujada en el arco y en el cartel.', inv_err:'😕 No se ha podido dibujar. Prueba otra vez o escríbenos por WhatsApp.', inv_empty:'Escribe tu idea primero ✏️',
   pie:'Party Studio · Kids & Kafé',
   total:'Total estimado', consultar:'a consultar', incluido:'incluido',
   ent_ad:'Entrada adultos ×', mon_obl:'Monitor extra (obligatorio a partir de 20 niños)',
@@ -1179,7 +1179,7 @@ ca:{
   tel_ayuda:'Si el deixes, t\'escrivim nosaltres i et guardem la data. Si no, tranquil·la: no cal.',
   aviso1:'🗓️ Quan hi ha aniversari ', aviso2:'tanquem el centre sencer per a vosaltres',
   aviso3:', així que només hi ha ', aviso4:'una festa per dissabte', aviso5:'. Les dates volen.',
-  inv_t:'✏️ Explica\'ns la teva idea', inv_s:'Escriu què li agrada al teu petit. La sala canvia sola amb les teves paraules i, si vols, te la dibuixem.', inv_ph:'Ex: dracs i foc en un castell', inv_btn:'🎨 Dibuixa-me-la', inv_wait:'🎨 Dibuixant la teva festa… uns segons', inv_ok:'✨ Fet! La teva festa ja està dibuixada a l\'arc i al cartell.', inv_err:'😕 No s\'ha pogut dibuixar. Torna-ho a provar o escriu-nos per WhatsApp.', inv_empty:'Escriu la teva idea primer ✏️',
+  inv_t:'✏️ Explica\'ns la teva idea', inv_s:'Escriu què li agrada al teu petit. La sala canvia sola amb les teves paraules.', inv_ph:'Ex: dracs i foc en un castell', inv_btn:'🎨 Dibuixa-me-la', inv_wait:'🎨 Dibuixant la teva festa… uns segons', inv_ok:'✨ Fet! La teva festa ja està dibuixada a l\'arc i al cartell.', inv_err:'😕 No s\'ha pogut dibuixar. Torna-ho a provar o escriu-nos per WhatsApp.', inv_empty:'Escriu la teva idea primer ✏️',
   pie:'Party Studio · Kids & Kafé',
   total:'Total estimat', consultar:'a consultar', incluido:'inclòs',
   ent_ad:'Entrada adults ×', mon_obl:'Monitor extra (obligatori a partir de 20 nens)',
@@ -1245,7 +1245,7 @@ en:{
   tel_ayuda:'Leave it and we’ll write to you and hold the date. If not, no problem at all.',
   aviso1:'🗓️ When there\'s a birthday we ', aviso2:'close the whole centre just for you',
   aviso3:', so there\'s only ', aviso4:'one party per Saturday', aviso5:'. Dates go fast.',
-  inv_t:'✏️ Tell us your idea', inv_s:'Write what your little one loves. The room changes with your words and, if you like, we draw it for you.', inv_ph:'E.g. dragons and fire in a castle', inv_btn:'🎨 Draw it for me', inv_wait:'🎨 Drawing your party… a few seconds', inv_ok:'✨ Done! Your party is now drawn on the arch and the poster.', inv_err:'😕 We could not draw it. Try again or message us on WhatsApp.', inv_empty:'Write your idea first ✏️',
+  inv_t:'✏️ Tell us your idea', inv_s:'Write what your little one loves. The room changes with your words.', inv_ph:'E.g. dragons and fire in a castle', inv_btn:'🎨 Draw it for me', inv_wait:'🎨 Drawing your party… a few seconds', inv_ok:'✨ Done! Your party is now drawn on the arch and the poster.', inv_err:'😕 We could not draw it. Try again or message us on WhatsApp.', inv_empty:'Write your idea first ✏️',
   pie:'Party Studio · Kids & Kafé',
   total:'Estimated total', consultar:'on request', incluido:'included',
   ent_ad:'Adult entry ×', mon_obl:'Extra host (required from 20 children)',
@@ -2323,6 +2323,11 @@ async function KK_DIBUJAR(){
   btn.disabled = false;
 }
 $('#btnDibuja').onclick = KK_DIBUJAR;
+// INVENTA-DIBUJO 2026-10-30: fal.ai está sin saldo → el botón «Dibújamelo» se esconde hasta que
+// Barbara cargue saldo. Para reactivarlo: poner true y devolver a inv_s (ES/CA/EN) la coletilla
+// "y, si quieres, te la dibujamos" / "i, si vols, te la dibuixem" / "and, if you like, we draw it for you".
+const INVENTA_DIBUJO = false;
+if(!INVENTA_DIBUJO){ $('#btnDibuja').style.display = 'none'; $('#dibujaMsg').style.display = 'none'; }
 $('#fDiv').oninput  = e => { state.diversion= e.target.value; updatePoster(); };
 $('#fTel').oninput  = e => { state.tel      = e.target.value; marcarCambio();  };
 
