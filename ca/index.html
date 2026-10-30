@@ -427,6 +427,7 @@
 .hero .cf-card.t-lav  {--a1:#C3A0B2;--a2:#946981;--halo:#EFE3EA}
 .hero .cf-card.t-mint {--a1:#A0BC79;--a2:#6C8D48;--halo:#E9F1D9}
 .hero .cf-card.t-teal {--a1:#79BDB4;--a2:#4C8B82;--halo:#DEF0ED}
+.hero .cf-card.t-xmas {--a1:#2E8B57;--a2:#B3243A;--halo:#E8F1E8}   /* NAVIDAD 2026-27: título verde→rojo */
 
 .hero .cf-prev{left:-6px}.hero .cf-next{right:-6px}
 /* Flechas ‹ › del tablón ocultas: se mezclaban con las nubes y recargaban el hero.
@@ -762,6 +763,7 @@
   // Tablón premium: 6 tarjetas, cada una su color + ilustración 3D (Microsoft Fluent, local en img/illo/).
   // El *asterisco* resalta la palabra (título en degradado, descripción en color del tema).
   var OFERTAS=[
+    {theme:'t-xmas', img:'casal.png',    ek:'Christmas Camp',  title:'Casal de *Nadal*', desc:'Del *21 de desembre al 5 de gener*, d\'1 a 6 anys. Jocs, manualitats, art i mini xef. Mitja jornada o completa amb dinar.', price:'Des de 50€ el dia · reserva amb 50€', link:'casal', go:'casal', cta:'Veure el casal', flag:'🎄 Inscripcions obertes', chips:['📅 21-24 i 28-31 des · 4-5 gen','👶 D\'1 a 6 anys','🍽️ Dinar inclòs'], wa:'Hola! Vull info del Christmas Camp de Nadal'},
     {theme:'t-mint', img:'baby.png',     ek:'Extraescolars', title:'Extraescolars en *anglès*', desc:'*English & Play* (dilluns) i *English & Art* (dimarts), de 17 a 18h. Des de P3.', price:'49€/mes · inscripcions obertes', link:'extraescolar-inscripcion.html?lang=ca', cta:'Inscriure\'m', flag:'🎨 Inscripcions obertes', chips:['🇬🇧 En anglès','🎨 Joc i art','🗓️ Tot el curs'], wa:'Hola! Vull info de les extraescolars en anglès'},
     {theme:'t-sky',  img:'kidsdrop.png', ek:'Kids Drop',      title:'Tu *lliure*, ells segurs', desc:'Els deixes amb *monitores expertes* i surts tranquil·la: feina, una cita o veure Barcelona.', price:'Cangur sense reserva · a l\'instant', link:'kids-drop', cta:'Veure horaris', chips:['⏱️ Per hores','🙌 Sense reserva','👧 2n germà −50%'], wa:'Hola! Vull info de Kids Drop'},
     {theme:'t-sun',  img:'bono.png',     ek:'Bo hores',       title:'Bo *11 hores*', desc:'11 h de joc i *2 adults gratis* a cada visita. Sense caducitat.', price:'85€ · 7,7€/h (estalvies 25€)', link:'precios', cta:'Aconseguir el bo', chips:['⏳ Sense caducitat','👨‍👩‍👧 2 adults gratis'], wa:'Hola! Vull info del bo d\'11 hores'},
@@ -823,7 +825,7 @@
     var trust=div('bb-trust'); trust.appendChild(span('st','★★★★☆')); trust.appendChild(document.createTextNode('4,2 · 518 ressenyes')); c.appendChild(trust);
     // botons: principal → descarregar app · WhatsApp → xat amb tu
     var cta=div('bb-cta');
-    var go=document.createElement('a'); go.className='bb-go'; go.href='#app'; go.textContent=(o.cta||'Veure oferta')+' →'; cta.appendChild(go);
+    var go=document.createElement('a'); go.className='bb-go'; go.href=o.go||'#app'; go.textContent=(o.cta||'Veure oferta')+' →'; cta.appendChild(go);
     var wa=document.createElement('a'); wa.className='bb-wa'; wa.href='https://wa.me/'+WA_NUM+'?text='+encodeURIComponent(o.wa||('Hola! Vull info de '+o.ek));
     wa.target='_blank'; wa.rel='noopener'; wa.textContent='💬'; wa.setAttribute('aria-label','WhatsApp'); cta.appendChild(wa);
     c.appendChild(cta);
