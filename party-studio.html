@@ -536,6 +536,7 @@ footer{padding:48px 20px 60px;text-align:center;color:var(--muted);font-size:12.
   }
 }
 </script>
+<style>.th.invent::before{content:'✏️';display:flex;align-items:center;justify-content:center;aspect-ratio:224/300;width:100%;background:var(--crema);box-shadow:inset 0 0 0 1.5px var(--linea);border-radius:3px;font-size:44px;margin-bottom:8px}.th.invent:has(img.lam)::before{display:none}</style>
 </head>
 <body>
 
@@ -942,6 +943,7 @@ footer{padding:48px 20px 60px;text-align:center;color:var(--muted);font-size:12.
     <path d="M40 72 28 60l-8 18Z" fill="#F7C9A6"/>
     <path d="M40 72l-6-6-4 10Z" fill="#3B2C33"/>
   </g>
+  <text id="inventTxt" x="158" y="74" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="15" font-weight="700" fill="#5A3E8A"><tspan x="158" dy="0">¿…?</tspan></text>
 </svg>
 
     </div>
@@ -966,6 +968,15 @@ footer{padding:48px 20px 60px;text-align:center;color:var(--muted);font-size:12.
 
   <!-- PASO 2 -->
   <div class="step">
+    <div class="custom" id="ideaBox" hidden style="margin-bottom:22px">
+      <b data-i18n="inv_t">✏️ Cuéntanos tu idea</b>
+      <small data-i18n="inv_s">Escribe lo que le gusta a tu peque. La sala cambia sola con tus palabras y, si quieres, te la dibujamos.</small>
+      <textarea id="fIdea" maxlength="120" data-i18n-ph="inv_ph" placeholder="Ej: dragones y fuego en un castillo"></textarea>
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:10px">
+        <button class="btn btn-wa" id="btnDibuja" type="button" style="background:var(--marino)" data-i18n="inv_btn">🎨 Dibújamelo</button>
+        <span id="dibujaMsg" style="font-size:13px;color:var(--muted);font-weight:700"></span>
+      </div>
+    </div>
     <div class="step-n"><b>2</b><h2 data-i18n="p2">¿Quién cumple años?</h2></div>
     <div class="fields">
       <label><span class="lab" data-i18n="l_name">NOMBRE DEL PEQUE</span><input id="fName" placeholder="Martina" data-i18n-ph="ph_name" maxlength="18"></label>
@@ -1102,6 +1113,7 @@ es:{
   tel_ayuda:'Si lo dejas, te escribimos nosotros y te guardamos la fecha. Si no, tranquila: no hace falta.',
   aviso1:'🗓️ Cuando hay cumple ', aviso2:'cerramos el centro entero para vosotros',
   aviso3:', así que solo hay ', aviso4:'una fiesta por sábado', aviso5:'. Las fechas vuelan.',
+  inv_t:'✏️ Cuéntanos tu idea', inv_s:'Escribe lo que le gusta a tu peque. La sala cambia sola con tus palabras y, si quieres, te la dibujamos.', inv_ph:'Ej: dragones y fuego en un castillo', inv_btn:'🎨 Dibújamelo', inv_wait:'🎨 Dibujando tu fiesta… unos segundos', inv_ok:'✨ ¡Listo! Tu fiesta ya está dibujada en el arco y en el cartel.', inv_err:'😕 No se ha podido dibujar. Prueba otra vez o escríbenos por WhatsApp.', inv_empty:'Escribe tu idea primero ✏️',
   pie:'Party Studio · Kids & Kafé',
   total:'Total estimado', consultar:'a consultar', incluido:'incluido',
   ent_ad:'Entrada adultos ×', mon_obl:'Monitor extra (obligatorio a partir de 20 niños)',
@@ -1167,6 +1179,7 @@ ca:{
   tel_ayuda:'Si el deixes, t\'escrivim nosaltres i et guardem la data. Si no, tranquil·la: no cal.',
   aviso1:'🗓️ Quan hi ha aniversari ', aviso2:'tanquem el centre sencer per a vosaltres',
   aviso3:', així que només hi ha ', aviso4:'una festa per dissabte', aviso5:'. Les dates volen.',
+  inv_t:'✏️ Explica\'ns la teva idea', inv_s:'Escriu què li agrada al teu petit. La sala canvia sola amb les teves paraules i, si vols, te la dibuixem.', inv_ph:'Ex: dracs i foc en un castell', inv_btn:'🎨 Dibuixa-me-la', inv_wait:'🎨 Dibuixant la teva festa… uns segons', inv_ok:'✨ Fet! La teva festa ja està dibuixada a l\'arc i al cartell.', inv_err:'😕 No s\'ha pogut dibuixar. Torna-ho a provar o escriu-nos per WhatsApp.', inv_empty:'Escriu la teva idea primer ✏️',
   pie:'Party Studio · Kids & Kafé',
   total:'Total estimat', consultar:'a consultar', incluido:'inclòs',
   ent_ad:'Entrada adults ×', mon_obl:'Monitor extra (obligatori a partir de 20 nens)',
@@ -1232,6 +1245,7 @@ en:{
   tel_ayuda:'Leave it and we’ll write to you and hold the date. If not, no problem at all.',
   aviso1:'🗓️ When there\'s a birthday we ', aviso2:'close the whole centre just for you',
   aviso3:', so there\'s only ', aviso4:'one party per Saturday', aviso5:'. Dates go fast.',
+  inv_t:'✏️ Tell us your idea', inv_s:'Write what your little one loves. The room changes with your words and, if you like, we draw it for you.', inv_ph:'E.g. dragons and fire in a castle', inv_btn:'🎨 Draw it for me', inv_wait:'🎨 Drawing your party… a few seconds', inv_ok:'✨ Done! Your party is now drawn on the arch and the poster.', inv_err:'😕 We could not draw it. Try again or message us on WhatsApp.', inv_empty:'Write your idea first ✏️',
   pie:'Party Studio · Kids & Kafé',
   total:'Estimated total', consultar:'on request', incluido:'included',
   ent_ad:'Adult entry ×', mon_obl:'Extra host (required from 20 children)',
@@ -1668,6 +1682,7 @@ function paint(){
   if(window.KK3D) window.KK3D.setTheme(state.theme, t);
 
   $('#tag').textContent  = t.i + ' ' + t.n;
+  const ib = $('#ideaBox'); if(ib) ib.hidden = state.theme !== 'invent';
   $('#pIco').textContent = t.i;
 
   /* La lamina del CARTEL (la de abajo, la que se comparte). Es otra img
@@ -2009,7 +2024,8 @@ function renderThemes(){
      Ojo: no se borra la entrada de THEMES, solo se esconde el boton, para
      no romper nada que la mire. Vuelve SOLA el dia que se anada la lamina
      a ART_PHOTO; no hay que acordarse de tocar esta linea.              */
-  if(k === 'invent' && !ART_PHOTO.invent) return;
+  /* 'La inventamos' SE ENSEÑA aunque no tenga lámina: la madre escribe su idea y la
+     lámina la dibuja la IA al pulsar «Dibújamelo» (functions/inventa.js). 2026-10-23 */
   const b = el('button', 'th' + (k === 'invent' ? ' invent' : ''));
   b.dataset.k = k;
   b.setAttribute('aria-pressed','false');
@@ -2223,6 +2239,90 @@ $('#fAge').oninput  = e => { state.age     = e.target.value; updatePoster(); avi
 $('#fKids').oninput = e => { state.kids    = e.target.value; updatePoster(); };
 $('#fAd').oninput   = e => { state.adults  = e.target.value; updatePoster(); };
 $('#fCat').oninput  = e => { state.catering= e.target.value; updatePoster(); };
+/* ═══ LA INVENTAMOS (2026-10-23): "tú lo dices, lo vemos" ═══════════════════════
+   La madre escribe y la temática 'invent' se RELLENA con sus palabras: paleta
+   (sky/far/gr/ac), adornos flotantes (near) y nombre (n). paint() y el 3D hacen
+   el resto como con cualquier temática. «Dibújamelo» pide la lámina a /inventa. */
+state.idea = '';
+const INV_PAL = [
+  [/espacio|space|espai|estrella|estrela|luna|lluna|planeta|cohete|coet|astronaut|galax/i,
+     {sky:['#1E2B5C','#36498A'], far:'#3E5496', gr:'#263B70', ac:'#E7B24C'}],
+  [/\bmar\b|sirena|oce|peces|peix|barco|vaixell|pirata|tibur|ballena|submar/i,
+     {sky:['#CFF0F6','#8FD3E6'], far:'#5FB6D1', gr:'#2F8FB0', ac:'#F2C14E'}],
+  [/bosque|bosc|selva|jungla|dino|dinosaur|safari|tigre|le[oó]n|mono|animal/i,
+     {sky:['#E9F3D6','#BFE0A3'], far:'#8CC26E', gr:'#4D8A3F', ac:'#E39B3A'}],
+  [/princes|unicorn|hada|fada|fairy|rosa|flor|mariposa|papallona|arco.?iris|rainbow/i,
+     {sky:['#FFE6F1','#FFC8DF'], far:'#F4A5C6', gr:'#E58BB0', ac:'#C9A24A'}],
+  [/f[uú]tbol|football|soccer|bar[cç]a|deporte|esport/i,
+     {sky:['#E3F5E1','#A9DDA8'], far:'#5FBF5A', gr:'#2E8B3A', ac:'#FFFFFF'}],
+  [/drag[oó]n|drac|fuego|foc|volc|lava|superh|h[eé]roe|rojo|vermell/i,
+     {sky:['#FFE3D6','#FFB49A'], far:'#F08A6B', gr:'#C9452F', ac:'#F6D15B'}],
+  [/nieve|\bneu\b|frozen|hielo|\bgel\b|polar|invierno|hivern/i,
+     {sky:['#EAF6FF','#BFE2FA'], far:'#9CCDF2', gr:'#5E9BD1', ac:'#DDE9F5'}],
+  [/magia|m[aà]gic|bruja|bruixa|misterio|noche|\bnit\b|halloween/i,
+     {sky:['#2A1A4A','#4A2E7A'], far:'#5E3E96', gr:'#3C2566', ac:'#E7B24C'}],
+];
+const INV_EMO = [
+  [/dino|dinosaur/i,'🦕'],[/estrella|estrela|star/i,'⭐'],[/luna|lluna|moon/i,'🌙'],[/planeta|planet/i,'🪐'],
+  [/cohete|coet|rocket|espacio|space/i,'🚀'],[/unicorn/i,'🦄'],[/sirena|mermaid/i,'🧜'],[/pirata|pirate/i,'🏴‍☠️'],
+  [/barco|vaixell|boat/i,'⛵'],[/drag[oó]n|drac/i,'🐉'],[/princes/i,'👑'],[/castillo|castell|castle/i,'🏰'],
+  [/bluey|perro|\bgos\b|\bdog/i,'🐶'],[/gato|\bgat\b|\bcat\b/i,'🐱'],[/coche|cotxe|\bcar\b/i,'🏎️'],[/f[uú]tbol|football|soccer/i,'⚽'],
+  [/hada|fada|fairy/i,'🧚'],[/mariposa|papallona|butterfly/i,'🦋'],[/\bflor/i,'🌸'],[/arco.?iris|rainbow/i,'🌈'],
+  [/helado|gelat|ice ?cream/i,'🍦'],[/chocolat/i,'🍫'],[/nieve|\bneu\b|frozen|snow/i,'❄️'],[/tibur|shark/i,'🦈'],
+  [/le[oó]n|lion/i,'🦁'],[/tigre|tiger/i,'🐯'],[/\bmono|mico|monkey/i,'🐵'],[/magia|m[aà]gic/i,'🪄'],
+  [/superh|h[eé]roe|hero/i,'🦸'],[/robot/i,'🤖'],[/\btren|train/i,'🚂'],[/avi[oó]n|avi[oó]\b|plane/i,'✈️'],
+  [/m[uú]sica|music|canta/i,'🎵'],[/pastel|tarta|cake/i,'🎂'],[/globo|globus|balloon/i,'🎈'],
+];
+function KK_INVENTAR(txt){
+  txt = (txt || '').trim();
+  state.idea = txt;
+  const inv = THEMES.invent;
+  const pal = (INV_PAL.find(([re]) => re.test(txt)) || [null,
+                {sky:['#FFF6E2','#FFEBC7'], far:'#FFE0A8', gr:'#F7D18C', ac:'#E7B24C'}])[1];
+  Object.assign(inv, pal);
+  const emo = INV_EMO.filter(([re]) => re.test(txt)).map(([,e]) => e).slice(0,5);
+  while(emo.length < 6) emo.push(['✨','🎈','⭐','💫'][emo.length % 4]);
+  inv.near = emo;
+  inv.n = txt || T('inv_t').replace(/^✏️\s*/, '');
+  const te = document.querySelector('#props svg[data-art="invent"] #inventTxt');
+  if(te){
+    const w = (txt || '¿…?').split(' '); let l1 = '', l2 = '';
+    w.forEach(p => { if((l1 + ' ' + p).trim().length <= 16 && !l2) l1 = (l1 + ' ' + p).trim(); else l2 = (l2 + ' ' + p).trim(); });
+    te.innerHTML = '<tspan x="158" dy="0">' + l1 + '</tspan>' + (l2 ? '<tspan x="158" dy="18">' + l2 + '</tspan>' : '');
+    if(window.KK3D_INVALIDA) window.KK3D_INVALIDA('invent');
+  }
+  if(state.theme !== 'invent') state.theme = 'invent';
+  paint();
+}
+$('#fIdea').oninput = e => KK_INVENTAR(e.target.value);
+/* «Dibújamelo»: pide la lámina a /inventa (Cloudflare Function con la clave de fal.ai)
+   y la pone como lámina de 'invent' en caliente: arco 3D, azulejo, cartel y descarga.
+   En localhost (pruebas) se simula con art-cumples/invent.jpg si existe.            */
+async function KK_DIBUJAR(){
+  const idea = (state.idea || '').trim(), msg = $('#dibujaMsg'), btn = $('#btnDibuja');
+  if(idea.length < 3){ msg.textContent = T('inv_empty'); return; }
+  btn.disabled = true; msg.textContent = T('inv_wait');
+  try{
+    let blob;
+    if(location.hostname === 'localhost' || location.hostname === '127.0.0.1'){
+      await new Promise(r => setTimeout(r, 2200));
+      blob = await (await fetch('art-cumples/invent.jpg')).blob();
+    } else {
+      const r = await fetch('/inventa', { method:'POST', headers:{'content-type':'application/json'},
+                                          body: JSON.stringify({ idea: idea, lang: LANG }) });
+      if(!r.ok){ let e = {}; try{ e = await r.json(); }catch(_){} throw new Error(e.mensaje || ''); }
+      blob = await r.blob();
+    }
+    if(window.KK_INVENT_URL) URL.revokeObjectURL(window.KK_INVENT_URL);
+    window.KK_INVENT_URL = URL.createObjectURL(blob);
+    ART_PHOTO.invent = { src: window.KK_INVENT_URL, ty: 0.74, col: THEMES.invent.gr || '#5A3E8A' };
+    renderThemes(); paint();
+    if(window.KK3D) window.KK3D.setTheme('invent', THEMES.invent);
+    msg.textContent = T('inv_ok');
+  }catch(e){ msg.textContent = (e && e.message) ? '😕 ' + e.message : T('inv_err'); }
+  btn.disabled = false;
+}
+$('#btnDibuja').onclick = KK_DIBUJAR;
 $('#fDiv').oninput  = e => { state.diversion= e.target.value; updatePoster(); };
 $('#fTel').oninput  = e => { state.tel      = e.target.value; marcarCambio();  };
 
@@ -2410,6 +2510,8 @@ document.querySelectorAll('.langbtn').forEach(b =>
 (function(){
   const q = new URLSearchParams(location.search).get('lang');
   setLang(q && TXT[q] ? q : 'es');
+  const qi = new URLSearchParams(location.search).get('idea');
+  if(qi){ const f = document.getElementById('fIdea'); if(f) f.value = qi; setTimeout(() => KK_INVENTAR(qi), 400); }
 })();
 
 /* ?n=Martina&e=5  → rellena nombre y edad.
@@ -6008,6 +6110,7 @@ contact.rotation.x = -Math.PI/2; contact.position.set(0, 0.012, -0.35);
 world.add(contact);
 
 const texCache = new Map();
+window.KK3D_INVALIDA = k => { texCache.delete(k); if(window.KK3D && window.KK_THEME === k) window.KK3D.setTheme(k, window.KK_TPAL); };
 const loader = new THREE.TextureLoader();
 function finishTex(t){
   t.colorSpace = THREE.SRGBColorSpace;
