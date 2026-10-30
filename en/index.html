@@ -427,6 +427,7 @@
 .hero .cf-card.t-lav  {--a1:#C3A0B2;--a2:#946981;--halo:#EFE3EA}
 .hero .cf-card.t-mint {--a1:#A0BC79;--a2:#6C8D48;--halo:#E9F1D9}
 .hero .cf-card.t-teal {--a1:#79BDB4;--a2:#4C8B82;--halo:#DEF0ED}
+.hero .cf-card.t-xmas {--a1:#2E8B57;--a2:#B3243A;--halo:#E8F1E8}   /* NAVIDAD 2026-27: título verde→rojo */
 
 .hero .cf-prev{left:-6px}.hero .cf-next{right:-6px}
 /* Flechas ‹ › del tablón ocultas: se mezclaban con las nubes y recargaban el hero.
@@ -762,6 +763,7 @@
   // Premium board: 6 cards, each with its own colour + 3D illustration (Microsoft Fluent, local in img/illo/).
   // *asterisks* highlight the word (title in gradient, description in the card's colour).
   var OFERTAS=[
+    {theme:'t-xmas', img:'casal.png',    ek:'Christmas Camp',  title:'*Christmas* camp', desc:'From *21 December to 5 January*, ages 1 to 6. Group games, crafts, art and mini chef. Half or full day with lunch.', price:'From €50 a day · reserve with €50', link:'casal', go:'casal', cta:'See the camp', flag:'🎄 Registration open', chips:['📅 21-24 & 28-31 Dec · 4-5 Jan','👶 Ages 1 to 6','🍽️ Lunch included'], wa:'Hi! I want info about the Christmas Camp'},
     {theme:'t-mint', img:'baby.png',     ek:'After-school',  title:'After-school in *English*', desc:'*English & Play* (Mondays) and *English & Art* (Tuesdays), 5 to 6 pm. From P3.', price:'€49/month · registration open', link:'extraescolar-inscripcion.html?lang=en', cta:'Register', flag:'🎨 Registration open', chips:['🇬🇧 In English','🎨 Play & art','🗓️ All year'], wa:'Hi! I\'d like info about the after-school activities in English'},
     {theme:'t-sky',  img:'kidsdrop.png', ek:'Kids Drop',    title:'You *free*, them safe', desc:'Leave them with *expert monitors* and head out with peace of mind: work, a date or sightseeing.', price:'Drop-in babysitting · no booking', link:'kids-drop', cta:'See hours', chips:['⏱️ By the hour','🙌 No booking','👧 2nd sibling −50%'], wa:'Hi! I\'d like info about Kids Drop'},
     {theme:'t-sun',  img:'bono.png',     ek:'Hours pass',   title:'*11-hour* pass', desc:'11 h of play and *2 adults free* on every visit. Never expires.', price:'€85 · €7.7/h (save €25)', link:'precios', cta:'Get the pass', chips:['⏳ Never expires','👨‍👩‍👧 2 adults free'], wa:'Hi! I\'d like info about the 11-hour pass'},
@@ -821,7 +823,7 @@
     var trust=div('bb-trust'); trust.appendChild(span('st','★★★★☆')); trust.appendChild(document.createTextNode('4.2 · 518 reviews')); c.appendChild(trust);
     // buttons: main → download app · WhatsApp → chat with you
     var cta=div('bb-cta');
-    var go=document.createElement('a'); go.className='bb-go'; go.href='#app'; go.textContent=(o.cta||'See offer')+' →'; cta.appendChild(go);
+    var go=document.createElement('a'); go.className='bb-go'; go.href=o.go||'#app'; go.textContent=(o.cta||'See offer')+' →'; cta.appendChild(go);
     var wa=document.createElement('a'); wa.className='bb-wa'; wa.href='https://wa.me/'+WA_NUM+'?text='+encodeURIComponent(o.wa||('Hi! I\'d like info about '+o.ek));
     wa.target='_blank'; wa.rel='noopener'; wa.textContent='💬'; wa.setAttribute('aria-label','WhatsApp'); cta.appendChild(wa);
     c.appendChild(cta);
