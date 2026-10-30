@@ -160,6 +160,15 @@
       .nv-card.xmas .nv-sat{background:rgba(255,255,255,.2);box-shadow:inset 0 0 0 3px rgba(243,218,150,.6), 0 8px 16px -6px rgba(0,0,0,.4)}
       .nv-card.xmas .nv-tag{background:#FDF2EE;color:#9E1B2E}
       .nv-card.xmas .nv-link{background:linear-gradient(135deg,#D63A4E,#9E1B2E);box-shadow:0 14px 28px -12px rgba(158,27,46,.85), inset 0 1px 0 rgba(255,255,255,.35)}
+      /* NAVIDAD · medalla limpia: Papá Noel y regalo en el borde de la medalla, no encima del árbol */
+      .nv-card.xmas .nv-sat.s-a{top:-10px;right:-26px}
+      .nv-card.xmas .nv-sat.s-b{bottom:-6px;left:-26px}
+      /* NAVIDAD · móvil: etiqueta más compacta y medalla más abajo para que no se pisen */
+      @media (max-width:560px){
+        .nv-card.xmas .nv-head{height:232px}
+        .nv-card.xmas .nv-stage{padding-top:34px}
+        .nv-card.xmas .nv-badge{font-size:10px;padding:6px 10px;letter-spacing:.04em}
+      }
       </style>
 
       <!-- Mini Chef Halloween -->
@@ -307,7 +316,6 @@
       ═══ fin tarjetas guardadas ═══ -->
 
     </div>
-    <div class="center" style="margin-top:20px"><p style="font-size:13px;color:var(--muted)">💡 <b>Para Barbara:</b> edita estas tarjetas en <code>actividades.html</code> (sección "Novedades del centro") para publicar actividades nuevas.</p></div>
   </div>
 </section>
 
