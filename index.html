@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="cielo tablon tablon3d">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -656,6 +656,139 @@
 .hero-vignette{position:absolute;inset:0;z-index:1;pointer-events:none;
   background:radial-gradient(130% 100% at 50% 38%,transparent 55%,rgba(120,90,55,.10) 100%)}
 </style>
+
+<style id="kk-cielo">
+/* ===== CIELO EN TODA LA PÁGINA + TARJETAS «tablón 3D» + tarjeta verde KK tranquila (2026-10-30)
+   Elegido por Barbara en el mockup: «A · Todo cielo» + «Mezcla de las dos».
+   Clases en <html>: cielo · tablon · tablon3d. Para volver atrás: quitar este bloque, esas clases del <html>
+   y el script «Cielo de toda la página» del final. ===== */
+/* ---------- la tipografía de abajo habla como la portada ---------- */
+html.cielo .eyebrow{display:inline-flex;align-items:center;gap:8px; background:linear-gradient(135deg,#8FB162 0%,#6E9440 55%,#5E8235 100%);color:#fff!important; font-size:11.5px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;line-height:1.2; padding:8px 18px;border-radius:30px;box-shadow:0 10px 22px -8px rgba(94,130,64,.7),inset 0 1px 0 rgba(255,255,255,.35)}
+html.cielo .eyebrow::before{content:'';width:6px!important;height:6px!important;border-radius:50%; background:#FFE7A8!important;box-shadow:0 0 8px rgba(255,231,168,.9)}
+html.cielo .eyebrow.c::after{display:none!important}
+html.cielo #programa .eyebrow,html.cielo .appcta .eyebrow{background:rgba(255,255,255,.16);color:#FFE6B4!important;border:1px solid rgba(255,255,255,.38); -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
+html.cielo h2.title{font-weight:600;letter-spacing:-1.2px}
+/* el "em" de los títulos se queda en color liso (style.css quitó el degradado a propósito: texto roto en curva) */
+html.cielo .center h2.title::after{display:none}
+/* tarjetas de zonas: cada una con su color, como las del tablón */
+html.cielo .zgrid .zcard:nth-child(1){--a1:#7FA6C0;--a2:#4A7591;--halo:#E2ECF2}
+html.cielo .zgrid .zcard:nth-child(2){--a1:#C3A0B2;--a2:#946981;--halo:#EFE3EA}
+html.cielo .zgrid .zcard:nth-child(3){--a1:#E4B25C;--a2:#C0862E;--halo:#F6ECD4}
+html.cielo .zgrid .zcard:nth-child(4){--a1:#DFA284;--a2:#BE6E4C;--halo:#F4E6DB}
+html.cielo .zgrid .zcard:nth-child(5){--a1:#A0BC79;--a2:#6C8D48;--halo:#E9F1D9}
+html.cielo .zcard .more{color:var(--a2)}
+html.cielo .zcard .zimg .zem{background:rgba(255,255,255,.86);border:1px solid #fff; -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px); box-shadow:0 10px 22px -8px color-mix(in srgb,var(--a2) 60%,transparent),inset 0 1px 0 #fff}
+/* brillo que cruza la tarjeta al pasar el ratón (igual que el cristal de arriba) */
+html.cielo .pf-big,html.cielo .pf-mini{position:relative}
+html.cielo .zcard::after,html.cielo .pf-big::after,html.cielo .pf-mini::after,html.cielo .trust::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:4; background:linear-gradient(112deg,transparent 34%,rgba(255,255,255,.42) 45%,rgba(255,255,255,0) 56%); transform:translateX(-130%);transition:transform 1.2s cubic-bezier(.16,1,.3,1)}
+html.cielo .zcard:hover::after,html.cielo .pf-big:hover::after,html.cielo .pf-mini:hover::after,html.cielo .trust:hover::after{transform:translateX(130%)}
+html.cielo .foot-grid a:hover{color:#FFE6B4}
+/* ---------- nubes (capas que crea el script de abajo) ---------- */
+.kkc-clouds,.kkc-bank{position:absolute;pointer-events:none;display:none;overflow:hidden;overflow:clip visible}
+.kkc-clouds{inset:0;z-index:0}
+html.cielo .kkc-clouds{display:block}
+.kkc-cl{position:absolute;width:var(--w);max-width:none;height:auto;opacity:var(--o,1);filter:var(--f,none);scale:var(--sx,1) 1; animation:kkcDrift var(--d,30s) ease-in-out var(--dl,0s) infinite alternate}
+.kkc-cl.kkc-l{left:var(--x)}
+.kkc-cl.kkc-r{right:var(--x)}
+@keyframes kkcDrift{from{translate:0 0}to{translate:28px -5px}}
+.kkc-bank{left:0;right:0;height:170px;z-index:3}
+.kkc-bank::before{content:'';position:absolute;left:-4%;right:-4%;bottom:40px;height:76px;filter:blur(10px); background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.96) 45%,rgba(255,255,255,.96) 60%,rgba(255,255,255,0))}
+.kkc-bank img{position:absolute;left:var(--l);bottom:var(--b,0);width:var(--w);height:var(--h);max-width:none;opacity:var(--o,1);scale:var(--sx,1) 1}
+html.cielo .kkc-bank.foot{display:block;top:-112px;z-index:2}
+@media(max-width:640px){
+  .kkc-cl{width:calc(var(--w)*.52)}
+  .kkc-cl.kkc-l{left:calc(var(--x)*.5)}
+  .kkc-cl.kkc-r{right:calc(var(--x)*.5)}
+  .kkc-nom{display:none}
+  .kkc-bank{height:120px}
+  .kkc-bank::before{bottom:22px;height:60px}
+  .kkc-bank img{width:calc(var(--w)*.55);height:calc(var(--h)*.55)}
+  html.cielo .kkc-bank.foot{top:-80px}
+}
+@media(prefers-reduced-motion:reduce){
+  .kkc-cl{animation:none}
+}
+/* =================== A · TODO CIELO =================== */
+html.cielo body{background:#E6F1FC}
+/* el final del cielo de la portada se funde con el cielo de abajo (sin corte) */
+html.cielo .hero::after{content:'';position:absolute;left:0;right:0;bottom:0;height:190px;z-index:1;pointer-events:none; background:linear-gradient(180deg,rgba(221,238,252,0) 0%,rgba(221,238,252,.55) 45%,#DDEEFC 100%)}
+html.cielo section:not(.hero) > .wrap{position:relative;z-index:1}
+html.cielo #programa{background:linear-gradient(180deg,#DDEEFC 0%,#E3F0FD 100%)!important;overflow:visible;padding-top:64px;padding-bottom:84px}
+html.cielo #zonas{background:radial-gradient(46% 38% at 0% 38%,rgba(168,201,127,.22),transparent 70%), radial-gradient(42% 36% at 100% 72%,rgba(231,196,106,.17),transparent 70%),linear-gradient(180deg,#E3F0FD,#E9F4FE)!important}
+html.cielo #zonas + section{background:linear-gradient(180deg,#E9F4FE,#EBF5FE)!important}
+html.cielo #zonas + section + section{background:radial-gradient(40% 40% at 90% 30%,rgba(244,184,192,.18),transparent 70%), radial-gradient(40% 40% at 8% 74%,rgba(176,214,208,.24),transparent 70%),linear-gradient(180deg,#EBF5FE,#E6F1FD)!important}
+html.cielo #zonas + section + section + section{background:linear-gradient(180deg,#E6F1FD,#E8F3FD)!important}
+html.cielo #faq{background:radial-gradient(40% 36% at 100% 26%,rgba(168,201,127,.2),transparent 70%), radial-gradient(40% 36% at 0% 82%,rgba(244,184,192,.16),transparent 70%),linear-gradient(180deg,#E8F3FD,#ECF5FD)!important}
+html.cielo #app{background:radial-gradient(50% 50% at 50% 30%,rgba(231,196,106,.12),transparent 70%),linear-gradient(180deg,#ECF5FD,#E1EEFA)!important}
+/* «Nuestro programa»: tarjeta grande flotando en el cielo (su aspecto final lo pone la capa TABLÓN de abajo) */
+html.cielo #programa::before,html.cielo #programa .wave{display:none}
+html.cielo #programa > .wrap{box-sizing:border-box;width:calc(100% - 48px);max-width:1180px;margin:0 auto; padding:58px 54px 62px;border-radius:48px;isolation:isolate;overflow:hidden; background:radial-gradient(42% 36% at 14% 6%,rgba(255,247,218,.42),transparent 70%), radial-gradient(ellipse 96% 92% at 50% 42%,rgba(150,186,126,.62) 0%,rgba(108,145,92,.80) 62%,rgba(70,104,60,.92) 100%); -webkit-backdrop-filter:blur(14px) saturate(1.15);backdrop-filter:blur(14px) saturate(1.15); box-shadow:0 54px 96px -50px rgba(40,74,36,.72),inset 0 2px 0 rgba(255,255,255,.6),inset 0 -2px 0 rgba(255,255,255,.18), inset 1.5px 0 0 rgba(255,170,190,.2),inset -1.5px 0 0 rgba(150,205,255,.24),inset 0 26px 34px -28px rgba(255,255,255,.7)}
+html.cielo #programa > .wrap::before{content:'';position:absolute;inset:0;border-radius:inherit;z-index:-1;pointer-events:none; background:linear-gradient(118deg,transparent 26%,rgba(255,255,255,.2) 36%,rgba(255,255,255,.05) 44%,transparent 52%), linear-gradient(118deg,transparent 58%,rgba(255,255,255,.1) 61%,transparent 65%)}
+html.cielo #programa .pf-big,html.cielo #programa .pf-mini{background:linear-gradient(160deg,rgba(255,255,255,.96),rgba(255,255,255,.84)); -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.85); box-shadow:0 30px 60px -34px rgba(20,40,16,.62),inset 0 1px 0 #fff}
+html.cielo #programa > .wrap > .center:last-child .btn{background:rgba(255,255,255,.95);color:#4E6B33; box-shadow:0 16px 34px -12px rgba(20,40,16,.55),inset 0 1px 0 #fff}
+/* base de las tarjetas sobre el cielo (su aspecto final lo pone la capa TABLÓN de abajo) */
+html.cielo .zcard,html.cielo .trust,html.cielo .faq details{position:relative;overflow:hidden; background:linear-gradient(160deg,rgba(255,255,255,.84) 0%,rgba(255,255,255,.62) 55%,color-mix(in srgb,var(--halo,#EAF3FB) 72%,transparent) 100%); -webkit-backdrop-filter:blur(18px) saturate(1.35);backdrop-filter:blur(18px) saturate(1.35); border:1px solid rgba(255,255,255,.82); box-shadow:0 34px 64px -38px color-mix(in srgb,var(--a2,#3E6FA8) 58%,transparent),0 2px 6px -2px rgba(52,98,160,.1), inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(255,255,255,.4)}
+html.cielo .zcard:hover{box-shadow:0 44px 74px -38px color-mix(in srgb,var(--a2) 68%,transparent),inset 0 1px 0 #fff}
+html.cielo .videowrap{box-shadow:0 0 0 10px rgba(255,255,255,.5),0 0 0 11px rgba(255,255,255,.9),0 50px 90px -46px rgba(52,98,160,.55)}
+html.cielo .gal img{box-shadow:0 0 0 5px rgba(255,255,255,.74),0 24px 46px -28px rgba(52,98,160,.5)}
+html.cielo .appcta{background:radial-gradient(42% 40% at 14% 8%,rgba(255,247,218,.4),transparent 70%), radial-gradient(ellipse 96% 92% at 50% 42%,rgba(150,186,126,.62),rgba(108,145,92,.8) 62%,rgba(70,104,60,.92)); -webkit-backdrop-filter:blur(14px) saturate(1.15);backdrop-filter:blur(14px) saturate(1.15); box-shadow:0 54px 96px -50px rgba(40,74,36,.7),inset 0 2px 0 rgba(255,255,255,.6),inset 0 -2px 0 rgba(255,255,255,.18),inset 0 26px 34px -28px rgba(255,255,255,.7)}
+html.cielo .appcta::before{top:0;right:0;bottom:0;left:0;width:auto;height:auto;border-radius:inherit; background:linear-gradient(118deg,transparent 26%,rgba(255,255,255,.16) 36%,rgba(255,255,255,.04) 44%,transparent 52%)}
+html.cielo .store a{background:rgba(255,255,255,.92);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,.95);box-shadow:0 16px 32px -14px rgba(20,40,16,.5),inset 0 1px 0 #fff}
+/* pie: el cielo acaba en la hierba (verde salvia) con nubes posadas encima */
+html.cielo footer{background:linear-gradient(180deg,#5B7A50 0%,#425F3A 45%,#30472B 100%)}
+html.cielo footer::before{display:none}
+@media(max-width:640px){
+  html.cielo #programa{padding-top:40px;padding-bottom:56px}
+  html.cielo #programa > .wrap{width:calc(100% - 24px);padding:40px 18px 44px;border-radius:32px}
+}
+/* ---------- tarjeta verde KK: movimiento TRANQUILO (antes subía/bajaba 26px, se balanceaba y las chispas crecían/encogían) ---------- */
+@keyframes kkCalmFloat{0%,100%{transform:translateY(-16px) rotate(0deg)}50%{transform:translateY(-22px) rotate(.3deg)}}
+@keyframes kkCalmTwinkle{0%,100%{opacity:.6;transform:scale(.94)}50%{opacity:1;transform:scale(1.03)}}
+@keyframes kkCalmShadow{0%,100%{width:150px;opacity:.36}50%{width:142px;opacity:.32}}
+html.cielo .hero .balloon{animation-name:kkCalmFloat;animation-duration:7s}
+html.cielo .hero .mini-balloon{animation-name:kkCalmFloat;animation-duration:9s}
+html.cielo .hero .spark{animation-name:kkCalmTwinkle;animation-duration:4.5s}
+html.cielo .hero .balloon-stage::after{animation-name:kkCalmShadow;animation-duration:7s}
+/* =================== TARJETAS =================== */
+/* cada caja con su color, como las tarjetas del tablón */
+html.cielo .trust{--a1:#E4B25C;--a2:#C0862E;--halo:#F6ECD4}
+html.cielo .faq details,html.cielo #programa .pf-big,html.cielo #programa .pf-mini{--a1:#A0BC79;--a2:#6C8D48;--halo:#E9F1D9}
+/* la foto va DENTRO de la tarjeta (con margen), no pegada al borde */
+html.tablon .zcard .zimg{margin:10px 10px 0;border-radius:18px;overflow:hidden}
+html.tablon .zcard .zimg .zem{bottom:10px;left:10px}
+html.tablon #programa .pf-big .pf-img{margin:12px 0 12px 12px;border-radius:20px;overflow:hidden}
+html.tablon #programa .pf-mini .pf-img{margin:10px 0 10px 10px;border-radius:15px;overflow:hidden}
+@media(max-width:760px){
+  html.tablon #programa .pf-big .pf-img{margin:12px 12px 0}
+}
+/* ---------- TABLÓN: como las tarjetas de arriba (blanco → su color, sombra de color, se inclinan en 3D) ---------- */
+html.cielo.tablon .zcard,html.cielo.tablon .trust,html.cielo.tablon .faq details,html.cielo.tablon #programa .pf-big,html.cielo.tablon #programa .pf-mini{border:0;-webkit-backdrop-filter:none;backdrop-filter:none;border-radius:30px; background:linear-gradient(165deg,#FFFFFF 0%,color-mix(in srgb,var(--halo,#E9F1D9) 80%,#fff) 100%); box-shadow:0 34px 70px -30px color-mix(in srgb,var(--a2,#6C8D48) 58%,transparent),inset 0 0 0 1px rgba(255,255,255,.95)}
+html.cielo.tablon .faq details{border-radius:22px}
+html.cielo.tablon .zcard::before,html.cielo.tablon .trust::before,html.cielo.tablon .faq details::before,html.cielo.tablon #programa .pf-big::before,html.cielo.tablon #programa .pf-mini::before,html.cielo.tablon #programa > .wrap::before,html.cielo.tablon .appcta::before{content:'';position:absolute;inset:0;top:0;left:0;right:0;bottom:0;width:auto;height:auto;border-radius:inherit;padding:2px;pointer-events:none;z-index:5;opacity:.6; background:linear-gradient(135deg,var(--a1,#A0BC79),rgba(255,255,255,.9) 50%,var(--a2,#6C8D48)); -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+html.cielo.tablon #programa > .wrap::before{z-index:0;padding:2.5px}
+html.cielo.tablon .zcard .zimg .zem{width:52px;height:52px;border-radius:50%;font-size:26px;border:0; background:radial-gradient(circle at 50% 42%,color-mix(in srgb,var(--a1) 30%,#fff) 0%,color-mix(in srgb,var(--halo) 85%,#fff) 58%,#fff 78%); box-shadow:0 12px 24px -10px color-mix(in srgb,var(--a2) 60%,transparent),inset 0 0 0 1px rgba(255,255,255,.9)}
+html.cielo.tablon #programa > .wrap{--a1:#A0BC79;--a2:#6C8D48;--halo:#E9F1D9;-webkit-backdrop-filter:none;backdrop-filter:none; background:linear-gradient(165deg,#FFFFFF 0%,color-mix(in srgb,var(--halo) 88%,#fff) 100%); box-shadow:0 50px 100px -44px color-mix(in srgb,var(--a2) 62%,transparent),inset 0 0 0 1px rgba(255,255,255,.95)}
+html.cielo.tablon #programa h2.title{color:var(--ink)}
+html.cielo.tablon #programa h2.title em{-webkit-text-fill-color:#5E8240!important;color:#5E8240!important}
+html.cielo.tablon #programa .lead{color:var(--muted)}
+html.cielo.tablon #programa .eyebrow,html.cielo.tablon .appcta .eyebrow{background:linear-gradient(135deg,#8FB162 0%,#6E9440 55%,#5E8235 100%);color:#fff!important;border:0; -webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 10px 22px -8px rgba(94,130,64,.7),inset 0 1px 0 rgba(255,255,255,.35)}
+html.cielo.tablon #programa > .wrap > .center:last-child .btn{background:linear-gradient(135deg,#5A7C3B,#4E6B33);color:#fff;box-shadow:0 16px 34px -10px rgba(105,142,68,.55),inset 0 1px 0 rgba(255,255,255,.4)}
+html.cielo.tablon .appcta{--a1:#E4B25C;--a2:#C0862E;--halo:#F6ECD4;color:var(--ink);-webkit-backdrop-filter:none;backdrop-filter:none; background:linear-gradient(165deg,#FFFFFF 0%,color-mix(in srgb,var(--halo) 88%,#fff) 100%); box-shadow:0 50px 100px -44px color-mix(in srgb,var(--a2) 60%,transparent),inset 0 0 0 1px rgba(255,255,255,.95)}
+html.cielo.tablon .appcta::after{display:none}
+html.cielo.tablon .appcta p{color:var(--muted);opacity:1}
+html.cielo.tablon .store a{background:#fff;border:0;box-shadow:0 16px 30px -14px color-mix(in srgb,#C0862E 55%,transparent),inset 0 0 0 1px #F3E4C6}
+html.cielo.tablon .videowrap{border-radius:30px;box-shadow:0 0 0 10px #fff,0 0 0 12px #D6E4EE,0 44px 84px -40px rgba(74,117,145,.6)}
+html.cielo.tablon .gal img{box-shadow:0 0 0 5px #fff,0 22px 40px -24px rgba(74,117,145,.55)}
+/* ---------- TABLÓN 3D (opción «Mezcla de las dos»): la tarjeta del tablón + el canto gordito de juguete ---------- */
+html.cielo.tablon.tablon3d .zcard,html.cielo.tablon.tablon3d .trust,html.cielo.tablon.tablon3d .faq details,html.cielo.tablon.tablon3d #programa .pf-big,html.cielo.tablon.tablon3d #programa .pf-mini{box-shadow:inset 0 4px 8px rgba(255,255,255,.95),inset 0 -8px 14px color-mix(in srgb,var(--a2,#6C8D48) 14%,transparent), 0 8px 0 -1px color-mix(in srgb,var(--a1,#A0BC79) 42%,#fff),0 34px 60px -26px color-mix(in srgb,var(--a2,#6C8D48) 55%,transparent)}
+html.cielo.tablon.tablon3d .faq details{margin-bottom:20px}
+html.cielo.tablon.tablon3d #programa > .wrap,html.cielo.tablon.tablon3d .appcta{box-shadow:inset 0 6px 12px rgba(255,255,255,.95),inset 0 -12px 22px color-mix(in srgb,var(--a2) 14%,transparent), 0 12px 0 -2px color-mix(in srgb,var(--a1) 45%,#fff),0 50px 90px -40px color-mix(in srgb,var(--a2) 55%,transparent)}
+html.cielo.tablon.tablon3d .zcard .zimg .zem{box-shadow:0 5px 0 -1px color-mix(in srgb,var(--a1) 50%,#fff),0 12px 22px -10px color-mix(in srgb,var(--a2) 60%,transparent),inset 0 0 0 1px rgba(255,255,255,.9)}
+html.cielo.tablon.tablon3d section:not(.hero) .btn-pink,html.cielo.tablon.tablon3d #programa > .wrap > .center:last-child .btn{box-shadow:inset 0 3px 6px rgba(255,255,255,.4),inset 0 -5px 10px rgba(0,0,0,.18),0 6px 0 -1px #3C5729,0 16px 24px -12px rgba(60,90,40,.6)}
+html.cielo.tablon.tablon3d .store a{box-shadow:inset 0 3px 6px #fff,inset 0 -5px 10px rgba(192,134,46,.14),0 6px 0 -1px #F0DDB8,0 16px 24px -12px rgba(120,80,20,.4)}
+html.cielo.tablon.tablon3d .videowrap{border-radius:32px;box-shadow:0 0 0 10px #fff,0 10px 0 9px #D9E6F2,0 40px 60px -20px rgba(52,98,160,.45)}
+html.cielo.tablon.tablon3d .gal img{border-radius:22px;box-shadow:0 0 0 6px #fff,0 8px 0 5px #D9E6F2,0 22px 34px -16px rgba(52,98,160,.4)}
+</style>
 </head>
 <body>
 <div id="prog"></div>
@@ -1153,7 +1286,7 @@
       if(Math.abs(tx-cx)>.002||Math.abs(ty-cy)>.002) raf=requestAnimationFrame(loop); else raf=null;
     }
     function kick(){ if(!raf) raf=requestAnimationFrame(loop); }
-    st.addEventListener('pointermove',function(e){ var r=st.getBoundingClientRect(); tx=((e.clientX-r.left)/r.width-.5)*2; ty=((e.clientY-r.top)/r.height-.5)*2; kick(); });
+    st.addEventListener('pointermove',function(e){ var r=st.getBoundingClientRect(); tx=((e.clientX-r.left)/r.width-.5)*.7; ty=((e.clientY-r.top)/r.height-.5)*.7; /* suave (antes ×2: se movía demasiado) */ kick(); });
     st.addEventListener('pointerleave',function(){ tx=0; ty=0; kick(); });
     window.addEventListener('resize',function(){ if(!mq.matches){ st.style.transform=''; } });
   })();
@@ -1293,8 +1426,8 @@
     sky.addColorStop(0.40,'#82BFF3');   // azul medio (se mantiene azul hasta bien abajo)
     sky.addColorStop(0.70,'#AAD5F9');   // azul claro
     sky.addColorStop(0.88,'#D8ECFC');   // azul muy claro
-    sky.addColorStop(0.96,'#F2ECE6');   // crema breve al final
-    sky.addColorStop(1,   '#FFFBF8');   // crema del sitio (funde con la sección de abajo)
+    sky.addColorStop(0.96,'#DAEDFC');   // azul claro: el cielo sigue por toda la página (antes crema)
+    sky.addColorStop(1,   '#DDEEFC');   // = color de arriba de «Nuestro programa» (sin corte)
     ctx.fillStyle=sky; ctx.fillRect(0,0,w,h);
 
     // 1) AURORA por detrás (color que respira)
@@ -1334,5 +1467,61 @@
 })();
 </script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "b70f559ce09b4091a2ac434e5f34050e"}'></script><!-- End Cloudflare Web Analytics -->
+
+<script>
+/* Cielo de toda la página (2026-10-30): nubes a los lados de cada sección y banco de nubes sobre el pie.
+   Decorativo (aria-hidden, sin clics). Las tarjetas de abajo se inclinan en 3D con el ratón. */
+(function(){
+  var IMG='img/kk-nube.webp';
+  function el(t,c){var e=document.createElement(t); if(c) e.className=c; e.setAttribute('aria-hidden','true'); return e;}
+  // s: lado · x: px desde ese lado (negativo = medio fuera) · y: % alto sección · w: ancho px · o: opacidad · b: desenfoque · f: girada · d: segundos · m:0 = no en móvil
+  var SKY={
+    '#programa':[{s:'l',x:-170,y:1,w:470,o:.96,d:30},{s:'r',x:-210,y:56,w:580,o:.92,b:2,f:1,d:38},{s:'l',x:30,y:86,w:230,o:.85,b:1,d:24,m:0}],
+    '#zonas':[{s:'r',x:-150,y:3,w:430,o:.95,d:28},{s:'l',x:-220,y:48,w:560,o:.9,b:2.5,f:1,d:40}],
+    '#zonas + section':[{s:'l',x:-120,y:8,w:340,o:.9,b:1,d:26,m:0}],
+    '#zonas + section + section':[{s:'r',x:-160,y:6,w:470,o:.95,f:1,d:32},{s:'l',x:-110,y:62,w:300,o:.85,b:1.5,d:24}],
+    '#zonas + section + section + section':[{s:'l',x:-190,y:-4,w:490,o:.92,b:2,d:36},{s:'r',x:-120,y:70,w:340,o:.9,f:1,d:28,m:0}],
+    '#faq':[{s:'r',x:-170,y:5,w:490,o:.94,d:30},{s:'l',x:-210,y:52,w:580,o:.9,b:2.5,f:1,d:42}],
+    '#app':[{s:'l',x:-150,y:-8,w:390,o:.9,b:1,d:30,m:0}]
+  };
+  Object.keys(SKY).forEach(function(sel){
+    var sec=document.querySelector(sel); if(!sec) return;
+    var box=el('div','kkc-clouds');
+    SKY[sel].forEach(function(c,k){
+      var i=el('img','kkc-cl kkc-'+c.s+(c.m===0?' kkc-nom':'')); i.src=IMG; i.alt=''; i.decoding='async';
+      var st=i.style; st.setProperty('--x',c.x+'px'); st.top=c.y+'%'; st.setProperty('--w',c.w+'px'); st.setProperty('--o',c.o);
+      if(c.b) st.setProperty('--f','blur('+c.b+'px)'); if(c.f) st.setProperty('--sx','-1');
+      st.setProperty('--d',c.d+'s'); st.setProperty('--dl',(-c.d*(k+1)/3)+'s');
+      box.appendChild(i);
+    });
+    sec.insertBefore(box,sec.firstChild);
+  });
+  // banco de nubes posado sobre el pie (l: % desde la izquierda · w/h: px · b: px desde abajo)
+  var BANK=[{l:-6,w:430,h:165,b:0},{l:11,w:330,h:130,b:18,f:1,o:.97},{l:24,w:450,h:170,b:-6},{l:42,w:340,h:132,b:16,f:1,o:.97,m:0},
+            {l:54,w:450,h:170,b:-4,f:1},{l:72,w:340,h:132,b:14,o:.97},{l:84,w:430,h:165,b:-2,f:1}];
+  var foot=document.querySelector('footer');
+  if(foot){
+    var bank=el('div','kkc-bank foot');
+    BANK.forEach(function(c){
+      var i=el('img',c.m===0?'kkc-nom':''); i.src=IMG; i.alt=''; i.decoding='async'; var st=i.style;
+      st.setProperty('--l',c.l+'%'); st.setProperty('--w',c.w+'px'); st.setProperty('--h',c.h+'px'); st.setProperty('--b',c.b+'px');
+      st.setProperty('--o',c.o||1); if(!c.f) st.setProperty('--sx','-1');
+      bank.appendChild(i);
+    });
+    foot.insertBefore(bank,foot.firstChild);
+  }
+  // tarjetas: se inclinan en 3D siguiendo el ratón (no en táctil ni con «reducir movimiento»)
+  if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  [].forEach.call(document.querySelectorAll('.zcard,.trust,#programa .pf-big,#programa .pf-mini'),function(c){
+    c.addEventListener('pointermove',function(e){
+      if(e.pointerType!=='mouse') return;
+      var r=c.getBoundingClientRect(), k=Math.min(1,420/r.width), x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
+      c.style.transition='transform .12s ease-out';
+      c.style.transform='perspective(900px) rotateY('+(x*10*k).toFixed(2)+'deg) rotateX('+(-y*8*k).toFixed(2)+'deg) translateY(-6px)';
+    });
+    c.addEventListener('pointerleave',function(){c.style.transition='transform .6s cubic-bezier(.16,1,.3,1)'; c.style.transform='';});
+  });
+})();
+</script>
 </body>
 </html>
