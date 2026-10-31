@@ -95,8 +95,10 @@
 .nv-card .nv-stage:has(.nv-med.kk){padding-top:30px;gap:8px}
 .nv-med.kk{width:136px;height:136px;font-size:0;background:rgba(255,255,255,.55)}
 .nv-med.kk::after{display:none}
-.nv-med.kk img{width:132px;height:132px;object-fit:contain;filter:drop-shadow(0 8px 12px rgba(80,60,40,.18))}
+.nv-med.kk .kk-scene{width:132px;filter:drop-shadow(0 8px 12px rgba(80,60,40,.18))} /* con vida (2026-10-31) */
 </style>
+<link rel="stylesheet" href="css/kk-escenas.css?v=2">
+<script src="js/kk-escenas.js?v=2" defer></script>
 </head>
 <body>
 <div id="prog"></div>
@@ -120,8 +122,9 @@
 </nav></header>
 
 <section class="phero">
-  <div class="blob b1"></div><div class="blob b3"></div>
+  <div class="blob b1"><div class="kk-scene blob-kk" data-s="talleres" data-l="back,kids"></div></div><div class="blob b3"><div class="kk-scene blob-kk" data-s="regalos" data-l="back,kids"></div></div>
   <div class="wrap">
+    <div class="phero-kk" aria-hidden="true"><img class="phero-nube" src="img/kk-nube.webp" width="1250" height="651" alt=""><div class="kk-scene" data-s="calendario"></div></div>
     <div class="eyebrow c" data-rv>Actividades & Boletín</div>
     <h1 data-rv data-delay="1">Siempre pasan <em>cosas nuevas</em></h1>
     <p data-rv data-delay="2">Nuestra agenda viva de actividades semanales, extraescolares y eventos. ¡Y siempre tenemos nuevas sorpresas!</p>
@@ -248,7 +251,7 @@
           <span class="nv-blob b1"></span><span class="nv-blob b2"></span><span class="nv-dots"></span>
           <span class="nv-date">🥁 Martes</span>
           <div class="nv-stage">
-            <div style="position:relative"><div class="nv-med kk"><img width="260" height="260" loading="lazy" decoding="async" src="img/illo/kk-musica.webp" alt=""></div></div>
+            <div style="position:relative"><div class="nv-med kk"><div class="kk-scene" data-s="musica"></div></div></div>
             <span class="nv-title" style="color:#9a7a1c">Baby Music&amp;Play</span>
             <span class="nv-underline"></span>
           </div>
@@ -268,7 +271,7 @@
           <span class="nv-date">📅 Septiembre</span>
           <span class="nv-badge"><span class="spark">✨</span> Inscripciones abiertas</span>
           <div class="nv-stage">
-            <div style="position:relative"><div class="nv-med kk"><img width="260" height="260" loading="lazy" decoding="async" src="img/illo/kk-ingles.webp" alt=""></div></div>
+            <div style="position:relative"><div class="nv-med kk"><div class="kk-scene" data-s="ingles"></div></div></div>
             <span class="nv-title" style="color:#6E5A9E">Extraescolares</span>
             <span class="nv-underline"></span>
           </div>
@@ -292,7 +295,7 @@
           <span class="nv-date">🎄 21 dic – 5 ene</span>
           <span class="nv-badge"><span class="spark">✨</span> Inscripciones abiertas</span>
           <div class="nv-stage">
-            <div style="position:relative"><div class="nv-med kk"><img width="260" height="260" loading="lazy" decoding="async" src="img/illo/kk-navidad.webp" alt=""></div></div>
+            <div style="position:relative"><div class="nv-med kk"><div class="kk-scene" data-s="navidad"></div></div></div>
             <span class="nv-title">Christmas Camp</span>
             <span class="nv-underline"></span>
           </div>
