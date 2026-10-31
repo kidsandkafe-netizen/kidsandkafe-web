@@ -36,8 +36,9 @@
   background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 30' preserveAspectRatio='none'%3E%3Cg fill='%23ffffff'%3E%3Cellipse cx='18' cy='19' rx='19' ry='11'/%3E%3Cellipse cx='50' cy='15' rx='27' ry='14'/%3E%3Cellipse cx='82' cy='19' rx='19' ry='11'/%3E%3Crect x='6' y='18' width='88' height='12' rx='6'/%3E%3C/g%3E%3C/svg%3E") center/100% 100% no-repeat}
 .phero .blob.b2:has(.blob-kk),.phero .blob.b3:has(.blob-kk){right:1.5%}
 @media(max-width:900px){.phero .blob .blob-kk,.phero .blob:has(.blob-kk)::after{display:none}}
-/* tarjetas .ill (Baby Explorer) y medallones .jmed (Talleres) */
+/* tarjetas .ill (Baby Explorer, Zonas), mini ciudad .ill-mz (Zonas) y medallones .jmed (Talleres) */
 .ill .art-kk{width:156px;margin:-10px auto 8px}
+.ill-mz .mz-kk{width:104px;margin:-14px auto 2px}
 .jmed:has(.jmed-kk){width:128px!important;height:128px!important;font-size:0!important}
 .jmed:has(.jmed-kk)::after{display:none}
 .jmed .jmed-kk{width:124px}
