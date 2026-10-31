@@ -26,14 +26,16 @@
 
 // Ojo: aquí NO se habla de "nombre", "texto" ni "letras": al leerlo, FLUX se
 // inventaba un nombre en el hueco crema ("Iminien", 2026-10-31).
+// Escena en la mitad de ARRIBA y crema vacía en la de abajo, como las 20 láminas: el
+// nombre se pinta al 74 % de alto (party-studio.html, ty 0.74) y tiene que caer en limpio.
+// Con "en el centro" los unicornios salían casi en blanco y el dragón, abajo (2026-10-31).
 const PLANTILLA =
-  'Soft pastel watercolour illustration for a children\'s birthday party backdrop, ' +
-  'portrait. Pastel balloons in the top corners, scattered confetti and gold foil ' +
-  'speckles, light rays from above. In the centre, painted large and clearly: {TEMA}. ' +
-  'The bottom third is a plain, empty cream parchment panel framed by a thin ' +
-  'ornamental gold line with small flourishes in the corners. Delicate hand-painted ' +
-  'watercolour texture, cream paper background, gold accents, dreamy and elegant. ' +
-  'No people, no faces.';
+  'Pastel watercolour backdrop for a children\'s birthday party, portrait. The upper half ' +
+  'is a detailed, cheerful scene of {TEMA}, with pastel balloons and gold confetti around it. ' +
+  'The lower half is plain, empty cream paper that softly blends into the scene above, ' +
+  'with delicate watercolour leaves and flowers only in the two bottom corners. A thin gold ' +
+  'border runs around the edge. Hand-painted watercolour texture, gold accents, dreamy and ' +
+  'elegant. No people, no faces.';
 
 // Lo que NO puede pedir una madre (se ignora, no se bloquea): palabras que
 // llevarían al generador a pintar personas o cosas que no pintamos.
@@ -51,14 +53,22 @@ function limpiar(idea){
 function hoy(){ return new Date().toISOString().slice(0, 10); }
 
 // ── La idea → inglés y cosas que se pueden pintar (personajes y marcas → cosas genéricas) ──
+// El primer elemento es el protagonista (si no, el unicornio se perdía entre nubes), y nada
+// oscuro: "starry night sky" o "black" volvían la lámina azul marino (2026-10-31).
 const TRADUCTOR =
   'You turn a parent\'s idea for a child\'s birthday party (it may be written in Spanish, ' +
-  'Catalan or English) into a short English list of things to paint in a watercolour party ' +
-  'backdrop. Rules: English only; 3 to 12 words, separated by commas; only objects, animals, ' +
-  'plants, food, places, colours and weather; replace characters, brands, films, games and ' +
-  'famous people with generic things that evoke them (for example "Frozen" becomes "ice castle, ' +
-  'snowflakes, snowy mountains" and "Spiderman" becomes "spider webs, city skyline at night"); ' +
-  'never people, faces, names, words, letters or numbers. Reply with the list only.';
+  'Catalan or English) into a short English list of things to paint in a cute pastel ' +
+  'watercolour party backdrop. Rules: English only; 3 to 6 items separated by commas, 25 words ' +
+  'at most; the first item is the main subject the child loves (an animal, creature, vehicle ' +
+  'or object), painted cute and friendly; the other items are things from its world (places, ' +
+  'plants, food, weather); keep the colours the parent mentions and add no dark colours; ' +
+  'nothing scary and no night scenes unless the parent asks for them; replace characters, ' +
+  'brands, films, games and famous people with generic things that evoke them (for example ' +
+  '"Frozen" becomes "a sparkling ice castle, snowflakes, snowy mountains" and "Spiderman" ' +
+  'becomes "a red and blue spider web, city rooftops, a sunny sky"); never people, faces, ' +
+  'names, words, letters or numbers. Example: "unicornios y arcoíris" becomes "a cute white ' +
+  'unicorn with a pastel mane, a big rainbow, fluffy clouds, a fairy castle". ' +
+  'Reply with the list only.';
 // Se prueban por orden: si uno no responde, el siguiente. Todos cuestan céntimos de céntimo.
 const MODELOS = ['google/gemini-2.5-flash-lite', 'openai/gpt-4o-mini', 'anthropic/claude-haiku-4.5'];
 
@@ -71,9 +81,9 @@ function limpiarTema(t){
     .replace(/\s*,[\s,]*/g, ', ')
     .replace(/\s+/g, ' ')
     .replace(/^[\s,]+|[\s,]+$/g, '')
-    .slice(0, 140);
+    .slice(0, 200);
   const n = s.split(/[\s,]+/).filter(Boolean).length;
-  return (n >= 1 && n <= 20 && !/\b(sorry|cannot|unable)\b/i.test(s)) ? s : null;
+  return (n >= 1 && n <= 35 && !/\b(sorry|cannot|unable)\b/i.test(s)) ? s : null;
 }
 
 async function aIngles(idea, H){
