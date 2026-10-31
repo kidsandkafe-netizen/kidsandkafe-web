@@ -6,6 +6,11 @@
 //  láminas de la web, y devuelve la imagen YA DESCARGADA (mismo origen):
 //  así el cartel se puede pintar en un <canvas> sin problemas de CORS.
 //
+//  Antes de dibujar, un modelo de texto pequeño (fal · OpenRouter, la misma
+//  FAL_KEY, < 0,001 $ por idea) pasa la idea a inglés y a cosas pintables:
+//  FLUX solo entiende inglés — con "dragones y fuego" ESCRIBÍA las palabras en
+//  vez de dibujarlas (comprobado en vivo el 2026-10-31). Si falla, va tal cual.
+//
 //  Secretos y topes (se ponen en Cloudflare → Pages → proyecto → Settings):
 //    FAL_KEY        (secreto)  clave de fal.ai — nunca va en la página
 //    INVENTA_KV     (binding)  KV opcional para el tope diario
@@ -19,14 +24,16 @@
 //  el JSON con el motivo (comprobado en vivo el 2026-10-30).
 // ═══════════════════════════════════════════════════════════════════════
 
+// Ojo: aquí NO se habla de "nombre", "texto" ni "letras": al leerlo, FLUX se
+// inventaba un nombre en el hueco crema ("Iminien", 2026-10-31).
 const PLANTILLA =
   'Soft pastel watercolour illustration for a children\'s birthday party backdrop, ' +
   'portrait. Pastel balloons in the top corners, scattered confetti and gold foil ' +
-  'speckles, light rays from above. Theme objects, animals and scenery of: {IDEA}. ' +
-  'Bottom third: an empty cream parchment area with a thin ornamental gold line frame ' +
-  'and small flourishes in the corners, left blank for a name. Delicate hand-painted ' +
+  'speckles, light rays from above. In the centre, painted large and clearly: {TEMA}. ' +
+  'The bottom third is a plain, empty cream parchment panel framed by a thin ' +
+  'ornamental gold line with small flourishes in the corners. Delicate hand-painted ' +
   'watercolour texture, cream paper background, gold accents, dreamy and elegant. ' +
-  'No people, no faces, no children, no text, no letters, no watermark.';
+  'No people, no faces.';
 
 // Lo que NO puede pedir una madre (se ignora, no se bloquea): palabras que
 // llevarían al generador a pintar personas o cosas que no pintamos.
@@ -42,6 +49,59 @@ function limpiar(idea){
 }
 
 function hoy(){ return new Date().toISOString().slice(0, 10); }
+
+// ── La idea → inglés y cosas que se pueden pintar (personajes y marcas → cosas genéricas) ──
+const TRADUCTOR =
+  'You turn a parent\'s idea for a child\'s birthday party (it may be written in Spanish, ' +
+  'Catalan or English) into a short English list of things to paint in a watercolour party ' +
+  'backdrop. Rules: English only; 3 to 12 words, separated by commas; only objects, animals, ' +
+  'plants, food, places, colours and weather; replace characters, brands, films, games and ' +
+  'famous people with generic things that evoke them (for example "Frozen" becomes "ice castle, ' +
+  'snowflakes, snowy mountains" and "Spiderman" becomes "spider webs, city skyline at night"); ' +
+  'never people, faces, names, words, letters or numbers. Reply with the list only.';
+// Se prueban por orden: si uno no responde, el siguiente. Todos cuestan céntimos de céntimo.
+const MODELOS = ['google/gemini-2.5-flash-lite', 'openai/gpt-4o-mini', 'anthropic/claude-haiku-4.5'];
+
+// Lo que vuelve del traductor: solo letras inglesas, comas y espacios, y sin personas por si acaso.
+const SIN_GENTE = /\b(girls?|boys?|kids?|child(ren)?|bab(y|ies)|people|persons?|faces?|m[ae]n|wom[ae]n|princess(es)?|names?|text|letters?|words?)\b/gi;
+function limpiarTema(t){
+  const s = String(t || '').split('\n')[0]
+    .replace(/[^A-Za-z ,'-]/g, ' ')
+    .replace(SIN_GENTE, ' ')
+    .replace(/\s*,[\s,]*/g, ', ')
+    .replace(/\s+/g, ' ')
+    .replace(/^[\s,]+|[\s,]+$/g, '')
+    .slice(0, 140);
+  const n = s.split(/[\s,]+/).filter(Boolean).length;
+  return (n >= 1 && n <= 20 && !/\b(sorry|cannot|unable)\b/i.test(s)) ? s : null;
+}
+
+async function aIngles(idea, H){
+  const fin = Date.now() + 8000;                       // entre todos los intentos, como mucho ~8 s
+  for(const model of MODELOS){
+    if(Date.now() > fin) break;
+    try{
+      const sub = await fetch('https://queue.fal.run/openrouter/router', {
+        method: 'POST', headers: H,
+        body: JSON.stringify({ model, system_prompt: TRADUCTOR, prompt: idea, temperature: 0.2, max_tokens: 60 })
+      });
+      if(!sub.ok) continue;
+      const job = await sub.json().catch(() => null);
+      if(!job || !job.status_url || !job.response_url) continue;
+      let st = null;
+      while(Date.now() < fin){
+        await new Promise(r => setTimeout(r, 300));
+        st = await fetch(job.status_url, { headers: H }).then(r => r.json()).catch(() => null);
+        if(st && /^(COMPLETED|FAILED|CANCELLED|ERROR)$/.test(st.status)) break;
+      }
+      if(!st || st.status !== 'COMPLETED') continue;
+      const out = await fetch(job.response_url, { headers: H }).then(r => r.json()).catch(() => null);
+      const tema = limpiarTema(out && !out.error && out.output);
+      if(tema) return tema;
+    }catch(_){}
+  }
+  return null;
+}
 
 export async function onRequestPost(context){
   const { request, env } = context;
@@ -70,7 +130,8 @@ export async function onRequestPost(context){
   //    Cabecera confirmada en fal.ai/docs/model-apis/model-endpoints/queue:
   //    "Authorization: Key $FAL_KEY" · host queue.fal.run · schnell tarda ~2-4 s.
   const H = { 'Authorization': 'Key ' + env.FAL_KEY, 'Content-Type': 'application/json' };
-  const prompt = PLANTILLA.replace('{IDEA}', idea);
+  const tema = (await aIngles(idea, H)) || idea;      // FLUX solo entiende inglés
+  const prompt = PLANTILLA.replace('{TEMA}', tema);
   const fail = (code, mensaje, detalle) => json({ error: code, mensaje, detalle: (detalle || '').slice(0, 200) }, 500);
   let sub;
   try {
@@ -114,7 +175,8 @@ export async function onRequestPost(context){
     headers: {
       'content-type': tipo,
       'cache-control': 'private, max-age=86400',
-      'x-inventa-idea': encodeURIComponent(idea)
+      'x-inventa-idea': encodeURIComponent(idea),
+      'x-inventa-tema': encodeURIComponent(tema)
     }
   });
 }
