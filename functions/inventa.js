@@ -29,8 +29,9 @@
 // Escena en la mitad de ARRIBA y crema vacía en la de abajo, como las 20 láminas: el
 // nombre se pinta al 74 % de alto (party-studio.html, ty 0.74) y tiene que caer en limpio.
 // Con "en el centro" los unicornios salían casi en blanco y el dragón, abajo (2026-10-31).
+// Sin la palabra "birthday": con ella FLUX escribía «Happy Birthday» arriba (Frozen, 2026-10-31).
 const PLANTILLA =
-  'Pastel watercolour backdrop for a children\'s birthday party, portrait. The upper half ' +
+  'Pastel watercolour backdrop for a children\'s party, portrait. The upper half ' +
   'is a detailed, cheerful scene of {TEMA}, with pastel balloons and gold confetti around it. ' +
   'The lower half is plain, empty cream paper that softly blends into the scene above, ' +
   'with delicate watercolour leaves and flowers only in the two bottom corners. A thin gold ' +
@@ -62,10 +63,11 @@ const TRADUCTOR =
   'at most; the first item is the main subject the child loves (an animal, creature, vehicle ' +
   'or object), painted cute and friendly; the other items are things from its world (places, ' +
   'plants, food, weather); keep the colours the parent mentions and add no dark colours; ' +
-  'nothing scary and no night scenes unless the parent asks for them; replace characters, ' +
-  'brands, films, games and famous people with generic things that evoke them (for example ' +
-  '"Frozen" becomes "a sparkling ice castle, snowflakes, snowy mountains" and "Spiderman" ' +
-  'becomes "a red and blue spider web, city rooftops, a sunny sky"); never people, faces, ' +
+  'nothing scary and no night scenes unless the parent asks for them; never write the name of ' +
+  'a character, brand, film, game or famous person: replace it with generic things that evoke ' +
+  'it (for example "Frozen" becomes "a sparkling ice castle, snowflakes, snowy mountains", ' +
+  '"Spiderman" becomes "a red and blue spider web, city rooftops, a sunny sky" and "Mickey ' +
+  'Mouse" becomes "a cute little grey mouse, red and yellow balloons, polka dots"); never people, faces, ' +
   'names, words, letters or numbers. Example: "unicornios y arcoíris" becomes "a cute white ' +
   'unicorn with a pastel mane, a big rainbow, fluffy clouds, a fairy castle". ' +
   'Reply with the list only.';
@@ -74,7 +76,12 @@ const MODELOS = ['google/gemini-2.5-flash-lite', 'openai/gpt-4o-mini', 'anthropi
 
 // Lo que vuelve del traductor: solo letras inglesas, comas y espacios, y sin personas por si acaso.
 const SIN_GENTE = /\b(girls?|boys?|kids?|child(ren)?|bab(y|ies)|people|persons?|faces?|m[ae]n|wom[ae]n|princess(es)?|names?|text|letters?|words?)\b/gi;
+// Personajes con dueño (Disney, Marvel…): si el traductor se salta la norma, se prueba el
+// siguiente modelo, y en el plan B se quitan de la idea. Con «un niño con mickey mouse» salió
+// "A cute Mickey Mouse" y FLUX pintó el Mickey de Disney tal cual (2026-10-31).
+const MARCAS = /\b(mickey|minnie|disney|pixar|marvel|elsa|olaf|spider[\s-]?man|batman|superman|hulk|iron[\s-]?man|avengers|vengadores|paw\s?patrol|patrulla\s+canina|peppa|pok[eé]mon|pikachu|bluey|barbie|sonic|mario|luigi|minecraft|fortnite|roblox|hello\s?kitty|mc\s?queen|toy\s?story|stitch|moana|vaiana|ariel|cenicienta|cinderella|rapunzel|blancanieves|harry\s?potter|star\s?wars|encanto|gabby|pocoy[oó]?|doraemon|minions?|my\s?little\s?pony|cocomelon|baby\s?shark|pj\s?masks|nemo|simba|winnie|snoopy)(?![a-z0-9])/i;   // no \b al final: con «Pocoyó» dejaba la «ó»
 function limpiarTema(t){
+  if(MARCAS.test(String(t || ''))) return null;
   const s = String(t || '').split('\n')[0]
     .replace(/[^A-Za-z ,'-]/g, ' ')
     .replace(SIN_GENTE, ' ')
@@ -140,7 +147,9 @@ export async function onRequestPost(context){
   //    Cabecera confirmada en fal.ai/docs/model-apis/model-endpoints/queue:
   //    "Authorization: Key $FAL_KEY" · host queue.fal.run · schnell tarda ~2-4 s.
   const H = { 'Authorization': 'Key ' + env.FAL_KEY, 'Content-Type': 'application/json' };
-  const tema = (await aIngles(idea, H)) || idea;      // FLUX solo entiende inglés
+  const tema = (await aIngles(idea, H))               // FLUX solo entiende inglés
+            || idea.replace(new RegExp(MARCAS.source, 'gi'), ' ').replace(/\s+/g, ' ').trim()
+            || 'pastel balloons, stars and flowers';
   const prompt = PLANTILLA.replace('{TEMA}', tema);
   const fail = (code, mensaje, detalle) => json({ error: code, mensaje, detalle: (detalle || '').slice(0, 200) }, 500);
   let sub;
