@@ -1,0 +1,43 @@
+/* ===== Niños KK con vida (2026-10-31) — capas y movimiento SUAVE (Barbara: "dar vida", pero sin moverse demasiado) ===== */
+.kk-scene{position:relative;display:block;aspect-ratio:1/1}
+.kk-sc{position:absolute;inset:0}
+.kk-l{position:absolute;inset:0}
+.kk-l svg{display:block;width:100%;height:100%;overflow:visible}
+.kk-kids{position:absolute;left:12.5%;top:21%;width:75%;height:auto;transform-origin:50% 100%;animation:kkBob 4.4s ease-in-out infinite}
+.kk-back{animation:kkDrift 6.5s ease-in-out infinite}
+.kk-scene .tw{transform-box:fill-box;transform-origin:center;animation:kkTw 2.8s ease-in-out infinite}
+.kk-scene .fl{transform-box:fill-box;transform-origin:center;animation:kkFl 5s ease-in-out infinite}
+.kk-scene .sw{transform-box:fill-box;transform-origin:50% 100%;animation:kkSw 5.2s ease-in-out infinite}
+.kk-scene .sw2{transform-box:fill-box;transform-origin:50% 0;animation:kkSw2 6s ease-in-out infinite}
+.kk-scene .fk{transform-box:fill-box;transform-origin:50% 100%;animation:kkFk 1.1s ease-in-out infinite}
+.kk-scene .hand{transform-box:view-box;animation:kkSpin 16s linear infinite}
+.kk-scene .spin{transform-box:fill-box;transform-origin:center;animation:kkSpin 40s linear infinite}
+@keyframes kkBob{0%,100%{transform:rotate(-1.4deg)}50%{transform:translateY(-1%) rotate(1.4deg)}}
+@keyframes kkDrift{0%,100%{transform:translateY(0)}50%{transform:translateY(-1.8%)}}
+@keyframes kkTw{0%,100%{opacity:.5;transform:scale(.78)}50%{opacity:1;transform:scale(1.1)}}
+@keyframes kkFl{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@keyframes kkSw{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+@keyframes kkSw2{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(1deg)}}
+@keyframes kkFk{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.8)}}
+@keyframes kkSpin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.kk-scene,.kk-scene *{animation:none!important}}
+
+/* ---------- dónde se usan ---------- */
+/* cabecera de las páginas (.phero): los niños sentados en una nube blanca, encima del título */
+.phero:has(.phero-kk){padding-top:112px}
+.phero-kk{position:relative;width:230px;margin:-14px auto 16px;z-index:2}
+.phero-kk .phero-nube{position:absolute;left:50%;bottom:-6%;width:122%;height:auto;transform:translateX(-50%);z-index:0;
+  filter:saturate(.65) contrast(.78) brightness(1.2) drop-shadow(0 16px 20px rgba(90,130,180,.2))}
+.phero-kk .kk-scene{position:relative;z-index:1}
+@media(max-width:640px){.phero:has(.phero-kk){padding-top:96px}.phero-kk{width:170px;margin:-10px auto 12px}}
+/* nubes de los lados de la cabecera: los niños asomando, con un poco de nube por delante a la altura de la barbilla */
+.phero .blob .blob-kk{position:absolute;left:50%;bottom:22%;width:64%;transform:translateX(-50%);z-index:1}
+.phero .blob:has(.blob-kk)::after{content:'';position:absolute;left:19%;right:19%;top:25%;height:24%;z-index:2;pointer-events:none;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 30' preserveAspectRatio='none'%3E%3Cg fill='%23ffffff'%3E%3Cellipse cx='18' cy='19' rx='19' ry='11'/%3E%3Cellipse cx='50' cy='15' rx='27' ry='14'/%3E%3Cellipse cx='82' cy='19' rx='19' ry='11'/%3E%3Crect x='6' y='18' width='88' height='12' rx='6'/%3E%3C/g%3E%3C/svg%3E") center/100% 100% no-repeat}
+.phero .blob.b2:has(.blob-kk),.phero .blob.b3:has(.blob-kk){right:1.5%}
+@media(max-width:900px){.phero .blob .blob-kk,.phero .blob:has(.blob-kk)::after{display:none}}
+/* tarjetas .ill (Baby Explorer) y medallones .jmed (Talleres) */
+.ill .art-kk{width:156px;margin:-10px auto 8px}
+.jmed:has(.jmed-kk){width:128px!important;height:128px!important;font-size:0!important}
+.jmed:has(.jmed-kk)::after{display:none}
+.jmed .jmed-kk{width:124px}
