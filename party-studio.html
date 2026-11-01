@@ -394,6 +394,13 @@ input:focus{outline:0}
                  border:0;background:var(--papel);border-radius:3px;padding:12px 14px;
                  resize:vertical;min-height:64px;box-shadow:inset 0 0 0 1px var(--linea)}
 .custom textarea:focus{outline:0;box-shadow:inset 0 0 0 1.5px var(--marino)}
+/* El móvil de «Dibújamelo» (2026-10-31): sin él no se dibuja. Misma caja que la idea, en una
+   línea y a 16px: con menos, el iPhone hace zoom al tocarla. */
+.custom .tel-dibuja{margin-top:10px}
+.custom .tel-dibuja small{margin-bottom:6px}
+.custom input{font-family:inherit;font-size:16px;font-weight:600;line-height:1.2;max-width:260px;
+              background:var(--papel);border-radius:3px;padding:11px 14px;box-shadow:inset 0 0 0 1px var(--linea)}
+.custom input:focus{box-shadow:inset 0 0 0 1.5px var(--marino)}
 
 /* total en vivo */
 .total{margin-top:18px;background:var(--crema);border:0;border-radius:3px;padding:19px 21px;
@@ -972,6 +979,8 @@ footer{padding:48px 20px 60px;text-align:center;color:var(--muted);font-size:12.
       <b data-i18n="inv_t">✏️ Cuéntanos tu idea</b>
       <small data-i18n="inv_s">Escribe lo que le gusta a tu peque. La sala cambia sola con tus palabras y, si quieres, te la dibujamos.</small>
       <textarea id="fIdea" maxlength="120" data-i18n-ph="inv_ph" placeholder="Ej: dragones y fuego en un castillo"></textarea>
+      <label class="tel-dibuja" id="telDibujaBox"><small data-i18n="inv_tel_lab">📱 Tu móvil para dibujarla (máx. 3 al día). Solo lo usamos para tu fiesta.</small>
+        <input id="fTelDibuja" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="600 000 000" data-i18n-ph="ph_tel"></label>
       <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:10px">
         <button class="btn btn-wa" id="btnDibuja" type="button" style="background:var(--marino)" data-i18n="inv_btn">🎨 Dibújamelo</button>
         <span id="dibujaMsg" style="font-size:13px;color:var(--muted);font-weight:700"></span>
@@ -1114,6 +1123,7 @@ es:{
   aviso1:'🗓️ Cuando hay cumple ', aviso2:'cerramos el centro entero para vosotros',
   aviso3:', así que solo hay ', aviso4:'una fiesta por sábado', aviso5:'. Las fechas vuelan.',
   inv_t:'✏️ Cuéntanos tu idea', inv_s:'Escribe lo que le gusta a tu peque. La sala cambia sola con tus palabras y, si quieres, te la dibujamos.', inv_ph:'Ej: dragones y fuego en un castillo', inv_btn:'🎨 Dibújamelo', inv_wait:'🎨 Dibujando tu fiesta… unos segundos', inv_ok:'✨ ¡Listo! Tu fiesta ya está dibujada en el arco y en el cartel.', inv_err:'😕 No se ha podido dibujar. Prueba otra vez o escríbenos por WhatsApp.', inv_empty:'Escribe tu idea primero ✏️',
+  inv_tel_lab:'📱 Tu móvil para dibujarla (máx. 3 al día). Solo lo usamos para tu fiesta.', inv_tel:'📱 Escribe tu móvil para dibujarla', inv_lim:'Ya has hecho 3 dibujos hoy. Mañana puedes hacer más, o escríbenos por WhatsApp.', inv_tope:'Hoy ya se han dibujado muchas fiestas. Escríbenos tu idea por WhatsApp y te la dibujamos nosotros.', inv_quedan:'Dibujos que te quedan hoy: {n}.', inv_q0:'Era el último de hoy.',
   pie:'Party Studio · Kids & Kafé',
   total:'Total estimado', consultar:'a consultar', incluido:'incluido',
   ent_ad:'Entrada adultos ×', mon_obl:'Monitor extra (obligatorio a partir de 20 niños)',
@@ -1180,6 +1190,7 @@ ca:{
   aviso1:'🗓️ Quan hi ha aniversari ', aviso2:'tanquem el centre sencer per a vosaltres',
   aviso3:', així que només hi ha ', aviso4:'una festa per dissabte', aviso5:'. Les dates volen.',
   inv_t:'✏️ Explica\'ns la teva idea', inv_s:'Escriu què li agrada al teu petit. La sala canvia sola amb les teves paraules i, si vols, te la dibuixem.', inv_ph:'Ex: dracs i foc en un castell', inv_btn:'🎨 Dibuixa-me-la', inv_wait:'🎨 Dibuixant la teva festa… uns segons', inv_ok:'✨ Fet! La teva festa ja està dibuixada a l\'arc i al cartell.', inv_err:'😕 No s\'ha pogut dibuixar. Torna-ho a provar o escriu-nos per WhatsApp.', inv_empty:'Escriu la teva idea primer ✏️',
+  inv_tel_lab:'📱 El teu mòbil per dibuixar-la (màx. 3 al dia). Només l\'usem per a la teva festa.', inv_tel:'📱 Escriu el teu mòbil per dibuixar-la', inv_lim:'Ja has fet 3 dibuixos avui. Demà en pots fer més, o escriu-nos per WhatsApp.', inv_tope:'Avui ja s\'han dibuixat moltes festes. Escriu-nos la teva idea per WhatsApp i te la dibuixem nosaltres.', inv_quedan:'Dibuixos que et queden avui: {n}.', inv_q0:'Era l\'últim d\'avui.',
   pie:'Party Studio · Kids & Kafé',
   total:'Total estimat', consultar:'a consultar', incluido:'inclòs',
   ent_ad:'Entrada adults ×', mon_obl:'Monitor extra (obligatori a partir de 20 nens)',
@@ -1246,6 +1257,7 @@ en:{
   aviso1:'🗓️ When there\'s a birthday we ', aviso2:'close the whole centre just for you',
   aviso3:', so there\'s only ', aviso4:'one party per Saturday', aviso5:'. Dates go fast.',
   inv_t:'✏️ Tell us your idea', inv_s:'Write what your little one loves. The room changes with your words and, if you like, we draw it for you.', inv_ph:'E.g. dragons and fire in a castle', inv_btn:'🎨 Draw it for me', inv_wait:'🎨 Drawing your party… a few seconds', inv_ok:'✨ Done! Your party is now drawn on the arch and the poster.', inv_err:'😕 We could not draw it. Try again or message us on WhatsApp.', inv_empty:'Write your idea first ✏️',
+  inv_tel_lab:'📱 Your mobile to draw it (max. 3 a day). We only use it for your party.', inv_tel:'📱 Write your mobile number to draw it', inv_lim:'You\'ve made 3 drawings today. You can make more tomorrow, or message us on WhatsApp.', inv_tope:'Lots of parties have been drawn today. Send us your idea on WhatsApp and we\'ll draw it for you.', inv_quedan:'Drawings left today: {n}.', inv_q0:'That was your last one today.',
   pie:'Party Studio · Kids & Kafé',
   total:'Estimated total', consultar:'on request', incluido:'included',
   ent_ad:'Adult entry ×', mon_obl:'Extra host (required from 20 children)',
@@ -2298,28 +2310,66 @@ $('#fIdea').oninput = e => KK_INVENTAR(e.target.value);
 /* «Dibújamelo»: pide la lámina a /inventa (Cloudflare Function con la clave de fal.ai)
    y la pone como lámina de 'invent' en caliente: arco 3D, azulejo, cartel y descarga.
    En localhost (pruebas) se simula con art-cumples/invent.jpg si existe.            */
+/* El móvil, igual que lo valida functions/inventa.js: en España 6/7 + 8 cifras; de fuera, + y 8-15. */
+function telValido(t){
+  let s = String(t || '').replace(/[\s().-]/g, '');
+  if(s.startsWith('00')) s = '+' + s.slice(2);
+  if(/^34[67]\d{8}$/.test(s)) s = '+' + s;
+  if(/^\+34[67]\d{8}$/.test(s)) return s;
+  if(/^[67]\d{8}$/.test(s)) return '+34' + s;
+  if(/^\+(?!34)[1-9]\d{7,14}$/.test(s)) return s;
+  return null;
+}
+/* La IA a veces escribe letras inventadas abajo del todo («Thapeapye haliday sawe», 2026-10-31).
+   Se tapan con el crema de la propia lámina YA EN LA IMAGEN, así salen limpios a la vez el
+   arco 3D, el cartel de la página y la descarga. Si algo falla, se queda la imagen tal cual. */
+async function KK_VELO(blob){
+  try{
+    const im = await createImageBitmap(blob);
+    const c = document.createElement('canvas'); c.width = im.width; c.height = im.height;
+    const x = c.getContext('2d'), W = c.width, H = c.height;
+    x.drawImage(im, 0, 0);
+    // el color: el crema liso que hay justo encima del nombre (60-66 % de alto, en el centro)
+    const d = x.getImageData(Math.round(W*0.4), Math.round(H*0.6), Math.round(W*0.2), Math.round(H*0.06)).data;
+    let r = 0, g = 0, b = 0; for(let i = 0; i < d.length; i += 4){ r += d[i]; g += d[i+1]; b += d[i+2]; }
+    const n = d.length / 4, rgb = Math.round(r/n) + ',' + Math.round(g/n) + ',' + Math.round(b/n);
+    const v = x.createLinearGradient(0, H*0.86, 0, H*0.92);   // del 86 % se funde, del 92 % abajo, liso
+    v.addColorStop(0, 'rgba(' + rgb + ',0)'); v.addColorStop(1, 'rgba(' + rgb + ',1)');
+    x.fillStyle = v; x.fillRect(0, H*0.86, W, H*0.14);
+    return await new Promise(ok => c.toBlob(nb => ok(nb || blob), 'image/jpeg', 0.92));
+  }catch(_){ return blob; }
+}
 async function KK_DIBUJAR(){
   const idea = (state.idea || '').trim(), msg = $('#dibujaMsg'), btn = $('#btnDibuja');
   if(idea.length < 3){ msg.textContent = T('inv_empty'); return; }
+  const tel = telValido(state.tel);
+  if(!tel){ msg.textContent = T('inv_tel'); $('#fTelDibuja').focus(); return; }
   btn.disabled = true; msg.textContent = T('inv_wait');
   try{
-    let blob;
+    let blob, quedan = null;
     if(location.hostname === 'localhost' || location.hostname === '127.0.0.1'){
       await new Promise(r => setTimeout(r, 2200));
       blob = await (await fetch('art-cumples/invent.jpg')).blob();
     } else {
       const r = await fetch('/inventa', { method:'POST', headers:{'content-type':'application/json'},
-                                          body: JSON.stringify({ idea: idea, lang: LANG }) });
-      if(!r.ok){ let e = {}; try{ e = await r.json(); }catch(_){} throw new Error(e.mensaje || ''); }
+                                          body: JSON.stringify({ idea: idea, lang: LANG, tel: tel }) });
+      if(!r.ok){
+        let e = {}; try{ e = await r.json(); }catch(_){}
+        // los topes se cuentan en el idioma de la madre; el resto, con el motivo del servidor
+        const k = { tel:'inv_tel', limite:'inv_lim', limite_conexion:'inv_tope', tope:'inv_tope' }[e.error];
+        const err = new Error(k ? T(k) : (e.mensaje ? '😕 ' + e.mensaje : T('inv_err'))); err.kk = true; throw err;
+      }
+      quedan = r.headers.get('x-inventa-quedan');
       blob = await r.blob();
     }
+    blob = await KK_VELO(blob);
     if(window.KK_INVENT_URL) URL.revokeObjectURL(window.KK_INVENT_URL);
     window.KK_INVENT_URL = URL.createObjectURL(blob);
     ART_PHOTO.invent = { src: window.KK_INVENT_URL, ty: 0.74, col: THEMES.invent.gr || '#5A3E8A' };
     renderThemes(); paint();
     if(window.KK3D) window.KK3D.setTheme('invent', THEMES.invent);
-    msg.textContent = T('inv_ok');
-  }catch(e){ msg.textContent = (e && e.message) ? '😕 ' + e.message : T('inv_err'); }
+    msg.textContent = T('inv_ok') + (quedan === null ? '' : ' ' + (quedan === '0' ? T('inv_q0') : T('inv_quedan').replace('{n}', quedan)));
+  }catch(e){ msg.textContent = (e && e.kk) ? e.message : (e && e.message) ? '😕 ' + e.message : T('inv_err'); }
   btn.disabled = false;
 }
 $('#btnDibuja').onclick = KK_DIBUJAR;
@@ -2327,9 +2377,12 @@ $('#btnDibuja').onclick = KK_DIBUJAR;
 // saldo → true. Para volver a esconderlo: false y quitar de inv_s (ES/CA/EN) la coletilla
 // "y, si quieres, te la dibujamos" / "i, si vols, te la dibuixem" / "and, if you like, we draw it for you".
 const INVENTA_DIBUJO = true;
-if(!INVENTA_DIBUJO){ $('#btnDibuja').style.display = 'none'; $('#dibujaMsg').style.display = 'none'; }
+if(!INVENTA_DIBUJO){ $('#btnDibuja').style.display = 'none'; $('#dibujaMsg').style.display = 'none'; $('#telDibujaBox').style.display = 'none'; }
 $('#fDiv').oninput  = e => { state.diversion= e.target.value; updatePoster(); };
-$('#fTel').oninput  = e => { state.tel      = e.target.value; marcarCambio();  };
+// Dos casillas, un solo teléfono: el de «Dibújamelo» y el de abajo se copian el uno al otro,
+// y es el que se guarda con el diseño (telefono en party_studio_disenos).
+$('#fTel').oninput       = e => { state.tel = e.target.value; $('#fTelDibuja').value = e.target.value; marcarCambio(); };
+$('#fTelDibuja').oninput = e => { state.tel = e.target.value; $('#fTel').value       = e.target.value; marcarCambio(); };
 
 /* ================= LA FECHA ================= */
 /* Tres cosas hace este campo, y la segunda es la que importa de verdad:
