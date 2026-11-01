@@ -13,8 +13,13 @@
 //
 //  Secretos y topes (se ponen en Cloudflare → Pages → proyecto → Settings):
 //    FAL_KEY        (secreto)  clave de fal.ai — nunca va en la página
-//    INVENTA_KV     (binding)  KV opcional para el tope diario
-//    INVENTA_MAX    (variable) tope de imágenes/día, por defecto 120
+//    INVENTA_KV     (binding)  KV con los contadores del día — OBLIGATORIO
+//    INVENTA_MAX    (variable) tope de imágenes/día entre todos, por defecto 50
+//
+//  Topes (decididos con Barbara el 2026-10-31): sin móvil no se dibuja,
+//  3 dibujos por móvil y día, 10 por conexión (por si alguien va cambiando
+//  de móvil) y 50 al día entre todos (≈ 15 céntimos). Sin INVENTA_KV no se
+//  dibuja nada: sin contadores no hay topes, y no se deja el saldo abierto.
 //
 //  Sin FAL_KEY la función responde 500 con un mensaje claro: la página lo
 //  enseña y no se queda colgada.
@@ -53,6 +58,29 @@ function limpiar(idea){
 
 function hoy(){ return new Date().toISOString().slice(0, 10); }
 
+// Móvil → forma única: «600 11 22 33», «+34600112233» y «0034 600…» cuentan como el mismo.
+// En España, móvil = 9 cifras empezando por 6 o 7 (los fijos 8/9 no: no tienen WhatsApp);
+// de fuera, + y 8 a 15 cifras.
+function telValido(t){
+  let s = String(t || '').replace(/[\s().-]/g, '');
+  if(s.startsWith('00')) s = '+' + s.slice(2);
+  if(/^34[67]\d{8}$/.test(s)) s = '+' + s;
+  if(/^\+34[67]\d{8}$/.test(s)) return s;
+  if(/^[67]\d{8}$/.test(s)) return '+34' + s;
+  if(/^\+(?!34)[1-9]\d{7,14}$/.test(s)) return s;
+  return null;
+}
+
+// El contador no guarda el móvil ni la IP tal cual, solo una huella que no se puede deshacer
+// (mezclada con la FAL_KEY, que nadie más tiene).
+async function huella(env, txt){
+  const h = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(env.FAL_KEY + '|' + txt));
+  return [...new Uint8Array(h).slice(0, 12)].map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+const POR_MOVIL = 3;        // si cambia, cambiar también el «3» de inv_tel_lab e inv_lim (party-studio.html, ES/CA/EN)
+const POR_CONEXION = 10;
+
 // ── La idea → inglés y cosas que se pueden pintar (personajes y marcas → cosas genéricas) ──
 // El primer elemento es el protagonista (si no, el unicornio se perdía entre nubes), y nada
 // oscuro: "starry night sky" o "black" volvían la lámina azul marino (2026-10-31).
@@ -68,9 +96,8 @@ const TRADUCTOR =
   'it (for example "Frozen" becomes "a sparkling ice castle, snowflakes, snowy mountains", ' +
   '"Spiderman" becomes "a red and blue spider web, city rooftops, a sunny sky" and "Mickey ' +
   'Mouse" becomes "a cute little grey mouse, red and yellow balloons, polka dots"); never people, faces, ' +
-  'names, words, letters or numbers. Example: "unicornios y arcoíris" becomes "a cute white ' +
-  'unicorn with a pastel mane, a big rainbow, fluffy clouds, a fairy castle". ' +
-  'Reply with the list only.';
+  'names, words, letters or numbers. Reply with the list only.';
+// Sin ejemplo de unicornio: el modelo lo copiaba y con «Frozen» salió un unicornio (2026-10-31).
 // Se prueban por orden: si uno no responde, el siguiente. Todos cuestan céntimos de céntimo.
 const MODELOS = ['google/gemini-2.5-flash-lite', 'openai/gpt-4o-mini', 'anthropic/claude-haiku-4.5'];
 
@@ -134,14 +161,31 @@ export async function onRequestPost(context){
   const idea = limpiar(body.idea);
   if(idea.length < 3) return json({ error: 'idea_vacia', mensaje: 'Escribe tu idea (3 letras como mínimo).' }, 400);
 
-  // ── Tope diario (si hay KV): nadie puede vaciar el saldo en una tarde ──
-  const max = parseInt(env.INVENTA_MAX || '120', 10);
-  if(env.INVENTA_KV){
-    const k = 'inventa:' + hoy();
-    const n = parseInt((await env.INVENTA_KV.get(k)) || '0', 10);
-    if(n >= max) return json({ error: 'tope', mensaje: 'Hoy ya se han dibujado muchas fiestas. Escríbenos tu idea por WhatsApp y te la dibujamos nosotros.' }, 429);
-    await env.INVENTA_KV.put(k, String(n + 1), { expirationTtl: 60 * 60 * 36 });
-  }
+  // ── Sin móvil no se dibuja (Barbara, 2026-10-31) ──
+  const tel = telValido(body.tel);
+  if(!tel) return json({ error: 'tel', mensaje: 'Escribe tu móvil para que te la dibujemos.' }, 400);
+
+  // ── Topes del día: por móvil, por conexión y entre todos. Sin KV no hay contadores → no se dibuja ──
+  const KV = env.INVENTA_KV;
+  if(!KV) return json({ error: 'sin_kv', mensaje: 'El dibujo automático está en pausa. Escríbenos tu idea por WhatsApp y te la dibujamos nosotros.' }, 500);
+  const dia = hoy();
+  const claves = [
+    'inventa:' + dia,
+    'inventa:tel:' + dia + ':' + await huella(env, tel),
+    'inventa:ip:' + dia + ':' + await huella(env, request.headers.get('CF-Connecting-IP') || 'sin-ip')
+  ];
+  const [nTotal, nMovil, nRed] = (await Promise.all(claves.map(k => KV.get(k)))).map(v => parseInt(v || '0', 10) || 0);
+  if(nMovil >= POR_MOVIL) return json({ error: 'limite', mensaje: 'Ya has hecho ' + POR_MOVIL + ' dibujos hoy. Mañana puedes hacer más, o escríbenos por WhatsApp.' }, 429);
+  if(nRed >= POR_CONEXION) return json({ error: 'limite_conexion', mensaje: 'Desde esta conexión ya se han hecho muchos dibujos hoy. Escríbenos tu idea por WhatsApp y te la dibujamos nosotros.' }, 429);
+  if(nTotal >= parseInt(env.INVENTA_MAX || '50', 10)) return json({ error: 'tope', mensaje: 'Hoy ya se han dibujado muchas fiestas. Escríbenos tu idea por WhatsApp y te la dibujamos nosotros.' }, 429);
+  // Se apunta ANTES de dibujar: diez clics seguidos no se cuelan mientras el primero aún dibuja.
+  const TTL = { expirationTtl: 60 * 60 * 36 };
+  await Promise.all(claves.map((k, i) => KV.put(k, String([nTotal, nMovil, nRed][i] + 1), TTL)));
+  // Si al final no hay dibujo, el intento no cuenta (con fal sin saldo, nadie se queda sin sus 3).
+  const devolver = () => Promise.all(claves.map(async k => {
+    const n = parseInt((await KV.get(k)) || '0', 10) || 0;
+    if(n > 0) await KV.put(k, String(n - 1), TTL);
+  })).catch(() => {});
 
   // ── fal.ai · FLUX schnell · API de COLA (la documentada): enviar → esperar → recoger ──
   //    Cabecera confirmada en fal.ai/docs/model-apis/model-endpoints/queue:
@@ -151,7 +195,10 @@ export async function onRequestPost(context){
             || idea.replace(new RegExp(MARCAS.source, 'gi'), ' ').replace(/\s+/g, ' ').trim()
             || 'pastel balloons, stars and flowers';
   const prompt = PLANTILLA.replace('{TEMA}', tema);
-  const fail = (code, mensaje, detalle) => json({ error: code, mensaje, detalle: (detalle || '').slice(0, 200) }, 500);
+  const fail = async (code, mensaje, detalle) => {
+    await devolver();
+    return json({ error: code, mensaje, detalle: (detalle || '').slice(0, 200) }, 500);
+  };
   let sub;
   try {
     sub = await fetch('https://queue.fal.run/fal-ai/flux/schnell', {
@@ -186,8 +233,8 @@ export async function onRequestPost(context){
   if(!url) return fail('sin_imagen', 'El dibujante no ha devuelto ninguna imagen.');
 
   // ── La imagen vuelve por AQUÍ (mismo origen) para que el <canvas> del cartel pueda usarla ──
-  const img = await fetch(url);
-  if(!img.ok) return json({ error: 'descarga', mensaje: 'No se ha podido descargar el dibujo.' }, 500);
+  const img = await fetch(url).catch(() => null);
+  if(!img || !img.ok) return fail('descarga', 'No se ha podido descargar el dibujo.');
   const tipo = img.headers.get('content-type') || 'image/jpeg';
   return new Response(img.body, {
     status: 200,
@@ -195,7 +242,8 @@ export async function onRequestPost(context){
       'content-type': tipo,
       'cache-control': 'private, max-age=86400',
       'x-inventa-idea': encodeURIComponent(idea),
-      'x-inventa-tema': encodeURIComponent(tema)
+      'x-inventa-tema': encodeURIComponent(tema),
+      'x-inventa-quedan': String(Math.max(0, POR_MOVIL - nMovil - 1))   // dibujos que le quedan hoy a ese móvil
     }
   });
 }
