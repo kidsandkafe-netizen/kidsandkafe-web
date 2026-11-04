@@ -105,7 +105,6 @@
 
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
   var PRECIO = 45, MAX = 10;
   var IBAN = "ES93 2100 3683 5322 0012 8922";
@@ -115,7 +114,11 @@
   var SB_URL = "https://ovztunykbpvsilauxjhe.supabase.co";
   var SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im92enR1bnlrYnB2c2lsYXV4amhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMDY2MDMsImV4cCI6MjA5Mjc4MjYwM30.wRGp44Vxf9wqkK7x9p-okePmC9rsTRQo6XKnaMZJ2iE";
   var sb = null;
-  try { sb = supabase.createClient(SB_URL, SB_KEY); } catch(e){ console.warn(e); }
+  // La librería se carga aparte (async): si tarda, los botones funcionan igual.
+  function getSb(){
+    if (!sb && window.supabase) { try { sb = window.supabase.createClient(SB_URL, SB_KEY); } catch(e){ console.warn(e); } }
+    return sb;
+  }
 
   var cuenta = { a: 1, p: 1 };
   var MIN = { a: 1, p: 0 };
@@ -150,7 +153,7 @@
       adultos: cuenta.a, peques: cuenta.p, total: (cuenta.a + cuenta.p) * PRECIO,
       metodo_pago: metodo, estado: 'pendiente'
     };
-    if (!sb) { err('No hay conexión. Prueba otra vez.'); return null; }
+    if (!getSb()) { err('No hay conexión. Prueba otra vez.'); return null; }
     bloquear(true);
     var r = await sb.from('rumi_inscripciones').insert(fila);
     if (r.error) { bloquear(false); err('No se pudo guardar. Prueba otra vez.'); console.warn(r.error); return null; }
@@ -200,5 +203,6 @@
     ok.style.display = 'block';
   }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js" async></script>
 </body>
 </html>
