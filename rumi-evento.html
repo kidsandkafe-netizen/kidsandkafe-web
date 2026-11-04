@@ -5,6 +5,16 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex">
 <title>Rumi Events</title>
+<meta name="description" content="20 de diciembre · 18:00 a 24:00 · Adultos 45 € · Peques 26 €. Apúntate y paga aquí.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rumi Events">
+<meta property="og:title" content="Rumi Events · 20 de diciembre">
+<meta property="og:description" content="18:00 a 24:00 · Adultos 45 € · Peques 26 €. Apúntate y paga aquí.">
+<meta property="og:url" content="https://www.kidsandkafe.es/rumi-evento">
+<meta property="og:image" content="https://www.kidsandkafe.es/img/rumi-logo.png">
+<meta property="og:image:width" content="339">
+<meta property="og:image:height" content="400">
+<meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -58,7 +68,7 @@
       <span class="fact">📅 20 de diciembre</span>
       <span class="fact">🕕 18:00 – 24:00</span>
       <span class="fact">🧒 3 a 12 años</span>
-      <span class="fact">💶 45 € por persona</span>
+      <span class="fact">💶 Adulto 45 € · Peque 26 €</span>
     </div>
   </div>
 
@@ -87,8 +97,8 @@
         <div class="n"><span id="pNum">1</span><small id="pTxt">peque</small></div>
         <button type="button" id="pMas" onclick="cambiar('p',1)">+</button>
       </div>
-      <div class="total"><span>Total a pagar</span><b id="total">45 €</b></div>
-      <div class="nota">45 € por persona, adultos y peques igual.</div>
+      <div class="total"><span>Total a pagar</span><b id="total">71 €</b></div>
+      <div class="nota">Adulto 45 € · Peque (3 a 12 años) 26 €</div>
     </div>
 
     <div class="card">
@@ -106,7 +116,7 @@
 </div>
 
 <script>
-  var PRECIO = 45, MAX = 10;
+  var PRECIO_A = 45, PRECIO_P = 26, MAX = 10;
   var IBAN = "ES93 2100 3683 5322 0012 8922";
   var TITULAR = "KIDS AND KAFE INVERSIÓN S.L.";
   var WA = "34637319226";
@@ -131,7 +141,7 @@
       document.getElementById(x+'Menos').disabled = cuenta[x] === MIN[x];
       document.getElementById(x+'Mas').disabled = cuenta[x] === MAX;
     });
-    document.getElementById('total').textContent = ((cuenta.a + cuenta.p) * PRECIO) + ' €';
+    document.getElementById('total').textContent = (cuenta.a * PRECIO_A + cuenta.p * PRECIO_P) + ' €';
   }
   cambiar('a', 0);
 
@@ -150,7 +160,7 @@
     var fila = {
       id: (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())),
       nombre: nombre, telefono: tel, email: email,
-      adultos: cuenta.a, peques: cuenta.p, total: (cuenta.a + cuenta.p) * PRECIO,
+      adultos: cuenta.a, peques: cuenta.p, total: cuenta.a * PRECIO_A + cuenta.p * PRECIO_P,
       metodo_pago: metodo, estado: 'pendiente'
     };
     if (!getSb()) { err('No hay conexión. Prueba otra vez.'); return null; }
