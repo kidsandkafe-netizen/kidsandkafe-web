@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Rumi Events</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Nunito',system-ui,sans-serif;background:linear-gradient(180deg,#F1E8D6,#FBF6EC);color:#2E2521;padding:24px 14px 70px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:460px;margin:0 auto}
+  .hero{background:#fff;border-radius:22px;padding:22px 22px 24px;text-align:center;box-shadow:0 16px 34px -20px rgba(110,15,37,0.55);margin-bottom:16px;border-top:3px solid #6E0F25}
+  .hero .tag{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#9A8A6A}
+  .hero img{display:block;width:170px;height:auto;margin:10px auto 0}
+  .facts{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px}
+  .fact{background:#F8EDEF;border:1px solid rgba(110,15,37,.2);border-radius:999px;padding:6px 12px;font-size:12.5px;font-weight:800;color:#6E0F25}
+  .card{background:#fff;border-radius:18px;padding:18px 18px 20px;margin-bottom:14px;box-shadow:0 10px 26px -18px rgba(12,59,45,0.45);border-top:3px solid #D9B45C}
+  .sec{font-size:16px;font-weight:800;color:#0C3B2D;margin-bottom:14px}
+  label{display:block;font-size:12px;font-weight:800;color:#5F4A33;margin:12px 0 5px}
+  label:first-of-type{margin-top:0}
+  input{width:100%;border:1.5px solid #E3D6BE;border-radius:11px;padding:11px 12px;font-size:16px;font-family:inherit;color:#2E2521;background:#FFFDF9;outline:none}
+  input:focus{border-color:#0C3B2D;background:#fff}
+  .req{color:#C62B3F}
+  .stepper{display:flex;align-items:center;justify-content:space-between;border:1.5px solid #E3D6BE;border-radius:14px;padding:8px;background:#FFFDF9}
+  .stepper button{width:46px;height:46px;border-radius:12px;border:none;background:#0C3B2D;color:#F3DA96;font-size:24px;font-weight:900;cursor:pointer;font-family:inherit}
+  .stepper button:disabled{opacity:.3;cursor:default}
+  .stepper .n{font-size:28px;font-weight:900;color:#0C3B2D;text-align:center}
+  .stepper .n small{display:block;font-size:11px;font-weight:700;color:#9A8A6A}
+  .total{display:flex;justify-content:space-between;align-items:baseline;margin-top:14px;padding:13px 14px;background:#FDF2EE;border-radius:12px}
+  .total span{font-size:13px;font-weight:800;color:#5F4A33}
+  .total b{font-size:26px;font-weight:900;color:#9E1B2E}
+  .nota{font-size:11.5px;color:#7A6648;margin-top:8px;line-height:1.5}
+  .pay{width:100%;border-radius:14px;padding:15px;font-size:16px;font-weight:900;cursor:pointer;font-family:inherit;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px}
+  .pay.card-pay{background:#111;color:#fff;border:none}
+  .pay.transfer{background:#fff;color:#0C3B2D;border:2px solid #0C3B2D}
+  .pay:disabled{opacity:.6;cursor:default}
+  .pay small{font-weight:700;font-size:11px;opacity:.75}
+  .err{color:#C0392B;font-size:12.5px;font-weight:800;text-align:center;margin-top:10px;display:none}
+  .foot{text-align:center;font-size:11px;color:#6F5B3E;margin-top:14px;line-height:1.5}
+  #ok{display:none;text-align:center;background:#fff;border-radius:18px;padding:28px 22px;box-shadow:0 10px 26px -18px rgba(12,59,45,0.45);border-top:3px solid #D9B45C}
+  #ok .big{font-size:44px}
+  #ok h2{color:#0C3B2D;font-size:22px;margin:8px 0}
+  #ok p{font-size:13px;color:#5F4A33;line-height:1.6;margin-bottom:6px}
+  .iban{background:#FBF6EC;border:1px dashed #D9B45C;border-radius:12px;padding:12px;margin:12px 0;font-size:13px;color:#2E2521;line-height:1.7}
+  .iban b{font-size:15px;letter-spacing:.5px;color:#0C3B2D}
+  .copy{border:none;background:#0C3B2D;color:#F3DA96;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;margin-top:6px}
+  .wa-btn{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;border-radius:14px;padding:14px 22px;font-size:15px;font-weight:900;text-decoration:none;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <img src="img/rumi-logo.png" alt="Rumi Events" width="170" height="201">
+    <div class="facts">
+      <span class="fact">📅 20 de diciembre</span>
+      <span class="fact">🕕 18:00 – 24:00</span>
+      <span class="fact">🧒 3 a 12 años</span>
+      <span class="fact">💶 45 € por persona</span>
+    </div>
+  </div>
+
+  <div id="form">
+    <div class="card">
+      <div class="sec">👤 Tus datos</div>
+      <label>Nombre y apellido <span class="req">*</span></label>
+      <input id="nombre" autocomplete="name" placeholder="Ej: Marta García">
+      <label>Teléfono <span class="req">*</span></label>
+      <input id="tel" type="tel" autocomplete="tel" placeholder="Ej: 600 123 456">
+      <label>Correo <span class="req">*</span></label>
+      <input id="email" type="email" autocomplete="email" placeholder="tu@correo.com">
+    </div>
+
+    <div class="card">
+      <div class="sec">👨‍👩‍👧 ¿Cuántos venís?</div>
+      <label>Adultos</label>
+      <div class="stepper">
+        <button type="button" id="aMenos" onclick="cambiar('a',-1)">−</button>
+        <div class="n"><span id="aNum">1</span><small id="aTxt">adulto</small></div>
+        <button type="button" id="aMas" onclick="cambiar('a',1)">+</button>
+      </div>
+      <label>Peques (3 a 12 años)</label>
+      <div class="stepper">
+        <button type="button" id="pMenos" onclick="cambiar('p',-1)">−</button>
+        <div class="n"><span id="pNum">1</span><small id="pTxt">peque</small></div>
+        <button type="button" id="pMas" onclick="cambiar('p',1)">+</button>
+      </div>
+      <div class="total"><span>Total a pagar</span><b id="total">45 €</b></div>
+      <div class="nota">45 € por persona, adultos y peques igual.</div>
+    </div>
+
+    <div class="card">
+      <div class="sec">💳 ¿Cómo quieres pagar?</div>
+      <button class="pay card-pay" id="btnTarjeta" onclick="pagarTarjeta()"> Apple Pay · Google Pay · tarjeta</button>
+      <button class="pay transfer" id="btnTransf" onclick="pagarTransferencia()">🏦 Transferencia bancaria</button>
+      <div class="err" id="err"></div>
+    </div>
+
+    <div class="foot">¿Dudas? Escríbenos por WhatsApp</div>
+  </div>
+
+  <div id="ok"></div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+  var PRECIO = 45, MAX = 10;
+  var IBAN = "ES93 2100 3683 5322 0012 8922";
+  var TITULAR = "KIDS AND KAFE INVERSIÓN S.L.";
+  var WA = "34637319226";
+  var PAGO_URL = "https://kids-kafe.vercel.app/api/pago";
+  var SB_URL = "https://ovztunykbpvsilauxjhe.supabase.co";
+  var SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im92enR1bnlrYnB2c2lsYXV4amhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMDY2MDMsImV4cCI6MjA5Mjc4MjYwM30.wRGp44Vxf9wqkK7x9p-okePmC9rsTRQo6XKnaMZJ2iE";
+  var sb = null;
+  try { sb = supabase.createClient(SB_URL, SB_KEY); } catch(e){ console.warn(e); }
+
+  var cuenta = { a: 1, p: 1 };
+  var MIN = { a: 1, p: 0 };
+  var NOMBRE = { a: ['adulto','adultos'], p: ['peque','peques'] };
+  function cambiar(k, d){
+    cuenta[k] = Math.min(MAX, Math.max(MIN[k], cuenta[k] + d));
+    ['a','p'].forEach(function(x){
+      document.getElementById(x+'Num').textContent = cuenta[x];
+      document.getElementById(x+'Txt').textContent = NOMBRE[x][cuenta[x] === 1 ? 0 : 1];
+      document.getElementById(x+'Menos').disabled = cuenta[x] === MIN[x];
+      document.getElementById(x+'Mas').disabled = cuenta[x] === MAX;
+    });
+    document.getElementById('total').textContent = ((cuenta.a + cuenta.p) * PRECIO) + ' €';
+  }
+  cambiar('a', 0);
+
+  function err(msg){ var e = document.getElementById('err'); e.textContent = msg; e.style.display = msg ? 'block' : 'none'; }
+  function bloquear(si){ document.getElementById('btnTarjeta').disabled = si; document.getElementById('btnTransf').disabled = si; }
+
+  // Valida y guarda la inscripción. Devuelve la fila o null.
+  async function guardar(metodo){
+    err('');
+    var nombre = document.getElementById('nombre').value.trim();
+    var tel = document.getElementById('tel').value.trim();
+    var email = document.getElementById('email').value.trim();
+    if (!nombre) { err('Falta tu nombre'); return null; }
+    if (tel.replace(/\D/g,'').length < 9) { err('Revisa el teléfono'); return null; }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { err('Revisa el correo'); return null; }
+    var fila = {
+      id: (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())),
+      nombre: nombre, telefono: tel, email: email,
+      adultos: cuenta.a, peques: cuenta.p, total: (cuenta.a + cuenta.p) * PRECIO,
+      metodo_pago: metodo, estado: 'pendiente'
+    };
+    if (!sb) { err('No hay conexión. Prueba otra vez.'); return null; }
+    bloquear(true);
+    var r = await sb.from('rumi_inscripciones').insert(fila);
+    if (r.error) { bloquear(false); err('No se pudo guardar. Prueba otra vez.'); console.warn(r.error); return null; }
+    return fila;
+  }
+
+  async function pagarTarjeta(){
+    var f = await guardar('tarjeta'); if (!f) return;
+    try {
+      var r = await fetch(PAGO_URL, { method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ tipo:'evento', refId:f.id, precio:f.total, concepto:'Rumi Event · ' + f.adultos + ' adulto(s) + ' + f.peques + ' peque(s)', familyId:f.telefono.replace(/\D/g,''), nativo:false }) });
+      var j = await r.json();
+      if (j.url) { location.href = j.url; return; }
+      throw new Error(j.error || 'sin_url');
+    } catch(e) {
+      console.warn(e); bloquear(false);
+      err('El pago con tarjeta no está disponible ahora. Puedes pagar por transferencia.');
+    }
+  }
+
+  async function pagarTransferencia(){
+    var f = await guardar('transferencia'); if (!f) return;
+    var msg = 'Hola! Soy ' + f.nombre + '. Me he apuntado al Rumi Event con ' + f.adultos + ' adulto(s) y ' + f.peques + ' peque(s). Te mando el comprobante de la transferencia de ' + f.total + ' €.';
+    var ok = document.getElementById('ok');
+    ok.innerHTML =
+      '<div class="big">🎉</div><h2>¡Apuntados!</h2>' +
+      '<p>Haz la transferencia de <b id="okTotal"></b> a:</p>' +
+      '<div class="iban">' + TITULAR + '<br><b>' + IBAN + '</b><br>Concepto: <b>Rumi + tu nombre</b><br>' +
+      '<button class="copy" onclick="copiarIban(this)">Copiar IBAN</button></div>' +
+      '<p>Y mándanos el comprobante:</p>' +
+      '<a class="wa-btn" href="https://wa.me/' + WA + '?text=' + encodeURIComponent(msg) + '" target="_blank" rel="noopener">💬 Mandar por WhatsApp</a>';
+    document.getElementById('okTotal').textContent = f.total + ' €';
+    document.getElementById('form').style.display = 'none';
+    ok.style.display = 'block';
+    window.scrollTo(0,0);
+  }
+
+  function copiarIban(b){
+    try { navigator.clipboard.writeText(IBAN.replace(/\s/g,'')); b.textContent = '¡Copiado!'; } catch(e){}
+  }
+
+  // Vuelta desde SumUp
+  if (/[?&]pago=ok/.test(location.search)) {
+    var ok = document.getElementById('ok');
+    ok.innerHTML = '<div class="big">🎉</div><h2>¡Pago hecho!</h2><p>Ya estáis apuntados al Rumi Event. ¡Nos vemos el 20 de diciembre!</p>';
+    document.getElementById('form').style.display = 'none';
+    ok.style.display = 'block';
+  }
+</script>
+</body>
+</html>
