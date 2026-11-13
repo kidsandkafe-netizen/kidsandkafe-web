@@ -788,6 +788,14 @@ html.cielo.tablon.tablon3d section:not(.hero) .btn-pink,html.cielo.tablon.tablon
 html.cielo.tablon.tablon3d .store a{box-shadow:inset 0 3px 6px #fff,inset 0 -5px 10px rgba(192,134,46,.14),0 6px 0 -1px #F0DDB8,0 16px 24px -12px rgba(120,80,20,.4)}
 html.cielo.tablon.tablon3d .videowrap{border-radius:32px;box-shadow:0 0 0 10px #fff,0 10px 0 9px #D9E6F2,0 40px 60px -20px rgba(52,98,160,.45)}
 html.cielo.tablon.tablon3d .gal img{border-radius:22px;box-shadow:0 0 0 6px #fff,0 8px 0 5px #D9E6F2,0 22px 34px -16px rgba(52,98,160,.4)}
+/* galería Instagram en móvil = carrusel que se desliza de lado; 6 fotos (sin 2 de las de la tarta, casi iguales). 13-nov, opción B */
+@media(max-width:560px){
+.gal{columns:auto;display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -24px;padding:8px 24px 20px;scrollbar-width:none}
+.gal::-webkit-scrollbar{display:none}
+html.cielo.tablon.tablon3d .gal img{flex:0 0 78%;width:78%;height:215px;object-fit:cover;margin:0;scroll-snap-align:center;opacity:1;transform:none}
+.gal img:nth-child(8){object-position:50% 22%}
+.gal img:nth-child(2),.gal img:nth-child(4){display:none}
+}
 </style>
 <style id="kk-personajes">
 /* Tablón: los niños del logo KK en cada tarjeta (2026-10-30; antes emojis 3D "demasiado básicos").
