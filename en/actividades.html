@@ -271,7 +271,117 @@
         .nv-card.xmas .nv-stage{padding-top:34px}
         .nv-card.xmas .nv-badge{font-size:10px;padding:6px 10px;letter-spacing:.04em}
       }
+
+      /* ===== 🎄 Christmas Camp: postal a todo el ancho ANTES de Papá Noel (se quita sola el 6-ene-2027) ===== */
+      .cc-show{grid-column:1/-1;position:relative;overflow:hidden;isolation:isolate;border-radius:28px;color:#123B2E}
+      .cc-grid{position:relative;z-index:3;display:grid;row-gap:20px;grid-template-areas:"cab" "escena" "info"}
+      .cc-cab{grid-area:cab}.cc-escena{grid-area:escena}.cc-info{grid-area:info}
+      .cc-eb{display:inline-block;font:800 11px/1.35 Nunito,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#B0172F}
+      .cc-show h3{font-family:Fraunces,serif;font-weight:600;font-size:clamp(44px,12vw,68px);line-height:.98;margin:12px 0 0;color:#0C3B2D}
+      .cc-show h3 em{font-style:italic;color:#B0172F}
+      .cc-show h3 small{display:block;margin-top:10px;font:800 14px/1 Nunito,sans-serif;letter-spacing:.18em;color:#2E7A55}
+      .cc-lema{margin:14px 0 0;font:500 21px/1.25 Fraunces,serif;color:#123B2E}
+      .cc-lema em{font-style:italic;color:#B0172F}
+      .cc-cuando{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+      .cc-chip{display:inline-flex;align-items:center;gap:6px;padding:9px 13px;border-radius:999px;background:#fff;border:1px solid rgba(18,59,46,.14);font:800 14px/1 Nunito,sans-serif;color:#123B2E}
+      .cc-falta{background:linear-gradient(135deg,#D63A4E,#9E1B2E);border-color:transparent;color:#fff}
+      .cc-lista{list-style:none;margin:0;padding:0;display:grid;gap:10px;font:600 16px/1.35 Nunito,sans-serif}
+      .cc-lista li{display:flex;gap:10px;align-items:flex-start}
+      .cc-lista b{color:#0C3B2D;font-weight:800}
+      .cc-precio{margin:18px 0 0;font:700 15px/1.3 Nunito,sans-serif;color:#123B2E}
+      .cc-precio b{font:800 34px/1 Nunito,sans-serif;color:#9E1B2E;margin:0 2px;vertical-align:-3px}
+      .cc-precio span{display:block;margin-top:6px;font:700 14.5px/1.3 Nunito,sans-serif;color:#2E4F43}
+      .cc-btn{display:inline-flex;align-items:center;gap:10px;margin-top:16px;padding:17px 26px;border-radius:999px;background:linear-gradient(135deg,#D63A4E,#9E1B2E);color:#fff;font:800 17px/1 Nunito,sans-serif;text-decoration:none;box-shadow:0 14px 28px -12px rgba(158,27,46,.8),inset 0 1px 0 rgba(255,255,255,.3);animation:ccLatido 2.6s ease-in-out infinite}
+      @keyframes ccLatido{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+      .cc-mas{display:block;width:max-content;margin-top:14px;font:800 14.5px/1.3 Nunito,sans-serif;color:#0C3B2D;text-decoration:underline;text-underline-offset:4px}
+      /* postal de Navidad: borde de correo aéreo, lazo, sello con los peques y matasellos con las fechas */
+      .cc-b{padding:12px;background:repeating-linear-gradient(-45deg,#C62B3F 0 16px,#FFF8EC 16px 24px,#1F6B4A 24px 40px,#FFF8EC 40px 48px);box-shadow:0 30px 60px -30px rgba(18,59,46,.55)}
+      .cc-papel{position:relative;border-radius:18px;background:#FFF8EC;padding:84px 20px 28px}
+      .cc-lazo{position:absolute;left:4px;top:2px;width:62px;height:auto;z-index:4;transform:rotate(-14deg);transform-origin:50% 40%;animation:ccLazo 5s ease-in-out infinite}
+      @keyframes ccLazo{0%,100%{transform:rotate(-14deg)}50%{transform:rotate(-8deg) scale(1.03)}}
+      .cc-b .cc-escena{display:flex;flex-direction:column;align-items:flex-end;gap:26px}
+      .cc-sellos{position:relative;width:clamp(150px,44vw,214px);margin-right:4%}
+      .cc-sello{--r:7px;position:relative;padding:calc(2*var(--r));background:radial-gradient(var(--r),#0000 98%,#fff) round calc(-1.5*var(--r)) calc(-1.5*var(--r))/calc(3*var(--r)) calc(3*var(--r)),linear-gradient(#fff 0 0) no-repeat 50%/calc(100% - 3*var(--r)) calc(100% - 3*var(--r));filter:drop-shadow(0 12px 12px rgba(18,59,46,.22));transform:rotate(4deg);animation:ccSello 6s ease-in-out infinite}
+      @keyframes ccSello{0%,100%{transform:rotate(4deg)}50%{transform:rotate(2deg) translateY(-4px)}}
+      .cc-sello-in{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:radial-gradient(90% 70% at 50% 0%,rgba(243,218,150,.28) 0%,transparent 60%),linear-gradient(160deg,#145A41 0%,#0C3B2D 100%)}
+      .cc-sello-in .kk-scene{width:92%}
+      .cc-sello-in b{font:900 10.5px/1 Nunito,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#F3DA96}
+      .cc-mata{position:absolute;left:-30%;bottom:-10%;width:50%;aspect-ratio:1;border-radius:50%;border:2.5px solid rgba(158,27,46,.72);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;transform:rotate(-14deg);color:rgba(158,27,46,.9);font:900 12.5px/1 Nunito,sans-serif;letter-spacing:.06em;background:rgba(255,248,236,.3);z-index:2}
+      .cc-mata::before{content:"";position:absolute;inset:5px;border-radius:50%;border:1.5px solid rgba(158,27,46,.5)}
+      .cc-mata small{font:800 9.5px/1 Nunito,sans-serif;letter-spacing:.14em;opacity:.85}
+      .cc-ondas{position:absolute;left:-60%;bottom:8%;width:42%;height:auto;z-index:1}
+      .cc-dir{align-self:stretch}
+      .cc-dir p{margin:0;padding:12px 0 6px;border-bottom:2px solid rgba(18,59,46,.14);font:500 italic 19px/1.2 Fraunces,serif;color:#123B2E}
+      .cc-dir span{margin-right:8px;font:800 10.5px/1 Nunito,sans-serif;font-style:normal;letter-spacing:.16em;text-transform:uppercase;color:#B0172F}
+      @media (min-width:860px){
+        .cc-grid{grid-template-columns:.95fr 1.05fr;grid-template-areas:"escena cab" "escena info";column-gap:44px;align-items:center}
+        .cc-info{align-self:start}
+        .cc-papel{padding:64px 52px 44px}
+        .cc-lazo{width:80px}
+        .cc-b .cc-eb{padding-left:44px}
+        .cc-b .cc-grid{grid-template-columns:1.25fr .75fr;grid-template-areas:"cab escena" "info escena";column-gap:52px}
+        .cc-b .cc-escena{align-self:stretch;justify-content:center;border-left:2px dashed rgba(18,59,46,.16);padding-left:40px}
+        .cc-ondas{left:-92%;width:70%}
+      }
+      @media (prefers-reduced-motion:reduce){.cc-show *,.cc-show *::before,.cc-show *::after{animation:none!important}}
+      /* con las 2 postales grandes: Baby y Extraescolares centradas debajo (ordenador); sin Papá Noel, 1 sola «Muy pronto» */
+      @media (min-width:1024px){
+        .nv-feed:has(#papa-noel):has(.cc-show){grid-template-columns:repeat(6,minmax(0,1fr))}
+        .nv-feed:has(#papa-noel):has(.cc-show)>.nv-card{grid-column:span 2}
+        .nv-feed:has(#papa-noel):has(.cc-show)>#papa-noel+script+.nv-card{grid-column:2/span 2}
+      }
+      .nv-feed:has(.cc-show) .nv-soon~.nv-soon{display:none}
       </style>
+
+      <!-- 🎄 Christmas Camp (21-dic-2026 → 5-ene-2027) · postal a todo el ancho ANTES de Papá Noel; se quita sola el 6-ene (data-hasta + script) -->
+      <article class="cc-show cc-b" data-hasta="2027-01-06T00:00:00+01:00" data-rv="s">
+        <div class="cc-papel">
+          <img class="cc-lazo" src="../img/xmas-lazo.png" width="285" height="320" alt="" aria-hidden="true" loading="lazy" decoding="async">
+          <div class="cc-grid">
+            <div class="cc-cab">
+              <span class="cc-eb">🎄 Christmas camp · Registration open</span>
+              <h3>Christmas <em>Camp</em><small>2026-2027</small></h3>
+              <p class="cc-lema">Christmas holidays, <em>sorted</em></p>
+              <div class="cc-cuando">
+                <span class="cc-chip">📅 21-24 &amp; 28-31 Dec · 4-5 Jan</span>
+                <span class="cc-chip">👶 Ages 1 to 6</span>
+                <span class="cc-chip cc-falta" style="display:none"></span>
+              </div>
+            </div>
+            <div class="cc-escena" aria-hidden="true">
+              <div class="cc-sellos">
+                <svg class="cc-ondas" viewBox="0 0 120 44" aria-hidden="true"><path d="M2 10q8-7 16 0t16 0t16 0t16 0t16 0t16 0t16 0M2 22q8-7 16 0t16 0t16 0t16 0t16 0t16 0t16 0M2 34q8-7 16 0t16 0t16 0t16 0t16 0t16 0t16 0" fill="none" stroke="rgba(158,27,46,.55)" stroke-width="2.4" stroke-linecap="round"/></svg>
+                <div class="cc-sello"><div class="cc-sello-in"><div class="kk-scene" data-s="navidad"></div><b>Kids &amp; Kafé</b></div></div>
+                <div class="cc-mata"><b>21 DEC</b><small>2026</small><b>5 JAN</b></div>
+              </div>
+              <div class="cc-dir">
+                <p><span>To:</span> children aged 1 to 6</p>
+                <p><span>From:</span> Kids &amp; Kafé · Les Corts</p>
+              </div>
+            </div>
+            <div class="cc-info">
+              <ul class="cc-lista">
+                <li><span>🎨</span><span>Group games, crafts, art and <b>mini chef</b></span></li>
+                <li><span>🍽️</span><span><b>Half day or full day</b> with lunch</span></li>
+                <li><span>🕗</span><span><b>Flexible</b> hours and attendance and <b>early drop-off</b> service</span></li>
+              </ul>
+              <p class="cc-precio">from <b>€50</b> a day<span>reserve your place with €50</span></p>
+              <a class="cc-btn" href="../casal-inscripcion?lang=en">🎄 Reserve a place <span aria-hidden="true">→</span></a>
+              <a class="cc-mas" href="casal">See the Christmas camp →</a>
+            </div>
+          </div>
+        </div>
+      </article>
+      <script>/* 🎄 Christmas Camp: cuenta atrás hasta el 21-dic y la postal se quita sola el 6-ene-2027 */
+      (function(){ var cs=document.querySelectorAll('.cc-show'); if(!cs.length) return;
+        var h=new Date(), d=Math.round((new Date(2026,11,21) - new Date(h.getFullYear(),h.getMonth(),h.getDate()))/864e5);
+        [].forEach.call(cs,function(c){
+          if(Date.now() > Date.parse(c.getAttribute('data-hasta'))){ c.remove(); return; }
+          var f=c.querySelector('.cc-falta'); if(!f) return;
+          if(d<0){ f.remove(); return; }
+          f.textContent = d>1 ? "⏳ Starts in "+d+" days" : d===1 ? "⏳ Starts tomorrow!" : "🎄 Starts today!"; f.style.display='';
+        });
+      })();</script>
 
       <!-- 🎅 Visita de Papá Noel (domingo 13-dic-2026) · escenario a todo el ancho; se quita solo al acabar (data-hasta + script) -->
       <article class="pn-show" id="papa-noel" data-hasta="2026-12-13T18:00:00+01:00" data-rv="s">
@@ -469,27 +579,6 @@
           </ul>
           <p class="nv-foot">Monthly fee per activity · places from September.</p>
           <a href="../extraescolar-inscripcion.html?lang=en" class="nv-link violet">Register <span class="arw">→</span></a>
-        </div>
-      </article>
-
-      <!-- Casal de Navidad -->
-      <article class="nv-card xmas" data-rv="s" data-delay="2">
-        <div class="nv-head">
-          <span class="nv-blob b1"></span><span class="nv-blob b2"></span><span class="nv-dots"></span>
-          <span class="nv-date">🎄 21 Dec – 5 Jan</span>
-          <span class="nv-badge"><span class="spark">✨</span> Registration open</span>
-          <div class="nv-stage">
-            <div style="position:relative"><div class="nv-med kk"><div class="kk-scene" data-s="navidad"></div></div></div>
-            <span class="nv-title">Christmas Camp</span>
-            <span class="nv-underline"></span>
-          </div>
-        </div>
-        <div class="nv-body">
-          <span class="nv-tag">Christmas camp · ages 1 to 6</span>
-          <h4>Christmas Camp 2026-2027</h4>
-          <p>From <b>21 December to 5 January</b>: group games, crafts, art and mini chef. <b>Half day or full day with lunch</b>, flexible hours and attendance and early drop-off service.</p>
-          <p class="nv-foot">From €50 a day · reserve your place with €50.</p>
-          <a href="casal" class="nv-link">See the Christmas camp <span class="arw">→</span></a>
         </div>
       </article>
 
