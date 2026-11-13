@@ -787,7 +787,6 @@ html.cielo.tablon.tablon3d .store a{box-shadow:inset 0 3px 6px #fff,inset 0 -5px
 html.cielo.tablon.tablon3d .videowrap{border-radius:32px;box-shadow:0 0 0 10px #fff,0 10px 0 9px #D9E6F2,0 40px 60px -20px rgba(52,98,160,.45)}
 html.cielo.tablon.tablon3d .gal img{border-radius:22px;box-shadow:0 0 0 6px #fff,0 8px 0 5px #D9E6F2,0 22px 34px -16px rgba(52,98,160,.4)}
 </style>
-<link rel="preload" as="image" type="image/webp" href="../img/illo/kk-navidad.webp">
 <style id="kk-personajes">
 /* Tablón: los niños del logo KK en cada tarjeta (2026-10-30; antes emojis 3D "demasiado básicos").
    Escena más grande que los dibujitos y sin bote, para que se lea bien. */
@@ -945,6 +944,100 @@ html[data-portada="acuarela"] .hero .balloon-tag::before, html[data-portada="nav
 (function(){var d=new Date(),m=d.getMonth(),n=d.getDate();
 document.documentElement.setAttribute('data-portada',(m===10&&n>=10)||m===11||(m===0&&n<=6)?'navidad':'acuarela');})();
 </script>
+<style id="tablon-e">
+/* Tablón de la portada: tarjetas «Comercial 2» (13-nov-2026) */
+.j-casal{--ja:#145A41;--jb:#0C3B2D;--jacc:#F3DA96;--jdot:#C62B3F;--jpb:#9E1B2E;--jpf:#FFF7E8;--jring:rgba(217,180,92,.65);--jbg:radial-gradient(120% 90% at 85% -10%,rgba(243,218,150,0.22),transparent 55%),linear-gradient(160deg,#145A41 0%,#0C3B2D 100%)}
+.j-noel{--ja:#8E1F33;--jb:#4A0C19;--jacc:#F3DA96;--jdot:#7FD3A0;--jpb:#F3DA96;--jpf:#4A0C19;--jring:rgba(243,218,150,.7);--jbg:radial-gradient(120% 90% at 85% -10%,rgba(243,218,150,0.16),transparent 55%),linear-gradient(160deg,#8E1F33 0%,#4A0C19 100%)}
+.j-ingles{--ja:#4F2D88;--jb:#2A1652;--jacc:#E3D2FF;--jdot:#F3DA96;--jpb:#F3DA96;--jpf:#2A1652;--jring:rgba(243,218,150,.7);--jbg:radial-gradient(120% 90% at 85% -10%,rgba(227,210,255,0.20),transparent 55%),linear-gradient(160deg,#4F2D88 0%,#2A1652 100%)}
+.j-kidsdrop{--ja:#17698F;--jb:#0B3550;--jacc:#CDEFFC;--jdot:#F7C548;--jpb:#F7C548;--jpf:#0B3550;--jring:rgba(247,197,72,.7);--jbg:radial-gradient(120% 90% at 85% -10%,rgba(205,239,252,0.18),transparent 55%),linear-gradient(160deg,#17698F 0%,#0B3550 100%)}
+.j-bono{--ja:#8C3B1C;--jb:#561F0B;--jacc:#FFD3A8;--jdot:#5FD0B4;--jpb:#1F6B5C;--jpf:#FFF7E8;--jring:rgba(255,196,140,.7);--jbg:radial-gradient(120% 90% at 85% -10%,rgba(255,211,168,0.20),transparent 55%),linear-gradient(160deg,#8C3B1C 0%,#561F0B 100%)}
+.j-cumple{--ja:#2A3B7E;--jb:#131B45;--jacc:#CFD8FF;--jdot:#F3DA96;--jpb:#F3DA96;--jpf:#131B45;--jring:rgba(243,218,150,.7);--jbg:radial-gradient(120% 90% at 85% -10%,rgba(207,216,255,0.20),transparent 55%),linear-gradient(160deg,#2A3B7E 0%,#131B45 100%)}
+.j-baby{--ja:#126266;--jb:#08383E;--jacc:#BFF0E4;--jdot:#F08A5D;--jpb:#F08A5D;--jpf:#FFF7E8;--jring:rgba(191,240,228,.7);--jbg:radial-gradient(120% 90% at 85% -10%,rgba(191,240,228,0.18),transparent 55%),linear-gradient(160deg,#126266 0%,#08383E 100%)}
+
+/* base de todas las tarjetas */
+html .hero .cf-stage.flow .cf-card.mkc{padding:0;border-radius:30px;overflow:hidden;-webkit-backdrop-filter:none;backdrop-filter:none}
+html .hero .cf-stage.flow .cf-card.mkc::before,html .hero .cf-stage.flow .cf-card.mkc::after{display:none}
+html .hero .cf-stage.flow .cf-card.mkc .mk-art{position:relative;flex:none;z-index:1}
+html .hero .cf-stage.flow .cf-card.mkc .mk-body{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;min-height:0}
+html .hero .cf-stage.flow .cf-card.mkc .mk-kick{display:flex;align-items:center;font:700 10.5px/1.2 'Inter',system-ui,sans-serif;letter-spacing:2.2px;text-transform:uppercase;margin:0 0 9px}
+html .hero .cf-stage.flow .cf-card.mkc .mk-dot{flex:none;display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:9px;position:relative;background:var(--jdot)}
+html .hero .cf-stage.flow .cf-card.mkc .mk-dot::after{content:'';position:absolute;inset:0;border-radius:50%;background:inherit;animation:mkpulse 1.9s ease-out infinite}
+html .hero .cf-stage.flow .cf-card.mkc .bb-title{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:25px;line-height:1.12;letter-spacing:-.4px;margin:0 0 7px}
+html .hero .cf-stage.flow .cf-card.mkc .bb-title em{font-style:italic;font-weight:500;background:none;-webkit-text-fill-color:currentColor;text-shadow:inherit}
+html .hero .cf-stage.flow .cf-card.mkc .bb-chips{gap:6px;margin:11px 0 0}
+html .hero .cf-stage.flow .cf-card.mkc .bb-chip{font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px}
+html .hero .cf-stage.flow .cf-card.mkc .mk-rule{flex:none;height:1px;margin:13px 0 11px}
+html .hero .cf-stage.flow .cf-card.mkc .bb-price{display:inline-block;margin:0;padding:5px 12px;border-radius:999px;background:var(--jpb);color:var(--jpf);font-size:11.5px;font-weight:800;letter-spacing:.2px;text-shadow:none;box-shadow:0 4px 10px -4px color-mix(in srgb,var(--jpb) 70%,transparent)}
+html .hero .cf-stage.flow .cf-card.mkc .bb-cta{margin-top:auto;padding-top:14px;gap:8px;align-items:center}
+html .hero .cf-stage.flow .cf-card.mkc .bb-go{font-family:'Inter',system-ui,sans-serif;font-weight:800;font-size:14.5px;line-height:18px;letter-spacing:.1px;padding:14px 16px;border-radius:999px;text-align:center;animation:none;background-size:auto;text-shadow:none}
+html .hero .cf-stage.flow .cf-card.mkc .bb-go .arr{display:inline-block;margin-left:6px;animation:mkgo 2.6s ease-in-out infinite}
+html .hero .cf-stage.flow .cf-card.mkc .bb-wa{flex:0 0 46px;width:46px;height:46px;padding:0;border-radius:50%;font-size:18px}
+html .hero .cf-stage.flow .cf-card.mkc .bb-flag{position:absolute;z-index:3;margin:0;font-size:10px;font-weight:900;letter-spacing:.3px;padding:5px 10px;border-radius:999px;white-space:nowrap;text-transform:uppercase}
+@keyframes mkpulse{0%{transform:scale(1);opacity:.55}100%{transform:scale(3.2);opacity:0}}
+@keyframes mkgo{0%,100%{transform:translateX(0)}50%{transform:translateX(3px)}}
+@keyframes mkpaint{0%,100%{transform:scale(1)}50%{transform:scale(1.025)}}
+/* el color joya de la app, texto crema */
+html .hero .cf-stage.flow .cf-card.mkc{text-align:left;background:var(--jbg);box-shadow:0 34px 64px -30px color-mix(in srgb,var(--jb) 90%,transparent),inset 0 0 0 1px rgba(255,247,232,.10)}
+html .hero .cf-stage.flow .cf-card.mkc.is-center{box-shadow:0 44px 84px -32px color-mix(in srgb,var(--jb) 95%,transparent),inset 0 0 0 1px rgba(255,247,232,.12)}
+html .hero .cf-stage.flow .cf-card.mkc .mk-art{height:216px}
+html .hero .cf-stage.flow .cf-card.mkc .mk-xtile{position:absolute;left:14px;right:14px;top:14px;bottom:8px;border-radius:22px;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(120% 120% at 28% 22%,#FFF7E8,#F3DA96);box-shadow:inset 0 0 0 2px rgba(217,180,92,.65),0 14px 30px -12px rgba(0,0,0,.5)}
+html .hero .cf-stage.flow .cf-card.mkc .mk-ximg{height:84%;width:auto;display:block}
+html .hero .cf-stage.flow .cf-card.mkc .mk-xbow{position:absolute;top:-12px;left:-10px;width:56px;transform:rotate(-16deg);filter:drop-shadow(0 3px 4px rgba(0,0,0,.3))}
+html .hero .cf-stage.flow .cf-card.mkc .bb-flag{top:14px;left:14px;background:var(--jpb);color:var(--jpf);box-shadow:0 6px 14px -6px rgba(0,0,0,.45)}
+html .hero .cf-stage.flow .cf-card.mkc .mk-art-x .bb-flag{left:auto;right:26px;top:26px}
+html .hero .cf-stage.flow .cf-card.mkc .mk-body{padding:0 20px 18px;margin-top:-20px}
+html .hero .cf-stage.flow .cf-card.mkc .mk-art-x + .mk-body{margin-top:14px}
+html .hero .cf-stage.flow .cf-card.mkc .mk-kick{color:var(--jacc)}
+html .hero .cf-stage.flow .cf-card.mkc .bb-title{color:#FFF7E8;text-shadow:0 2px 12px rgba(10,5,20,.45)}
+html .hero .cf-stage.flow .cf-card.mkc .bb-title em{color:var(--jacc)}
+html .hero .cf-stage.flow .cf-card.mkc .bb-chips{justify-content:flex-start}
+html .hero .cf-stage.flow .cf-card.mkc .bb-chip{background:rgba(255,247,232,.10);color:rgba(255,247,232,.92);box-shadow:inset 0 0 0 1px rgba(255,247,232,.16)}
+html .hero .cf-stage.flow .cf-card.mkc .mk-rule{background:linear-gradient(to right,color-mix(in srgb,var(--jacc) 45%,transparent),transparent 70%)}
+html .hero .cf-stage.flow .cf-card.mkc .bb-price{align-self:flex-start}
+html .hero .cf-stage.flow .cf-card.mkc .bb-go{background:var(--jacc);color:var(--jb);box-shadow:0 12px 24px -12px rgba(0,0,0,.6)}
+html .hero .cf-stage.flow .cf-card.mkc .bb-wa{background:rgba(255,247,232,.12);box-shadow:inset 0 0 0 1px rgba(255,247,232,.22)}
+/* como el casal: cada dibujo en su cuadro crema con borde dorado */
+html .hero .cf-stage.flow .cf-card.mkc .mk-tin{position:absolute;inset:0;border-radius:inherit;overflow:hidden}
+html .hero .cf-stage.flow .cf-card.mkc .mk-cpaint{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;object-position:50% 100%;transform-origin:50% 70%;animation:mkpaint 5.5s ease-in-out infinite}
+html .hero .cf-stage.flow .cf-card.mkc .mk-xtile-p::after{content:'';position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 2px rgba(217,180,92,.65);pointer-events:none}
+html .hero .cf-stage.flow .cf-card.mkc .mk-xtile .mk-xbow{z-index:2}
+/* comercial: cuenta atrás al lado del nombre, letra Nunito de la web */
+html .hero .cf-stage.flow .cf-card.mkc .mk-kick{flex-wrap:wrap;justify-content:space-between;row-gap:7px;column-gap:8px}
+html .hero .cf-stage.flow .cf-card.mkc .mk-kn{display:inline-flex;align-items:center}
+html .hero .cf-stage.flow .cf-card.mkc .mk-cd{padding:3px 9px;border-radius:999px;font:800 11px/1.25 'Inter',system-ui,sans-serif;letter-spacing:.1px;text-transform:none;white-space:nowrap;color:var(--jacc);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--jacc) 55%,transparent)}
+html .hero .cf-stage.flow .cf-card.mkc .mk-kick{font:900 12px/1.25 'Nunito',system-ui,sans-serif;letter-spacing:.8px}
+html .hero .cf-stage.flow .cf-card.mkc .bb-title{font-family:'Nunito',system-ui,sans-serif;font-weight:800;font-size:27px;line-height:1.1;letter-spacing:-.5px;margin:0 0 8px;text-wrap:balance}
+html .hero .cf-stage.flow .cf-card.mkc .bb-title em{font-style:normal;font-weight:900}
+html .hero .cf-stage.flow .cf-card.mkc .bb-chip{font-family:'Nunito',system-ui,sans-serif;font-size:12.5px;font-weight:800;padding:5px 11px}
+html .hero .cf-stage.flow .cf-card.mkc .bb-price{font-family:'Nunito',system-ui,sans-serif;font-size:13.5px;font-weight:900;letter-spacing:0;padding:6px 13px}
+html .hero .cf-stage.flow .cf-card.mkc .bb-go{font-family:'Nunito',system-ui,sans-serif;font-weight:900;font-size:16.5px;line-height:20px;letter-spacing:0}
+html .hero .cf-stage.flow .cf-card.mkc .bb-flag{font-family:'Nunito',system-ui,sans-serif;font-size:11px;font-weight:900;letter-spacing:.4px}
+html .hero .cf-stage.flow .cf-card.mkc .mk-cd{font:900 12px/1.25 'Nunito',system-ui,sans-serif;letter-spacing:0}
+/* E «Comercial 2»: lo que vende en grande (palabra clave, precio, días que faltan); una sola negrita (700) */
+html .hero .cf-stage.flow .cf-card.mkc .bb-title.mk-ttl{margin:0 0 10px;text-wrap:initial}
+html .hero .cf-stage.flow .cf-card.mkc .mk-lead{display:block;font:600 17px/1.2 'Nunito',system-ui,sans-serif;letter-spacing:-.1px;color:rgba(255,247,232,.9)}
+html .hero .cf-stage.flow .cf-card.mkc .mk-hook{display:block;white-space:nowrap;font:700 36px/1.08 'Nunito',system-ui,sans-serif;letter-spacing:-.6px;color:var(--jacc);margin-top:2px}
+html .hero .cf-stage.flow .cf-card.mkc .bb-price.mk-big{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:7px;row-gap:2px;align-self:stretch;padding:0;margin:0;background:none;box-shadow:none;border-radius:0;letter-spacing:0}
+html .hero .cf-stage.flow .cf-card.mkc .mk-num{font:700 30px/1 'Nunito',system-ui,sans-serif;letter-spacing:-.4px;color:#FFF7E8}
+html .hero .cf-stage.flow .cf-card.mkc .mk-pre,html .hero .cf-stage.flow .cf-card.mkc .mk-post{font:600 14px/1.25 'Nunito',system-ui,sans-serif;color:rgba(255,247,232,.8)}
+html .hero .cf-stage.flow .cf-card.mkc .mk-cdn{display:inline-block;font:700 16px/1 'Nunito',system-ui,sans-serif;margin:0 2px;vertical-align:-1px}
+html .hero .cf-stage.flow .cf-card.mkc .bb-chip{font-size:12px;font-weight:600}
+html .hero .cf-stage.flow .cf-card.mkc .mk-kick{font-weight:700}
+html .hero .cf-stage.flow .cf-card.mkc .mk-cd{font-weight:600}
+html .hero .cf-stage.flow .cf-card.mkc .bb-flag{font-weight:700}
+html .hero .cf-stage.flow .cf-card.mkc .bb-price{font-weight:700}
+html .hero .cf-stage.flow .cf-card.mkc .bb-go{font-weight:700}
+@media(max-width:600px){
+  html .hero .cf-stage.flow .cf-card.mkc .mk-lead{font-size:15.5px}
+  html .hero .cf-stage.flow .cf-card.mkc .mk-hook{font-size:31px}
+  html .hero .cf-stage.flow .cf-card.mkc .mk-num{font-size:27px}
+  html .hero .cf-stage.flow .cf-card.mkc .mk-art{height:200px}
+  html .hero .cf-stage.flow .cf-card.mkc .mk-body{padding:0 18px 16px}
+  html .hero .cf-stage.flow .cf-card.mkc .bb-title{font-size:24px}
+}
+@media (prefers-reduced-motion:reduce){html .hero .cf-stage.flow .cf-card.mkc .mk-dot::after,html .hero .cf-stage.flow .cf-card.mkc .mk-cpaint,html .hero .cf-stage.flow .cf-card.mkc .bb-go .arr{animation:none}}
+</style>
 </head>
 <body>
 <div id="prog"></div>
@@ -1274,15 +1367,16 @@ document.documentElement.setAttribute('data-portada',(m===10&&n>=10)||m===11||(m
   if(!track) return;
   // Premium board: 6 cards, each with its own colour + 3D illustration (Microsoft Fluent, local in img/illo/).
   // *asterisks* highlight the word (title in gradient, description in the card's colour).
+  // Tablón: cada oferta con fecha de fin («hasta») desaparece sola al pasar (Papá Noel: el 13-dic a las 18 h · Christmas Camp: el 6-ene)
   var OFERTAS=[
-    {theme:'t-xmas', img:'kk-navidad.webp',    ek:'Christmas Camp',  title:'*Christmas* camp', desc:'From *21 December to 5 January*, ages 1 to 6. Group games, crafts, art and mini chef. Half or full day with lunch.', price:'From €50 a day · reserve with €50', link:'casal', go:'casal', cta:'See the camp', flag:'🎄 Registration open', chips:['📅 21-24 & 28-31 Dec · 4-5 Jan','👶 Ages 1 to 6','🍽️ Lunch included'], wa:'Hi! I want info about the Christmas Camp'},
-    {theme:'t-mint', img:'kk-ingles.webp',     ek:'After-school',  title:'After-school in *English*', desc:'*English & Play* (Mondays) and *English & Art* (Tuesdays), 5 to 6 pm. From P3.', price:'€49/month · registration open', link:'extraescolar-inscripcion.html?lang=en', cta:'Register', flag:'🎨 Registration open', chips:['🇬🇧 In English','🎨 Play & art','🗓️ All year'], wa:'Hi! I\'d like info about the after-school activities in English'},
-    {theme:'t-sky',  img:'kk-kidsdrop.webp', ek:'Kids Drop',    title:'You *free*, them safe', desc:'Leave them with *expert monitors* and head out with peace of mind: work, a date or sightseeing.', price:'Drop-in babysitting · no booking', link:'kids-drop', cta:'See hours', chips:['⏱️ By the hour','🙌 No booking','👧 2nd sibling −50%'], wa:'Hi! I\'d like info about Kids Drop'},
-    {theme:'t-sun',  img:'kk-bono.webp',     ek:'Hours pass',   title:'*11-hour* pass', desc:'11 h of play and *2 adults free* on every visit. Never expires.', price:'€85 · €7.7/h (save €25)', link:'precios', cta:'Get the pass', chips:['⏳ Never expires','👨‍👩‍👧 2 adults free'], wa:'Hi! I\'d like info about the 11-hour pass'},
-    {theme:'t-coral',img:'kk-talleres.webp', ek:'Workshops',    title:'Workshops *coming soon*', desc:'We\'re preparing the *new workshop programme*. Coming very soon!', price:'Coming soon', link:'talleres', cta:'See more', chips:['✨ New season','🎨 Art & science'], wa:'Hi! I\'d like info about the upcoming workshops'},
-    {theme:'t-lav',  img:'kk-cumple.webp',  ek:'Birthdays',    title:'*Unforgettable* parties', desc:'*We set up everything* — décor, entertainment and cake. You just enjoy.', price:'Book your date', link:'cumpleanos', cta:'Book a date', chips:['🎈 We set up everything','🎂 Cake & entertainment'], wa:'Hi! I\'d like to book a birthday party'},
-    {theme:'t-mint', img:'kk-bebe.webp',     ek:'Baby Explorer',title:'Baby *Explorer*', desc:'*Early stimulation* every morning with a specialist facilitator. 0-3 years.', price:'From €85', link:'baby-explorer', cta:'See Baby Explorer', chips:['🐣 0-3 years','🧠 Stimulation'], wa:'Hi! I\'d like info about Baby Explorer'}
-  ];
+    {theme:"j-casal", pi:null, ek:"Christmas Camp", cuenta:"2026-12-21", ct:"empieza", title:"Christmas holidays, *sorted*", lead:"Christmas holidays,", hook:"sorted", pre:"from", num:"€50", post:"a day · reserve with €50", price:"From €50 a day · reserve with €50", go:"../casal-inscripcion?lang=en", cta:"Reserve a place", flag:"🎄 Registration open", chips:["📅 21-24 & 28-31 Dec · 4-5 Jan", "👶 Ages 1 to 6"], wa:"Hi! I want info about the Christmas Camp", hasta:"2027-01-06T00:00:00+01:00"},
+    {theme:"j-noel", pi:"noel", ek:"Santa Claus", cuenta:"2026-12-13", ct:"faltan", title:"Hand in your letter to *Santa*", lead:"Hand in your letter to", hook:"Santa", price:"Book and pay in the app", taller:{"fecha": "2026-12-13", "nombre": "noel"}, tienda:true, go:"#app", cta:"Book in the app", flag:"🎅 Limited places", chips:["📅 Sun 13 Dec · 5-6 pm", "📸 Photo with Santa"], wa:"Hi! I'd like to book the visit from Santa (13 December)", hasta:"2026-12-13T18:00:00+01:00"},
+    {theme:"j-ingles", pi:"ingles", ek:"After-school", title:"They learn English *through play*", lead:"They learn English", hook:"through play", num:"€49", post:"a month", price:"€49/month", go:"../extraescolar-inscripcion?lang=en", cta:"Register", flag:"🎨 Registration open", chips:["🗓️ Mon or Tue · 5-6 pm", "👶 From P3"], wa:"Hi! I'd like info about the after-school activities in English"},
+    {theme:"j-kidsdrop", pi:"kidsdrop", ek:"Kids Drop", title:"They're safe, *you're free*", lead:"They're safe,", hook:"you're free", price:"Drop-in babysitting · no booking", go:"kids-drop", cta:"See hours", chips:["⏱️ By the hour", "👧 2nd sibling −50%"], wa:"Hi! I'd like info about Kids Drop"},
+    {theme:"j-bono", pi:"bono", ek:"Hours pass", title:"10-hour pass: *€8.50 per hour*", lead:"10-hour pass:", hook:"€8.50 per hour", num:"€85", post:"per pass", price:"€85 per pass", goWa:"Hi! I'd like the 10-hour pass", cta:"Get the pass", chips:["⏳ Never expires", "👨‍👩‍👧 2 adults free"], wa:"Hi! I'd like info about the 10-hour pass"},
+    {theme:"j-cumple", pi:"cumple", ek:"Birthdays", title:"Their birthday, *just for you*", lead:"Their birthday,", hook:"just for you", price:"We set up everything", go:"cumpleanos", cta:"Book a date", flag:"🎂 One party per day", chips:["🦄 Any theme you like", "🍰 Cake included"], wa:"Hi! I'd like to book a birthday party"},
+    {theme:"j-baby", pi:"baby", ek:"Baby Explorer", title:"Early stimulation *every morning*", lead:"Early stimulation", hook:"every morning", pre:"from", num:"€85", price:"From €85", go:"baby-explorer", cta:"See Baby Explorer", chips:["🐣 0-3 years", "👩‍🏫 Specialist carer"], wa:"Hi! I'd like info about Baby Explorer"}
+  ].filter(function(o){ return !o.hasta||Date.now()<Date.parse(o.hasta); });
   var WA_NUM='34637319226';
   var stage=document.getElementById('cfStage'), dotsBox=document.getElementById('bbDots');
   var n=OFERTAS.length, cur=0, timer=null;
@@ -1302,6 +1396,97 @@ document.documentElement.setAttribute('data-portada',(m===10&&n>=10)||m===11||(m
   }
   function titleEl(str){ var h=document.createElement('h3'); h.className='bb-title'; h.appendChild(markup(str,'em')); return h; }
   function descEl(str){ var p=document.createElement('p'); p.className='bb-desc'; p.appendChild(markup(str,'b','hl')); return p; }
+  // Tablón E. Precio y plazas de Papá Noel EN VIVO de la tabla «talleres» (lo mismo que enseña la app; solo lee,
+  // con la misma url y key pública que los formularios). Si no contesta, se queda el texto fijo.
+  var MK_SB='https://ovztunykbpvsilauxjhe.supabase.co', MK_SBK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im92enR1bnlrYnB2c2lsYXV4amhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMDY2MDMsImV4cCI6MjA5Mjc4MjYwM30.wRGp44Vxf9wqkK7x9p-okePmC9rsTRQo6XKnaMZJ2iE';
+  var MK_IMG="../";
+  var MK_PAINT={"noel": "../img/tab-noel.webp", "ingles": "../img/tab-ingles.webp", "kidsdrop": "../img/tab-kidsdrop.webp", "bono": "../img/tab-bono.webp", "cumple": "../img/tab-cumple.webp", "baby": "../img/tab-baby.webp"};
+  var MK_T={"empieza": ["⏳ Starts in ", " days", "⏳ Starts tomorrow!", "🎄 Starts today!"], "faltan": ["⏳ ", " days to go", "⏳ It's tomorrow!", "🎅 It's today!"], "porPeque": "per child", "hermano": "sibling", "completo": "🎅 Fully booked!", "queda1": "🔥 Only 1 place left!", "quedan": ["🔥 Only ", " places left!"], "solo": ["🎅 Only ", " places"], "espera": "Waiting list", "esperaWa": "Hi! The Santa visit is fully booked, can you put me on the waiting list?"};
+  function mkEur(n){ n=+n; return '€'+(n%1 ? n.toFixed(2) : String(n)); }
+  // el dibujo: cada uno en su cuadro crema con borde dorado; el lazo solo en las de Navidad (casal y Papá Noel)
+  function mkArt(o){
+    var art=div('mk-art mk-art-x'), x=div('mk-xtile'+(o.pi?' mk-xtile-p':'')), im;
+    if(o.pi){
+      var tin=div('mk-tin');
+      im=document.createElement('img'); im.className='mk-cpaint'; im.alt=''; im.decoding='async'; im.draggable=false; im.src=MK_PAINT[o.pi];
+      tin.appendChild(im); x.appendChild(tin);
+    } else {
+      im=document.createElement('img'); im.className='mk-ximg'; im.alt=''; im.decoding='async'; im.draggable=false; im.src=MK_IMG+'img/xmas-arbol.webp'; x.appendChild(im);
+    }
+    if(!o.pi||o.pi==='noel'){ var bow=document.createElement('img'); bow.className='mk-xbow'; bow.alt=''; bow.draggable=false; bow.src=MK_IMG+'img/xmas-lazo.png'; x.appendChild(bow); }
+    art.appendChild(x);
+    if(o.flag){ o._flag=span('bb-flag',o.flag); art.appendChild(o._flag); }
+    return art;
+  }
+  // precio y plazas en vivo (plazas = cupos_max − cupos_ocupados); el nº exacto solo cuando quedan 10 o menos
+  function mkVivo(o){
+    if(!o.taller||!window.fetch) return;
+    var q=MK_SB+'/rest/v1/talleres?select=precio,precio_hermano,cupos_max,cupos_ocupados&activo=eq.true&publicado_app=eq.true'
+         +'&fecha=eq.'+o.taller.fecha+'&nombre=ilike.*'+encodeURIComponent(o.taller.nombre)+'*&limit=1';
+    fetch(q,{headers:{apikey:MK_SBK,Authorization:'Bearer '+MK_SBK}}).then(function(r){ return r.ok?r.json():[]; }).then(function(d){
+      var t=d&&d[0]; if(!t) return;
+      if(o._price&&+t.precio>0){
+        var her=(+t.precio_hermano>0&&+t.precio_hermano<+t.precio)?mkEur(t.precio_hermano):'';
+        mkBig(o._price,'',mkEur(t.precio),MK_T.porPeque+(her?' · '+MK_T.hermano+' '+her:''));
+      }
+      var max=+t.cupos_max||0, quedan=Math.max(0,max-(+t.cupos_ocupados||0));
+      if(max&&o._flag){
+        o._flag.textContent = quedan<=0 ? MK_T.completo : quedan===1 ? MK_T.queda1 : quedan<=10 ? MK_T.quedan[0]+quedan+MK_T.quedan[1] : MK_T.solo[0]+max+MK_T.solo[1];
+        if(quedan<=0&&o._go){   // completo → el botón apunta a la lista de espera por WhatsApp, no a reservar
+          o._go.firstChild.nodeValue=MK_T.espera;
+          o._go.href='https://wa.me/'+WA_NUM+'?text='+encodeURIComponent(MK_T.esperaWa);
+          o._go.target='_blank'; o._go.rel='noopener';
+        }
+      }
+      if(cards){ fitHeight(); render(); }   // el precio grande cambia el alto → igualar otra vez
+    }).catch(function(){});
+  }
+  // el título en dos piezas: la frase pequeña y la palabra clave grande en su color
+  function mkTitleE(o){
+    var h=document.createElement('h3'); h.className='bb-title mk-ttl';
+    if(o.lead){ h.appendChild(span('mk-lead',o.lead)); h.appendChild(document.createTextNode(' ')); }
+    h.appendChild(span('mk-hook',o.hook));
+    return h;
+  }
+  // el precio como en un cartel: «desde» pequeño, el número grande, «al mes» pequeño
+  function mkBig(el,pre,num,post){
+    while(el.firstChild) el.removeChild(el.firstChild);
+    el.className='bb-price mk-big';
+    if(pre){ el.appendChild(span('mk-pre',pre)); el.appendChild(document.createTextNode(' ')); }
+    el.appendChild(span('mk-num',num));
+    if(post){ el.appendChild(document.createTextNode(' ')); el.appendChild(span('mk-post',post)); }
+  }
+  // cuenta atrás con el número grande
+  function mkCdE(t){
+    var s=span('mk-cd');
+    t.split(/(\d+)/).forEach(function(p,i){ if(!p) return; if(i%2) s.appendChild(span('mk-cdn',p)); else s.appendChild(document.createTextNode(p)); });
+    return s;
+  }
+  // la palabra clave en UNA línea: empieza en el tamaño del CSS (36 px ordenador / 31 px móvil) y baja hasta 22 px; si ni así cabe, baja de línea
+  function mkFit(){
+    [].forEach.call(document.querySelectorAll('.mk-hook'),function(h){
+      h.style.whiteSpace='nowrap'; h.style.fontSize='';
+      if(!h.clientWidth) return;
+      var f=Math.round(parseFloat(getComputedStyle(h).fontSize))||36;
+      while(f>22&&h.scrollWidth>h.clientWidth){ f--; h.style.fontSize=f+'px'; }
+      if(h.scrollWidth>h.clientWidth) h.style.whiteSpace='normal';
+    });
+  }
+  // cuenta atrás en días de calendario (hora local), igual que en actividades
+  function mkCuenta(o){
+    if(!o.cuenta) return '';
+    var p=o.cuenta.split('-'), h=new Date(), d=Math.round((new Date(+p[0],p[1]-1,+p[2]) - new Date(h.getFullYear(),h.getMonth(),h.getDate()))/864e5);
+    if(d<0) return '';
+    var t=MK_T[o.ct==='empieza'?'empieza':'faltan'];
+    return d>1 ? t[0]+d+t[1] : d===1 ? t[2] : t[3];
+  }
+  // la ficha de la app directa: Android → Google Play; iPhone/iPad → App Store; ordenador → '' (se queda en #app)
+  function mkTienda(){
+    var ua=navigator.userAgent||'';
+    if(/android/i.test(ua)) return 'https://play.google.com/store/apps/details?id=com.kidskafe.app';
+    if(/iphone|ipad|ipod/i.test(ua)||(/macintosh/i.test(ua)&&navigator.maxTouchPoints>1)) return 'https://apps.apple.com/es/app/kids-kafe/id6773033244';
+    return '';
+  }
   function illoBadge(file){ var s=span('bb-emo'); var img=document.createElement('img'); img.src=ILLO_BASE+file; img.alt=''; img.decoding='async'; /* sin lazy: el tablón se ve desde el principio (2026-10-30) */ s.appendChild(img); return s; }
   function confetti(){
     var d=span('bb-confetti');
@@ -1321,17 +1506,21 @@ document.documentElement.setAttribute('data-portada',(m===10&&n>=10)||m===11||(m
   }
   var cards=OFERTAS.map(function(o,i){
     var c=document.createElement('article'); c.className='cf-card '+o.theme; c.dataset.i=i;
-    var top=div('bb-top'); top.appendChild(span('bb-ek',o.ek)); if(o.flag) top.appendChild(span('bb-flag',o.flag)); c.appendChild(top);
-    c.appendChild(illoBadge(o.img));
-    c.appendChild(titleEl(o.title));
-    c.appendChild(descEl(o.desc));
-    if(o.chips&&o.chips.length) c.appendChild(chipsEl(o.chips));
-    var price=div('bb-price'); price.textContent=o.price; c.appendChild(price);
+    c.className+=' mkc'; c.appendChild(mkArt(o));
+    var host=div('mk-body'); c.appendChild(host);
+    var kk=div('mk-kick'), cd=mkCuenta(o), kn=span('mk-kn');
+    kn.appendChild(span('mk-dot')); kn.appendChild(document.createTextNode(o.ek));
+    kk.appendChild(kn); if(cd) kk.appendChild(mkCdE(cd)); host.appendChild(kk);
+    host.appendChild(o.hook?mkTitleE(o):titleEl(o.title));
+    if(o.desc) host.appendChild(descEl(o.desc));
+    if(o.chips&&o.chips.length) host.appendChild(chipsEl(o.chips));
+    host.appendChild(div('mk-rule'));
+    var price=div('bb-price'); if(o.num) mkBig(price,o.pre,o.num,o.post); else price.textContent=o.price; host.appendChild(price); o._price=price;
     var cta=div('bb-cta');
-    var go=document.createElement('a'); go.className='bb-go'; go.href=o.go||'#app'; go.textContent=(o.cta||'See offer')+' →'; cta.appendChild(go);
+    var go=document.createElement('a'); go.className='bb-go'; go.href=o.go||'#app'; o._go=go; var tt=o.tienda&&mkTienda(); if(tt) go.href=tt; else if(o.goWa){ go.href='https://wa.me/'+WA_NUM+'?text='+encodeURIComponent(o.goWa); go.target='_blank'; go.rel='noopener'; } go.textContent=(o.cta||'See offer'); go.appendChild(span('arr','→')); cta.appendChild(go);
     var wa=document.createElement('a'); wa.className='bb-wa'; wa.href='https://wa.me/'+WA_NUM+'?text='+encodeURIComponent(o.wa||('Hi! I\'d like info about '+o.ek));
-    wa.target='_blank'; wa.rel='noopener'; wa.textContent='💬'; wa.setAttribute('aria-label','WhatsApp'); cta.appendChild(wa);
-    c.appendChild(cta);
+    wa.target='_blank'; wa.rel='noopener'; wa.textContent='💬'; wa.setAttribute('aria-label','WhatsApp'); if(!o.goWa) cta.appendChild(wa);
+    host.appendChild(cta); mkVivo(o);
     c.addEventListener('click',function(){ if(!c.classList.contains('is-center')&&!moved){ goTo(i); } });
     track.appendChild(c);
     return c;
@@ -1421,6 +1610,7 @@ document.documentElement.setAttribute('data-portada',(m===10&&n>=10)||m===11||(m
 
   // todas las tarjetas con la MISMA altura (la de la más alta)
   function fitHeight(){
+    mkFit();
     var h=0; cards.forEach(function(c){ c.style.minHeight=''; }); cards.forEach(function(c){ h=Math.max(h,c.offsetHeight); });
     if(h){ cards.forEach(function(c){ c.style.minHeight=h+'px'; }); track.style.height=(h+30)+'px'; }
   }
@@ -1450,6 +1640,7 @@ document.documentElement.setAttribute('data-portada',(m===10&&n>=10)||m===11||(m
   fitHeight(); render();
   window.addEventListener('resize',function(){ fitHeight(); render(); });
   if(document.fonts&&document.fonts.ready) document.fonts.ready.then(function(){ fitHeight(); render(); });
+  if(document.fonts&&document.fonts.load) document.fonts.load('700 40px Nunito').then(function(){ fitHeight(); render(); },function(){});
   requestAnimationFrame(function(){ track.classList.add('cf-ready'); fitHeight(); render(); });   // aparece sin parpadeo
 
   // ✨ Tarjeta KK: paralaje suave con el ratón (solo escritorio; en táctil se queda con sus animaciones)
