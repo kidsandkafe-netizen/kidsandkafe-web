@@ -921,3 +921,8 @@ h2.title{letter-spacing:-.4px;text-wrap:balance}
 :root{--muted:#756558} /* antes #9A8A80 (3.2:1) -> 5.4:1 sobre crema */
 .btn-pink{background:linear-gradient(135deg,#5A7C3B,#4E6B33)} /* blanco encima 4.8-6.0 (antes 1.9-2.8); .lg y héroe portada NO cambian */
 .pcard .price{color:#5E8240} /* 4.4:1 (antes #A0C079, 2.0); su span usa --muted y hereda el gris nuevo */
+/* ═══ FIX MÓVIL 3 (2026-11-13): página más ancha que el móvil · botones tapan el pie · precios salas · ☰ ═══ */
+@media(max-width:640px),(hover:none) and (max-width:1240px){.cbox[data-rv="l"]:not(.in),.feat-img[data-rv="l"]:not(.in){transform:translateY(38px)}} /* 1 · móvil/tablet, solo cumpleaños (.cbox) y zonas/baby explorer (.feat-img): entraban por la derecha (+44px → página más ancha, ☰ y WhatsApp cortados); ahora entran desde abajo como el resto. :not(.in) para que al revelarse mande [data-rv].in. Ordenador igual */
+@media(max-width:640px){footer{padding-bottom:140px}} /* 2 · hueco para que Reservar + WhatsApp no tapen el final del pie (antes 32px) */
+.optcard .opt-precio{color:#5E8240} /* 3 · precios de las salas: mismo verde que .pcard .price (4.4:1; antes #A0C079, 2.0); «A consultar» (.dom) sigue gris */
+@media(max-width:1240px){.burger{padding:8px 12px;margin:-8px -12px}} /* 4 · ☰ con zona de toque ~45×45 sin mover nada (padding + margen negativo) */
