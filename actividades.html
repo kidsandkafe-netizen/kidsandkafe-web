@@ -293,7 +293,11 @@
       .cc-precio span{display:block;margin-top:6px;font:700 14.5px/1.3 Nunito,sans-serif;color:#2E4F43}
       .cc-btn{display:inline-flex;align-items:center;gap:10px;margin-top:16px;padding:17px 26px;border-radius:999px;background:linear-gradient(135deg,#D63A4E,#9E1B2E);color:#fff;font:800 17px/1 Nunito,sans-serif;text-decoration:none;box-shadow:0 14px 28px -12px rgba(158,27,46,.8),inset 0 1px 0 rgba(255,255,255,.3);animation:ccLatido 2.6s ease-in-out infinite}
       @keyframes ccLatido{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
-      .cc-mas{display:block;width:max-content;margin-top:14px;font:800 14.5px/1.3 Nunito,sans-serif;color:#0C3B2D;text-decoration:underline;text-underline-offset:4px}
+      /* 17-nov: «Reservar» (rojo, late) y «Ver toda la info» (verde, quieto) = dos botones del mismo tamaño; en móvil, uno debajo del otro a todo el ancho */
+      .cc-botones{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px;align-items:center}
+      .cc-botones .cc-btn{margin-top:0}
+      .cc-mas{display:inline-flex;align-items:center;gap:10px;padding:17px 26px;border-radius:999px;background:linear-gradient(135deg,#1F6B4A,#0C3B2D);color:#fff;font:800 17px/1 Nunito,sans-serif;text-decoration:none;box-shadow:0 14px 28px -12px rgba(12,59,45,.8),inset 0 1px 0 rgba(255,255,255,.25)}
+      @media (max-width:560px){.cc-botones a{flex:1 1 100%;justify-content:center}}
       /* postal de Navidad: borde de correo aéreo, lazo, sello con los peques y matasellos con las fechas */
       .cc-b{padding:12px;background:repeating-linear-gradient(-45deg,#C62B3F 0 16px,#FFF8EC 16px 24px,#1F6B4A 24px 40px,#FFF8EC 40px 48px);box-shadow:0 30px 60px -30px rgba(18,59,46,.55)}
       .cc-papel{position:relative;border-radius:18px;background:#FFF8EC;padding:84px 20px 28px}
@@ -366,8 +370,10 @@
                 <li><span>🕗</span><span>Horario y asistencia <b>flexible</b> y servicio de <b>acogida</b></span></li>
               </ul>
               <p class="cc-precio">desde <b>50€</b> el día<span>reserva tu plaza con 50€</span></p>
-              <a class="cc-btn" href="casal-inscripcion">🎄 Reservar plaza <span aria-hidden="true">→</span></a>
-              <a class="cc-mas" href="casal">Ver el casal de Navidad →</a>
+              <div class="cc-botones">
+                <a class="cc-btn" href="casal-inscripcion">🎄 Reservar plaza <span aria-hidden="true">→</span></a>
+                <a class="cc-mas" href="casal">Ver toda la info <span aria-hidden="true">→</span></a>
+              </div>
             </div>
           </div>
         </div>
