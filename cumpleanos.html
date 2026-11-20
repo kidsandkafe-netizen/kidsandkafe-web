@@ -103,6 +103,15 @@ h2.title.optitle{font-size:clamp(23px,3.2vw,31px);margin:6px 0 10px;letter-spaci
   .opt-fin{flex-direction:row;align-items:center;justify-content:space-between;width:100%}
   .opt-cta{flex:1;justify-content:center}
 }
+/* Galería «Fiestas reales» (20-nov-2026): 1 foto grande + 4, solo en esta página. Se deja la clase .gal para que funcione la lupa de main.js */
+.gal.gC{columns:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.gal.gC img{margin:0;aspect-ratio:4/5;object-fit:cover}
+.gal.gC img:first-child{grid-column:1/-1;aspect-ratio:2/1;object-position:50% 55%}
+@media(max-width:560px){
+  .gal.gC{grid-template-columns:repeat(2,1fr);gap:10px}
+  .gal.gC img{border-radius:14px}
+  .gal.gC img:first-child{aspect-ratio:3/2}
+}
 </style>
 <script type="application/ld+json">
 {
@@ -527,10 +536,12 @@ h2.title.seoq-t{font-size:clamp(19px,2.3vw,23px);letter-spacing:-.3px;text-align
 <!-- FIESTAS REALES -->
 <section style="padding-top:0">
   <div class="wrap center" style="margin-bottom:30px"><div class="eyebrow c" data-rv>Fiestas reales</div><h2 class="title" data-rv data-delay="1">Así celebramos en Kids & Kafé</h2><p class="lead" data-rv data-delay="2">Decoraciones temáticas que enamoran. ¿Te imaginas la fiesta de tu peque aquí?</p></div>
-  <div class="wrap"><div class="gal">
-    <img width="1600" height="1068" src="img/g1.jpg" alt="Cumpleaños infantil temático en Barcelona con decoración de globos" data-rv="s">
-    <img width="1600" height="1068" loading="lazy" decoding="async" src="img/g2.jpg" alt="Fiesta infantil temática en Kids &amp; Kafé · mesa dulce y decoración" data-rv="s" data-delay="1">
-    <img width="1600" height="1068" loading="lazy" decoding="async" src="img/g3.jpg" alt="Sala de cumpleaños de 300 m² para fiestas infantiles en Les Corts" data-rv="s" data-delay="2">
+  <div class="wrap"><div class="gal gC">
+    <img width="1600" height="1066" loading="lazy" decoding="async" src="img/cumple-decoracion.webp" alt="Decoración temática de cumpleaños con globos y mesa de la tarta en Kids &amp; Kafé" data-rv="s">
+    <img width="800" height="1200" loading="lazy" decoding="async" src="img/cumple-sala.webp" alt="Sala de cumpleaños en Les Corts preparada con decoración y mesa para los peques" data-rv="s" data-delay="1">
+    <img width="800" height="1200" loading="lazy" decoding="async" src="img/cumple-taller.webp" alt="Peques decorando su gorro en el taller del cumpleaños" data-rv="s" data-delay="2">
+    <img width="1200" height="800" loading="lazy" decoding="async" src="img/cumple-gorro.webp" alt="Gorro decorado con parches de letras y estrellas en una fiesta infantil" data-rv="s" data-delay="3">
+    <img width="800" height="1200" loading="lazy" decoding="async" src="img/cumple-mesa-gorros.webp" alt="Mesa del taller con gorros, parches y pegatinas para los invitados" data-rv="s" data-delay="4">
   </div></div>
 </section>
 
