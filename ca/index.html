@@ -956,6 +956,7 @@ document.documentElement.setAttribute('data-portada',(m===10&&n>=10)||m===11||(m
 /* Tablón de la portada: tarjetas «Comercial 2» (13-nov-2026) */
 .j-casal{--ja:#145A41;--jb:#0C3B2D;--jacc:#F3DA96;--jdot:#C62B3F;--jpb:#9E1B2E;--jpf:#FFF7E8;--jring:rgba(217,180,92,.65);--jbg:radial-gradient(120% 90% at 85% -10%,rgba(243,218,150,0.22),transparent 55%),linear-gradient(160deg,#145A41 0%,#0C3B2D 100%)}
 .j-noel{--ja:#8E1F33;--jb:#4A0C19;--jacc:#F3DA96;--jdot:#7FD3A0;--jpb:#F3DA96;--jpf:#4A0C19;--jring:rgba(243,218,150,.7);--jbg:radial-gradient(120% 90% at 85% -10%,rgba(243,218,150,0.16),transparent 55%),linear-gradient(160deg,#8E1F33 0%,#4A0C19 100%)}
+.j-santa{--ja:#5C1626;--jb:#370A14;--jacc:#E3C58F;--jdot:#7FD3A0;--jpb:#E3C58F;--jpf:#370A14;--jring:rgba(227,197,143,.7);--jbg:radial-gradient(120% 90% at 85% -10%,rgba(227,197,143,0.16),transparent 55%),linear-gradient(160deg,#5C1626 0%,#370A14 100%)}
 .j-ingles{--ja:#4F2D88;--jb:#2A1652;--jacc:#E3D2FF;--jdot:#F3DA96;--jpb:#F3DA96;--jpf:#2A1652;--jring:rgba(243,218,150,.7);--jbg:radial-gradient(120% 90% at 85% -10%,rgba(227,210,255,0.20),transparent 55%),linear-gradient(160deg,#4F2D88 0%,#2A1652 100%)}
 .j-kidsdrop{--ja:#17698F;--jb:#0B3550;--jacc:#CDEFFC;--jdot:#F7C548;--jpb:#F7C548;--jpf:#0B3550;--jring:rgba(247,197,72,.7);--jbg:radial-gradient(120% 90% at 85% -10%,rgba(205,239,252,0.18),transparent 55%),linear-gradient(160deg,#17698F 0%,#0B3550 100%)}
 .j-bono{--ja:#8C3B1C;--jb:#561F0B;--jacc:#FFD3A8;--jdot:#5FD0B4;--jpb:#1F6B5C;--jpf:#FFF7E8;--jring:rgba(255,196,140,.7);--jbg:radial-gradient(120% 90% at 85% -10%,rgba(255,211,168,0.20),transparent 55%),linear-gradient(160deg,#8C3B1C 0%,#561F0B 100%)}
@@ -1375,8 +1376,9 @@ html .hero .cf-stage.flow .cf-card.mkc .bb-go{font-weight:700}
   if(!track) return;
   // Tablón premium: 6 tarjetas, cada una su color + ilustración 3D (Microsoft Fluent, local en img/illo/).
   // El *asterisco* resalta la palabra (título en degradado, descripción en color del tema).
-  // Tablón: cada oferta con fecha de fin («hasta») desaparece sola al pasar (Papá Noel: el 13-dic a las 18 h · Christmas Camp: el 6-ene)
+  // Tablón: cada oferta con fecha de fin («hasta») desaparece sola al pasar (Santa's Kitchen: el 12-dic a las 18 h · Papá Noel: el 13-dic a las 18 h · Christmas Camp: el 6-ene)
   var OFERTAS=[
+    {theme:"j-santa", pi:"santa", ek:"Santa's Kitchen", cuenta:"2026-12-12", ct:"faltan", title:"Galetes en família a la *cuina del Pare Noel*", lead:"Galetes en família a la", hook:"cuina del Pare Noel", price:"Reserva i paga a l'app", taller:{"fecha": "2026-12-12", "nombre": "kitchen"}, tienda:true, go:"#app", cta:"Reservar a l'app", flag:"🎅 Només 25 places", chips:["📅 Ds 12 des · 16-18 h", "🎟️ Amb bo −10 %"], wa:"Hola! Vull reservar per a Santa's Kitchen (12 de desembre)", esperaWa:"Hola! Santa's Kitchen està complet, m'apunteu a la llista d'espera?", hasta:"2026-12-12T18:00:00+01:00"},
     {theme:"j-casal", pi:null, ek:"Christmas Camp", cuenta:"2026-12-21", ct:"empieza", title:"Vacances de Nadal, *resoltes*", lead:"Vacances de Nadal,", hook:"resoltes", pre:"des de", num:"50€", post:"el dia · reserva amb 50€", price:"Des de 50€ el dia · reserva amb 50€", go:"../casal-inscripcion?lang=ca", cta:"Reservar plaça", flag:"🎄 Inscripcions obertes", chips:["📅 21-24 i 28-31 des · 4-5 gen", "👶 D'1 a 6 anys"], wa:"Hola! Vull info del Christmas Camp de Nadal", hasta:"2027-01-06T00:00:00+01:00"},
     {theme:"j-noel", pi:"noel", ek:"Pare Noel", cuenta:"2026-12-13", ct:"faltan", title:"Lliura la teva carta al *Pare Noel*", lead:"Lliura la teva carta al", hook:"Pare Noel", price:"Reserva i paga a l'app", taller:{"fecha": "2026-12-13", "nombre": "noel"}, tienda:true, go:"#app", cta:"Reservar a l'app", flag:"🎅 Places limitades", chips:["📅 Dg 13 des · 17-18 h", "📸 Foto amb el Pare Noel"], wa:"Hola! Vull reservar per a la visita del Pare Noel (13 de desembre)", hasta:"2026-12-13T18:00:00+01:00"},
     {theme:"j-ingles", pi:"ingles", ek:"Extraescolars", title:"Aprenen anglès *jugant*", lead:"Aprenen anglès", hook:"jugant", num:"49€", post:"al mes", price:"49€/mes", go:"../extraescolar-inscripcion?lang=ca", cta:"Inscriure'm", flag:"🎨 Inscripcions obertes", chips:["🗓️ Dl o dt · 17-18 h", "👶 Des de P3"], wa:"Hola! Vull info de les extraescolars en anglès"},
@@ -1409,10 +1411,10 @@ html .hero .cf-stage.flow .cf-card.mkc .bb-go{font-weight:700}
   // con la misma url y key pública que los formularios). Si no contesta, se queda el texto fijo.
   var MK_SB='https://ovztunykbpvsilauxjhe.supabase.co', MK_SBK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im92enR1bnlrYnB2c2lsYXV4amhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMDY2MDMsImV4cCI6MjA5Mjc4MjYwM30.wRGp44Vxf9wqkK7x9p-okePmC9rsTRQo6XKnaMZJ2iE';
   var MK_IMG="../";
-  var MK_PAINT={"noel": "../img/tab-noel.webp", "ingles": "../img/tab-ingles.webp", "kidsdrop": "../img/tab-kidsdrop.webp", "bono": "../img/tab-bono.webp", "cumple": "../img/tab-cumple.webp", "baby": "../img/tab-baby.webp"};
+  var MK_PAINT={"santa": "../img/tab-santa.webp", "noel": "../img/tab-noel.webp", "ingles": "../img/tab-ingles.webp", "kidsdrop": "../img/tab-kidsdrop.webp", "bono": "../img/tab-bono.webp", "cumple": "../img/tab-cumple.webp", "baby": "../img/tab-baby.webp"};
   var MK_T={"empieza": ["⏳ Comença d'aquí a ", " dies", "⏳ Comença demà!", "🎄 Comença avui!"], "faltan": ["⏳ Falten ", " dies", "⏳ És demà!", "🎅 És avui!"], "porPeque": "per nen", "hermano": "germà", "completo": "🎅 Complet!", "queda1": "🔥 Queda 1 plaça!", "quedan": ["🔥 Queden ", " places!"], "solo": ["🎅 Només ", " places"], "espera": "Llista d'espera", "esperaWa": "Hola! La visita del Pare Noel està completa, m'apunteu a la llista d'espera?"};
   function mkEur(n){ n=+n; return (n%1 ? n.toFixed(2).replace('.',',') : String(n))+'€'; }
-  // el dibujo: cada uno en su cuadro crema con borde dorado; el lazo solo en las de Navidad (casal y Papá Noel)
+  // el dibujo: cada uno en su cuadro crema con borde dorado; el lazo solo en las de Navidad (casal, Papá Noel y Santa's Kitchen)
   function mkArt(o){
     var art=div('mk-art mk-art-x'), x=div('mk-xtile'+(o.pi?' mk-xtile-p':'')), im;
     if(o.pi){
@@ -1422,7 +1424,7 @@ html .hero .cf-stage.flow .cf-card.mkc .bb-go{font-weight:700}
     } else {
       im=document.createElement('img'); im.className='mk-ximg'; im.alt=''; im.decoding='async'; im.draggable=false; im.src=MK_IMG+'img/xmas-arbol.webp'; x.appendChild(im);
     }
-    if(!o.pi||o.pi==='noel'){ var bow=document.createElement('img'); bow.className='mk-xbow'; bow.alt=''; bow.draggable=false; bow.src=MK_IMG+'img/xmas-lazo.png'; x.appendChild(bow); }
+    if(!o.pi||o.pi==='noel'||o.pi==='santa'){ var bow=document.createElement('img'); bow.className='mk-xbow'; bow.alt=''; bow.draggable=false; bow.src=MK_IMG+'img/xmas-lazo.png'; x.appendChild(bow); }
     art.appendChild(x);
     if(o.flag){ o._flag=span('bb-flag',o.flag); art.appendChild(o._flag); }
     return art;
@@ -1443,7 +1445,7 @@ html .hero .cf-stage.flow .cf-card.mkc .bb-go{font-weight:700}
         o._flag.textContent = quedan<=0 ? MK_T.completo : quedan===1 ? MK_T.queda1 : quedan<=10 ? MK_T.quedan[0]+quedan+MK_T.quedan[1] : MK_T.solo[0]+max+MK_T.solo[1];
         if(quedan<=0&&o._go){   // completo → el botón apunta a la lista de espera por WhatsApp, no a reservar
           o._go.firstChild.nodeValue=MK_T.espera;
-          o._go.href='https://wa.me/'+WA_NUM+'?text='+encodeURIComponent(MK_T.esperaWa);
+          o._go.href='https://wa.me/'+WA_NUM+'?text='+encodeURIComponent(o.esperaWa||MK_T.esperaWa);
           o._go.target='_blank'; o._go.rel='noopener';
         }
       }
