@@ -163,6 +163,23 @@
 </script>
 <link rel="stylesheet" href="css/kk-escenas.css">
 <script src="js/kk-escenas.js" defer></script>
+<style>
+/* ── «Compartir con amigos» (23-nov-2026): botón para pasar un taller o actividad a otras familias.
+   Toda tarjeta de taller o actividad lleva uno: un button.kk-sh con data-sh-url, data-sh-txt y data-sh-ok (ver el script de abajo). ── */
+#santas-kitchen,#papa-noel,#christmas-camp,#baby-music,#extraescolares{scroll-margin-top:90px}
+.kk-sh{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:12px 18px;border-radius:999px;border:1px solid transparent;background:none;font:800 14.5px/1 Nunito,sans-serif;cursor:pointer;text-decoration:none;white-space:nowrap;max-width:100%;-webkit-tap-highlight-color:transparent}
+.kk-sh svg{width:18px;height:18px;flex:none}
+.sk-compra .kk-sh{grid-column:1/-1;justify-self:center;font:700 14.5px/1 Inter,sans-serif;color:#E3C58F;background:rgba(227,197,143,.10);border-color:rgba(227,197,143,.32)}
+@media (min-width:1040px){.sk-compra .kk-sh{grid-column:2;justify-self:stretch}}
+.pn-show .kk-sh{margin-top:18px;color:#F3DA96;background:rgba(243,218,150,.10);border-color:rgba(243,218,150,.32)}
+.cc-show .kk-sh{margin-top:14px;color:#9E1B2E;background:rgba(158,27,46,.06);border-color:rgba(158,27,46,.24)}
+@media (max-width:560px){.cc-show .kk-sh{display:flex;width:max-content;margin-left:auto;margin-right:auto}}
+.nv-body .kk-sh{margin-top:10px;align-self:flex-start;font-family:inherit;font-weight:900;font-size:14px;padding:11px 20px;color:var(--sh,#B85E97);background:#fff;border:1.5px solid currentColor}
+.nv-link.sage~.kk-sh{--sh:#5A7D2E}
+.nv-link.violet~.kk-sh{--sh:#6E5A9E}
+.nv-card.xmas .nv-body .kk-sh{--sh:#9E1B2E}
+.jprice .kk-sh{font-family:inherit;font-weight:800;font-size:15px;padding:12px 24px;color:#fff;background:rgba(30,96,124,.22);border:1.5px solid rgba(255,255,255,.85);text-shadow:0 1px 2px rgba(0,0,0,.18)}
+</style>
 </head>
 <body>
 <div id="prog"></div>
@@ -396,6 +413,7 @@
             <a class="sk-btn" href="https://apps.apple.com/es/app/kids-kafe/id6773033244" target="_blank" rel="noopener">Reservar en la app
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
             <a class="sk-wa" href="https://wa.me/34637319226?text=Hola%21%20Vengo%20de%20la%20web%20%C2%B7%20Santa%27s%20Kitchen.%20Quiero%20reservar%20plaza%20para%20el%20s%C3%A1bado%2012%20de%20diciembre" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 18.8z"/></svg>Reservar por WhatsApp</a>
+            <button type="button" class="kk-sh" data-sh-url="https://www.kidsandkafe.es/talleres#santas-kitchen" data-sh-txt="¡Mira este taller de Navidad! 🎅 Santa&#x27;s Kitchen en Kids &amp; Kafé: galletas en familia con Dr. Oetker, sábado 12 de diciembre de 16 a 18 h. ¿Nos apuntamos?" data-sh-ok="¡Enlace copiado!"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 14V2.8M7.8 6.8 12 2.8l4.2 4"/><path d="M9 10H6.2a1.7 1.7 0 0 0-1.7 1.7v7.6A1.7 1.7 0 0 0 6.2 21h11.6a1.7 1.7 0 0 0 1.7-1.7v-7.6a1.7 1.7 0 0 0-1.7-1.7H15"/></svg><span>Compartir con amigos</span></button>
           </div>
         </div>
       </div>
@@ -457,6 +475,7 @@
       </div>
       <a class="jbtn" href="https://wa.me/34637319226?text=Hola%21%20Vengo%20de%20la%20web%20%C2%B7%20Talleres" target="_blank" rel="noopener">Ver el programa de este mes</a>
       <a class="jbtn" href="contacto#app">Reservar en la app</a>
+      <button type="button" class="kk-sh" data-sh-url="https://www.kidsandkafe.es/talleres" data-sh-txt="Talleres para peques en Kids &amp; Kafé (Les Corts) 🎨 Arte, música, cocina y mucho más, de 6 meses a 7 años. ¿Nos apuntamos?" data-sh-ok="¡Enlace copiado!"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 14V2.8M7.8 6.8 12 2.8l4.2 4"/><path d="M9 10H6.2a1.7 1.7 0 0 0-1.7 1.7v7.6A1.7 1.7 0 0 0 6.2 21h11.6a1.7 1.7 0 0 0 1.7-1.7v-7.6a1.7 1.7 0 0 0-1.7-1.7H15"/></svg><span>Compartir con amigos</span></button>
     </div>
 
     <style>
@@ -580,5 +599,15 @@
 <a href="https://wa.me/34637319226?text=Hola%21%20Vengo%20de%20la%20web%20%C2%B7%20Talleres" class="wa-float" target="_blank" rel="noopener" aria-label="WhatsApp">💬</a>
 <script src="js/main.js"></script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "b70f559ce09b4091a2ac434e5f34050e"}'></script><!-- End Cloudflare Web Analytics -->
+<script>/* «Compartir con amigos»: en el móvil abre el menú de compartir del teléfono; en el ordenador copia el enlace (y si no puede, abre WhatsApp) */
+(function(){document.addEventListener('click',function(e){
+var b=e.target.closest&&e.target.closest('button.kk-sh'); if(!b) return;
+var url=b.getAttribute('data-sh-url'), txt=b.getAttribute('data-sh-txt');
+if(navigator.share){ navigator.share({text:txt,url:url}).catch(function(){}); return; }
+var lab=b.querySelector('span'), antes=b.getAttribute('data-sh-lab')||lab.textContent; b.setAttribute('data-sh-lab',antes);
+var wa=function(){ window.open('https://wa.me/?text='+encodeURIComponent(txt+' '+url),'_blank','noopener'); };
+if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt+' '+url).then(function(){
+  lab.textContent=b.getAttribute('data-sh-ok')||antes; setTimeout(function(){ lab.textContent=antes; },2200); },wa); } else wa();
+});})();</script>
 </body>
 </html>

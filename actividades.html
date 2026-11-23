@@ -133,6 +133,23 @@
   "url": "https://www.kidsandkafe.es/actividades#papa-noel"
 }
 </script>
+<style>
+/* ── «Compartir con amigos» (23-nov-2026): botón para pasar un taller o actividad a otras familias.
+   Toda tarjeta de taller o actividad lleva uno: un button.kk-sh con data-sh-url, data-sh-txt y data-sh-ok (ver el script de abajo). ── */
+#santas-kitchen,#papa-noel,#christmas-camp,#baby-music,#extraescolares{scroll-margin-top:90px}
+.kk-sh{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:12px 18px;border-radius:999px;border:1px solid transparent;background:none;font:800 14.5px/1 Nunito,sans-serif;cursor:pointer;text-decoration:none;white-space:nowrap;max-width:100%;-webkit-tap-highlight-color:transparent}
+.kk-sh svg{width:18px;height:18px;flex:none}
+.sk-compra .kk-sh{grid-column:1/-1;justify-self:center;font:700 14.5px/1 Inter,sans-serif;color:#E3C58F;background:rgba(227,197,143,.10);border-color:rgba(227,197,143,.32)}
+@media (min-width:1040px){.sk-compra .kk-sh{grid-column:2;justify-self:stretch}}
+.pn-show .kk-sh{margin-top:18px;color:#F3DA96;background:rgba(243,218,150,.10);border-color:rgba(243,218,150,.32)}
+.cc-show .kk-sh{margin-top:14px;color:#9E1B2E;background:rgba(158,27,46,.06);border-color:rgba(158,27,46,.24)}
+@media (max-width:560px){.cc-show .kk-sh{display:flex;width:max-content;margin-left:auto;margin-right:auto}}
+.nv-body .kk-sh{margin-top:10px;align-self:flex-start;font-family:inherit;font-weight:900;font-size:14px;padding:11px 20px;color:var(--sh,#B85E97);background:#fff;border:1.5px solid currentColor}
+.nv-link.sage~.kk-sh{--sh:#5A7D2E}
+.nv-link.violet~.kk-sh{--sh:#6E5A9E}
+.nv-card.xmas .nv-body .kk-sh{--sh:#9E1B2E}
+.jprice .kk-sh{font-family:inherit;font-weight:800;font-size:15px;padding:12px 24px;color:#fff;background:rgba(30,96,124,.22);border:1.5px solid rgba(255,255,255,.85);text-shadow:0 1px 2px rgba(0,0,0,.18)}
+</style>
 </head>
 <body>
 <div id="prog"></div>
@@ -338,7 +355,7 @@
       </style>
 
       <!-- 🎄 Christmas Camp (21-dic-2026 → 5-ene-2027) · postal a todo el ancho ANTES de Papá Noel; se quita sola el 6-ene (data-hasta + script) -->
-      <article class="cc-show cc-b" data-hasta="2027-01-06T00:00:00+01:00" data-rv="s">
+      <article class="cc-show cc-b" id="christmas-camp" data-hasta="2027-01-06T00:00:00+01:00" data-rv="s">
         <div class="cc-papel">
           <img class="cc-lazo" src="img/xmas-lazo.png" width="285" height="320" alt="" aria-hidden="true" loading="lazy" decoding="async">
           <div class="cc-grid">
@@ -374,6 +391,7 @@
                 <a class="cc-btn" href="casal-inscripcion">🎄 Reservar plaza <span aria-hidden="true">→</span></a>
                 <a class="cc-mas" href="casal">Ver toda la info <span aria-hidden="true">→</span></a>
               </div>
+                <button type="button" class="kk-sh" data-sh-url="https://www.kidsandkafe.es/actividades#christmas-camp" data-sh-txt="Christmas Camp en Kids &amp; Kafé 🎄 Casal de Navidad: 21-24 y 28-31 dic y 4-5 ene. ¿Apuntamos a los peques juntos?" data-sh-ok="¡Enlace copiado!"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 14V2.8M7.8 6.8 12 2.8l4.2 4"/><path d="M9 10H6.2a1.7 1.7 0 0 0-1.7 1.7v7.6A1.7 1.7 0 0 0 6.2 21h11.6a1.7 1.7 0 0 0 1.7-1.7v-7.6a1.7 1.7 0 0 0-1.7-1.7H15"/></svg><span>Compartir con amigos</span></button>
             </div>
           </div>
         </div>
@@ -531,6 +549,7 @@
             <p class="pn-pie">Plaza limitada · reserva y paga en la app de Kids &amp; Kafé (<b>Centro → Talleres</b>).</p>
             <a class="pn-btn" id="pn-app" href="https://apps.apple.com/es/search?term=kids%20kafe" target="_blank" rel="noopener">📱 Reservar en la app <span aria-hidden="true">→</span></a>
             <a class="pn-wa" href="https://wa.me/34637319226?text=Hola%21%20Vengo%20de%20la%20web%20%C2%B7%20Pap%C3%A1%20Noel.%20Quiero%20reservar%20plaza%20para%20el%20domingo%2013%20de%20diciembre" target="_blank" rel="noopener">💬 ¿Dudas? Escríbenos por WhatsApp</a>
+            <button type="button" class="kk-sh" data-sh-url="https://www.kidsandkafe.es/actividades#papa-noel" data-sh-txt="¡Papá Noel y su elfo vienen a Kids &amp; Kafé! 🎅 Domingo 13 de diciembre, de 17 a 18 h. ¿Vamos juntos?" data-sh-ok="¡Enlace copiado!"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 14V2.8M7.8 6.8 12 2.8l4.2 4"/><path d="M9 10H6.2a1.7 1.7 0 0 0-1.7 1.7v7.6A1.7 1.7 0 0 0 6.2 21h11.6a1.7 1.7 0 0 0 1.7-1.7v-7.6a1.7 1.7 0 0 0-1.7-1.7H15"/></svg><span>Compartir con amigos</span></button>
           </div>
         </div>
       </article>
@@ -546,7 +565,7 @@
       })(document.getElementById('papa-noel'));</script>
 
       <!-- Baby Music&Play -->
-      <article class="nv-card" data-rv="s" data-delay="3">
+      <article class="nv-card" id="baby-music" data-rv="s" data-delay="3">
         <div class="nv-head" style="background:linear-gradient(140deg,#FCE7A6 0%,#FDF0C8 55%,#FBE3CC 100%)">
           <span class="nv-blob b1"></span><span class="nv-blob b2"></span><span class="nv-dots"></span>
           <span class="nv-date">🥁 Martes</span>
@@ -561,11 +580,12 @@
           <h4>Música y ritmo para los peques</h4>
           <p>Todos los martes de <b>9:30 a 10:30</b>. Descubrimiento musical, ritmo y juego para los más pequeños de la casa.</p>
           <a href="talleres" class="nv-link">Ver más <span class="arw">→</span></a>
+          <button type="button" class="kk-sh" data-sh-url="https://www.kidsandkafe.es/actividades#baby-music" data-sh-txt="Baby Music&amp;Play en Kids &amp; Kafé 🥁 Música y ritmo para los peques, todos los martes de 9:30 a 10:30. ¿Vamos juntos?" data-sh-ok="¡Enlace copiado!"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 14V2.8M7.8 6.8 12 2.8l4.2 4"/><path d="M9 10H6.2a1.7 1.7 0 0 0-1.7 1.7v7.6A1.7 1.7 0 0 0 6.2 21h11.6a1.7 1.7 0 0 0 1.7-1.7v-7.6a1.7 1.7 0 0 0-1.7-1.7H15"/></svg><span>Compartir con amigos</span></button>
         </div>
       </article>
 
       <!-- Extraescolares -->
-      <article class="nv-card" data-rv="s" data-delay="1">
+      <article class="nv-card" id="extraescolares" data-rv="s" data-delay="1">
         <div class="nv-head" style="background:linear-gradient(140deg,#E6DAF8 0%,#D5EEF6 55%,#DDEFC0 100%)">
           <span class="nv-blob b1"></span><span class="nv-blob b2"></span><span class="nv-dots"></span>
           <span class="nv-date">📅 Septiembre</span>
@@ -585,6 +605,7 @@
           </ul>
           <p class="nv-foot">Cuota mensual por actividad · plazas desde septiembre.</p>
           <a href="extraescolar-inscripcion.html" class="nv-link violet">Inscribirme <span class="arw">→</span></a>
+          <button type="button" class="kk-sh" data-sh-url="https://www.kidsandkafe.es/actividades#extraescolares" data-sh-txt="Extraescolares de inglés en Kids &amp; Kafé, de 2 a 6 años: English &amp; Play los lunes y English &amp; Art los martes, de 17 a 18 h. ¿Apuntamos a los peques juntos?" data-sh-ok="¡Enlace copiado!"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 14V2.8M7.8 6.8 12 2.8l4.2 4"/><path d="M9 10H6.2a1.7 1.7 0 0 0-1.7 1.7v7.6A1.7 1.7 0 0 0 6.2 21h11.6a1.7 1.7 0 0 0 1.7-1.7v-7.6a1.7 1.7 0 0 0-1.7-1.7H15"/></svg><span>Compartir con amigos</span></button>
         </div>
       </article>
 
@@ -642,5 +663,15 @@ function suscribirBoletin(e){e.preventDefault();var em=document.getElementById('
   return false;}
 </script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "b70f559ce09b4091a2ac434e5f34050e"}'></script><!-- End Cloudflare Web Analytics -->
+<script>/* «Compartir con amigos»: en el móvil abre el menú de compartir del teléfono; en el ordenador copia el enlace (y si no puede, abre WhatsApp) */
+(function(){document.addEventListener('click',function(e){
+var b=e.target.closest&&e.target.closest('button.kk-sh'); if(!b) return;
+var url=b.getAttribute('data-sh-url'), txt=b.getAttribute('data-sh-txt');
+if(navigator.share){ navigator.share({text:txt,url:url}).catch(function(){}); return; }
+var lab=b.querySelector('span'), antes=b.getAttribute('data-sh-lab')||lab.textContent; b.setAttribute('data-sh-lab',antes);
+var wa=function(){ window.open('https://wa.me/?text='+encodeURIComponent(txt+' '+url),'_blank','noopener'); };
+if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt+' '+url).then(function(){
+  lab.textContent=b.getAttribute('data-sh-ok')||antes; setTimeout(function(){ lab.textContent=antes; },2200); },wa); } else wa();
+});})();</script>
 </body>
 </html>
