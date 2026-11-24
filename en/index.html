@@ -961,6 +961,7 @@ document.documentElement.setAttribute('data-portada',(m===10&&n>=10)||m===11||(m
 .j-kidsdrop{--ja:#17698F;--jb:#0B3550;--jacc:#CDEFFC;--jdot:#F7C548;--jpb:#F7C548;--jpf:#0B3550;--jring:rgba(247,197,72,.7);--jbg:radial-gradient(120% 90% at 85% -10%,rgba(205,239,252,0.18),transparent 55%),linear-gradient(160deg,#17698F 0%,#0B3550 100%)}
 .j-bono{--ja:#8C3B1C;--jb:#561F0B;--jacc:#FFD3A8;--jdot:#5FD0B4;--jpb:#1F6B5C;--jpf:#FFF7E8;--jring:rgba(255,196,140,.7);--jbg:radial-gradient(120% 90% at 85% -10%,rgba(255,211,168,0.20),transparent 55%),linear-gradient(160deg,#8C3B1C 0%,#561F0B 100%)}
 .j-cumple{--ja:#2A3B7E;--jb:#131B45;--jacc:#CFD8FF;--jdot:#F3DA96;--jpb:#F3DA96;--jpf:#131B45;--jring:rgba(243,218,150,.7);--jbg:radial-gradient(120% 90% at 85% -10%,rgba(207,216,255,0.20),transparent 55%),linear-gradient(160deg,#2A3B7E 0%,#131B45 100%)}
+.j-regalo{--ja:#9A6512;--jb:#5C3B06;--jacc:#F3DA96;--jdot:#7A1229;--jpb:#FBF6EC;--jpf:#6E0F25;--jring:rgba(243,218,150,.7);--jbg:radial-gradient(120% 90% at 85% -10%,rgba(251,246,236,0.18),transparent 55%),linear-gradient(160deg,#9A6512 0%,#5C3B06 100%)}
 .j-baby{--ja:#126266;--jb:#08383E;--jacc:#BFF0E4;--jdot:#F08A5D;--jpb:#F08A5D;--jpf:#FFF7E8;--jring:rgba(191,240,228,.7);--jbg:radial-gradient(120% 90% at 85% -10%,rgba(191,240,228,0.18),transparent 55%),linear-gradient(160deg,#126266 0%,#08383E 100%)}
 
 /* base de todas las tarjetas */
@@ -1047,6 +1048,7 @@ html .hero .cf-stage.flow .cf-card.mkc .bb-go{font-weight:700}
 }
 @media (prefers-reduced-motion:reduce){html .hero .cf-stage.flow .cf-card.mkc .mk-dot::after,html .hero .cf-stage.flow .cf-card.mkc .mk-cpaint,html .hero .cf-stage.flow .cf-card.mkc .bb-go .arr{animation:none}}
 </style>
+<style>/* Aviso «Bono regalo»: se quita solo el 7-ene-2027 */.kk-regalo{position:relative;z-index:5;display:flex;align-items:center;justify-content:center;gap:8px 16px;flex-wrap:wrap;width:fit-content;max-width:100%;margin:0 auto 22px;border-radius:999px;box-shadow:0 14px 30px -16px rgba(74,10,25,.75);background:#6E0F25;color:#FBF6EC;padding:9px 9px 9px 20px;font:600 14px/1.3 Inter,system-ui,sans-serif;text-align:center;text-decoration:none}@media(max-width:520px){.kk-regalo{border-radius:20px;padding:11px 14px 12px;flex-direction:column}}.kk-regalo em{font:italic 500 16px/1.2 Fraunces,Georgia,serif;color:#F3DA96}.kk-regalo .kk-rb{display:inline-block;background:#F3DA96;color:#6E0F25;font-weight:800;font-size:13px;padding:7px 14px;border-radius:999px;white-space:nowrap}</style>
 </head>
 <body>
 <div id="prog"></div>
@@ -1107,6 +1109,8 @@ html .hero .cf-stage.flow .cf-card.mkc .bb-go{font-weight:700}
     <div class="hero-grain" aria-hidden="true"></div>
     <div class="hero-vignette" aria-hidden="true"></div>
   <div class="wrap">
+    <a class="kk-regalo" href="../regalar-bono?lang=en"><span>🎁 This Christmas, give <em>hours of play</em></span><span class="kk-rb">From €34 · Give a voucher →</span></a>
+    <script>(function(){var a=document.querySelector('a.kk-regalo');if(a&&Date.now()>=Date.parse('2027-01-07T00:00:00+01:00'))a.parentNode.removeChild(a);})();</script>
     <div class="hero-head" data-rv>
       <h1 class="h1-hero">Kids café with a play area in Barcelona. <em>The originals since 2018.</em></h1>
       <p class="h1-sub">Barcelona's first themed, symbolic play space: a kids café with an indoor play area, birthdays with decoration, soft play and workshops across 300 m² to play and celebrate. Thousands of families since 2018.<strong style="font-weight:700;opacity:1">Easy to copy. Impossible to match.</strong></p>
@@ -1379,6 +1383,7 @@ html .hero .cf-stage.flow .cf-card.mkc .bb-go{font-weight:700}
   // Tablón: cada oferta con fecha de fin («hasta») desaparece sola al pasar (Santa's Kitchen: el 12-dic a las 18 h · Papá Noel: el 13-dic a las 18 h · Christmas Camp: el 6-ene)
   var OFERTAS=[
     {theme:"j-santa", pi:"santa", ek:"Santa's Kitchen", cuenta:"2026-12-12", ct:"faltan", title:"Bake cookies in *Santa's kitchen*", lead:"Bake cookies in", hook:"Santa's kitchen", price:"Book and pay in the app", taller:{"fecha": "2026-12-12", "nombre": "kitchen"}, tienda:true, go:"#app", cta:"Book in the app", flag:"🎅 Only 25 places", chips:["📅 Sat 12 Dec · 4-6 pm", "🎟️ −10% with a pass"], wa:"Hi! I'd like to book Santa's Kitchen (12 December)", esperaWa:"Hi! Santa's Kitchen is fully booked, can you put me on the waiting list?", hasta:"2026-12-12T18:00:00+01:00"},
+    {theme:"j-regalo", pi:"regalo", ek:"Gift voucher", title:"Fewer toys, *more memories*", lead:"Fewer toys,", hook:"more memories", pre:"from", num:"€34", post:"per voucher", price:"From €34 per voucher", go:"../regalar-bono?lang=en", cta:"Give a voucher", flag:"🎄 Christmas & Three Kings", chips:["🎁 4 h or 10 h", "⏳ Never expires"], wa:"Hi! I'd like to give an hours voucher as a gift", hasta:"2027-01-07T00:00:00+01:00"},
     {theme:"j-casal", pi:null, ek:"Christmas Camp", cuenta:"2026-12-21", ct:"empieza", title:"Christmas holidays, *sorted*", lead:"Christmas holidays,", hook:"sorted", pre:"from", num:"€50", post:"a day · reserve with €50", price:"From €50 a day · reserve with €50", go:"../casal-inscripcion?lang=en", cta:"Reserve a place", flag:"🎄 Registration open", chips:["📅 21-24 & 28-31 Dec · 4-5 Jan", "👶 Ages 1 to 6"], wa:"Hi! I want info about the Christmas Camp", hasta:"2027-01-06T00:00:00+01:00"},
     {theme:"j-noel", pi:"noel", ek:"Santa Claus", cuenta:"2026-12-13", ct:"faltan", title:"Hand in your letter to *Santa*", lead:"Hand in your letter to", hook:"Santa", price:"Book and pay in the app", taller:{"fecha": "2026-12-13", "nombre": "noel"}, tienda:true, go:"#app", cta:"Book in the app", flag:"🎅 Limited places", chips:["📅 Sun 13 Dec · 5-6 pm", "📸 Photo with Santa"], wa:"Hi! I'd like to book the visit from Santa (13 December)", hasta:"2026-12-13T18:00:00+01:00"},
     {theme:"j-ingles", pi:"ingles", ek:"After-school", title:"They learn English *through play*", lead:"They learn English", hook:"through play", num:"€49", post:"a month", price:"€49/month", go:"../extraescolar-inscripcion?lang=en", cta:"Register", flag:"🎨 Registration open", chips:["🗓️ Mon or Tue · 5-6 pm", "👶 From P3"], wa:"Hi! I'd like info about the after-school activities in English"},
@@ -1410,7 +1415,7 @@ html .hero .cf-stage.flow .cf-card.mkc .bb-go{font-weight:700}
   // con la misma url y key pública que los formularios). Si no contesta, se queda el texto fijo.
   var MK_SB='https://ovztunykbpvsilauxjhe.supabase.co', MK_SBK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im92enR1bnlrYnB2c2lsYXV4amhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMDY2MDMsImV4cCI6MjA5Mjc4MjYwM30.wRGp44Vxf9wqkK7x9p-okePmC9rsTRQo6XKnaMZJ2iE';
   var MK_IMG="../";
-  var MK_PAINT={"santa": "../img/tab-santa.webp", "noel": "../img/tab-noel.webp", "ingles": "../img/tab-ingles.webp", "kidsdrop": "../img/tab-kidsdrop.webp", "bono": "../img/tab-bono.webp", "cumple": "../img/tab-cumple.webp", "baby": "../img/tab-baby.webp"};
+  var MK_PAINT={"regalo": "../img/tab-regalo.webp", "santa": "../img/tab-santa.webp", "noel": "../img/tab-noel.webp", "ingles": "../img/tab-ingles.webp", "kidsdrop": "../img/tab-kidsdrop.webp", "bono": "../img/tab-bono.webp", "cumple": "../img/tab-cumple.webp", "baby": "../img/tab-baby.webp"};
   var MK_T={"empieza": ["⏳ Starts in ", " days", "⏳ Starts tomorrow!", "🎄 Starts today!"], "faltan": ["⏳ ", " days to go", "⏳ It's tomorrow!", "🎅 It's today!"], "porPeque": "per child", "hermano": "sibling", "completo": "🎅 Fully booked!", "queda1": "🔥 Only 1 place left!", "quedan": ["🔥 Only ", " places left!"], "solo": ["🎅 Only ", " places"], "espera": "Waiting list", "esperaWa": "Hi! The Santa visit is fully booked, can you put me on the waiting list?"};
   function mkEur(n){ n=+n; return '€'+(n%1 ? n.toFixed(2) : String(n)); }
   // el dibujo: cada uno en su cuadro crema con borde dorado; el lazo solo en las de Navidad (casal, Papá Noel y Santa's Kitchen)
@@ -1423,7 +1428,7 @@ html .hero .cf-stage.flow .cf-card.mkc .bb-go{font-weight:700}
     } else {
       im=document.createElement('img'); im.className='mk-ximg'; im.alt=''; im.decoding='async'; im.draggable=false; im.src=MK_IMG+'img/xmas-arbol.webp'; x.appendChild(im);
     }
-    if(!o.pi||o.pi==='noel'||o.pi==='santa'){ var bow=document.createElement('img'); bow.className='mk-xbow'; bow.alt=''; bow.draggable=false; bow.src=MK_IMG+'img/xmas-lazo.png'; x.appendChild(bow); }
+    if(!o.pi||o.pi==='noel'||o.pi==='santa'||o.pi==='regalo'){ var bow=document.createElement('img'); bow.className='mk-xbow'; bow.alt=''; bow.draggable=false; bow.src=MK_IMG+'img/xmas-lazo.png'; x.appendChild(bow); }
     art.appendChild(x);
     if(o.flag){ o._flag=span('bb-flag',o.flag); art.appendChild(o._flag); }
     return art;
