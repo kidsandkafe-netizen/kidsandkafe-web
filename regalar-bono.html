@@ -571,7 +571,7 @@ T.es={
  ePago:"No se ha podido abrir el pago. Inténtalo otra vez o escríbenos por WhatsApp.",
  comprobando:"Comprobando el pago…", preparando:"Preparando tu regalo…",
  hecho:"¡Hecho!", listo:"Tu regalo está listo", listoLead:"Mándalo por WhatsApp, guárdalo o imprímelo.",
- bShare:"Enviar por WhatsApp", bSave:"Guardar imagen", bPrint:"Imprimir", codigoLbl:"Código",
+ bShare:"Enviar por WhatsApp", bSave:"Guardar imagen", bPrint:"Imprimir", codigoLbl:"Código", waPegaT:"Foto copiada", waPega:"Ahora abre WhatsApp, pégala en el chat (Ctrl+V o ⌘V) y envía.", waGuardaT:"Foto descargada", waGuarda:"Ahora abre WhatsApp, adjunta la foto (está en Descargas) y envía.", waAbrir:"Abrir WhatsApp",
  canjeTxt:"Enseñan el código en el mostrador de Kids & Kafé (Carrer de Nicaragua, 117 · Barcelona). Si ya tienen bono, las horas se suman.",
  otro:"Regalar otro",
  noH:"Aún no vemos el pago", noP:"Si acabas de pagar, puede tardar unos segundos.", reintentar:"Volver a comprobar",
@@ -639,7 +639,7 @@ T.ca={
  ePago:"No s’ha pogut obrir el pagament. Torna-ho a provar o escriu-nos per WhatsApp.",
  comprobando:"Comprovant el pagament…", preparando:"Preparant el teu regal…",
  hecho:"Fet!", listo:"El teu regal està a punt", listoLead:"Envia’l per WhatsApp, desa’l o imprimeix-lo.",
- bShare:"Enviar per WhatsApp", bSave:"Desar la imatge", bPrint:"Imprimir", codigoLbl:"Codi",
+ bShare:"Enviar per WhatsApp", bSave:"Desar la imatge", bPrint:"Imprimir", codigoLbl:"Codi", waPegaT:"Foto copiada", waPega:"Ara obre WhatsApp, enganxa-la al xat (Ctrl+V o ⌘V) i envia-la.", waGuardaT:"Foto descarregada", waGuarda:"Ara obre WhatsApp, adjunta la foto (és a Baixades) i envia-la.", waAbrir:"Obrir WhatsApp",
  canjeTxt:"Ensenyen el codi al taulell de Kids & Kafé (Carrer de Nicaragua, 117 · Barcelona). Si ja tenen bo, les hores se sumen.",
  otro:"Regalar-ne un altre",
  noH:"Encara no veiem el pagament", noP:"Si acabes de pagar, pot trigar uns segons.", reintentar:"Tornar a comprovar",
@@ -707,7 +707,7 @@ T.en={
  ePago:"We couldn’t open the payment. Try again or message us on WhatsApp.",
  comprobando:"Checking the payment…", preparando:"Preparing your gift…",
  hecho:"Done!", listo:"Your gift is ready", listoLead:"Send it on WhatsApp, save it or print it.",
- bShare:"Send on WhatsApp", bSave:"Save image", bPrint:"Print", codigoLbl:"Code",
+ bShare:"Send on WhatsApp", bSave:"Save image", bPrint:"Print", codigoLbl:"Code", waPegaT:"Photo copied", waPega:"Now open WhatsApp, paste it into the chat (Ctrl+V or ⌘V) and send.", waGuardaT:"Photo downloaded", waGuarda:"Now open WhatsApp, attach the photo (it's in Downloads) and send.", waAbrir:"Open WhatsApp",
  canjeTxt:"They show the code at the Kids & Kafé counter (Carrer de Nicaragua, 117 · Barcelona). If they already have a voucher, the hours are added.",
  otro:"Give another",
  noH:"We can’t see the payment yet", noP:"If you’ve just paid, it can take a few seconds.", reintentar:"Check again",
@@ -1300,12 +1300,60 @@ function textoShare(){var r=R.reg;return fmt(t.share,{para:r.para,horas:r.horas,
 function abrir(url){var a=document.createElement("a");a.href=url;a.target="_blank";a.rel="noopener";document.body.appendChild(a);a.click();a.remove();}
 function compartir(){
  if(!R.reg)return;
- var txt=textoShare(),f=null;
- if(R.blob&&navigator.share&&navigator.canShare&&typeof File==="function"){
+ var txt=textoShare(),f=null,url="https://wa.me/?text="+encodeURIComponent(txt);
+ if(!R.blob){abrir(url);return;} /* sin foto (navegador muy viejo): solo el texto, como siempre */
+ /* En el móvil, el menú de compartir del teléfono manda la foto directa a WhatsApp */
+ if(esMovil()&&navigator.share&&navigator.canShare&&typeof File==="function"){
   try{f=new File([R.blob],t.archivo+"-"+R.reg.codigo+".jpg",{type:"image/jpeg"});}catch(e){f=null;}
   if(f&&navigator.canShare({files:[f]})){navigator.share({files:[f],text:txt}).catch(function(){});return;}
  }
- abrir("https://wa.me/?text="+encodeURIComponent(txt));
+ /* En el ordenador (o un móvil que no comparte fotos): se copia la foto —si no se puede, se descarga— y sale
+    el aviso «pégala en WhatsApp» con el botón para abrirlo. Así llega siempre la foto, no solo el texto. */
+ if(R.waVa)return;
+ R.waVa=true;
+ var listo=false,tm=setTimeout(function(){acabar(false);},4000);
+ function acabar(copiada){
+  if(listo)return;
+  listo=true;clearTimeout(tm);R.waVa=false;
+  if(!copiada)guardar();
+  waAviso(copiada,url);
+ }
+ copiarFoto().then(function(){acabar(true);},function(){acabar(false);});
+}
+function esMovil(){
+ var ua=navigator.userAgent||"";
+ if(/Android|iPhone|iPad|iPod|Mobile/i.test(ua))return true;
+ if(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1)return true; /* iPad que se presenta como Mac */
+ try{return window.matchMedia("(pointer:coarse)").matches;}catch(e){return false;}
+}
+/* La foto va en PNG (el portapapeles no admite JPG) y como promesa, para no perder el toque del usuario */
+function copiarFoto(){
+ try{
+  if(!navigator.clipboard||!navigator.clipboard.write||typeof ClipboardItem!=="function")return Promise.reject(new Error("sin portapapeles"));
+  return navigator.clipboard.write([new ClipboardItem({"image/png":fotoPng()})]);
+ }catch(e){return Promise.reject(e);}
+}
+function fotoPng(){
+ return new Promise(function(ok,ko){
+  var img=$("#resImg"),cv=document.createElement("canvas");
+  cv.width=img.naturalWidth;cv.height=img.naturalHeight;
+  if(!cv.width||!cv.height)throw new Error("sin foto");
+  cv.getContext("2d").drawImage(img,0,0);
+  cv.toBlob(function(b){if(b)ok(b);else ko(new Error("sin png"));},"image/png");
+ });
+}
+function waAviso(copiada,url){
+ var n=$("#waAviso");
+ if(!n){n=el("div","canje");n.id="waAviso";n.setAttribute("role","status");n.style.marginTop="6px";$("#resOk .acciones").appendChild(n);}
+ vaciar(n);
+ n.appendChild(el("p","eye",copiada?t.waPegaT:t.waGuardaT));
+ var p=el("p",null,copiada?t.waPega:t.waGuarda);
+ p.style.cssText="font:600 15px/1.45 var(--in);color:var(--ti);margin-top:8px;text-wrap:balance";
+ n.appendChild(p);
+ var a=el("a","cta gr",t.waAbrir);
+ a.href=url;a.target="_blank";a.rel="noopener";a.style.marginTop="14px";
+ n.appendChild(a);
+ try{n.scrollIntoView({block:"nearest",behavior:"smooth"});}catch(e){}
 }
 function guardar(){
  if(!R.url||!R.reg)return;
